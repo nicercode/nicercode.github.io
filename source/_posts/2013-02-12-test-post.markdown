@@ -1,0 +1,25 @@
+---
+layout: post
+title: "R in ecology and evolution"
+date: 2013-02-12 17:57
+comments: true
+author: Rich FitzJohn
+categories: 
+---
+
+On this blog, I'm hoping to record bits of information about using R
+for ecology and evolution.  Communicating tips person-to-person is too
+inefficient, and recently helping out at a 
+[software carpentry](http://software-carpentry.org) boot camp has got me
+interested in broadcasting ideas more widely.
+
+This is a test.
+
+```r
+f <- function(x)
+  sin(x)
+for ( i in 1:10 )
+  print(i)
+```
+
+More test
