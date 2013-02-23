@@ -1,2 +1,22 @@
+// -*-css-*-
 // This File is imported last, and will override other styles in the cascade
 // Add styles here to make changes without digging in too much
+
+body > div > div { border-right-width: 0px;}
+div.entry-content { 
+  /* background: #fff; */
+  padding-left: 2em;
+  padding-right: 2em;
+  padding-top: 2ex;
+  padding-bottom: 2ex;
+}
+
+article header {
+  padding-left: 2em;
+  margin-bottom: 1ex;
+}
+
+#content div.pagination {
+ //   background: $foo;
+ // foo: bar;
+}
