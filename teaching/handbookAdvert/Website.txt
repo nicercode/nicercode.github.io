@@ -1,0 +1,6 @@
+#Nice R Code
+10 x 1 hour sessions, Tuesday 1-2pm every fortnight April - July.
+Organised by Rich FitzJohn and Daniel Falster. Academics and postdocs welcome.
+
+Are you using R? Do you want write nicer code? By 'nicer' we mean code that runs fast, is easy to read, gives reliable results, is easy to reuse in new projects, and is easy to share with collaborators. This module is targeted at those in the dept who are already using R and want to take it to the next level. Participating will help you establish good workflow and coding habits and thereby save you time and improve the quality of your science. The module consists of 10 one hour sessions. During each session we will do two things:  1) Introduce a new skill (10-15 mins) 2) Review participants code and help them improve it. The code review part will proceed with students introducing some code they are working on, then all of us discussing what could be improved. The hope is that by reviewing the code with the whole class, everyone will benefit from the suggestions made, and that later reviews will be at progressively higher levels. Ideally all students will have opportunity to have some of their code reviewed at some stage. The module will also be paired with a new blog, which will be open to any (worldwide) to access. Students will be encouraged to post their improvements on the blog.
+
