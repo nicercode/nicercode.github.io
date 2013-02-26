@@ -1,0 +1,84 @@
+* Configuring git to make life easier:
+
+- R studio interace
+- zsh and bash command line options
+- colours
+- git lol
+- ssh keys
+
+* General workflow
+
+- git and large binary files
+- separating source and generated files (+ using .gitignore)
+- caching long running calculations
+- never using numberic indices to refer to row names
+
+* Version control
+http://nakedstartup.com/2010/04/simple-daily-git-workflow
+
+* Profiling code to see where bottlenecks are
+
+* Simple R and C interfacing
+- Convert the talk I gave before for a basic outline
+- Rcpp interface
+- Rcpp modules
+- Use this to wrap something up --- Rcpp perhaps?  Or the ODE solver
+  that I have already
+
+* Plotting svg files as graph elements
+- scatter plot of animals / plants perhaps
+
+* Plotting bitmaps within figures
+- tree with critters
+- background to plot
+- nice picture on side of plot
+- aim at "talk" style figures
+
+* Better graphing options
+
+- impact of colour schemes
+- moving things around
+- placing labels
+- multipanel figure
+- figure generation workflow
+- the importance of avoiding jpeg artefacts (& different figure types)
+
+* Making things faster (Diego's code, for example)
+
+* Matching things
+
+Possibly also data de-duplication.
+
+* Phylogenetics tricks
+
+Radial trees, adding things to plots, trait plots, etc.
+
+* Programming
+
+- higher order functions
+
+* Interfaces with databases
+
+- Creating sqlite databases
+- Reading from databases, and integrating them into a work flow.
+
+* Mapping
+
+- this is awesome, but hard to get started with.
+- Have Kim do a guest post, perhaps?
+
+* Style
+
+- developing a consistent coding style
+- braces and indenting
+- variable naming
+- size and scope of functions
+- avoiding global variables
+- hard coding paths, etc
+
+* Testing
+
+* Resources
+Other things to read:
+google and other style guide for R
+tutorials for git
