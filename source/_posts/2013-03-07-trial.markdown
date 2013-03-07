@@ -1,0 +1,23 @@
+---
+layout: post
+title: "Trial"
+date: 2013-03-07 15:40
+comments: true
+categories: 
+---
+
+Code in different languages
+
+``` r
+f <- function(x)
+  print(x)
+```
+
+``` c++
+class Foo {
+  Foo();
+	
+};
+```
+
+
