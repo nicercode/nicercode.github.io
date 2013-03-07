@@ -6,7 +6,7 @@ comments: true
 categories: 
 ---
 
-Code in different languages
+Coding in different languages can be confusing, but not in markdown
 
 ``` r
 f <- function(x)
