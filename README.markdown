@@ -1,38 +1,53 @@
-## What is Octopress?
 
-Octopress is [Jekyll](https://github.com/mojombo/jekyll) blogging at its finest.
+## Setting up on a new machine ##
 
-1. **Octopress sports a clean responsive theme** written in semantic HTML5, focused on readability and friendliness toward mobile devices.
-2. **Code blogging is easy and beautiful.** Embed code (with [Solarized](http://ethanschoonover.com/solarized) styling) in your posts from gists, jsFiddle or from your filesystem.
-3. **Third party integration is simple** with built-in support for Twitter, Pinboard, Delicious, GitHub Repositories, Disqus Comments and Google Analytics.
-4. **It's easy to use.** A collection of rake tasks simplifies development and makes deploying a cinch.
-5. **Ships with great plug-ins** some original and others from the Jekyll community &mdash; tested and improved.
+Here are summary instructions for setting up on a new machine. For more info see [octopress documentation](http://octopress.org/docs/setup/).
 
+### Clone nicercode project from bitbucket ###
+`git clone git@bitbucket.org:richfitz/nicercode.git`
 
-## Documentation
+### Install [rbenv] (http://octopress.org/docs/setup/rbenv/) ###
 
-Check out [Octopress.org](http://octopress.org/docs) for guides and documentation.
+`git clone git://github.com/sstephenson/rbenv.git .rbenv`
 
+make sure .rbenv is in path. Bash users follow std instructions at link above. For zshell users, make sure following lines are in .zshrc 
 
-## Contributing
-
-[![Build Status](https://travis-ci.org/imathis/octopress.png?branch=master)](https://travis-ci.org/imathis/octopress)
-
-We love to see people contributing to Octopress, whether it's a bug report, feature suggestion or a pull request. At the moment, we try to keep the core slick and lean, focusing on basic blogging needs, so some of your suggestions might not find their way into Octopress. For those ideas, we started a [list of 3rd party plug-ins](https://github.com/imathis/octopress/wiki/3rd-party-plugins), where you can link your own Octopress plug-in repositories. For the future, we're thinking about ways to easier add them them into our main releases.
+    path=(/Users/dfalster/bin /Users/dfalster/.rbenv/bin $path)
+    export path
+    eval "$(rbenv init -)" 
 
 
-## License
-(The MIT License)
+Then in new terminal window
 
-Copyright © 2009-2013 Brandon Mathis
+    rbenv install #  to install newer version of rub
+    rbenv rehash
+    gem install bundler
+    rbenv rehash    # If you use rbenv, rehash to be able to run the bundle command
+    bundle install
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ‘Software’), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+### Install [pow](http://pow.cx/) ###
+`curl get.pow.cx | sh`. 
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+pow creates a local webserver.  Give your page a local name, viewable in web browser on your machine,e.g. 
 
-THE SOFTWARE IS PROVIDED ‘AS IS’, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    cd ~/.pow
+    ~/.pow » ln -s /Users/dfalster/Dropbox/Documents/teaching/myCourses/2013nicercode nicercode
+
+### Setup rake to work with github ###
+    rake setup_github_pages 
+    git@github.com:nicercode/nicercode.github.com.git
 
 
-#### If you want to be awesome.
-- Proudly display the 'Powered by Octopress' credit in the footer.
-- Add your site to the Wiki so we can watch the community grow.
+
+## Making a post ##
+1. rake new_post\["Trial"\]   
+2. edit file produced, e.g. `edit source/_posts/2013-03-07-trial.markdown`
+3. Preview post using one of following methods
+
+	a. `rake generate` #to build site  
+	b. `rake preview` #makes viewable in web-browser at "localhost:4000" or "nicercode.dev" (if you are using pow)
+	c. `rake watch` #starts process that watches for file updates and rebuilds. 
+
+4. commit
+5. rake deploy
+
