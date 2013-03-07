@@ -53,6 +53,11 @@ Possibly also data de-duplication.
 
 Radial trees, adding things to plots, trait plots, etc.
 
+* Working with data
+
+- Split apply combine strategy for R (http://www.jstatsoft.org/v40/i01). Plyr tutorial already developed by H Wickam http://plyr.had.co.nz/09-user/
+- how to stack dataframes, loop is slow http://r.789695.n4.nabble.com/Fast-dependable-way-to-quot-stack-together-quot-data-frames-from-a-list-td2532293.html 
+
 * Programming
 
 - higher order functions
@@ -82,3 +87,8 @@ Radial trees, adding things to plots, trait plots, etc.
 Other things to read:
 google and other style guide for R
 tutorials for git
+
+* Inspiration, 
+why write nice code blog piece
+why you should code, inspirational video http://www.code.org/, need some biological examples
+
