@@ -42,6 +42,7 @@ http://nakedstartup.com/2010/04/simple-daily-git-workflow
 - multipanel figure
 - figure generation workflow
 - the importance of avoiding jpeg artefacts (& different figure types)
+- Making colour palettes: http://tools.medialab.sciences-po.fr/iwanthue/
 
 * Making things faster (Diego's code, for example)
 
@@ -80,13 +81,17 @@ Radial trees, adding things to plots, trait plots, etc.
 - size and scope of functions
 - avoiding global variables
 - hard coding paths, etc
+- [Hadlye Wickams style guide](http://stat405.had.co.nz/r-style.html)
+- [Googles R style guide](http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html)
+
 
 * Testing
 
 * Resources
-Other things to read:
-google and other style guide for R
-tutorials for git
+- Other things to read:
+- tutorials for git
+- 10 nice R packages: http://blog.yhathq.com/posts/10-R-packages-I-wish-I-knew-about-earlier.html
+
 
 * Inspiration, 
 why write nice code blog piece
