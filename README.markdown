@@ -6,7 +6,7 @@ Here are summary instructions for setting up on a new machine. For more info see
 ### Clone nicercode project from bitbucket ###
 `git clone git@bitbucket.org:richfitz/nicercode.git`
 
-### Install [rbenv] (http://octopress.org/docs/setup/rbenv/) ###
+### Install [rbenv](http://octopress.org/docs/setup/rbenv/) ###
 
 `git clone git://github.com/sstephenson/rbenv.git .rbenv`
 
@@ -40,14 +40,13 @@ pow creates a local webserver.  Give your page a local name, viewable in web bro
 
 
 ## Making a post ##
-1. rake new_post\["Trial"\]   
+1. `rake new_post\["Trial"\]`
 2. edit file produced, e.g. `edit source/_posts/2013-03-07-trial.markdown`
-3. Preview post using one of following methods
-
+3. Preview post using `rake preview` #makes viewable in web-browser at `localhost:4000` or `nicercode.dev` (if you are using pow)
+4. Other ways to preview are 
 	a. `rake generate` #to build site  
-	b. `rake preview` #makes viewable in web-browser at "localhost:4000" or "nicercode.dev" (if you are using pow)
-	c. `rake watch` #starts process that watches for file updates and rebuilds. 
+	b. `rake watch` #starts process that watches for file updates and rebuilds. 
 
-4. commit
-5. rake deploy
+4. commit,push to bitbucket
+5. `rake deploy` deploys to github
 

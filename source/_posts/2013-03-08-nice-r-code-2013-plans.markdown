@@ -1,14 +1,22 @@
 ---
 layout: post
-title: "Nice R code 2013 plans"
+title: "Plans for 'Nice R code module', Macquarie University 2013"
 date: 2013-03-08 09:58
 comments: true
 categories: module
 ---
 
-We have a tentative schedule of plans for the 2013 Nice R Code module.
-We are aiming to help people by improving both *workflow* and
-*coding*.  At the beginning of the module we are going to focus on the
+Welcome to the Nice R code module. This module is targeted at researchers who 
+are already using R and want to write nicer code. By 'nicer' we mean code that 
+is easy to write, is easy to read, runs fast, gives reliable results, is easy 
+to reuse in new projects, and is easy to share with collaborators. When you 
+write nice code, you do better science, are more productive, and have more fun.
+
+We have a tentative schedule of plans for the 2013 Nice R Code module. The 
+module consists of 9 one hour sessions and one 3 hour session. 
+The topics covered fall into two broad categories: *workflow* and
+*coding*. Both are essential for writing nicer code.  At the beginning of the 
+module we are going to focus on the
 first, as this will cross over into all computing work people do.
 
 The first five sessions will be 
