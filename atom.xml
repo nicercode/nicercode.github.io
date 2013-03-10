@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Nice R Code]]></title>
+  <link href="http://nicercode.github.com/atom.xml" rel="self"/>
+  <link href="http://nicercode.github.com/"/>
+  <updated>2013-03-11T06:25:12+11:00</updated>
+  <id>http://nicercode.github.com/</id>
+  <author>
+    <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Trial]]></title>
+    <link href="http://nicercode.github.com/blog/2013-03-11-trial/"/>
+    <updated>2013-03-11T06:24:00+11:00</updated>
+    <id>http://nicercode.github.com/blog/trial</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Plans for 'Nice R code module', Macquarie University 2013]]></title>
+    <link href="http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/"/>
+    <updated>2013-03-08T09:58:00+11:00</updated>
+    <id>http://nicercode.github.com/blog/nice-r-code-2013-plans</id>
+    <content type="html"><![CDATA[<p>Welcome to the Nice R code module. This module is targeted at researchers who
+are already using R and want to write nicer code. By &#8216;nicer&#8217; we mean code that
+is easy to write, is easy to read, runs fast, gives reliable results, is easy
+to reuse in new projects, and is easy to share with collaborators. When you
+write nice code, you do better science, are more productive, and have more fun.</p>
+
+<p>We have a tentative schedule of plans for the 2013 Nice R Code module. The
+module consists of 9 one hour sessions and one 3 hour session.
+The topics covered fall into two broad categories: <em>workflow</em> and
+<em>coding</em>. Both are essential for writing nicer code.  At the beginning of the
+module we are going to focus on the
+first, as this will cross over into all computing work people do.</p>
+
+<p>The first five sessions will be</p>
+
+<ol>
+<li>Introduction &amp; project set up (9 April)</li>
+<li>Version control with git (23 April) &#8211; this will be a longer
+session, run with participants from the February software carpentry
+bootcamp.</li>
+<li>Coding style (7 May)</li>
+<li>Testing code (21 May)</li>
+<li>Abstraction and design (4 June)</li>
+</ol>
+
+
+<p>These sessions follow very much the same ideas as
+<a href="http://www.software-carpentry.org">software carpentry</a>.  Where we
+differ is that we will be focusing on <a href="http://r-project.org">R</a>, and
+with less emphasis on command line tools and python.</p>
+
+<p>The next sessions (18 June, 2 July, 16 July &amp; 30 July) will either
+work on specific R skills or continue through issues arising from the
+first five sessions, depending on demand.  Possible specific sessions
+include</p>
+
+<ul>
+<li>Data matching, models and avoiding duplication</li>
+<li>Higher order functions and functional programming</li>
+<li>The split/apply/combine pattern</li>
+<li>Creating better graphs (many possible sessions here)</li>
+<li>Code reuse and packaging</li>
+<li>Code profiling and optimisation</li>
+<li>Using and creating simple databases</li>
+</ul>
+
+
+<p>Along with the skills, we will be doing code review.  The idea will be
+for a participant to meet with us immediately after one session and
+discuss their problems with us.  They then work on their problem over
+the next fortnight and in the next session we will discuss what the
+issues were, the possibilities for overcoming them, and the eventual
+solutions.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[R in ecology and evolution]]></title>
+    <link href="http://nicercode.github.com/blog/2013-02-12-test-post/"/>
+    <updated>2013-02-12T17:57:00+11:00</updated>
+    <id>http://nicercode.github.com/blog/test-post</id>
+    <content type="html"><![CDATA[<p>On this blog, we (Daniel Falster and I) are hoping to record bits of
+information about using R for ecology and evolution.  Communicating
+tips person-to-person is too inefficient, and recently helping out at
+a <a href="http://software-carpentry.org">software carpentry</a> boot camp has
+got me interested in broadcasting ideas more widely.</p>
+
+<p>Test code:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='r'><span class='line'>f <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span>
+</span><span class='line'>  sin<span class="p">(</span>x<span class="p">)</span>
+</span><span class='line'><span class="kr">for</span> <span class="p">(</span> i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="m">10</span> <span class="p">)</span>
+</span><span class='line'>  print<span class="p">(</span>i<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>More test for checking the layout.</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
+    <url>
+        <loc>http://nicercode.github.com/blog/2013-02-12-test-post/</loc>
+        <lastmod>2013-02-25T11:46:11+11:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/</loc>
+        <lastmod>2013-03-08T11:02:50+11:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/blog/2013-03-11-trial/</loc>
+        <lastmod>2013-03-11T06:24:56+11:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/blog/archives/</loc>
+        <lastmod>2013-03-11T06:24:56+11:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/</loc>
+        <lastmod>2013-03-11T06:24:56+11:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/robots.txt</loc>
+        <lastmod>2013-02-25T11:46:11+11:00</lastmod>
+    </url>
+</urlset>
