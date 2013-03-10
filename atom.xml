@@ -4,7 +4,7 @@
   <title><![CDATA[Nice R Code]]></title>
   <link href="http://nicercode.github.com/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-03-11T06:26:26+11:00</updated>
+  <updated>2013-03-11T06:29:26+11:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -12,15 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Trial]]></title>
-    <link href="http://nicercode.github.com/blog/2013-03-11-trial/"/>
-    <updated>2013-03-11T06:24:00+11:00</updated>
-    <id>http://nicercode.github.com/blog/trial</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Plans for 'Nice R code module', Macquarie University 2013]]></title>
