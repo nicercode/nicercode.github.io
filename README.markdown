@@ -21,6 +21,7 @@ see [octopress documentation](http://octopress.org/docs/setup/).
 ### Install [rbenv](http://octopress.org/docs/setup/rbenv/) ###
 
 `git clone git://github.com/sstephenson/rbenv.git .rbenv`
+`git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build`
 
 make sure .rbenv is in path. Bash users follow std instructions at link above. 
 For zshell users, make sure following lines are in .zshrc 
@@ -29,12 +30,11 @@ For zshell users, make sure following lines are in .zshrc
     export path
     eval "$(rbenv init -)" 
 
-
 Then in new terminal window
 
-    rbenv install #  to install newer version of rub
+    rbenv install 1.9.3-p194  #  to install newer version of ruby
     rbenv rehash
-    gem install bundler
+    sudo gem install bundler
     rbenv rehash    # If you use rbenv, rehash to be able to run the bundle 
 command
     bundle install
@@ -46,8 +46,7 @@ pow creates a local webserver.  Give your page a local name, viewable in web
 browser on your machine,e.g. 
 
     cd ~/.pow
-    ~/.pow » ln -s 
-/Users/dfalster/Dropbox/Documents/teaching/myCourses/2013nicercode nicercode
+    ln -s path/to/nicercode/gitrepo nicercode
 
 ### Setup rake to work with github ###
     rake setup_github_pages 
