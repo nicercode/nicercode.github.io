@@ -15,6 +15,6 @@ module.
 Topics we will cover today:
 
 1. [Getting started](getting-started.html): Starting R, using it as
-a calculator, and variables.
-
-
+   a calculator, and variables.
+2. [Loading data](loading-data.html): Reading in data, viewing, and
+   subsetting.

@@ -1,4 +1,4 @@
-TARGETS=getting-started.md
+TARGETS=getting-started.md loading-data.md
 
 all: $(TARGETS)
 
