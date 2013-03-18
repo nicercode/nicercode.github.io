@@ -15,7 +15,7 @@
 
 ## The first function most people seem to need to write is to compute
 ## the standard error of the mean for some variable.  This is defined
-## as $\sqrt{\var(x)/n}$ (that is the square root of the variance
+## as $\sqrt{\mathrm{var}(x)/n}$ (that is the square root of the variance
 ## divided by the sample size.
 
 data <- read.csv("data/seed_root_herbivores.csv")
@@ -90,11 +90,111 @@ standard.error <- function(x) {
 v <- 1000
 standard.error(data$Height)
 
-### Exercise: define a function to compute skew
+## Another example.
+
+## We used the variance function above, but let's rewrite it.
+## Variance is defined as
+## $$\frac{1}{n-1}\left(\sum_{i=1}^n (x_i - \bar x)^2 \right)$$
+
+## This case is more compliated, so we'll do it in pieces.
+
+## We're going to use `x` for the argument, so name our first input
+## data `x` so we can use it.
+x <- data$Height
+
+## The first term is easy:
+n <- length(x)
+(1 / (n-1))
+
+## The second term is harder.  We want the difference between all the
+## `x` values and the mean.
+m <- mean(x)
+x - m
+
+## Then we want to square those differences:
+(x - m)^2
+
+## and compute the sum:
+sum((x - m)^2)
+
+## Watch that you don't do this, which is quite different
+sum(x - m)^2
+## (this follows from the definition of the mean)
+
+## Putting both halfs together, the variance is 
+(1 / (n-1)) * sum((x - m)^2)
+
+## Which agrees with R's variance function
+var(x)
+
+## The `rm` function cleans up:
+rm(n, x, m)
+
+## Wr can then define our function:
+variance <- function(x) {
+  n <- length(x)
+  m <- mean(x)
+  (1 / (n-1)) * sum((x - m)^2)
+}
+
+## And test it:
+variance(data$Height)
+var(data$Height)
+
+variance(data$Weight)
+var(data$Weight)
+
+## ### An aside on floating point comparisons:
+## Our function does not exactly agree with R's function
+variance(data$Height) == var(data$Height)
+
+## This is not because one is more accurate than the other, it is
+## because "machine precision" is finite (that is, the number of
+## decimal places being kept).
+variance(data$Height) - var(data$Height)
+
+## This affects all sorts of things:
+sqrt(2) * sqrt(2)     # looks like 2
+sqrt(2) * sqrt(2) - 2 # but not quite
+
+## So be careful with `==` for floating point comparisons.  Usually
+## you have do something like:
+##+ eval=FALSE
+abs(x - y) < eps
+## For some small value `eps`.  The `all.equal` function can be very
+## helpful here.
+
+## ### Exercise: define a function to compute skew
 
 ## Skewness is a measure of asymmetry of a probability distribution.
 
 ## It can be defined as
-##
-## $$ \frac{\frac{1}{n-2}(\sum_{i=0}{n}(x_i - \bar x))^3}{
-##    \var(x) $$
+## 
+## $$ \frac{\frac{1}{n-2}\left(\sum_{i=1}^n(x_i - \bar x)^3\right)}
+##         {\mathrm{var}(x)^{3/2}} $$
+
+## Write a function that computes the skewness.
+
+## Hints:
+## 
+## * Don't try to do this in one step, but use intermediate variables
+##   like the second version of `standard.error`.
+##   
+## * Remember that $\bar x$ means the mean value of $x$, which you can
+##   compute with `mean`.
+##   
+## * Remember that parentheses can help with order-of-operation
+##   control.
+##   
+## * Get the pieces of your function working before putting it all
+##   together.
+skewness <- function(x) {
+  n <- length(x)
+  v <- var(x)
+  m <- mean(x)
+  third.moment <- (1 / (n-2)) * sum((x - m)^3)
+  third.moment / (var(x)^(3/2))
+}
+
+skewness(data$Height) # should be 0.301
+skewness(data$Weight) # should be 0.195
