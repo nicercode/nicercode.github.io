@@ -20,3 +20,14 @@ article header {
  //   background: $foo;
  // foo: bar;
 }
+
+/* This is a bit of a hack for now, but works for the bottom of
+   "pages".  I should do this properly and have it done through footer
+   includes. */
+hr {
+    margin-top: 3em;
+    color: black;
+    background-color: black;
+    height: 1px;
+    border: 0;
+}
