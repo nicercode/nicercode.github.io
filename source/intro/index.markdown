@@ -18,3 +18,5 @@ Topics we will cover today:
    a calculator, and variables.
 2. [Loading data](loading-data.html): Reading in data, viewing, and
    subsetting.
+3. [Writing functions](writing-functions.html): Avoiding errors and
+   better describing your intent.

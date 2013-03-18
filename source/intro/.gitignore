@@ -1,5 +1,7 @@
 getting-started.md
 loading-data.md
+writing-functions.md
+
 data/seed_root_herbivores.txt
 # Ignore the source files for now:
 data/*.xlsx
