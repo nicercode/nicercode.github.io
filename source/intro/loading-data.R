@@ -331,6 +331,36 @@ subset(data, idx.tall & (Seed.herbivore | Root.herbivore))
 ## more of what is going on.  You'll see it used widely, and it can
 ## simplify things.  But be careful.
 
+## ## Adding new columns
+
+## It is easy to add new columns, perhaps based on old ones:
+data$small.plant <- data$Height < 50
+head(data)
+
+## You can delete a column by setting it to NULL:
+data$small.plant <- NULL
+head(data)
+
+## In this data set, the last column contains the number of seeds in
+## 25 seed heads.  However, there weren't always 25 seed heads on a
+## plant:
+data[data$Seed.heads < 25,]
+
+## In these three cases, the column contains the number of seeds over
+## *all* seed heads.
+
+## **Question**: How do we compute the mean number of seeds per seed
+## head?
+
+data$Seeds.per.head <- data$Seeds.in.25.heads / 25
+idx.few.heads <- data$Seed.heads < 25
+data$Seeds.per.head[idx.few.heads] <-
+  data$Seeds.in.25.heads[idx.few.heads] / data$Seed.heads[idx.few.heads]
+
+## R generally offers several ways of doing things:
+alternative <- data$Seeds.in.25.heads / pmin(data$Seed.heads, 25)
+alternative == data$Seeds.per.head
+
 ## ## Indexing need not make things smaller
 
 ## Given this vector with the first give letters of the alphabet:
