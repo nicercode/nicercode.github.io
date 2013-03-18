@@ -28,3 +28,6 @@ Topics we will cover today:
 
 I've collected a few [resources](resources.html) to help you continue
 learning.
+
+I've also made a non-exhaustive list of [bad habits](bad-habits.html)
+that you should avoid and tips you should follow.
