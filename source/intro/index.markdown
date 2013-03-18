@@ -14,12 +14,17 @@ module.
 
 Topics we will cover today:
 
-1. [Getting started](getting-started.html): Starting R, using it as
+1. [Preliminaries](preliminaries.html): Getting your environment set
+   up.
+2. [Getting started](getting-started.html): Starting R, using it as
    a calculator, and variables.
-2. [Loading data](loading-data.html): Reading in data, viewing, and
+3. [Loading data](loading-data.html): Reading in data, viewing, and
    subsetting.
-3. [Writing functions](writing-functions.html): Avoiding errors and
+4. [Writing functions](writing-functions.html): Avoiding errors and
    better describing your intent.
-4. [Data types](data-types.html): A digression on data types
-5. [Repeating things](repeating-things.html): Introduction to ways of
+5. [Data types](data-types.html): A digression on data types
+6. [Repeating things](repeating-things.html): Introduction to ways of
    automating repetitive tasks.
+
+I've collected a few [resources](resources.html) to help you continue
+learning.

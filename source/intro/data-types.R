@@ -178,3 +178,6 @@ table(tmp)
 
 ## * Factors are required for some analyses, and are needed to specify
 ##   "constrasts" in some models.
+
+## ---
+## Back to [main page](/intro)

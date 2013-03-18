@@ -15,9 +15,10 @@
 
 ## The first function most people seem to need to write is to compute
 ## the standard error of the mean for some variable.  This is defined
-## as $\sqrt{\mathrm{var}(x)/n}$ (that is the square root of the variance
-## divided by the sample size.
+## as $\sqrt{\mathrm{var}(x)/n}$ (that is the square root of the
+## variance divided by the sample size.
 
+## Start by reloading our data set again.
 data <- read.csv("data/seed_root_herbivores.csv")
 
 ## We can already easily compute the mean
@@ -200,3 +201,6 @@ skewness <- function(x) {
 
 skewness(data$Height) # should be 0.301
 skewness(data$Weight) # should be 0.195
+
+## ---
+## Back to [main page](/intro)

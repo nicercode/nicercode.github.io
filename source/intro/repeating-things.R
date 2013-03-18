@@ -311,3 +311,6 @@ names(out) <- names(obj)
 ## Although we can actually do that with the built-in function
 ## `cumsum` and `sapply`ing over the list to get the sums.
 cumsum(sapply(obj, sum))
+
+## ---
+## Back to [main page](/intro)

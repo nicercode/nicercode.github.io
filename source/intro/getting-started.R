@@ -255,16 +255,19 @@ seq(3, by=2, length=100)
 
 ## ### A possible solution
 
-## 1.
+## 1\.
 1 + 1/4 + 1/9 + 1/16 # starting to get tedious to type
 
-## 2.
+## 2\.
 squares <- (1:100)^2
 sum(1/squares)
 
-## 3. 
+## 3\.
 sum(1 / (1:10000)^2)
 
-## 4.
+## 4\.
 x <- sum(1 / (1:10000)^2)
 sqrt(x * 6)
+
+## ---
+## Back to [main page](/intro)

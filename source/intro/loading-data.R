@@ -103,12 +103,12 @@ rm(data2)
 ### TODO: At this point, they may not know how to use the help
 ### properly, so move help on help further up?
 
-## Exercise:
+## ## Exercise:
 
-## The file data/seed_root_herbivores.txt has *almost* the same data,
-## but in tab separated format (it does have the same number of rows
-## and columns).  Look at the ?read.table help page and work out how
-## to load this file in.
+## The file `data/seed_root_herbivores.txt` has *almost* the same
+## data, but in tab separated format (it does have the same number of
+## rows and columns).  Look at the ?read.table help page and work out
+## how to load this file in.
 ## 
 ## Remember: `==` tests for equality, `!=` tests for inequality
 
@@ -129,6 +129,13 @@ data2 != data
 ## `read.csv` are different for the header.
 tmp <- read.table("data/seed_root_herbivores.txt", sep=";")
 head(tmp)
+
+## ## Looking at your data
+
+## There are other ways of looking at your data.  The `summary`
+## function works with most types, and gives a by-column summary of
+## the data set
+summary(data)
 
 ## # Subsetting
 
@@ -173,6 +180,27 @@ data.sub <- data[c("Plot", "Weight")]
 ## `[[` operator gets the *contents* of a single carriage.  So
 ## `train[[1]]` gets the *contents* of the first carriage, and
 ## `train[[c(1,2)]]` doesn't make any sense.
+
+## ## Looking at your data (cont.)
+
+## Plotting is covered in the next R module, but it's one of the best
+## things about R so I can't resist showing how to do it:
+
+## Here is a histogram of the height variable:
+hist(data$Height)
+## (it will appear in the bottom right of your screen)
+
+## Here is a scatter plot of Height vs weight:
+plot(data$Weight, data$Height)
+## or equivalently:
+plot(Height ~ Weight, data)
+
+## Here is a series of bivariate plots for height, weight and the
+## number of seed heads:
+pairs(data[c("Height", "Weight", "Seed.heads")])
+
+## The take-home being that R makes it a lot easier than most programs
+## to quickly generate
 
 ## ## Rows of `data.frames`
 
@@ -371,3 +399,6 @@ x[c(1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 5)]
 x[rep(1:5, 1:5)]
 ## `rep` is incredibly useful, and can be used in many ways.  See the
 ## help page `?rep`
+
+## ---
+## Back to [main page](/intro)
