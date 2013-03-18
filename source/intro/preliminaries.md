@@ -4,33 +4,33 @@ title: "Preliminaries"
 date: 2013-03-18 17:21
 comments: true
 sharing: true
-footer: true
+footer: false
 ---
 
 ## How this is going to go down
 
-I'm going to present the material here in a different way than you
-would get taught a statistics course, and a different way than you
-would get taught a programming course.
+We are going to cover the material in a different way than you would
+get taught a statistics course, and a different way than you would get
+taught a programming course.
 
-We're going to start pretty slow, and slowly ramp it up.  The idea is
-to get you to a point where you can continue learning yourself.  **It
-is not possible to learn to program in a day**.  It will take time and
-practice.  Don't wait until the assignment is due, or the conference
-is next week.
+We're going to start pretty slow, and slowly ramp the pace up.  The
+idea is to get you to a point where you can continue learning
+yourself.  **It is not possible to learn to program in a day**.  It
+will take time and practice.  Don't wait until the assignment is due,
+or the conference is next week.
 
 If you get lost in the material at the second half of the day, don't
 despair.  What we cover in the first half will actually account for
 most of what you need to do (apart from statistics and plotting).  If
 you get lost in the first half *make sure you speak up*.
 
-We're going to focus on best practices and workflow just as much on
-getting you going with the syntax and commands.  R is simply too large
-to teach in just one day (or the three days that the full course runs
-for), and so my main hope is that you get enough of a flavour of it to
-continue the learning process.  I probably have more material here
-than we'll get through today, and I feel that this really just
-scratches the surface.
+We're going to focus on concepts, best practices and workflow just as
+much on getting you going with the syntax and commands.  R is simply
+too large to teach in just one day (or the three days that the full
+course runs for), and so my main hope is that you get enough of a
+flavour of it to continue the learning process.  I probably have more
+material here than we'll get through today, and I feel that this
+really just scratches the surface.
 
 We're going to focus on using RStudio for two reasons:
 
