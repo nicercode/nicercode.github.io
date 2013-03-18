@@ -4,6 +4,9 @@ writing-functions.md
 data-types.md
 repeating-things.md
 
+# Ignore the figures, at least for now.
+figure
+
 data/seed_root_herbivores.txt
 # Ignore the source files for now:
 data/*.xlsx
