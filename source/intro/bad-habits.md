@@ -77,3 +77,6 @@ variance <- function(x) {
 variance(data$Height)
 ```
 
+A good rule of thumb is to
+[code for the person who will mantain your code](http://c2.com/cgi/wiki?CodeForTheMaintainer).
+As this is usually you, that should not be too hard to motivate.
