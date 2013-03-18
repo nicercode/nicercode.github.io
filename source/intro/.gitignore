@@ -1,6 +1,7 @@
 getting-started.md
 loading-data.md
 writing-functions.md
+data-types.md
 
 data/seed_root_herbivores.txt
 # Ignore the source files for now:

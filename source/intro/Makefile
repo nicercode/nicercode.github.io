@@ -1,4 +1,5 @@
-TARGETS=getting-started.md loading-data.md writing-functions.md
+TARGETS=getting-started.md loading-data.md writing-functions.md \
+	data-types.md
 
 all: $(TARGETS)
 

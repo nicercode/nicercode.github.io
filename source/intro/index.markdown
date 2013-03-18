@@ -20,3 +20,4 @@ Topics we will cover today:
    subsetting.
 3. [Writing functions](writing-functions.html): Avoiding errors and
    better describing your intent.
+4. [Data types](data-types.html): A digression on data types
