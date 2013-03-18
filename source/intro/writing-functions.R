@@ -60,6 +60,8 @@ standard.error <- function(x) {
   sqrt(var(x) / length(x))
 }
 
+## The result of the last line is "returned" from the function.
+
 ## We can call it like this:
 standard.error(data$Height)
 standard.error(data$Weight)
@@ -75,12 +77,12 @@ standard.error(data$Height)
 ## the function.
 
 ## You can define variables within functions
-
 standard.error <- function(x) {
   v <- var(x)
   n <- length(x)
   sqrt(v / n)
 }
+## This can often help you structure your function and your thoughts.
 
 ## These are also treated specially --- they do not affect the main
 ## workspace (the "global environment") and are destroyed when the
