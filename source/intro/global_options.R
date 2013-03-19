@@ -1,4 +1,5 @@
-opts_chunk$set(tidy=FALSE, fig.height=5, comment="")
+opts_chunk$set(tidy=FALSE, fig.height=5, comment="",
+               fig.path="../images/intro/intro-")
 options(show.signif.stars=FALSE)
 options(max.print=170)
 render_markdown()

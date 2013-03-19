@@ -11,3 +11,6 @@ source/_stash
 source/stylesheets/screen.css
 vendor
 node_modules
+
+# for now (really part of intro)
+source/images/intro
