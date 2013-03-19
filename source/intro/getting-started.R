@@ -40,7 +40,8 @@ source("global_options.R")
 ##+ eval=FALSE
 3 + 5 * 2 ^ 2
 
-## Use brackets (actually parentheses) to group to set your own order:
+## Use brackets (actually parentheses) to group to force the order of
+## evaluation if it differs from the default, or to set your own order.
 (3 + 5) * 2
 
 ## But this can get unweidly when not needed:
@@ -49,12 +50,17 @@ source("global_options.R")
 3 + 5 * 2 ^ 2       # easier to read, once you know rules
 3 + 5 * (2 ^ 2)     # if you forget some rules, this might help
 
-## See ?Arithmetic for more information, and two more operators (you
-## can also get there by `?`"+"` (note the quotes)
+## See `?Arithmetic` for more information, and two more operators (you
+## can also get there by `?"+"` (note the quotes)
+
+## If R thinks that the statement is incomplete, it will change the
+## prompt from `>` to `+` indicating that it is expecting more input.
+## This is *not* an addition sign!  Press "`Esc`" if you want to
+## cancel this statement and return to the prompt.
 
 ## The usual sort of comparison operators are available:
-1 == 1  # equality (note two equals signs)
-1 != 2  # inequality (read as "not equals")
+1 == 1  # equality (note two equals signs, read as "is equal to")
+1 != 2  # inequality (read as "is not equal to")
 1 <  2  # less than
 1 <= 1  # less than or equal to
 1 >  0  # greater than
@@ -67,7 +73,7 @@ source("global_options.R")
 2/10000
 ## which you can write in too:
 2e-04
-## Read e-XX as 10^XX, so 2e-4 is 2 * 10^(-4)
+## Read `e-XX` as "multiplied by `10^XX`", so `2e-4` is `2 * 10^(-4)`.
 
 ## ## Mathematical functions
 
@@ -102,19 +108,22 @@ x
 ## Look up at the top right pane of RStudio, and you'll see that this
 ## has appeared in the "Workspace" pane.
 
-## This can be used with any function that expects a number
+## Our variable `x` can be used in place of a number in any
+## calculation that expects a number.
 log(x)
 sin(x)
 
-## The right hand side of this can be any valid R expression.
+## The right hand side of the assignment can be any valid R
+## expression.
 
 ## It is also possible to use the `=` operator for assignment:
 x = 1/40
 
 ## ...but this is much less common among R users.  The most important
-## thing is to **be consistent** with the operator you use.  There is
-## one place where it is less confusing to use `<-` than `=` (we'll
-## get to it later) so I'd recommend `<-`.
+## thing is to **be consistent** with the operator you use.  There are
+## occasionally places where it is less confusing to use `<-` than
+## `=`, and it is the most common symbol used in the community.  So
+## I'd recommend `<-`.
 
 ## Notice that assignment does not print a value.
 x <- 100
@@ -122,18 +131,21 @@ x <- 100
 ## Notice also that variables can be reassigned (`x` used to contain
 ## the value 0.025 and and now it has the value 100).
 
-## Assignment values can contain the variable being assigned to:
-## What will `x1` contain after running this?
+## Assignment values can contain the variable being assigned to: What
+## will `x` contain after running this?
 x <- x + 1
+
+## The right hand side is fully evaluated before the assignment
+## occurs.
 
 ## Variable names can contain letters, numbers, underscores and
 ## periods.  The cannot start with a number.  They cannot contain
 ## spaces at all.  Different people use different conventions for long
 ## varaible names, these include
 
-##   * camelCaseToSeparateWords
-##   * underscores_between_words
 ##   * periods.between.words
+##   * underscores_between_words
+##   * camelCaseToSeparateWords
 
 ## What you use is up to you, but **be consistent**.
 
@@ -144,6 +156,10 @@ x <- x + 1
 ## between now and the year when you were born.  Multiply this by 100
 ## to get the percentage of your life spent at university.  Use
 ## parentheses if you need them, use assignment if you need it.
+
+## This problem is as much about thinking about formalising the
+## ingredients of a problem as much as actually getting the syntax
+## correct.
 
 ## ## Vectors
 
@@ -157,7 +173,8 @@ x <- x + 1
 1
 length(1)
 
-## To build a vector, use the `c` function:
+## To build a vector, use the `c` function (`c` stands for
+## "concatenate").
 x <- c(1, 2, 40, 1234)
 
 ## We have assigned this vector to the variable `x`.
@@ -189,9 +206,12 @@ mean(x)
 ## vectors.  It is more common that functions will than that they
 ## won't.
 
-## Vectors can be added together:
+## Vectors can be summed together:
 y <- c(0.1, 0.2, 0.3, 0.4)
 x + y
+
+## And they can be concatenated together:
+c(x, y)
 
 ## and scalars can be added to them
 x + 0.1
@@ -220,8 +240,33 @@ x * c(-2, 0, 2)
 ## unrecoverable.  For example
 x + z # fails because there is no variable z
 
-## Sequences are easy to make.  Integer sequences can be made with the
-## colon operator:
+## Just as with the scalars, as well as doing arithemetic operators we
+## can do comparisons.  This returns a new vector of `TRUE` and
+## `FALSE` indicating which elements are less than 10:
+x < 10
+
+## You can do vector-vector comparisons too:
+x < y # all false as y is quite small.
+
+## And combined arithmetic operations with comparison operations.
+## Both sides of the expression are fully evaluated before the
+## comparison takes place.
+x > 1/y
+
+## Be careful with comparisons:
+## This compares the first element with -20, the second with 20, the
+## third with -20 and the fourth with 20.
+x >= c(-20, 20)
+
+## This does nothing sensible, really, and warns you again:
+x == c(-2, 0, 2)
+
+## All the comparison operators work in fairly predictible ways:
+x == 40
+x != 2
+
+## Sequences are easy to make, and often useful.  Integer sequences
+## can be made with the colon operator:
 3:10 # sequence 3, 4, ..., 10
 
 ## Which also works backwards

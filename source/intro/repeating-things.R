@@ -12,11 +12,13 @@
 
 ## > Don't Repeat Yourself
 
-## Most of the headaches that people end up having are when they have
-## copy and pasted some piece of code a bunch of times (changing one
-## thing each time), then copy and pasted *that* a bunch of times,
-## changing it a bit more.  In the end, the script is very long, hard
-## to read, really hard to understand, and full of bugs.
+## Many of the headaches that people end up having stem from repeating
+## themselves.  This basically mortgages your future time.  It is
+## common to see cases where people have copy-and-pasted some piece of
+## code a bunch of times (changing one thing each time), then copy and
+## pasted *that* a bunch of times, changing it a bit more.  In the
+## end, the script is very long, hard to read, really hard to
+## understand, and full of bugs.
 
 ## Believe me on the last case --- you *will* write code that has
 ## bugs.  The more code you write, the more bugs you will have.  The
@@ -32,6 +34,8 @@
 
 ## # Applying a function over and over and over and over
 
+## We'll be using the data set again, with factors sorted
+## alphabetically as discussed in the [last section](data-types.html).
 data <- read.csv("data/seed_root_herbivores.csv",
                  stringsAsFactors=FALSE)
 data$Plot <- factor(data$Plot, levels=unique(data$Plot))
@@ -78,12 +82,12 @@ sapply(obj, var)
 response.variables <- c("No.stems", "Height", "Weight", "Seed.heads",
                         "Seeds.in.25.heads")
 
-## (Remember)[data-types.html] when I said that a `data.frame` is like
+## [Remember](data-types.html) when I said that a `data.frame` is like
 ## a list; this is one case where we take advantage of that.
 sapply(data[response.variables], mean)
 ## This does all of the repetitive hard work that we did before, but
 ## in one line.  Read it as:
-##
+## 
 ## "Apply to each element in `data` (subset by my response variables)
 ## the function `mean`"
 
@@ -126,17 +130,23 @@ lapply(obj, sum)
 sapply(obj, sum)
 
 ## This is has its uses.  For example, suppose we wanted to double all
-## the elements in `obj`.  Because the elements of `obj` are all
-## different lengths, that will need to go into a list.  Here is the
-## function:
+## the elements in `obj`.  We can't just multiply this list by 2:
+obj * 2 # causes error
+
+## However, we can do this with `lapply`, as long as we have a
+## function that will double things:
 double <- function(x) {
   2 * x
 }
 
+## Apply the `double` function to each element in our list:
 lapply(obj, double)
 
+## We have to use `lapply` rather than `sapply` because the result of
+## the function on different elements is different lengths.
+
 ## Note also that `sapply` actually does the same thing here.  But if
-## the elements of  `obj` happened to have the same length they would
+## the elements of `obj` happened to have the same length they would
 ## give different answers.
 sapply(obj, double)
 
@@ -263,7 +273,7 @@ for ( el in obj ) {
 
 ## Note that in contrast with functions, the variables created by
 ## loops do actually replace things in the global environment:
-i
+el
 ## Strictly, in the *enclosing environment*, so a loop within a
 ## function leaves the global environment unaffected.
 

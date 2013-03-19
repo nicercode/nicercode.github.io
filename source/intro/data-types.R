@@ -54,7 +54,7 @@ F # is now TRUE!
 length(c(1, 2, 3, 4))
 length(c("a", "b", "c", "d"))
 
-## `max` will give the maxumum value for any vector
+## `max` will give the maximum value for a vector:
 max(c(1, 2, 3, 4))
 max(c("a", "b", "c", "d"))
 
@@ -64,7 +64,6 @@ sum(c("a", "b", "c", "d"))
 
 ## How do you tell which of these types you have?  Use the `typeof`
 ## function:
-### TODO: probably should be `mode`?
 typeof(c(TRUE, FALSE))
 typeof(c(1L, 2L))
 typeof(c(1.0, 2.0))
@@ -75,6 +74,10 @@ typeof(1)
 
 ## Unless you ask nicely, all values in R are numeric and not
 ## integer.  But this usually does not matter.
+
+## Note: this section actually grossly oversimplifies what is going
+## on; see the difference between `mode`, `storage.mode`, `class` and
+## `typeof`.
 
 ## ## Container data types
 
@@ -113,7 +116,9 @@ obj
 ## and "c".
 
 ## A `data.frame` is actually a list internally, and many approaches
-## for working with lists work with `data.frame`s.
+## for working with lists work with `data.frame`s.  Remember how
+## `length` on a `data.frame` gave the number of columns?  This is
+## why.
 
 ## ## Factors vs. strings
 
@@ -144,8 +149,9 @@ x.factor <- data$Plot
 levels(x.factor)[levels(x.factor) == "plot-2"] <- "new plot name"
 x.factor
 
-## Factors can be very useful, but very annoying.  To disable
-## automatic conversion, use the `stringsAsFactors` argument:
+## Factors can be very useful, but can also be very annoying.  To
+## disable automatic conversion, use the `stringsAsFactors` argument
+## to `read.csv`.
 data <- read.csv("data/seed_root_herbivores.csv",
                  stringsAsFactors=FALSE)
 data$Plot
@@ -154,7 +160,6 @@ data$Plot
 
 ## 1. only use factors when you know they are needed, otherwise prefer
 ##    character vectors.
-##
 ## 2. delay conversion to factor as long as posible.
 
 ## They do have uses though.

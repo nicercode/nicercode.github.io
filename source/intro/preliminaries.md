@@ -7,7 +7,7 @@ sharing: true
 footer: false
 ---
 
-## How this is going to go down
+# How this is going to go down
 
 We are going to cover the material in a different way than you would
 get taught a statistics course, and a different way than you would get
@@ -24,13 +24,54 @@ despair.  What we cover in the first half will actually account for
 most of what you need to do (apart from statistics and plotting).  If
 you get lost in the first half *make sure you speak up*.
 
-We're going to focus on concepts, best practices and workflow just as
-much on getting you going with the syntax and commands.  R is simply
-too large to teach in just one day (or the three days that the full
-course runs for), and so my main hope is that you get enough of a
-flavour of it to continue the learning process.  I probably have more
-material here than we'll get through today, and I feel that this
-really just scratches the surface.
+We're going to focus on concepts, best practices and workflow almost
+as much on getting you going with the syntax and commands.  R is
+simply too large to teach in just one day (or the three days that the
+full course runs for), and so my main hope is that you get enough of a
+flavour of it to continue the learning process yourself.  I probably
+have more material here than we'll get through today, and I feel that
+this really just scratches the surface.
+
+# Learning R can be frustrating
+
+ - Learning R is not necessarily hard, but not necessarily easy
+   either.  Different people will make the logical connections faster
+   than others, and until it "clicks" it may seem like a battle.
+ - Ask questions as you are unclear and we'll help make those
+   connections faster.
+ - It is a programming language
+   - don't think of it a statistical program that you use from a
+     command line
+   - think of it as a programming language that happens to have a lot
+     of statistical functions.
+	 
+ - The big challenge is going to be bridging between the nebuluous
+   "what I think I want to do" and the precice "computer -- this is
+   what I need you to do".
+ - It is easy to underestimate how precice instructions need to be.
+   We'll see examples, but things like ("take the mean of the leg
+   lengths by species" are intuitively obvious to us, but can be hard
+   precicely convey to a computer.
+    - what if there are missing data?
+	- does it matter if there are different numbers individual per
+      species?
+	- does it matter if there are different sized legs on each species
+      (which leg?)
+	- what happens if someone gave ranges for some of the leg
+      measurements, rather than one number?
+	- what about subspecies?
+
+ - There is a good Douglas Adams quote about this: *"If you really
+   want to understand something, the best way is to try and explain it
+   to someone else. That forces you to sort it out in your mind. And
+   the more slow and dim-witted your pupil, the more you have to break
+   things down into more and more simple ideas. And that's really the
+   essence of programming. By the time you've sorted out a complicated
+   idea into little steps that even a stupid machine can deal with,
+   you've learned something about it yourself."* (from Dirk Gentley's
+   Holistic Detective Agency).
+
+# RStudio
 
 We're going to focus on using RStudio for two reasons:
 
@@ -39,9 +80,9 @@ We're going to focus on using RStudio for two reasons:
 
 2. It will make your life easier: it's got lots of features that help
    people, especially beginners.  It will help you organise your work,
-   develop good work flows.  On the other hand, it's not very
-   intrusive and if you use a different interface (such as the plain R
-   interface that you installed) it will feel very similar.
+   develop good workflows.  On the other hand, it's not very intrusive
+   and if you use a different interface (such as the plain R interface
+   that you installed) it will feel very similar.
    
 ## Getting started with RStudio
 
@@ -69,8 +110,9 @@ data.
   - In the "Directory name" type the name for the project (in our case
     `g2g` might be a good name).
   - In the "Create project as a subdirectory of" field select (type or
-    browse) for the parent directory of the project.  By default your
-    home, but Documents might be better.
+    browse) for the parent directory of the project.  By default this
+    is probably your home directory, but you might prefer your
+    Documents folder.
 	
 The RStudio window morphs around a bit, and the top left pane will
 disappear.
@@ -90,7 +132,7 @@ In more complicated projects, I would generally have a folder called
 We're going to spend a bit of time using a data set.  You can download
 this from [here](data/seed_root_herbivores.csv) and put it into that
 directory.  Download this file, open the `g2g/data` folder and move it
-there (if you clock More: show folder in new window, you'll get a file
+there (if you click More: show folder in new window, you'll get a file
 browser window opening in about the right place).  Similarly, also
 grab [this file](data/seed_root_herbivores.csv) and put it in the
 `data` directory too.

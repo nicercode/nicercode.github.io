@@ -12,26 +12,18 @@
 source("global_options.R")
 
 ## As empirical biologists, you'll generally have data to read in.
-## You probably have your data in an Excel spreadsheet.  It is
-## possible to load these directly into R, but this is usually more
-## hassle than it's worth.  The simplest way is to save a copy of the
-## data as a comma separated values file (csv) and work with that.
+## You probably have your data in an Excel spreadsheet.  The simplest
+## way to load these into R is to save a copy of the data as a comma
+## separated values file (csv) and work with that.
 
-## Things to bear in mind:
-## 
-##   * Merged rows and columns will not work.
-##   * Spare rows at the top, or double header rows will not work.
-##   * Dates will cause you pain at some point.
-##   * Equations will (should) convert to the value displayed in Excel.
-
-## You can't (easily) read directly from Excel (but see the
+## It is actually possibl to read directly from Excel (but see the
 ## [gdata](http://cran.r-project.org/web/packages/gdata/index.html)
 ## package that has a `read.xls` function, and see
 ## [this](http://rwiki.sciviews.org/doku.php?id=tips:data-io:ms_windows)
-## page for other alternatives.  But generally going through a comma
-## separated file is easy enough.
+## page for other alternatives.  This is usually more hassle than it's
+## worth, and going through a comma separated file is easy enough.
 
-## This is usually all that is needed:
+## To load the data into R:
 data <- read.csv("data/seed_root_herbivores.csv")
 
 ## (this doesn't usually produce any output -- the data is "just
@@ -60,11 +52,11 @@ ncol(data)
 length(data)
 
 ## The last one is surprising to most people.  There is a logical (if
-## not good) reason for this, that we might get to depending on time.
+## not good) reason for this, which we will get to later.
 
 ## Aside from issues around factors and character vectors (that we'll
-## cover shortly) this really is almost all you need to know about
-## loading data.
+## cover shortly) this is most of what you need to know about loading
+## data.
 
 ## However, it's useful to know things about saving it.
 
@@ -74,8 +66,12 @@ length(data)
 ## * for missing values, either leave them blank or use NA.  But be
 ##   consistent and don't use -999 or ? or your cat's name.
 ## 
+## * Be careful with whitespace "x" will be treated differently to
+##   "x ", and Excel makes it easy to accidently do the latter.
+##   Consider the `strip.white=TRUE` argument to `read.csv`.
+## 
 ## * Think about the type of the data.  We'll cover this more, but are
-##   you dealing with a TRUE/FALSE or a category or a count or a
+##   you dealing with a `TRUE`/`FALSE` or a category or a count or a
 ##   measurements.
 ## 
 ## * Dates and times will cause you nothing but pain.  Excel and R
@@ -92,6 +88,15 @@ length(data)
 ##   useless.  Similar problems happen to
 ##   [gene names](http://www.biomedcentral.com/1471-2105/5/80)
 ##   in bioinformatics!
+##  
+## * Merged rows and columns will not work (or at least not in an
+##   easily predictible way.
+## 
+## * Spare rows at the top, or double header rows will not work
+##   without jumping through hoops.
+## 
+## * Equations will (should) convert to the value displayed in Excel
+##   on export.
 
 ##+ echo=FALSE,results=FALSE
 data2 <- data
@@ -125,10 +130,16 @@ data2 == data
 ## or
 data2 != data
 
+## The point here is that many of the functions and operators in R
+## will try to do the Right Thing, depending on what you give them.
+
 ## This won't work, because the default arguments of `read.table` and
 ## `read.csv` are different for the header.
 tmp <- read.table("data/seed_root_herbivores.txt", sep=";")
 head(tmp)
+
+## Notice that a fake header (V1, V2, etc) has been created and the
+## actual header is now the first row of data.
 
 ## ## Looking at your data
 
@@ -145,22 +156,31 @@ summary(data)
 
 ## ## Columns of `data.frames`
 
-## Get the column `a`
+## Get the column `Plot`
 data$Plot
 
 ## This does *almost* the same thing
 data[["Plot"]]
 
 ## This is the main difference: if the column name is in a variable,
-## then `$` won't work, while `[[` will 
+## then `$` won't work, while `[[` will.  Let's define a variable `v`
+## that has the name if the first column as its value:
 v <- "Plot"
-## Won't work
-data$v
-## Works fine
+
+## We can extract this column of the data set using the `[[` notation:
 data[[v]]
+## but using the `$` notation won't work as it will look for the
+## column *called* `v`:
+data$v
+## It returns `NULL` to indicate that the column does not exist
+## (confusingly, this value can be difficult to work with and give
+## cryptic error messages.  More confusingly, getting a nonexistant
+## column with `[[` generates an error instead).
 
-### plus abbrviated names and the dangers they can cause.
+## Also, `data$P` will "expand" to make `data$Plot`, but `data$S` will
+## return `NULL` because that is ambiguous.  Always use the full name!
 
+## Single square brackets also index the data, but do so differently.
 ## This returns a `data.frame` with one column:
 head(data["Plot"])
 ## This returns a `data.frame` with two columns:
@@ -192,20 +212,25 @@ hist(data$Height)
 
 ## Here is a scatter plot of Height vs weight:
 plot(data$Weight, data$Height)
-## or equivalently:
+## The order of arguments is *x*-variable, *y*-variable.
+
+## There is an alternative interface using R's "formulae" -- you'll
+## see this a lot in statistical models.  Read this as "`Height` is a
+## function of `Weight`".  It makes nicer axis labels, too.
 plot(Height ~ Weight, data)
 
 ## Here is a series of bivariate plots for height, weight and the
 ## number of seed heads:
 pairs(data[c("Height", "Weight", "Seed.heads")])
 
-## The take-home being that R makes it a lot easier than most programs
-## to quickly generate
+## The take-home being that R makes it very easy to create graphs, and
+## most people who use it casually just make plots of whatever they're
+## looking at.  The plots can vary from quick and dirty like this to
+## really beautiful pieces of art.
 
 ## ## Rows of `data.frames`
 
 ## Extracting a row always returns a new `data.frame`
-
 data[10,]
 data[10:20,]
 data[c(1, 5, 10),]
@@ -280,7 +305,8 @@ which(data.differ)
 ## This can be really useful.
 
 ## ### Excercise:
-## 1. Return all the rows in `data` where the data agree.
+## 1. Return all the rows in `data` where both data sets have the *same*
+##    value for `Height`.
 ## 2. Return all the rows in `data` from `plot-8`
 
 ## #### A solution:
@@ -291,7 +317,7 @@ data[data.same,]
 data[!data.differ,]
 ## read `!x` as "not x",
 
-## ### Exercise:
+data[data$Plot == "plot-8",]
 
 ## Subsetting can be useful when you want to look at bits of your
 ## data.  For example, all the rows where the Height is at least 10
@@ -365,7 +391,7 @@ subset(data, idx.tall & (Seed.herbivore | Root.herbivore))
 data$small.plant <- data$Height < 50
 head(data)
 
-## You can delete a column by setting it to NULL:
+## You can delete a column by setting it to `NULL`:
 data$small.plant <- NULL
 head(data)
 
@@ -389,7 +415,10 @@ data$Seeds.per.head[idx.few.heads] <-
 alternative <- data$Seeds.in.25.heads / pmin(data$Seed.heads, 25)
 alternative == data$Seeds.per.head
 
-## ## Indexing need not make things smaller
+## Use the `all` function to determine if all values are TRUE:
+all(alternative == data$Seeds.per.head)
+
+## ## (bonus topic) Indexing need not make things smaller
 
 ## Given this vector with the first give letters of the alphabet:
 x <- c("a", "b", "c", "d", "e")

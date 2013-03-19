@@ -87,16 +87,16 @@ standard.error <- function(x) {
 
 ## These are also treated specially --- they do not affect the main
 ## workspace (the "global environment") and are destroyed when the
-## function ends.  However, if you had some value `v` in the global
-## environment, it would be ignored in this function now, as the
-## *local* definition of `v` is used.
+## function ends.  If you had some value `v` in the global
+## environment, it would be ignored in this function as soon as the
+## local `v` was defined, with the local definition used instead.
 v <- 1000
 standard.error(data$Height)
 
 ## Another example.
 
 ## We used the variance function above, but let's rewrite it.
-## Variance is defined as
+## The sample variance is defined as
 ## $$\frac{1}{n-1}\left(\sum_{i=1}^n (x_i - \bar x)^2 \right)$$
 
 ## This case is more compliated, so we'll do it in pieces.
@@ -124,7 +124,7 @@ sum((x - m)^2)
 sum(x - m)^2
 ## (this follows from the definition of the mean)
 
-## Putting both halfs together, the variance is 
+## Putting both halves together, the variance is
 (1 / (n-1)) * sum((x - m)^2)
 
 ## Which agrees with R's variance function
@@ -133,7 +133,7 @@ var(x)
 ## The `rm` function cleans up:
 rm(n, x, m)
 
-## Wr can then define our function:
+## We can then define our function, using the pieces that we wrote above.
 variance <- function(x) {
   n <- length(x)
   m <- mean(x)
@@ -181,10 +181,11 @@ abs(x - y) < eps
 ## Hints:
 ## 
 ## * Don't try to do this in one step, but use intermediate variables
-##   like the second version of `standard.error`.
-##   
-## * Remember that $\bar x$ means the mean value of $x$, which you can
-##   compute with `mean`.
+##   like the second version of `standard.error`, or like our
+##   `variance` function.
+##
+## * The term on the top of the fraction is a lot like the `variance`
+##   function.
 ##   
 ## * Remember that parentheses can help with order-of-operation
 ##   control.
@@ -200,7 +201,7 @@ skewness <- function(x) {
 }
 
 skewness(data$Height) # should be 0.301
-skewness(data$Weight) # should be 0.195
+skewness(data$Weight) # should be 1.954
 
 ## ---
 ## Back to [main page](/intro)
