@@ -25,6 +25,8 @@ Topics we will cover today:
 5. [Data types](data-types.html): A digression on data types
 6. [Repeating things](repeating-things.html): Introduction to ways of
    automating repetitive tasks.
+7. [Missing data](missing-data.html): Another digression on missing
+   data.
 
 I've collected a few [resources](resources.html) to help you continue
 learning.

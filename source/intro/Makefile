@@ -1,5 +1,5 @@
 TARGETS=getting-started.md loading-data.md writing-functions.md \
-	data-types.md repeating-things.md
+	data-types.md repeating-things.md missing-data.md
 
 all: $(TARGETS)
 
