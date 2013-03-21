@@ -37,7 +37,8 @@ particular order
    
 7. Don't write functions that depend on global variables, as this
    makes it hard to use those functions elsewhere (which was the point
-   of writing them!).  All data should be given as a
+   of writing them!).  All data should be given as arguments to the
+   function.
    
 8. Do document your work.  You probably cannot have enough describing
    where data files came from, what scripts do what, how particular
@@ -64,10 +65,12 @@ variance <- function(x) {
   n <- length(x)
 m <- mean(x)
 (1 / (n-1)) * sum((x - m)^2)
-  }
+}
 variance(data$Height)
 ```
+
 vs
+
 ```r
 variance <- function(x) {
   n <- length(x)
@@ -76,6 +79,11 @@ variance <- function(x) {
 }
 variance(data$Height)
 ```
+
+It is much more obvious that the body of the variance function is
+three lines long in the second version than the first.  Skimming the
+code, you will probably interpret the first version has only having a
+one line body and miss most of the function.
 
 A good rule of thumb is to
 [code for the person who will mantain your code](http://c2.com/cgi/wiki?CodeForTheMaintainer).

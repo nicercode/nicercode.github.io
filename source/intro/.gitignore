@@ -5,6 +5,7 @@ data-types.md
 repeating-things.md
 missing-data.md
 
-data/seed_root_herbivores.txt
+# don't ignore this file so that it is actually transferred to github
+# data/seed_root_herbivores.txt
 # Ignore the source files for now:
 data/*.xlsx

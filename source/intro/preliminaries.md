@@ -134,7 +134,7 @@ this from [here](data/seed_root_herbivores.csv) and put it into that
 directory.  Download this file, open the `g2g/data` folder and move it
 there (if you click More: show folder in new window, you'll get a file
 browser window opening in about the right place).  Similarly, also
-grab [this file](data/seed_root_herbivores.csv) and put it in the
+grab [this file](data/seed_root_herbivores.txt) and put it in the
 `data` directory too.
 
 To make sure everything is working properly, in the console window
