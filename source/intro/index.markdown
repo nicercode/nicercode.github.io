@@ -35,3 +35,7 @@ I've also made a non-exhaustive list of [bad habits](bad-habits.html)
 that you should avoid and tips you should follow.
 
 We can't possibly cover everything, [for example](not-covered.html).
+
+## Slides from the other days:
+
+Afternoon of day two: [statistics](stats.html).
