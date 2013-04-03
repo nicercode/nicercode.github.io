@@ -38,4 +38,6 @@ We can't possibly cover everything, [for example](not-covered.html).
 
 ## Slides from the other days:
 
-Afternoon of day two: [statistics](stats.html).
+Afternoon of day two: [statistics](stats.html) (by Drew Allen).
+
+Morning of day three: [plotting](plotting.html) (by Josh Madin).
