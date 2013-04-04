@@ -25,6 +25,7 @@ doing version control
   
 In addition, you'll often see people suggesting putting headers like
 this in your code file:
+
 ```
   ## My file (c) Rich FitzJohn
   ## Created: 2012/10/04
@@ -116,21 +117,24 @@ until later.
 
 # Learning git
 
-Git has a reputation for being hard
+Git has a reputation for being hard to learn:
 
-https://twitter.com/pornelski/status/316190292443267073
+<blockquote class="twitter-tweet"><p>They say git gets easier once you get the basic idea that branches are homeomorphic endofunctors mapping submanifolds of a Hilbert space.</p>&mdash; Kornel (@pornelski) <a href="https://twitter.com/pornelski/status/316190292443267073">March 25, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-One of the things that will make learning git for most ecologists is
-that most resources (e.g., the excellent
+One of the things that will make learning git challenging for many
+ecologists is that most resources (e.g., the excellent
 [git book](http://git-scm.com/book/) assume that you are coming from a
 background of using CVS, SVN or some other centralised version control
 system.  Therefore, they expect you to already be thinking in one way
 and then show you how to translate those ideas into git's ideas.
 
 In a way you're lucky, as you don't have to learn a bunch of stuff and
-then unlearn it.  Some of the things that git does just make sense
-with cheaper bandwidth and disk space than the systems that were
-developed in the past.
+then unlearn it (see
+[here](http://www.reddit.com/r/programming/comments/embdf/git_complicated_of_course_not_commits_map_to/c196s4w)).
+Some of the things that git does just make sense with cheaper
+bandwidth and disk space than the systems that were developed in the
+past.
 
 For example, git keeps a full copy of the history in *every
 repository*, while CVS and SVN do not.  But if you didn't know that
@@ -150,3 +154,8 @@ We're going to need some terminology:
   kept.
 * **Staging area**: This is a place for gathering your thoughts as you
   begin to mark new versions.
+
+Nonlinear history:
+http://perl.plover.com/classes/git/samples/slide024.html
+
+http://perl.plover.com/classes/git/samples/slide033.html
