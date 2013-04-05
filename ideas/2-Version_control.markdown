@@ -7,6 +7,14 @@ GitHub has empowered a new generation of people to collaborate, create, produce.
 Karthik Ram Version control for science - guest post on BMC w/ @ctitusbrown http://bit.ly/13qI7h8  and my accompanying paper http://bit.ly/12dNn8o
 
 
+WINDOWS
+Install git
+gitsem.com
+
+gitbash - set user name, user email  --> do once
+
+
+
 # Teaching material #
 
 
