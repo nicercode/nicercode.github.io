@@ -26,8 +26,8 @@ The first five sessions will be
 session, run with participants from the February software carpentry
 bootcamp.
 3. Coding style (7 May)
-4. Testing code (21 May)
-5. Abstraction and design (4 June)
+4. Abstraction and design (21 May)
+5. Testing code (4 June)
 
 These sessions follow very much the same ideas as
 [software carpentry](http://www.software-carpentry.org).  Where we
@@ -46,6 +46,9 @@ include
 - Code reuse and packaging
 - Code profiling and optimisation
 - Using and creating simple databases
+- Text processing
+- Numerical optimisation and algorithms
+- Simulation models (an intro only!)
 
 Along with the skills, we will be doing code review.  The idea will be
 for a participant to meet with us immediately after one session and
