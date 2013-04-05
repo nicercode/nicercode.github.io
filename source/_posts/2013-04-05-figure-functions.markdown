@@ -5,6 +5,7 @@ date: 2013-04-05 16:41
 comments: true
 categories: 
 author: Rich FitzJohn
+published: false
 ---
 
 This post is not meant to be normative, but is an approach that has
@@ -36,6 +37,8 @@ pdf("my-plot.pdf", width=6, height=4)
   # ...pasted commands from before
 dev.off()
 ```
+
+<!-- more -->
 
 This leads to bits of code that often look like this:
 
@@ -112,6 +115,8 @@ pdf("figs/other.pdf", width=6, height=4)
 fig.other()
 dev.off()
 ```
+
+## A full solution
 
 The solution I use here is a little function called `to.pdf`:
 
