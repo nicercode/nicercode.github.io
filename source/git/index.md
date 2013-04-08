@@ -199,7 +199,7 @@ can actually be over-ridden on a per-repository basis, but you don't
 generally need to do that.  The configuration options go into the file
 `~/.gitconfig` (the `~` means "home" in unix commands).
 
-## Editor
+### Editor
 The default editor is [`vi`](http://vim.com) -- if you have used this
 before, this will probably be fine, but if not you are in for a rude
 shock.  So, next, let's set that to be a better option.  If you want
@@ -222,7 +222,18 @@ situations it will be `/usr/bin/nano`).
 
 Whenever git needs you to write a message on a commit, it will pop
 open `nano`.  Write the message and quit with `Control-X` (*X* for
-*e**x**it*), answering "Y" when prompted to save the file.
+*exit*), answering "Y" when prompted to save the file.
+
+Adding the `--tempfile` option will cause `nano` to save on exit
+without prompting or asking about the filename.  This can be nice to
+avoid being bothered the whole time.
+
+```
+git config --global core.editor '/usr/bin/nano --tempfile'
+```
+
+However, it removes the ability to easily abort a commit by not saving
+the message.
 
 On a Mac, it is possible to use something like "TextEdit" to edit the
 file, by running
@@ -236,20 +247,73 @@ application after writing your message.  The `-n` option means that
 this is *new* instance of TextEdit so you won't lose other open work
 when doing this at least.
 
-## More options
+### Colour
 
-Adding the `--tempfile` option will cause `nano` to save on exit
-without prompting or asking about the filename.  This can be nice to
-avoid being bothered the whole time.
+By default, the command line is fairly stark, but git has options to
+spruce it up with nice colours.  More than just look pretty, these
+allow you to much more easily scan output.
+
+Just run
 
 ```
-git config --global core.editor '/usr/bin/nano --tempfile'
+git config --global color.ui true
 ```
 
+and the output of `status` and `diff` (and a few others) will be
+coloured for you.
 
+### Useful aliases
 
+Git allows you to define aliases for frequently used commands.  So
+instead if typing
 
+```
+git merge --ff-only somebranch
+```
 
+you can just type (for example)
+
+```
+git ff somebranch
+```
+
+To set up aliases either use `git config` again:
+
+```
+git config --global alias.ff 'merge --ff-only'
+```
+
+Or edit your `~/.gitconfig` file so it contains a section `[alias]`
+like this:
+
+```
+[alias]
+        ff   = merge --ff-only
+```
+
+My full set of aliases is
+
+```
+[alias]
+        lol = log --graph --decorate --pretty=oneline --abbrev-commit
+        lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+        topo = log --graph --simplify-by-decoration --pretty=format:'%d' --all
+        ff   = merge --ff-only
+        mrg  = merge --no-ff
+```
+
+The first (`lol` = "log one line") gives a very quick view of the
+history of a repository, including its topology.  `lola` does a
+similar thing, but includes remote branches too (and stashes, but
+they're usually hard to interpret).  `topo` shows just the topology.
+
+The `ff` alias will merge a commit, but only if a "fast forward"
+commit is possible.  Otherwise it will throw an error and I'll think
+about doing a rebase or a merge instead.
+
+The `mrg` alias will do a merge *even if a fast forward commit is
+possible`.  This is sometimes useful for merging in feature branches
+when the main branch has not changed.
 
 # Intermediate git: branching
 
