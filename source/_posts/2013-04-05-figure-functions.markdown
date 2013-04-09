@@ -3,19 +3,21 @@ layout: post
 title: "Figure functions"
 date: 2013-04-05 16:41
 comments: true
-categories: 
+categories: R plotting
 author: Rich FitzJohn
 published: false
 ---
 
-This post is not meant to be normative, but is an approach that has
-worked for me over the years.
+Transitioning from an interactive plot in R to a publication-ready
+plot can create a messy script file with lots of statements and use of
+global variables.  This post outlines an approach that I have used to
+simplify the process and keeps code readable.
 
-In R, the way that figures are output is to open a plotting device
-(such as `pdf` or `png`) run a series of commands that generate
-plotting output, and then close the device with `dev.off()`.
-However, the way that most plots are developed is purely
-interactively.  So you start with:
+The usual way of plotting to a file is to open a plotting device (such
+as `pdf` or `png`) run a series of commands that generate plotting
+output, and then close the device with `dev.off()`.  However, the way
+that most plots are developed is purely interactively.  So you start
+with:
 
 ```r
 set.seed(10)
@@ -137,18 +139,22 @@ to.pdf(fig.trend(), "figs/trend.pdf", width=6, height=4)
 to.pdf(fig.other(), "figs/other.pdf", width=6, height=4)
 ```
 
-A couple of nice things about this function:
+A couple of nice things about this approach:
 
 * It becomes much easier to read and compare the parameters to the
   plotting device (width, height, etc).
 * We're reduced things from 6 repetitive lines to 2 that capture our
   intent better.
+* Using functions, rather than statements in the global environment,
+  discourages dependency on global variables.  This in turn helps
+  identify reusable chunks of code.
 * Arguments are all passed to `pdf` via `...`, so we don't need to
   duplicate `pdf`'s argument list in our function.
 * The `on.exit` call ensures that the device is always closed, even if
   the figure function fails.
 
-For talks, I often build up figures.  This can be done like so:
+For talks, I often build up figures piece-by-piece.  This can be done
+like so (for a two-part figure)
 
 ```
 fig.progressive <- function(with.trend=FALSE) {
@@ -188,7 +194,7 @@ to.pdf(fig.progressive(FALSE), "figs/progressive-2.pdf", width=6, height=4)
 
 which will generate the two figures.
 
-This idea can be expanded to more devices:
+The general idea can be expanded to more devices:
 
 ```
 to.dev <- function(expr, dev, filename, ..., verbose=TRUE) {
@@ -207,11 +213,19 @@ to.dev(fig.progressive(TRUE),  pdf, "figs/progressive-1.pdf", width=6, height=4)
 to.dev(fig.progressive(FALSE), pdf, "figs/progressive-2.pdf", width=6, height=4)
 ```
 
-Note that with `to.dev` we can rewrite the `to.pdf` function:
+Note that with this `to.dev` function we can rewrite the `to.pdf`
+function more compactly:
 
 ```
 to.pdf <- function(expr, filename, ...)
   to.dev(expr, pdf, filename, ...)
+```
+
+Or write a similar function for the `png` device:
+
+```
+to.png_function(expr, filename, ...)
+  to.dev(expr, png, filename)
 ```
 
 (As an alternative, the `dev.copy2pdf` function can be useful for

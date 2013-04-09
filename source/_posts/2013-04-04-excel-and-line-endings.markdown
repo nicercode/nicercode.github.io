@@ -3,7 +3,9 @@ layout: post
 title: "Excel and line endings"
 date: 2013-04-04 09:39
 comments: true
-categories: 
+author: Rich FitzJohn
+categories: git data
+published: false
 ---
 
 On a Mac, Excel produces csv files with the wrong line endings, which
