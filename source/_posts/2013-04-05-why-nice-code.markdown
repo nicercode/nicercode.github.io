@@ -4,7 +4,6 @@ title: "Why nice code"
 date: 2013-04-05 14:46
 comments: true
 categories: module
-publish: false
 author: Daniel Falster
 
 ---
@@ -108,6 +107,7 @@ We will explore each of these in more detail, but here is a brief overview:
 materials**, for ease of use
 - **apply a consistent style**, such as that described in  the google R style 
 guide, to increase readability
+- **is self documenting**
 - **abstract your code into many small functions** with helpful descriptive 
 names. 
 - **use comments, design features, and meaningful variable or function names** 
@@ -115,6 +115,8 @@ to capture the intent of your code, i.e. describe what it is *meant* to do
 - **use version control**: there are many reasons for using version control,
 but one that it stores seamlessly archives older versions of your code. This 
 permits you to safely delete old files, and therefore helps reduce clutter. 
+
+
 
 ### Nice code is reliable, i.e. bug free
 
@@ -129,23 +131,14 @@ Here are some tips fo
 - global vars
 - version control
 
-[Code smell](http://en.wikipedia.org/wiki/Code_smell): any symptom in the 
-source code of a program that possibly indicates a deeper problem
-
 ### Nice code runs quickly and is therefore a pleasure to use
 
-- waiting days
 
 ## The benefits of writing nicer code
 
 There is a common perception among scientists we have talked with that provided 
-the code "runs", it doesn't need to be nice. 
-
- 
-
-Researchers are primarily interested in writing scientific papers, so spend 
-most 
-of their time getting their code to run, and almost no time focussing on the 
+the code "runs", it doesn't need to be nice. Researchers are primarily interested in writing scientific papers, so spend 
+most of their time getting their code to run, and almost no time focussing on the 
 quality of the code itself. Along the way we might take a number of shortcuts, 
 telling ourselves that it doesn't matter, as 
 long as it runs, right? Well if you need motivation, consider this  
@@ -172,7 +165,7 @@ reviewer can't understand your code.
 
 Why: 
 
-- **Better science**
+- **Better science**: more data, less bugs.
 - **More fun**: spend less time wrestling with R, enjoyment of scientific 
 process. nice code is more fun
 - **Bigger datasets**: allows you to scale up. Repetition is avoidable, which 
@@ -181,17 +174,9 @@ cost with bad code/ excel.
 
 - **Become more efficient**:  reusable, sharable. shortcut now is mortgage on 
 your future time
-- **Future employment**: Impact. Code itself is **you should consider anything 
+- **Future employment**: Impact. **you should consider anything 
 you write (open or closed) to be a potential advert to a future employer**. 
 [Scientists and engineers with an analytical bent are sought-after in 
 natural-hazard risk assessment" in natural-hazard risk 
 assessment](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271
-a)
-
- - [Don't worry about code 
-snobs](www.software.ac.uk/blog/2013-01-25-haters-gonna-hate-why-you-shouldnt-be-
-ashamed-releasing-your-code)
-
-
-
 

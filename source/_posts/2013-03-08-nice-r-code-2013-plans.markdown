@@ -52,6 +52,7 @@ include
 - Text processing
 - Numerical optimisation and algorithms
 - Simulation models (an intro only!)
+- Packages
 
 Along with the skills, we will be doing code review.  The idea will be
 for a participant to meet with us immediately after one session and
