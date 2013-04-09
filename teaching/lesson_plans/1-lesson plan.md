@@ -105,16 +105,72 @@ Git session
 
 Code review
 
+- is it a good idea
 
-# Showcase #
 
+## Possible showcase 
+
+Rich - woody plants project
 github, twitter API
-Hadley Wickham, large data
-diversitree on github
+Hadley Wickham's [bigviz package for working with big data](https://github.com/hadley/bigvis)
+diversitree on github: network via history, Emma Goldberg fork
 
-- network via history, Emma Goldberg fork
+#Post-class reflections
 
-Poor code: Freckleton MEE http://dx.doi.org/10.1111/j.2041-210X.2012.00220.x
+## Who, How long using Why are people here
 
-- sI material does not work
+Doug, 6 months, overwhelmed, vegetation modelling
+Vinc, 1 year, stats modelling, plant traits
+Dong, 5 months, main tool, mystery, want to write nice code simplify code, 
+Dan noble, 4 years, improve programming skills, sexual selection
+Eirik, 6 years, improve code, addiction 
+Lara, matlab and R, long scripts
+Julieta, 3 years, mostly stats, improve prog skills, plant ecol
+Marcela, 2 years, improve coding, repetition
+Brigitte, 5 months, 3 days per week, coral reef distributions
+Toni, 6 months
+Georges, 10 years, Rich is very good, forest ecology
+Josh, 10 years, can't read old code, corals
+Alex, 3 months, 2 times per week, coral fish
+Monique, 2 years, improve skills rad
+Paolo, 1 year, novel methods
+Kate (?), 3 years, daily, script of 3000 lines is inefficient
+Andrea, 5 years, don't want 
+
+## What do they want
+
+HIGHER PRIORITY
+
+- The split/apply/combine pattern
+- Higher order functions and functional programming
+- Code reuse and packaging
+- Creating better graphs (many possible sessions here)
+
+ALSO OF INTEREST
+
+- Using a cluster
+- Data matching, models and avoiding duplication
+- Code profiling and optimisation (5 people have speed issues)
+- linking to C++ or fortran (3-5 people)
+- Using and creating simple databases
+- Text processing
+- Numerical optimisation and algorithms
+- Simulation models (an intro only!)(3-5 people)
+
+## Reflection
+
+Both agreed it is a success.
+
+Asked 5 students how it went, all suggested that hit the mark in terms of complexity and level.
+
+Things that worked
+
+- conversational style, sitting down, both of us talking / contributing
+- class contributed
+- had dot point outline (2-3 pages of pdf latex output) of lesson plan, but not too scripted 
+- blog post as teaching material worked well: saves rewriting, they can see there are notes for them
+
+
+Some students struggling to learn general R concepts, because not dedicated time to learning. Applying shotgun and google approach.
+--> need to learn problem, and in particular the more general problem, i.e. problem above the one you are working with, not the particular instance you are dealing with now.
 
