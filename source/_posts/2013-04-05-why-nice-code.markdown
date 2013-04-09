@@ -35,6 +35,8 @@ our analyses to macth data availability, at least not without many, many more
 automate analyses, and therefore [scale-up without a big increase in 
 effort](http://i.imgur.com/SbzNW8s.png).  
 
+<!-- more -->
+
 Writing code also offers other benefits beneficial to research. When your 
 analyses are documented in a script, it is easier to pick up a project and 
 start working on it again. You have a record of what you did and why. Chunks 

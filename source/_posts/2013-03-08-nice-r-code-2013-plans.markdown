@@ -32,6 +32,8 @@ bootcamp.
 Except for the version control session, we will meet from 2-3pm in E8C
 212.
 
+<!-- more -->
+
 These sessions follow very much the same ideas as
 [software carpentry](http://www.software-carpentry.org).  Where we
 differ is that we will be focusing on [R](http://r-project.org), and

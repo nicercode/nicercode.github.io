@@ -12,6 +12,8 @@ The scientific process is naturally incremental, and many projects
 start life as random notes, some code, then a manuscript, and
 eventually everything is a bit mixed together.
 
+<!-- more -->
+
 # Directory layout
 
 A good project layout helps ensure the
