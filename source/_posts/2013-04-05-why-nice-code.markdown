@@ -175,9 +175,8 @@ process. Nice code is more fun
 - **Bigger datasets**: allows you to scale up. Repetition is avoidable, which 
 it isn't in field or lab. 
 - **Become more efficient**:  nice code is reusable, sharable. 
-- **Future employment**: Impact. **you should consider anything 
-you write (open or closed) to be a potential advert to a future employer**. 
-[Scientists with an analytical bent are often sought-after](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271
+- **Future employment**: Impact. You should consider anything 
+you write (open or closed) to be a potential advert to a future employer. [Scientists with an analytical bent are often sought-after](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271).
 
 There is a common perception among scientists we have talked with that provided 
 the code "runs", it doesn't need to be nice. Researchers are primarily 
