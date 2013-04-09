@@ -167,7 +167,8 @@ than others, e.g. why a `for` loop is slower than using `lapply`
 own machine or by running your code on a cluster.
 
 ## The benefits of writing nicer code
-There are many benefits of writing ncier code:
+There are many benefits of writing nicer code:
+
 - **Better science**: more data, less bugs.
 - **More fun**: spend less time wrestling with R, enjoyment of scientific 
 process. Nice code is more fun
