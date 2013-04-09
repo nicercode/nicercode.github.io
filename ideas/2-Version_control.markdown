@@ -20,7 +20,7 @@ gitbash - set user name, user email  --> do once
 
 
 # Resources #
-
+- Rstudio intro to version control  http://www.rstudio.com/ide/docs/version_control/overview?version=0.97.318&mode=desktop
 - main git site: http://git-scm.com/
 - wikipedia page about git: http://en.wikipedia.org/wiki/Git_%28software%29
 - some tutorials: http://sixrevisions.com/resources/git-tutorials-beginners/
