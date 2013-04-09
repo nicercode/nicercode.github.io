@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: post
 title: "Designing projects"
 date: 2013-04-05 14:34
 comments: true
