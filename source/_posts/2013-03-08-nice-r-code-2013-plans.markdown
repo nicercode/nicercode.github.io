@@ -29,6 +29,9 @@ bootcamp.
 4. Abstraction and design (21 May)
 5. Testing code (4 June)
 
+Except for the version control session, we will meet from 2-3pm in E8C
+212.
+
 These sessions follow very much the same ideas as
 [software carpentry](http://www.software-carpentry.org).  Where we
 differ is that we will be focusing on [R](http://r-project.org), and
