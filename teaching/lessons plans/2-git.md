@@ -11,6 +11,12 @@
 - DF to start blog post on project restructure
 - DF using git in Rstudio
 
+## Teaching method
+
+- use sticky notes so that can target
+- work in pairs
+
+
 ## Goal
 
 1. Understand why version control will make their life better
