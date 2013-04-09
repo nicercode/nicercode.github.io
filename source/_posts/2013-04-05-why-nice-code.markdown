@@ -3,7 +3,7 @@ layout: post
 title: "Why nice code"
 date: 2013-04-05 14:46
 comments: true
-categories: 
+categories: module
 publish: false
 author: Daniel Falster
 
@@ -19,12 +19,10 @@ Intrinsic - value nice code for itself (craftsmanship)
 Attainment -  satisfaction in getting something to work
 -->
 
-# Why nicer code
-
 Writing code is fast becoming a key - if not the most important - skill for doing research in the 21st century. As scientists, we live in extraordinary times. The 
 amount of data (information) available to us is increasingly exponentially, allowing for rapid advances in our understanding of the world around us. The amount of information contained in a standard scientific paper also seems to be on the rise. Researchers therefore need to be able to handle ever larger amounts of data to ask novel questions and get papers published. Yet, the standard tools used by many biologists -  point and click programs for manipulating data, doing stats and making plots - do not allow us to scale-up our research, at least not without many, many more 'clicks'. The solution is to write scripts in programs like [R](www.r-project.org/), [python](http://www.python.org/) or [matlab](http://www.mathworks.com.au/products/matlab/). Scripting allows you to automate analyses, and therefore [scale-up without a big increase in effort](http://i.imgur.com/SbzNW8s.png).  Writing code also offers other benefits beneficial to research. When your analyses are documented in a script, it is easier to pick up a project and start working on it again. You have a record of what you did and why. Chunks of code can also be reused in new projects, saving vast amount of time. Writing code also allows for effective collaboration with people from all over the world. For all these reasons, many researchers are now learning how to write code.
 
-Yet, most researchers have no or limited formal training in computer science, and thus struggle to write nice code. Most of us are self-taught, having used a mix of books, advice from other amateur coders, internet posts, and lots of trial and error. Soon after have we written our first R script, our hard drives explode with large bodies of barely readable code that we only half understand, that also happens to be full of bugs and is generally difficult to use. Not surprisingly, many researchers find writing code to be a relatively painful process, involving lots of trial and error and, inevitably, frustration. If this sounds familiar to you, don't worry, you are not alone. There are many [great R resources](link to R resource page) available, but most show you how to do some fancy trick, e.g. run some complicated statistical test or make a fancy plot. Few people - outside of computer science departments - spend time discussing the qualities of nice code and teaching you good coding habits. Certainly no one is teaching you these skills in your standard biology research department.
+Yet, most researchers have no or limited formal training in computer science, and thus struggle to write nice code. Most of us are self-taught, having used a mix of books, advice from other amateur coders, internet posts, and lots of trial and error. Soon after have we written our first R script, our hard drives explode with large bodies of barely readable code that we only half understand, that also happens to be full of bugs and is generally difficult to use. Not surprisingly, many researchers find writing code to be a relatively painful process, involving lots of trial and error and, inevitably, frustration. If this sounds familiar to you, don't worry, you are not alone. There are many [great R resources](/intro/resources.html) available, but most show you how to do some fancy trick, e.g. run some complicated statistical test or make a fancy plot. Few people - outside of computer science departments - spend time discussing the qualities of nice code and teaching you good coding habits. Certainly no one is teaching you these skills in your standard biology research department.
 
 Realising this, we ([Rich FitzJohn](http://www.zoology.ubc.ca/~fitzjohn/) and [Daniel Falster](http://www.falsters.net/daniel)) have teamed up to bring you the [nice R code](http://nicercode.github.io/) course and blog. We are targeting researchers who are already using R and want to take their coding to the next level. Our goal is to help you write nicer code. By 'nicer' we mean code that is easy to read, easy to write, runs fast, gives reliable results, is easy to reuse in new projects, and is easy to share with collaborators. We will be focussing on elements of workflow, good coding habits and some tricks, that will help transform your code from ugly to nice.
 
@@ -36,6 +34,7 @@ We will now briefly consider some of the key principles of writing nice code.
 ### Nice code is easy to read
 
 > Programs should be written for people to read, and only incidentally for machines to execute.
+> 
 > -- from "Structure and Interpretation of Computer Programs" by Abelson and Sussman
 
 By far the most important guiding principle for writing nicer code is that it should be easy to read. Anyone should be able to look at any of your scripts and understand what it does and how to run it. In most biological research this is anything but the case. Researchers are primarily interested in writing scientific papers, so spend most of their time getting their code to run, and almost no time focussing on the quality of the code itself. Along the way we might take a number of shortcuts, telling ourselves that it doesn't matter, as long as it runs, right? Well if you need motivation, consider this  
@@ -60,12 +59,12 @@ Writing readable code requires that  many features that we hope to cover:
 - testing scripts
 - global vars
 - version control
-[Code smell](http://en.wikipedia.org/wiki/Code_smell): any symptom in the source code of a program that possibly indicates a deeper problem
+
+[Code smell](http://en.wikipedia.org/wiki/Code_smell): any symptom in the source code of a program that possibly indicates a deeper problem
 
 ### Nice code runs quickly and is therefore a pleasure to use
 
 - waiting days
-
 
 ## Why you need to write nicer code
 
@@ -80,7 +79,7 @@ Why:
 - **Become more efficient**:  reusable, sharable. shortcut now is mortgage on your future time
 - **Future employment**: Impact. Code itself is **you should consider anything you write (open or closed) to be a potential advert to a future employer**. [Scientists and engineers with an analytical bent are sought-after in natural-hazard risk assessment" in natural-hazard risk assessment](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271a)
 
- - [Don't worry about code snobs](www.software.ac.uk/blog/2013-01-25-haters-gonna-hate-why-you-shouldnt-be-ashamed-releasing-your-code) 
+ - [Don't worry about code snobs](http://www.software.ac.uk/blog/2013-01-25-haters-gonna-hate-why-you-shouldnt-be-ashamed-releasing-your-code) 
 
 
 # Showcase #
