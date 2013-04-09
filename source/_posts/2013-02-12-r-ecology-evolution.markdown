@@ -10,16 +10,5 @@ categories:
 On this blog, we (Daniel Falster and I) are hoping to record bits of
 information about using R for ecology and evolution.  Communicating
 tips person-to-person is too inefficient, and recently helping out at
-a [software carpentry](http://software-carpentry.org) boot camp has
-got me interested in broadcasting ideas more widely.
-
-Test code:
-
-```r
-f <- function(x)
-  sin(x)
-for ( i in 1:10 )
-  print(i)
-```
-
-More test for checking the layout.
+a [software carpentry](http://software-carpentry.org) boot camp made
+us interested in broadcasting ideas more widely.
