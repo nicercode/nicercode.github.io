@@ -30,7 +30,7 @@ Yet, the standard tools used by many biologists -  point and click programs for
 manipulating data, doing stats and making plots - do not allow us to scale-up 
 our analyses to macth data availability, at least not without many, many more 
 'clicks'. The solution is to write scripts in programs like 
-[R](www.r-project.org/), [python](http://www.python.org/) or 
+[R](http://www.r-project.org/), [python](http://www.python.org/) or 
 [matlab](http://www.mathworks.com.au/products/matlab/). Scripting allows you to 
 automate analyses, and therefore [scale-up without a big increase in 
 effort](http://i.imgur.com/SbzNW8s.png).  
