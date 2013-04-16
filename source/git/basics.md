@@ -10,7 +10,7 @@ footer: false
 Essentially, all version control does is store snapshots of your work
 in time, and keeps track of the parent-child relationship.
 
-{% imgcap right /git/img/git-intro-history.png From [Pro Git](http://git-scm.com/book/en/Getting-Started-Git-Basics) %}
+{% imgcap /git/img/git-intro-history.png From [Pro Git](http://git-scm.com/book/en/Getting-Started-Git-Basics) %}
 
 You can think of your current set of working files are simply the
 child of the last node in this chain (that is, your files are the
@@ -21,8 +21,6 @@ system).
 We'll only touch on a few, but the number that you need to know for
 day-to-day use is actually quite small.
 
-	
-<!-- RGF: Not sure what this adds, or if it is precice enough -->
 
 We're going to need some terminology:
 
@@ -32,106 +30,148 @@ We're going to need some terminology:
   to a repo"; these all manipulate the history in some way.
 * **Working directory**: This is your copy of a project.  It's just a
   directory with files and other directories in it.  The repository is
-  contained within a `.git` directory.
-* **git directory**: This *is* the repository; it's `git`'s copy of
-  your files, in its special format.  This is where the history is
-  kept.
-* **Staging area**: This is a place for gathering your thoughts as you
-  begin to mark new versions.
+  contained within a `.git` directory at the root directory of your
+  project.
   
-## How history grows
+## Baby steps with RStudio
 
-Think of your work as a series of snapshots backwards in time from now
-until the point a project was created.  The simplest history is that
-you did some work and saved, did some work and saved, etc.  If we let
-`v1`, `v2` and `v3` be three versions (of increasing newness) we can
-draw a history like this:
+RStudio has git built in, and we're going to use that to get started.
+The set of things you can do with git through RStudio is quite
+limited, but if you're doing your work there already, it will be quite
+convenient.
 
-```
-  -- time ----->
-  v1 <- v2 <- v3
-```
+First, make a branch new project (see
+[this post](blog/2013-04-05-projects/#setting-up-a-project-in-rstudio),
+but essentially Project: Create Project).
 
-Read this as "the parent of `v3` is `v2` and the parent of `v2` is
-`v1`".  These "versions" are entire snapshots of all the files in your
-project directory.  Version `v3` is the "current" version, so git
-gives that a special label called `HEAD`:
+Click the "Rproj" file in the "Files" pane, or click Projects:
+Projects Options to open the project options.  Select the bottom entry
+in the ribbon (Git/SVN), and select Git from the drop-down menu.
+RStudio will prompt you to confirm, and then again to restart -- click
+"Yes" both times.
 
-```
-  -- time ----->
-  v1 <- v2 <- v3
-              ^
-			 HEAD
-```
+Now the top right panel has a "Git" tab, which should look like this
 
-This is what is checked out in a directory.  There are ways of moving
-`HEAD` around, which will allow us to compare against older version,
-but we're getting ahead of ourselves.
+{% img img/rstudio-on-init.png %}
 
-Say you make a bunch of changes to your files in the working
-directory.  The idea is simply to tell git that these files have
-changed, and have it extend the tree:
+The two question marks next to the files indicate that they are not
+known to git.
 
-```
-  -- time ----------->
-  v1 <- v2 <- v3 <- v4
+### Adding and committing files to git
+
+Make a new R script (say, `script.R`, imaginatively), and edit it,
+perhaps to say:
+
+```r
+# Standard error function
+se <- function(x)
+  sqrt(var(x) / length(x))
 ```
 
-We will refer to this operation as **commiting** and each of the
-separate `v` snapshots as **commits**.
+{% img img/rstudio-not-added.png %}
 
-## More theory
+Our new file is now listed, also with question marks as it also not
+known to git.
 
-Branches are easy.  Remember our simple history:
+If you click the check box next to `script.R`, the two question marks
+change to one "A".  This indicates that the file has been "added"
+(specifically, we've added it to the staging area, indicating that we
+are planning on making that file part of the next revision of the
+project).
 
-```
-  -- time ----->
-  v1 <- v2 <- v3
-```
+{% img img/rstudio-added.png %}
 
-We can make a new branch off any commit.  So if we rolled back to `v2`
-and did some work, our history would look like this:
+This file is still not under version control though; we've just
+indicated our *intention* to add it.  Click the "Commit" button (with
+the little tick mark) and the "Review Changes" window opens.
 
-```
-  -- time ----->
-  v1 <- v2 <- v3
-         ^
-		  \
-		   v4
-```
+{% img img/rstudio-review-changes.png %}
 
-now we have two branches.  It will be useful to label these:
+Enter a descriptive message about your change here.  Convention
+suggests a one line informative message, which is if necessary
+followed by a blank line and a more detailed message if the change
+warrants it.  I added the message:
 
-```
-  -- time ----->
-  v1 <- v2 <- v3
-         ^     ^
-		  \    master
-		   v4
-		   ^
-		   feature
+```plain
+Added function that computes standard error of the mean.
 ```
 
-The branch `master` is the default name that git gives to a branch
-(you'll see it anywhere).  There is nothing special about this name
-apart from convention.  But convention is special as it helps people
-understand what you've done.  Many people (RGF: who?) will say that
-you should not work on master, but in practice most biologists tend to
-(look up any project on github).
+The pane on the left indicates the state of your directory (in this
+project two "unknown" files and one staged to be commited.  The bottom
+pane contains the changes -- in this case the entire file is new so
+everything is green.
 
-We also need to know which branch is checked out.  This is determined
-by the `HEAD` pointer:
+When you are happy, press "Commit", and a small log window opens up
+telling you everything went well.  Mine said:
 
 ```
-  -- time ----->
-  v1 <- v2 <- v3
-         ^     ^
-		  \    master
-		   v4
-		   ^
-		   feature
-		   ^
-		   HEAD
+[master (root-commit) 765f3d6] Added function that computes standard error of the mean
+ 1 file changed, 3 insertions(+)
+ create mode 100644 script.R
 ```
 
-Here, `HEAD` points at `v4`, so that is checked out.
+Notice that the file we added has been removed from the Git pane.
+This is because there are no operations that we might want to do to
+update the history of that file (i.e., it is up to date).
+
+{% img img/rstudio-on-init.png %}
+
+There are two other files here; a `.gitignore` file and a file called
+`vc.Rproj` (or `your_project_name.Rproj`).  The first is useful for
+keeping track of which files we *don't* want to keep track of (e.g.,
+generated figures, data, etc), and the `Rproj` file is how RStudio
+keeps track of things.  I added these (tick checkboxes, then Commit,
+with message `Added RStudio files to version control.`).
+
+### Viewing history
+
+In the git pane, click "More" (with the small cog) and click
+"History".  This opens up a window also labeled "Review Changes" that
+shows the history for the project.
+
+{% img img/rstudio-history.png %}
+
+The two revisions are indicated by the two rows in the top panel, with
+the most recent version at the top, and time running backwards down
+the list.  You can see the short line added as a commit messages,
+along with the author who made the change and the date the change was
+made.  The numbers in the far right column are a "SHA hash" -- we'll
+talk about these later, but think of it as a fingerprint for that
+version.
+
+The bottom panel includes information about the selected version
+(versions are also often called commits, so RStudio says "Commits 1-2
+of 2").  This includes the same information more verbosely, then lists
+the two files that changed (`.gitignore` and `vc.Rproj`) and then the
+difference between these and the previous version of the files.
+Because this is the first version of the files, everything is new, so
+all lines are green.
+
+### Making changes
+
+Edit the `script.R` file to say
+
+```r
+# Standard error function
+se <- function(x)
+  sqrt(var(x, na.rm=TRUE) / length(na.omit(x)))
+```
+
+The git pane now shows that `script.R` has been modified:
+
+{% img img/rstudio-modified.png %}
+
+If you click the check box to stage the file, the "M" moves to the
+left to indicate that this change has been staged.  Then commit the
+file with an appropriate message, in my case:
+
+```plain
+Modified the se function to ignore NA values.
+```
+
+If you view the history again, this time you can see red lines
+indicating deletions and green lines indicating additions.
+
+{% img img/rstudio-history.png %}
+
+
