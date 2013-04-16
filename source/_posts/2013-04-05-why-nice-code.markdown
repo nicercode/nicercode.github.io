@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Why nice code"
+title: "Why I want to write nice R code"
 date: 2013-04-05 14:46
 comments: true
 categories: module
@@ -35,6 +35,7 @@ our analyses to macth data availability, at least not without many, many more
 automate analyses, and therefore [scale-up without a big increase in 
 effort](http://i.imgur.com/SbzNW8s.png).  
 
+<!-- more -->
 
 Writing code also offers other benefits to research. When your 
 analyses are documented in a script, it is easier to pick up a project and 
@@ -43,6 +44,9 @@ of code can also be reused in new projects, saving vast amount of time. Writing
 code also allows for effective collaboration with people from all over the 
 world. For all these reasons, many researchers are now learning how to write 
 code.
+
+<blockquote class="twitter-tweet"><p>Learn to code! I worry that most biologists leave uni lacking #1 skill for 21st cent biology. For inspiration <a href="http://t.co/7lzRutYuIw" title="http://code.org">code.org</a> <a href="https://twitter.com/search/%23CODE">#CODE</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/306854385076543488">February 27, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 Yet, most researchers have no or limited formal training in computer science, 
 and thus struggle to write nice code. Most of us are self-taught, having used a 
@@ -81,6 +85,9 @@ biologists, we saw a need for more material focussed on R, the language that
 has come to dominate biological research. We are experts, but have more 
 experience than many biologists. Hence the nice R code blog.
 
+<blockquote class="twitter-tweet"><p>@<a href="https://twitter.com/phylorich">phylorich</a> Being able to code (in any language) is most important skill for current biology. R is good choice: widely used, high level, free</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/312438921059520512">March 15, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 ## Key elements of nice R code
 We will now briefly consider some of the key principles of writing nice code. 
 
@@ -107,42 +114,45 @@ will explore each of these in more detail here on the blog:
 
 - Use a sensible directory structure for organising project related 
 materials. 
-- abstract your code into many small functions with helpful descriptive 
+- Abstract your code into many small functions with helpful descriptive 
 names 
-- use comments, design features, and meaningful variable or function names 
+- Use comments, design features, and meaningful variable or function names 
 to capture the intent of your code, i.e. describe what it is *meant* to do
-- use version control. There are many reasons for using version control. 
+- Use version control. There are many reasons for using version control. 
 One is that it stores seamlessly archives older versions of your code, 
 permitting you to ruthlessly yet safely delete old files, and therefore helps 
 reduce clutter. 
-- apply a consistent style, such as that described in  the google R style 
+- Apply a consistent style, such as that described in  the google R style 
 guide.
 
 
 ### Nice code is reliable, i.e. bug free
 
-> The computer does exactly what you tell it to.
+<blockquote class="twitter-tweet"><p>Occma's raz0r: if your program isn't working, it's probably just a typo in the code, not an undiscovered bug or thing you're doing wrong</p>&mdash; Alison Abreu-Garcia (@alisonag) <a href="https://twitter.com/alisonag/status/322374461212995584">April 11, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-In other words, if there is a problem, it's most likely yours. How certain 
+The computer does exactly what you tell it to. If there is a problem in your code, it's most likely you put it there. How certain 
 are you that your code is error free? More than once I have reached a state 
 of near panic, looking over my code to ensure it is bug free before 
-submitting a final version of a paper for publication. 
+submitting a final version of a paper for publication. What if I got it wrong?
 
-It is almost impossible to ensure code is bug free, but one can adopt healthy
+[It is almost impossible to ensure code is bug free](http://dx.doi.org/10.1109/MCSE.2005.54), but one can adopt healthy
 habits that minimise the chance of this occurring:
 
 - Don't repeat yourself. The less you type, the fewer chances there are for 
 mistakes
-- use test scripts, to compare your code against known cases
-- avoid using global variables, the attach function and other nasties where 
-ownership of data cannot be ensured
-- use version control so that you see what has changed, and easily trace 
+- Use test scripts, to compare your code against known cases
+- Avoid using global variables, the attach function and [other nasties](../intro/bad-habits.html)
+where ownership of data cannot be ensured
+- Use version control so that you see what has changed, and easily trace 
 mistakes
-- wherever possible, open your code and project up for review, either by 
+- Wherever possible, open your code and project up for review, either by 
 colleagues, during review process, or in repositories such as github.
-
-Note also, the more *readable* your code is, the less likely it is to contain 
+- The more *readable* your code is, the less likely it is to contain 
 errors.
+
+<blockquote class="twitter-tweet"><p>"Every bug is two bugs: the bug in your code, and the test you didn't write"@<a href="https://twitter.com/estherbester">estherbester</a> <a href="https://twitter.com/search/%23pycon">#pycon</a></p>&mdash; Ned Batchelder (@nedbat) <a href="https://twitter.com/nedbat/status/312628852558032896">March 15, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ### Nice code runs quickly and is therefore a pleasure to use
 
@@ -156,51 +166,30 @@ or weeks.
 
 Some effective strategies for making code run faster:
 
-- abstract your code into functions, so that you can compare different 
+- Abstract your code into functions, so that you can compare different 
 versions
-- use code profiling to identify the main computational bottlenecks
+- Use code profiling to identify the main computational bottlenecks
 and improve them
-- think carefully about algorithm design
-- understand why some operations are intrinsically slower 
+- Think carefully about algorithm design
+- Understand why some operations are intrinsically slower 
 than others, e.g. why a `for` loop is slower than using `lapply`
-- use multiple processors to increase computing power, either in your
+- Use multiple processors to increase computing power, either in your
 own machine or by running your code on a cluster.
 
 ## The benefits of writing nicer code
 There are many benefits of writing nicer code:
 
-- **Better science**: more data, less bugs.
-- **More fun**: spend less time wrestling with R, enjoyment of scientific 
-process. Nice code is more fun
-- **Bigger datasets**: allows you to scale up. Repetition is avoidable, which 
-it isn't in field or lab. 
-- **Become more efficient**:  nice code is reusable, sharable. 
-- **Future employment**: Impact. You should consider anything 
-you write (open or closed) to be a potential advert to a future employer. [Scientists with an analytical bent are often sought-after](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271).
+- **Better science**: nice code allows you to handle bigger data sets and has less bugs.
+- **More fun**: spend less time wrestling with R, and more time workoing with data.
+- **Become more efficient**: Nice code is reusable, sharable, and quicker to run. 
+- **Future employment**: You should consider anything you write (open or closed) to be a potential advert to a future employer. Code has impact. Code sharing [sites like github now make resumes for you](http://resume.github.io/?cboettig), to capture yout impact.  Scientists with an analytical bent are often [sought-after in the natural sciences](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271).
 
-There is a common perception among scientists we have talked with that provided 
-the code "runs", it doesn't need to be nice. Researchers are primarily 
-interested in writing scientific papers, so spend 
-most of their time getting their code to run, and almost no time focussing on 
-the 
-quality of the code itself. Along the way we might take a number of shortcuts, 
-telling ourselves that it doesn't matter, as 
-long as it runs, right? If you take that approach, you are unlikely to see the benefits listed above.
+If you need further motivation, consider this advice
 
-If you need further motivation, consider this advice, 
-taken from [an advisory pop-up for MS Visual 
-C++](http://www.techrepublic.com/blog/geekend/pic-the-greatest-programming-tip-e
-ver-written/817)  
+{% imgcap centre /images/Maniac.jpg An [advisory pop-up for MS Visual C++](http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer) %}
 
-<blockquote class="twitter-tweet"><p>Always code as if the person who will 
-maintain your code is a maniac serial killer that knows where you 
-live.</p>&mdash; Anbarasan Gangadaran (@anabarasan) <a 
-href="https://twitter.com/anabarasan/status/275606827922767872">December 3, 
-2012</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-This might sound extreme, until you realise that the maniac serial killer is 
-**you**, and they definitely know where you live. 
-
+This might seem extreme, until you realise that the maniac serial killer is 
+**you**, and you definitely know where you live. 
 
 At some point, you will 
 return to nearly every piece of code you wrote and need to understand it 
@@ -209,16 +198,20 @@ understand what you did, possibly a week, month, year or decade ago. Although
 you are unlikely get so frustrated as to seek bloody revenge on your former 
 self, you might come close. As Greg Wilson stated clearly in our software 
 carpentry course, 
-> The single biggest reason you should write nice code is so that your future 
-> self can understand it.
 
+> The single biggest reason you should write nice code is so that your future 
+>  self can understand it.
 
 As a by product, we also note that code that is easy to read is also easy to 
 reuse in new projects and share with colleagues, including as online 
 supplementary material. Increasingly, journals are requiring code be submitted 
 as part of the review process and often published online. Alas, much of the 
 current crop of code is difficult to read. At best, having messy code may reduce 
-the impact of your paper, at worst, your paper might get rejected because the 
-reviewer can't understand your code.
+the impact of your paper. But you might also have the paper get rejected because the 
+reviewer couldn't understand your code. At worst, some people have had to [retract high profile work because of bugs in their code](http://www.sciencemag.org/content/314/5807/1856.summary).
 
+It's time to write some nice R code.
 
+For further inspiration, you may like to check out Greg Wilson's great article "[Best Practices for Scientific Computing](http://arxiv.org/abs/1210.0530)." 
+
+**Acknowledgments:** Many thanks to [Greg Wilson](https://twitter.com/gvwilson), [Karthik Ram](http://inundata.org/), [Scott Chameberlain](http://schamberlain.github.io/scott/) and [Carl Boettiger](http://www.carlboettiger.info/) and [Rich FitzJohn](http://www.zoology.ubc.ca/~fitzjohn/) for inspirational chats, code and work. 

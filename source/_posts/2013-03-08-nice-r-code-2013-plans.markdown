@@ -19,6 +19,8 @@ The topics covered fall into two broad categories: *workflow* and
 module we are going to focus on the
 first, as this will cross over into all computing work people do.
 
+<!-- more -->
+
 The first five sessions will be 
 
 1. Introduction & project set up (9 April)
@@ -31,8 +33,6 @@ bootcamp.
 
 Except for the version control session, we will meet from 2-3pm in E8C
 212.
-
-<!-- more -->
 
 These sessions follow very much the same ideas as
 [software carpentry](http://www.software-carpentry.org).  Where we

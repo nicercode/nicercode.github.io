@@ -11,6 +11,36 @@ I'm using "ecologists" as a shorthand here.  It's not an exclusive
 term -- many geneticists or other scientists will do the same thing,
 or have the same needs.
 
+> Version control systems (VCS), which have long been used to maintain code repositories in the software industry, are now finding new applications in science. One such open source VCS, git, provides a lightweight yet robust framework that is ideal for managing the full suite of research outputs such as datasets, statistical code, figures, lab notes, and manuscripts. 
+> -- Karthik Ram, Source Code for Biology and Medicine 8:7 
+
+<blockquote class="twitter-tweet"><p>“GitHub has empowered a new generation of people to collaborate, create, produce.” <a href="http://t.co/aSbXZBXHkW" title="http://bit.ly/13JH7VL">bit.ly/13JH7VL</a></p>&mdash; Karthik Ram (@_inundata) <a href="https://twitter.com/_inundata/status/309812088103137281">March 7, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p>Contributed my first bit of code to a git repo yesterday, I love it! <a href="https://t.co/9FU2Yuxi" title="https://github.com/mexitek/phpColors">github.com/mexitek/phpCol…</a> @<a href="https://twitter.com/github">github</a> @<a href="https://twitter.com/mexitek">mexitek</a></p>&mdash; Daniel Pataki (@danielpataki) <a href="https://twitter.com/danielpataki/status/302812382298779648">February 16, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p>Even if git isn't your flavor, you gotta love <a href="https://gist.github.com/">https://gist.github.com/</a> - posting code snippets that other people can fork is beautiful.</p>&mdash; Jon Galloway (@jongalloway) <a href="https://twitter.com/jongalloway/status/72932987511128064">May 24, 2011</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p>Welcome to a New Gist: At GitHub we love using Gist to share code. Whether it's a simple snippet or... <a href="http://t.co/vq8UN8jB" title="http://bit.ly/Ug12CC">bit.ly/Ug12CC</a> <a href="https://twitter.com/search/%23github">#github</a> <a href="https://twitter.com/search/%23git">#git</a></p>&mdash; Pablo Rodriguez (@derfarg) <a href="https://twitter.com/derfarg/status/278621287583207424">December 11, 2012</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+https://github.com/blog/1276-welcome-to-a-new-gist
+
+http://blogs.biomedcentral.com/bmcblog/2013/02/28/version-control-for-scientific-research/
+
+Resources: 
+
+- Books: Git pro and [Git succintly](http://www.syncfusion.com/resources/techportal/ebooks/git)
+- 
+
+<blockquote class="twitter-tweet"><p>Rstudio has super simple point-and-click version control (via git) baked in for "projects". No excuses for not using it! (via @<a href="https://twitter.com/danmcglinn">danmcglinn</a>)</p>&mdash; Rich FitzJohn (@phylorich) <a href="https://twitter.com/phylorich/status/301107009573490688">February 11, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
+<blockquote class="twitter-tweet"><p>Coders - use version control, it rocks. Big thanks to @<a href="https://twitter.com/phylorich">phylorich</a> for introducing me to git. Starter's guide: <a href="http://t.co/LFtHf1pX" title="http://git-scm.com/book/en/Getting-Started-About-Version-Control">git-scm.com/book/en/Gettin…</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/267855974637920257">November 12, 2012</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 ## You are already using version control
 
 * Commented out bits of code / text

@@ -14,9 +14,9 @@ Git has a reputation for being hard to learn:
 
 One of the things that will make learning git challenging for many
 ecologists is that most resources (e.g., the excellent
-[git book](http://git-scm.com/book/) assume that you are coming from a
+[git book](http://git-scm.com/book/)) assume that you are coming from a
 background of using CVS, SVN or some other centralised version control
-system.  Therefore, they expect you to already be thinking in one way
+system with a nastry abbrevo.  Therefore, they expect you to already be thinking in one way
 and then show you how to translate those ideas into git's ideas.
 
 In a way you're lucky, as you don't have to learn a bunch of stuff and
