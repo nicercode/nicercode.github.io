@@ -1,7 +1,7 @@
 ---
 layout: page
 title: "Installing git"
-date: 2013-04-04 09:00
+date: 2013-04-16 09:00
 comments: true
 sharing: true
 footer: false
