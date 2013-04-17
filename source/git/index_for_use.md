@@ -28,4 +28,5 @@ the systems that were developed in the past.
 
 1. [What is version control and why would you use it](why.html)
 2. [Workflows that use version control](workflows.html)
-3. [How version control works](basics.html)
+3. [Version control from within RStudio](rstudio.html)
+4. [Version control basics](basics.html)
