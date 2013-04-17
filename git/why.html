@@ -1,0 +1,370 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Why use version control - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Why use version control 16 April 2013 I’m using “ecologists” as a shorthand here. It’s not an exclusive
+term – many geneticists or other scientists &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/git/why.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Why use version control</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-16T09:00:00+10:00" pubdate data-updated="true">16 April 2013</time></p>
+  </header>
+  
+  <p>I’m using “ecologists” as a shorthand here.  It’s not an exclusive
+term – many geneticists or other scientists will do the same thing,
+or have the same needs.</p>
+
+<blockquote>
+  <p>Version control systems (VCS), which have long been used to maintain code repositories in the software industry, are now finding new applications in science. One such open source VCS, git, provides a lightweight yet robust framework that is ideal for managing the full suite of research outputs such as datasets, statistical code, figures, lab notes, and manuscripts. 
+– Karthik Ram, Source Code for Biology and Medicine 8:7 </p>
+</blockquote>
+
+<blockquote class="twitter-tweet"><p>“GitHub has empowered a new generation of people to collaborate, create, produce.” <a href="http://t.co/aSbXZBXHkW" title="http://bit.ly/13JH7VL">bit.ly/13JH7VL</a></p>&mdash; Karthik Ram (@_inundata) <a href="https://twitter.com/_inundata/status/309812088103137281">March 7, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p>Contributed my first bit of code to a git repo yesterday, I love it! <a href="https://t.co/9FU2Yuxi" title="https://github.com/mexitek/phpColors">github.com/mexitek/phpCol…</a> @<a href="https://twitter.com/github">github</a> @<a href="https://twitter.com/mexitek">mexitek</a></p>&mdash; Daniel Pataki (@danielpataki) <a href="https://twitter.com/danielpataki/status/302812382298779648">February 16, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p>Even if git isn&#8217;t your flavor, you gotta love <a href="https://gist.github.com/">https://gist.github.com/</a> - posting code snippets that other people can fork is beautiful.</p>&mdash; Jon Galloway (@jongalloway) <a href="https://twitter.com/jongalloway/status/72932987511128064">May 24, 2011</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p>Welcome to a New Gist: At GitHub we love using Gist to share code. Whether it&#8217;s a simple snippet or&#8230; <a href="http://t.co/vq8UN8jB" title="http://bit.ly/Ug12CC">bit.ly/Ug12CC</a> <a href="https://twitter.com/search/%23github">#github</a> <a href="https://twitter.com/search/%23git">#git</a></p>&mdash; Pablo Rodriguez (@derfarg) <a href="https://twitter.com/derfarg/status/278621287583207424">December 11, 2012</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>https://github.com/blog/1276-welcome-to-a-new-gist</p>
+
+<p>http://blogs.biomedcentral.com/bmcblog/2013/02/28/version-control-for-scientific-research/</p>
+
+<p>Resources: </p>
+
+<ul>
+  <li>Books: Git pro and <a href="http://www.syncfusion.com/resources/techportal/ebooks/git">Git succintly</a></li>
+  <li></li>
+</ul>
+
+<blockquote class="twitter-tweet"><p>Rstudio has super simple point-and-click version control (via git) baked in for &#8220;projects&#8221;. No excuses for not using it! (via @<a href="https://twitter.com/danmcglinn">danmcglinn</a>)</p>&mdash; Rich FitzJohn (@phylorich) <a href="https://twitter.com/phylorich/status/301107009573490688">February 11, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<blockquote class="twitter-tweet"><p>Coders - use version control, it rocks. Big thanks to @<a href="https://twitter.com/phylorich">phylorich</a> for introducing me to git. Starter&#8217;s guide: <a href="http://t.co/LFtHf1pX" title="http://git-scm.com/book/en/Getting-Started-About-Version-Control">git-scm.com/book/en/Gettin…</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/267855974637920257">November 12, 2012</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="you-are-already-using-version-control">You are already using version control</h2>
+
+<ul>
+  <li>Commented out bits of code / text</li>
+  <li>Files with numbers afterwards (<code>thesis_v1.doc</code>, <code>thesis_v2.doc</code>,
+<code>thesis_final.doc</code>, <code>thesis_final2.doc</code>, etc)</li>
+  <li>Zip up the whole project directory every so often and save it with
+the date appended to the filename.</li>
+</ul>
+
+<p><a href="http://www.phdcomics.com/comics/archive.php?comicid=1531">PhD comic</a></p>
+
+<p>Most ecologists seem to invent at least one of these techniques for
+doing version control</p>
+
+<p>In addition, you’ll often see people suggesting putting headers like
+this in your code file:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  ## My file (c) Rich FitzJohn
+</span><span class="line">  ## Created: 2012/10/04
+</span><span class="line">  ## Modified: 2013/04/04</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Sometimes you’ll even see changelogs embedded in these.</p>
+
+<p>The problem with this is that it’s repetitive and boring, it’s
+difficult to extract the information easily (e.g., get me all the
+files <strong>I</strong> modified in the last month), there is no checking on the
+contents of the fields (dates in the future, forgetting to update
+dates, inconsistent names, email addresses).  The <em>point</em> of these
+headers is nice — keep track of who did what and when, but this is
+far easier to do with version control.</p>
+
+<p>Commented out old bits of code.</p>
+
+<h2 id="why-use-version-control">Why use version control?</h2>
+
+<p>There are many reasons to use version control, and many are only
+apparent after you have incorporated it into your workflow (it’s a bit
+like “why use R” or “why document your code”).  However, there is a
+set of advantages that are very common.</p>
+
+<p>Most of these revolve around the fossil record in your code.  This is
+a series of revisions that connect to each other between the present
+and the first piece of code you wrote.  Be able to go back to previous
+versions of your code, and see what you did.  This has numerous use
+cases:</p>
+
+<ol>
+  <li>
+    <p>You noticed that your code is doing odd things now and didn’t used
+to.  Look at and run a version from the last known good code and try
+to work out what changed (after this, you should write a unit test –
+in a couple of weeks).</p>
+  </li>
+  <li>
+    <p>You deleted some code and want to get it back.  This has a less
+obvious, but much more common (and perhaps more important) advantge;
+you will be more likely to delete old code rather than commenting it
+out, leaving you with shorter, more readable scripts.</p>
+  </li>
+  <li>
+    <p>You want to show your supervisor what you did last week.</p>
+  </li>
+  <li>
+    <p>Inversely, on a collaborative project, see what your collaborators
+wrote last week.</p>
+  </li>
+  <li>
+    <p>You reformatted everything from numbered citation styles to
+author-year after being rejected from journal A and sending your paper
+to journal B.  Journal B didn’t want the paper anyway, so you can get
+the previous version back.</p>
+  </li>
+  <li>
+    <p>You want to experiment and try something that might break huge
+pieces of your project, and know that you can back out if things go
+awry.</p>
+  </li>
+  <li>
+    <p>Similarly, you want to try a couple of different strategies for
+solving a problem and review which one you like best (or show them to
+someone else).</p>
+  </li>
+  <li>
+    <p>Gives you an auditable project history; you know when you did what
+you did.</p>
+  </li>
+</ol>
+
+<h2 id="version-control-is-not-a-back-up">Version control is not a back up</h2>
+
+<p>It appears that this is like a brilliant backup system, but you need a
+backup too.  Backing up is a complementary set of functions that
+overlap only in that there is usually some history going back.</p>
+
+<ul>
+  <li>
+    <p>Back up but not git: corruption of repository, generated files that
+are not part of a repository but time consuming, installed software
+and other system issues.  It is possible (but often hard) to break
+your git repository; you might reclone from somewhere or you might
+grab the last copy of a backup.  Backup systems usually have larger
+capacity than online version control systems.</p>
+  </li>
+  <li>
+    <p>Git but not backup: semantics around files, parallel branched
+versions of files, check out by either checkpoint or time (not just
+last time, etc).</p>
+  </li>
+</ul>
+
+<p>In general, you need both.  I have all my projects under version
+control, and my whole documents directory under backup.  If my
+computer fails, I immediately copy my documents directory from the
+backup to a new computer.  I only need to get the last version though.
+On the other hand, at any time I can easily look back through the
+history of any project and see the work.  For some projects, the last
+modification was months ago, while most backup system will be
+seriously thinning by this point (moving to monthly snapshots at best,
+and you probably have to pay for that).</p>
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/git/why.html';
+        var disqus_url = 'http://nicercode.github.com/git/why.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Setting up git - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Setting up git 09 April 2013 The default installation of git leaves you with a fairly spartan
+interface. These are some of my tips for making it &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/git/setup.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Setting up git</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-09T18:44:00+10:00" pubdate data-updated="true">09 April 2013</time></p>
+  </header>
+  
+  <p>The default installation of git leaves you with a fairly spartan
+interface.  These are some of my tips for making it more pleasant to
+use.  On Windows, this is accessed through <code>git bash</code>, and on Mac,
+accessed through the terminal.</p>
+
+<p>Obviously, you need git installed.  Check to see you have it installed
+by running <code>git --version</code>, which will produce output like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git version 1.7.9.6 (Apple Git-31.1)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If not, <a href="installation.html">install git</a> first!</p>
+
+<p>The first thing is to set your name and email.  These will appear all
+over the place, so they are good to set up first.  It feels a bit
+weird if you’re the only person using a reposirory, but you only have
+to set this once.  So run</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git config --global user.name "Your Name"
+</span><span class="line">git config --global user.email your.email@domain.com</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>These are <em>global</em> options and will affect all repositories.  These
+can actually be over-ridden on a per-repository basis, but you don’t
+generally need to do that.  The configuration options go into the file
+<code>~/.gitconfig</code> (the <code>~</code> means “home” in unix commands).</p>
+
+<h3 id="editor">Editor</h3>
+
+<p>The default editor is <a href="http://vim.com"><code>vi</code></a> – if you have used this
+before, this will probably be fine, but if not you are in for a rude
+shock.  So, next, let’s set that to be a better option.  </p>
+
+<h4 id="on-a-mac">On a Mac</h4>
+
+<p>First, check that you have <code>nano</code> installed by typing </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">which nano</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and then running</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git config --global core.editor '/usr/bin/nano'</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(but change the path to reflect where it is installed.  In most
+situations it will be <code>/usr/bin/nano</code>).</p>
+
+<p>Whenever git needs you to write a message on a commit, it will pop
+open <code>nano</code>.  Write the message and quit with <code>Control-X</code> (<em>X</em> for
+<em>exit</em>), answering “Y” when prompted to save the file.</p>
+
+<p>Adding the <code>--tempfile</code> option will cause <code>nano</code> to save on exit
+without prompting or asking about the filename.  This can be nice to
+avoid being bothered the whole time.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git config --global core.editor '/usr/bin/nano --tempfile'</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>However, it removes the ability to easily abort a commit by not saving
+the message.</p>
+
+<p>On a Mac, it is possible to use something like “TextEdit” to edit the
+file, by running</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git config --global core.editor 'open -t -n -W'</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>There is a catch though; you have to make sure that you <strong>quit</strong> the
+application after writing your message.  The <code>-n</code> option means that
+this is <em>new</em> instance of TextEdit so you won’t lose other open work
+when doing this at least.</p>
+
+<h4 id="on-windows">On Windows</h4>
+
+<p>The simplest solution is to set</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git config --global core.editor notepad</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will use notepad.  Notepad makes a bit of a mess of the files
+when you edit them, but will be good enough to get you going.  Longer
+term, you may find something like using
+<a href="http://www.notepad-plus-plus.org">notepad++</a> more enjoyable, but
+<a href="http://stackoverflow.com/questions/1634161/how-do-i-use-notepad-or-other-with-msysgit/2486342#2486342">setting this up is a bit of a hassle</a>.</p>
+
+<h3 id="colour">Colour</h3>
+
+<p>By default (on <strong>Mac</strong> and <strong>Linux</strong> at leat), the command line is
+fairly stark, but git has options to spruce it up with nice colours.
+More than just look pretty, these allow you to much more easily scan
+output.</p>
+
+<p>Just run</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git config --global color.ui true</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and the output of <code>status</code> and <code>diff</code> (and a few others) will be
+coloured for you.</p>
+
+  
+    <footer>
+      <p class="meta">
+        
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-09T18:44:00+10:00" pubdate data-updated="true">09 April 2013</time>
+        
+      </p>
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/git/setup.html" data-via="" data-counturl="http://nicercode.github.com/git/setup.html" >Tweet</a>
+  
+  
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/git/setup.html';
+        var disqus_url = 'http://nicercode.github.com/git/setup.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

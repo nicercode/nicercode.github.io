@@ -1,0 +1,1750 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="R is capable of producing publication-quality graphics. During this session, we will develop your R skills by introducing you to the basics of &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/intro/plotting.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <p>R is capable of producing publication-quality graphics.  During this session, we will  develop your R skills by introducing you to the basics of graphing. </p>
+
+<p>Typing <code>plot(1,1)</code> does a lot by default.  For example, the axes are automatically set to encapsulate the data, a box is drawn around the plotting space, and some basic labels are given as well.</p>
+
+<p>Similarly, typing <code>hist(rnorm(100))</code> or <code>boxplot(rnorm(100))</code> does a lot of the work for you.</p>
+
+<p>Plotting in R is about layering data and detail onto a canvas. So, let’s start with a blank canvas:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-2.png" alt="plot of chunk unnamed-chunk-2" /> </p>
+
+<p>We are simply calling a new plotting device (<code>plot</code> always initiates a new device), plotting the coordinates (5,5), which we can’t see because of <code>type="n"</code>, and we’re also telling R that we don’t want any default axes or annotations (e.g., titles or axis labels).  Basically, we just want a blank slate.  Finally, we set the x- and y-axis ranges, so that we  have some space to work.</p>
+
+<p>Let’s add the default axis:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-3.png" alt="plot of chunk unnamed-chunk-3" /> </p>
+
+<p>If you look at the helpfile for axis (<code>?axis</code>) you’ll see that you can pretty much control any apsect of axis creation.  The only argument required for an axis is the side of the plot you want it on.  Here 1 and 2 correspond with x and y; 3 and 4 also correspond with x and y, but on the other side of the plot (e.g., for secondary axes).</p>
+
+<p>Let’s add the y-axis:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-4.png" alt="plot of chunk unnamed-chunk-4" /> </p>
+
+<p>I prefer tick labels to align horizontally where possible.  Here we use the argument <code>las=2</code> (“label axis style”?).  A value of 2 means “always horizontal”.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-5.png" alt="plot of chunk unnamed-chunk-5" /> </p>
+
+<p>When plotting with R you are adding subsequent layers to your canvas.  If something needs redoing, you need to start again from stratch.  Therefore, it is very important to save a graph’s provenance using a text editor.  If you change something, re-run all the lines of code to generate your graph.  Saving as text is also great for when you want re-use a particular graphic style that you’ve developed. Graphing is one part of the scientific process for which you have some creative freedom.</p>
+
+<p>Next, add axis labels and a title:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-6.png" alt="plot of chunk unnamed-chunk-6" /> </p>
+
+<p><code>mtext</code> stands for margin text.  You need an argument for the text to be printed, one for the side of the plot (as for the <code>axis</code> function), and one saying how far from the axis you want to label is numbers of “lines”.  Generally, the tick marks are at the zeroth line (<code>line=0</code>) and the tick labels in the first line.  The default for plot is <code>line=3</code>, which I generally leave as is.  You don’t generally need titles for plots in manuscripts, but they can come in handy for presentations, blogs, etc.</p>
+
+<p>There is also the figure <code>box()</code>, which I don’t tend to use, but you may want to (?):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-7.png" alt="plot of chunk unnamed-chunk-7" /> </p>
+
+<p>Let’s add some data.  A red point at (5,5):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">3</span><span class="p">,</span> cex<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-8.png" alt="plot of chunk unnamed-chunk-8" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1"># http://rgraphics.limnology.wisc.edu/images/miscellaneous/pch.png</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now set your random number generator seed to 11, so that our plots all look the same.  We’ll simulate some data.  First, some normally distribution “independent” values.  Then, some values that depend on these first set of values via a prescribed relationship and error distribution: </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">3</span><span class="p">,</span> cex<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">set.seed<span class="p">(</span><span class="m">11</span><span class="p">)</span>
+</span><span class="line">x <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">1.5</span><span class="p">)</span>
+</span><span class="line">y <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">2</span> <span class="o">+</span> <span class="m">0.66</span><span class="o">*</span>x<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-9.png" alt="plot of chunk unnamed-chunk-9" /> </p>
+
+<p>Typing <code>?points</code> will give you the common options for the points function.  I have used <code>pch=21</code> (presumably “plotting character”?).  The character (a circle) is white and the character background is black.  I like this, because it helps distinguish points when they overlap.</p>
+
+<p>Fit a linear model and add the line of best-fit.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mod <span class="o">&lt;-</span> lm<span class="p">(</span>y <span class="o">~</span> x<span class="p">)</span>
+</span><span class="line">summary<span class="p">(</span>mod<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">
+</span><span class="line">Call:
+</span><span class="line">lm(formula = y ~ x)
+</span><span class="line">
+</span><span class="line">Residuals:
+</span><span class="line">    Min      1Q  Median      3Q     Max 
+</span><span class="line">-2.4229 -0.5412 -0.0208  0.5534  2.6547 
+</span><span class="line">
+</span><span class="line">Coefficients:
+</span><span class="line">            Estimate Std. Error t value Pr(&gt;|t|)
+</span><span class="line">(Intercept)   2.0414     0.3616    5.65  1.6e-07
+</span><span class="line">x             0.6768     0.0723    9.37  2.9e-15
+</span><span class="line">
+</span><span class="line">Residual standard error: 0.986 on 98 degrees of freedom
+</span><span class="line">Multiple R-squared: 0.472,	Adjusted R-squared: 0.467 
+</span><span class="line">F-statistic: 87.7 on 1 and 98 DF,  p-value: 2.86e-15 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Add the regression line:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">3</span><span class="p">,</span> cex<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">set.seed<span class="p">(</span><span class="m">11</span><span class="p">)</span>
+</span><span class="line">x <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">1.5</span><span class="p">)</span>
+</span><span class="line">y <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">2</span> <span class="o">+</span> <span class="m">0.66</span><span class="o">*</span>x<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>mod<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-11.png" alt="plot of chunk unnamed-chunk-11" /> </p>
+
+<p>You see that the model estimates reflect the parameters we used to generate the data (<code>lm</code> appears to be working).  Let’s add some elements to our graph that highlight these fitted model results. Start by generating a sequence of numbers spanning the range of x:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x.seq <span class="o">&lt;-</span> seq<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">0.1</span><span class="p">)</span>  <span class="c1"># ss &lt;- seq(min(x), max(x), 0.1)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Using the best-fit model, we can now predict values for each of the values in the <code>x.seq</code> vector:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">y.fit <span class="o">&lt;-</span> predict<span class="p">(</span>mod<span class="p">,</span> list<span class="p">(</span>x <span class="o">=</span> x.seq<span class="p">))</span>
+</span><span class="line">
+</span><span class="line"><span class="c1"># This is essentially what `abline(mod)` has done, and so there is no point plotting these again.  However, using the `interval` argument, we can extract prediction and confidence intervals:</span>
+</span><span class="line">y.pred <span class="o">&lt;-</span> predict<span class="p">(</span>mod<span class="p">,</span> list<span class="p">(</span>x <span class="o">=</span> x.seq<span class="p">),</span> interval <span class="o">=</span> <span class="s">&quot;prediction&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">3</span><span class="p">,</span> cex<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>mod<span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-13.png" alt="plot of chunk unnamed-chunk-13" /> </p>
+
+<p><code>lty=2</code> (presumably “line type”?) makes a dashed line.  What’s the difference between confidence intervals and prediction intervals?  Now, let’s calculate confidence intervals and do something a little bit more exciting: a transparent, shaded confidence band:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">y.conf <span class="o">&lt;-</span> predict<span class="p">(</span>mod<span class="p">,</span> list<span class="p">(</span>x <span class="o">=</span> x.seq<span class="p">),</span> interval <span class="o">=</span> <span class="s">&quot;confidence&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">3</span><span class="p">,</span> cex<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">polygon<span class="p">(</span>c<span class="p">(</span>x.seq<span class="p">,</span> rev<span class="p">(</span>x.seq<span class="p">)),</span> c<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> rev<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">])),</span> col <span class="o">=</span> rgb<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span> border <span class="o">=</span> <span class="kc">NA</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-14.png" alt="plot of chunk unnamed-chunk-14" /> </p>
+
+<p>Text can also be added easily, using the coordinates of the current plot:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">3</span><span class="p">,</span> cex<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>mod<span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">polygon<span class="p">(</span>c<span class="p">(</span>x.seq<span class="p">,</span> rev<span class="p">(</span>x.seq<span class="p">)),</span> c<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> rev<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">])),</span> col <span class="o">=</span> rgb<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span> border <span class="o">=</span> <span class="kc">NA</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> cex<span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj<span class="o">=</span><span class="m">0</span><span class="p">,</span> cex<span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">8.5</span><span class="p">,</span> expression<span class="p">(</span>Y<span class="p">[</span>i<span class="p">]</span> <span class="o">==</span> beta<span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">+</span>beta<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">*</span>X<span class="p">[</span>i1<span class="p">]</span><span class="o">+</span>epsilon<span class="p">[</span>i<span class="p">]))</span>  <span class="c1"># see demo(plotmath) for more examples</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-15.png" alt="plot of chunk unnamed-chunk-15" /> </p>
+
+<p>Legends typically take a bit of trial and error, but can do most things.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">box<span class="p">()</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">7</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;orange&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">3</span><span class="p">,</span> cex<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>mod<span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>x.seq<span class="p">,</span> y.pred<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">],</span> lty <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">polygon<span class="p">(</span>c<span class="p">(</span>x.seq<span class="p">,</span> rev<span class="p">(</span>x.seq<span class="p">)),</span> c<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> rev<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">])),</span> col <span class="o">=</span> rgb<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span> border <span class="o">=</span> <span class="kc">NA</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">,</span> cex<span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj<span class="o">=</span><span class="m">0</span><span class="p">,</span> cex<span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">8.5</span><span class="p">,</span> expression<span class="p">(</span>Y<span class="p">[</span>i<span class="p">]</span> <span class="o">==</span> beta<span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">+</span>beta<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">*</span>X<span class="p">[</span>i1<span class="p">]</span><span class="o">+</span>epsilon<span class="p">[</span>i<span class="p">]))</span>  <span class="c1"># see demo(plotmath) for more examples</span>
+</span><span class="line">legend<span class="p">(</span><span class="s">&quot;bottomright&quot;</span><span class="p">,</span> c<span class="p">(</span><span class="s">&quot;green data&quot;</span><span class="p">,</span> <span class="s">&quot;random data&quot;</span><span class="p">,</span> <span class="s">&quot;orange point&quot;</span><span class="p">),</span> pch<span class="o">=</span>c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">20</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> col<span class="o">=</span>c<span class="p">(</span><span class="s">&quot;green&quot;</span><span class="p">,</span> <span class="s">&quot;black&quot;</span><span class="p">,</span> <span class="s">&quot;orange&quot;</span><span class="p">),</span> pt.cex<span class="o">=</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> bty<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-16.png" alt="plot of chunk unnamed-chunk-16" /> </p>
+
+<h2 id="saving-your-plot">Saving your plot</h2>
+
+<p>You can save your plot by simply using the “Export” functionality in the RStudio GUI.  In general, plots should be saved as vector graphics files (i.e., PDF), because these “scale” (i.e., don’t lose resolution as you zoom in).  However, vector graphics files can get large and slow things down if they contain a lot of information, in which case you might want to save as a raster or image file (i.e., PNG).  PNGs work better on webpages and in presentations, because such software is not good at dealing with vector graphics. Do not save as a JPG.</p>
+
+<p>You can also save your plot from the command line.  Why would this be useful?</p>
+
+<p>To do so, you need to fire-up a graphics device (e.g., PDF or PNG), write the layers to the file, and then close the device off (you won’t be able to open the file if you miss this last step).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">pdf<span class="p">(</span><span class="s">&quot;my_progressive_plot.pdf&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">5</span><span class="p">,</span> height<span class="o">=</span><span class="m">5</span><span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">),</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>mod<span class="p">)</span>
+</span><span class="line">polygon<span class="p">(</span>c<span class="p">(</span>x.seq<span class="p">,</span> rev<span class="p">(</span>x.seq<span class="p">)),</span> c<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> rev<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">])),</span> col <span class="o">=</span> rgb<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span> border <span class="o">=</span> <span class="kc">NA</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">7</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> expression<span class="p">(</span>Y<span class="p">[</span>i<span class="p">]</span> <span class="o">==</span> beta<span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">+</span>beta<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">*</span>X<span class="p">[</span>i1<span class="p">]</span><span class="o">+</span>epsilon<span class="p">[</span>i<span class="p">]))</span>
+</span><span class="line">dev.off<span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>or to a png file</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">png<span class="p">(</span><span class="s">&quot;my_progressive_plot.png&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">400</span><span class="p">,</span> height<span class="o">=</span><span class="m">400</span><span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> pch<span class="o">=</span><span class="m">21</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;white&quot;</span><span class="p">,</span> bg<span class="o">=</span><span class="s">&quot;black&quot;</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">),</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;My progressive plot&quot;</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>mod<span class="p">)</span>
+</span><span class="line">polygon<span class="p">(</span>c<span class="p">(</span>x.seq<span class="p">,</span> rev<span class="p">(</span>x.seq<span class="p">)),</span> c<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> rev<span class="p">(</span>y.conf<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">])),</span> col <span class="o">=</span> rgb<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span> border <span class="o">=</span> <span class="kc">NA</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">7</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> expression<span class="p">(</span>Y<span class="p">[</span>i<span class="p">]</span> <span class="o">==</span> beta<span class="p">[</span><span class="m">0</span><span class="p">]</span><span class="o">+</span>beta<span class="p">[</span><span class="m">1</span><span class="p">]</span><span class="o">*</span>X<span class="p">[</span>i1<span class="p">]</span><span class="o">+</span>epsilon<span class="p">[</span>i<span class="p">]))</span>
+</span><span class="line">dev.off<span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You’ll notice above that data, labels and titles are within the plot function, rather than layering up as demostrated earlier.</p>
+
+<h2 id="exercise">Exercise</h2>
+
+<p>Analyse and graph the relationship between height and weight of plants in the herbivore dataset.  Attempt to reproduce the following graph.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">data<span class="o">$</span>lWeight <span class="o">&lt;-</span> log10<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span>
+</span><span class="line">
+</span><span class="line">mod <span class="o">&lt;-</span> lm<span class="p">(</span>lWeight <span class="o">~</span> Height<span class="p">,</span> data<span class="p">)</span>
+</span><span class="line">summary<span class="p">(</span>mod<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">
+</span><span class="line">Call:
+</span><span class="line">lm(formula = lWeight ~ Height, data = data)
+</span><span class="line">
+</span><span class="line">Residuals:
+</span><span class="line">   Min     1Q Median     3Q    Max 
+</span><span class="line">-0.765 -0.125  0.030  0.140  0.579 
+</span><span class="line">
+</span><span class="line">Coefficients:
+</span><span class="line">            Estimate Std. Error t value Pr(&gt;|t|)
+</span><span class="line">(Intercept) -0.18527    0.06669   -2.78   0.0061
+</span><span class="line">Height       0.01945    0.00116   16.84   &lt;2e-16
+</span><span class="line">
+</span><span class="line">Residual standard error: 0.237 on 167 degrees of freedom
+</span><span class="line">Multiple R-squared: 0.629,	Adjusted R-squared: 0.627 
+</span><span class="line">F-statistic:  284 on 1 and 167 DF,  p-value: &lt;2e-16 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">ss <span class="o">&lt;-</span> seq<span class="p">(</span>min<span class="p">(</span>data<span class="o">$</span>Height<span class="p">),</span> max<span class="p">(</span>data<span class="o">$</span>Height<span class="p">),</span> <span class="m">0.5</span><span class="p">)</span>
+</span><span class="line">ss.conf <span class="o">&lt;-</span> predict<span class="p">(</span>mod<span class="p">,</span> list<span class="p">(</span>Height <span class="o">=</span> ss<span class="p">),</span> interval <span class="o">=</span> <span class="s">&quot;confidence&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>lWeight <span class="o">~</span> Height<span class="p">,</span> data<span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlab<span class="o">=</span>expression<span class="p">(</span>paste<span class="p">(</span><span class="s">&quot;Height (&quot;</span><span class="p">,</span> m<span class="o">^</span><span class="m">2</span><span class="p">,</span> <span class="s">&quot;)&quot;</span><span class="p">)),</span> ylab<span class="o">=</span><span class="s">&quot;Weight (g), log-scale&quot;</span><span class="p">)</span>
+</span><span class="line">polygon<span class="p">(</span>c<span class="p">(</span>ss<span class="p">,</span> rev<span class="p">(</span>ss<span class="p">)),</span> c<span class="p">(</span>ss.conf<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> rev<span class="p">(</span>ss.conf<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">])),</span> col <span class="o">=</span> rgb<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span> border <span class="o">=</span> <span class="kc">NA</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>ss<span class="p">,</span> ss.conf<span class="p">[,</span><span class="s">&quot;fit&quot;</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> at <span class="o">=</span> log10<span class="p">(</span>c<span class="p">(</span>seq<span class="p">(</span><span class="m">0.3</span><span class="p">,</span> <span class="m">0.9</span><span class="p">,</span> <span class="m">0.1</span><span class="p">),</span> seq<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">9</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> seq<span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">60</span><span class="p">,</span> <span class="m">10</span><span class="p">))),</span> labels <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> tck <span class="o">=</span> <span class="m">-0.015</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> at <span class="o">=</span> log10<span class="p">(</span>c<span class="p">(</span><span class="m">0.3</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">30</span><span class="p">)),</span> labels <span class="o">=</span> c<span class="p">(</span><span class="m">0.3</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">30</span><span class="p">),</span> las <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-19.png" alt="plot of chunk unnamed-chunk-19" /> </p>
+
+<h2 id="plotting-parameters">Plotting parameters</h2>
+
+<p>Each device has a set of graphical parameters that can be set up before you start plotting.  Most of these parameters control the “look and feel” of the plotting device.  Take a look at the <code>par</code> helpfile for the vast array of options:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="o">?</span>par
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For example, you can control the portion of your canvas taken up by each of the margins around your plot using <code>mar</code> (i.e., “lines” in the margin).  The default is:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span>mar<span class="o">=</span>c<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span> <span class="o">+</span> <span class="m">0.1</span><span class="p">)</span>
+</span><span class="line">hist<span class="p">(</span>x<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-21.png" alt="plot of chunk unnamed-chunk-21" /> </p>
+
+<p>Widen the right axis.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">op <span class="o">&lt;-</span> par<span class="p">(</span>mar<span class="o">=</span>c<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">)</span> <span class="o">+</span> <span class="m">0.1</span><span class="p">)</span>
+</span><span class="line">hist<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span>side<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis on this side&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">4</span><span class="p">,</span> line<span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-221.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+<span class="line-number">77</span>
+<span class="line-number">78</span>
+<span class="line-number">79</span>
+<span class="line-number">80</span>
+<span class="line-number">81</span>
+<span class="line-number">82</span>
+<span class="line-number">83</span>
+<span class="line-number">84</span>
+<span class="line-number">85</span>
+<span class="line-number">86</span>
+<span class="line-number">87</span>
+<span class="line-number">88</span>
+<span class="line-number">89</span>
+<span class="line-number">90</span>
+<span class="line-number">91</span>
+<span class="line-number">92</span>
+<span class="line-number">93</span>
+<span class="line-number">94</span>
+<span class="line-number">95</span>
+<span class="line-number">96</span>
+<span class="line-number">97</span>
+<span class="line-number">98</span>
+<span class="line-number">99</span>
+<span class="line-number">100</span>
+<span class="line-number">101</span>
+<span class="line-number">102</span>
+<span class="line-number">103</span>
+<span class="line-number">104</span>
+<span class="line-number">105</span>
+<span class="line-number">106</span>
+<span class="line-number">107</span>
+<span class="line-number">108</span>
+<span class="line-number">109</span>
+<span class="line-number">110</span>
+<span class="line-number">111</span>
+<span class="line-number">112</span>
+<span class="line-number">113</span>
+<span class="line-number">114</span>
+<span class="line-number">115</span>
+<span class="line-number">116</span>
+<span class="line-number">117</span>
+<span class="line-number">118</span>
+<span class="line-number">119</span>
+<span class="line-number">120</span>
+<span class="line-number">121</span>
+<span class="line-number">122</span>
+<span class="line-number">123</span>
+<span class="line-number">124</span>
+<span class="line-number">125</span>
+<span class="line-number">126</span>
+<span class="line-number">127</span>
+<span class="line-number">128</span>
+<span class="line-number">129</span>
+<span class="line-number">130</span>
+<span class="line-number">131</span>
+<span class="line-number">132</span>
+<span class="line-number">133</span>
+<span class="line-number">134</span>
+<span class="line-number">135</span>
+<span class="line-number">136</span>
+<span class="line-number">137</span>
+<span class="line-number">138</span>
+<span class="line-number">139</span>
+<span class="line-number">140</span>
+<span class="line-number">141</span>
+<span class="line-number">142</span>
+<span class="line-number">143</span>
+<span class="line-number">144</span>
+<span class="line-number">145</span>
+<span class="line-number">146</span>
+<span class="line-number">147</span>
+<span class="line-number">148</span>
+<span class="line-number">149</span>
+<span class="line-number">150</span>
+<span class="line-number">151</span>
+<span class="line-number">152</span>
+<span class="line-number">153</span>
+<span class="line-number">154</span>
+<span class="line-number">155</span>
+<span class="line-number">156</span>
+<span class="line-number">157</span>
+<span class="line-number">158</span>
+<span class="line-number">159</span>
+<span class="line-number">160</span>
+<span class="line-number">161</span>
+<span class="line-number">162</span>
+<span class="line-number">163</span>
+<span class="line-number">164</span>
+<span class="line-number">165</span>
+<span class="line-number">166</span>
+<span class="line-number">167</span>
+<span class="line-number">168</span>
+<span class="line-number">169</span>
+<span class="line-number">170</span>
+<span class="line-number">171</span>
+<span class="line-number">172</span>
+<span class="line-number">173</span>
+<span class="line-number">174</span>
+<span class="line-number">175</span>
+<span class="line-number">176</span>
+<span class="line-number">177</span>
+<span class="line-number">178</span>
+<span class="line-number">179</span>
+<span class="line-number">180</span>
+<span class="line-number">181</span>
+<span class="line-number">182</span>
+<span class="line-number">183</span>
+<span class="line-number">184</span>
+<span class="line-number">185</span>
+<span class="line-number">186</span>
+<span class="line-number">187</span>
+<span class="line-number">188</span>
+<span class="line-number">189</span>
+<span class="line-number">190</span>
+<span class="line-number">191</span>
+<span class="line-number">192</span>
+<span class="line-number">193</span>
+<span class="line-number">194</span>
+<span class="line-number">195</span>
+<span class="line-number">196</span>
+<span class="line-number">197</span>
+<span class="line-number">198</span>
+<span class="line-number">199</span>
+<span class="line-number">200</span>
+<span class="line-number">201</span>
+<span class="line-number">202</span>
+<span class="line-number">203</span>
+<span class="line-number">204</span>
+<span class="line-number">205</span>
+<span class="line-number">206</span>
+<span class="line-number">207</span>
+<span class="line-number">208</span>
+<span class="line-number">209</span>
+<span class="line-number">210</span>
+<span class="line-number">211</span>
+<span class="line-number">212</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">$xlog
+</span><span class="line">[1] FALSE
+</span><span class="line">
+</span><span class="line">$ylog
+</span><span class="line">[1] FALSE
+</span><span class="line">
+</span><span class="line">$adj
+</span><span class="line">[1] 0.5
+</span><span class="line">
+</span><span class="line">$ann
+</span><span class="line">[1] TRUE
+</span><span class="line">
+</span><span class="line">$ask
+</span><span class="line">[1] FALSE
+</span><span class="line">
+</span><span class="line">$bg
+</span><span class="line">[1] "transparent"
+</span><span class="line">
+</span><span class="line">$bty
+</span><span class="line">[1] "o"
+</span><span class="line">
+</span><span class="line">$cex
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$cex.axis
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$cex.lab
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$cex.main
+</span><span class="line">[1] 1.2
+</span><span class="line">
+</span><span class="line">$cex.sub
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$cin
+</span><span class="line">[1] 0.15 0.20
+</span><span class="line">
+</span><span class="line">$col
+</span><span class="line">[1] "black"
+</span><span class="line">
+</span><span class="line">$col.axis
+</span><span class="line">[1] "black"
+</span><span class="line">
+</span><span class="line">$col.lab
+</span><span class="line">[1] "black"
+</span><span class="line">
+</span><span class="line">$col.main
+</span><span class="line">[1] "black"
+</span><span class="line">
+</span><span class="line">$col.sub
+</span><span class="line">[1] "black"
+</span><span class="line">
+</span><span class="line">$cra
+</span><span class="line">[1] 10.8 14.4
+</span><span class="line">
+</span><span class="line">$crt
+</span><span class="line">[1] 0
+</span><span class="line">
+</span><span class="line">$csi
+</span><span class="line">[1] 0.2
+</span><span class="line">
+</span><span class="line">$cxy
+</span><span class="line">[1] 0.2512 1.7772
+</span><span class="line">
+</span><span class="line">$din
+</span><span class="line">[1] 7 5
+</span><span class="line">
+</span><span class="line">$err
+</span><span class="line">[1] 0
+</span><span class="line">
+</span><span class="line">$family
+</span><span class="line">[1] ""
+</span><span class="line">
+</span><span class="line">$fg
+</span><span class="line">[1] "black"
+</span><span class="line">
+</span><span class="line">$fig
+</span><span class="line">[1] 0 1 0 1
+</span><span class="line">
+</span><span class="line">$fin
+</span><span class="line">[1] 7 5
+</span><span class="line">
+</span><span class="line">$font
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$font.axis
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$font.lab
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$font.main
+</span><span class="line">[1] 2
+</span><span class="line">
+</span><span class="line">$font.sub
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$lab
+</span><span class="line">[1] 5 5 7
+</span><span class="line">
+</span><span class="line">$las
+</span><span class="line">[1] 0
+</span><span class="line">
+</span><span class="line">$lend
+</span><span class="line">[1] "round"
+</span><span class="line">
+</span><span class="line">$lheight
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$ljoin
+</span><span class="line">[1] "round"
+</span><span class="line">
+</span><span class="line">$lmitre
+</span><span class="line">[1] 10
+</span><span class="line">
+</span><span class="line">$lty
+</span><span class="line">[1] "solid"
+</span><span class="line">
+</span><span class="line">$lwd
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$mai
+</span><span class="line">[1] 1.02 0.82 0.82 1.02
+</span><span class="line">
+</span><span class="line">$mar
+</span><span class="line">[1] 5.1 4.1 4.1 5.1
+</span><span class="line">
+</span><span class="line">$mex
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$mfcol
+</span><span class="line">[1] 1 1
+</span><span class="line">
+</span><span class="line">$mfg
+</span><span class="line">[1] 1 1 1 1
+</span><span class="line">
+</span><span class="line">$mfrow
+</span><span class="line">[1] 1 1
+</span><span class="line">
+</span><span class="line">$mgp
+</span><span class="line">[1] 3 1 0
+</span><span class="line">
+</span><span class="line">$mkh
+</span><span class="line">[1] 0.001
+</span><span class="line">
+</span><span class="line">$new
+</span><span class="line">[1] FALSE
+</span><span class="line">
+</span><span class="line">$oma
+</span><span class="line">[1] 0 0 0 0
+</span><span class="line">
+</span><span class="line">$omd
+</span><span class="line">[1] 0 1 0 1
+</span><span class="line">
+</span><span class="line">$omi
+</span><span class="line">[1] 0 0 0 0
+</span><span class="line">
+</span><span class="line">$pch
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$pin
+</span><span class="line">[1] 5.16 3.16
+</span><span class="line">
+</span><span class="line">$plt
+</span><span class="line">[1] 0.1171 0.8543 0.2040 0.8360
+</span><span class="line">
+</span><span class="line">$ps
+</span><span class="line">[1] 12
+</span><span class="line">
+</span><span class="line">$pty
+</span><span class="line">[1] "m"
+</span><span class="line">
+</span><span class="line">$smo
+</span><span class="line">[1] 1
+</span><span class="line">
+</span><span class="line">$srt
+</span><span class="line">[1] 0
+</span><span class="line">
+</span><span class="line">$tck
+</span><span class="line">[1] NA
+</span><span class="line">
+</span><span class="line">$tcl
+</span><span class="line">[1] -0.5
+</span><span class="line">
+</span><span class="line">$usr
+</span><span class="line">[1]  0.68  9.32 -1.04 27.04
+</span><span class="line">
+</span><span class="line">$xaxp
+</span><span class="line">[1] 2 8 3
+</span><span class="line">
+</span><span class="line">$xaxs
+</span><span class="line">[1] "r"
+</span><span class="line">
+</span><span class="line">$xaxt
+</span><span class="line">[1] "s"
+</span><span class="line">
+</span><span class="line">$xpd
+</span><span class="line">[1] FALSE
+</span><span class="line">
+</span><span class="line">$yaxp
+</span><span class="line">[1]  0 25  5
+</span><span class="line">
+</span><span class="line">$yaxs
+</span><span class="line">[1] "r"
+</span><span class="line">
+</span><span class="line">$yaxt
+</span><span class="line">[1] "s"
+</span><span class="line">
+</span><span class="line">$ylbias
+</span><span class="line">[1] 0.2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span><span class="s">&quot;mar&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 5.1 4.1 4.1 5.1</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span>op<span class="p">)</span> <span class="c1"># Resets changes to default</span>
+</span><span class="line">hist<span class="p">(</span>x<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-222.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+
+<p>A graphics device can have many panels.  <code>mfrow</code> allows you to add multiple frames by row - so each time you call a plot, it will be added to the next panel by rows first</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">op <span class="o">&lt;-</span> par<span class="p">(</span>mfrow<span class="o">=</span>c<span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">))</span>
+</span><span class="line">hist<span class="p">(</span>x<span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">text<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">25</span><span class="p">,</span> <span class="s">&quot;A&quot;</span><span class="p">)</span>
+</span><span class="line">hist<span class="p">(</span>y<span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">text<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">25</span><span class="p">,</span> <span class="s">&quot;B&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">h <span class="o">&lt;-</span> hist<span class="p">(</span>x<span class="p">,</span> plot<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">h
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">$breaks
+</span><span class="line">[1] 1 2 3 4 5 6 7 8 9
+</span><span class="line">
+</span><span class="line">$counts
+</span><span class="line">[1]  1  7 23 26 23 14  4  2
+</span><span class="line">
+</span><span class="line">$intensities
+</span><span class="line">[1] 0.01 0.07 0.23 0.26 0.23 0.14 0.04 0.02
+</span><span class="line">
+</span><span class="line">$density
+</span><span class="line">[1] 0.01 0.07 0.23 0.26 0.23 0.14 0.04 0.02
+</span><span class="line">
+</span><span class="line">$mids
+</span><span class="line">[1] 1.5 2.5 3.5 4.5 5.5 6.5 7.5 8.5
+</span><span class="line">
+</span><span class="line">$xname
+</span><span class="line">[1] "x"
+</span><span class="line">
+</span><span class="line">$equidist
+</span><span class="line">[1] TRUE
+</span><span class="line">
+</span><span class="line">attr(,"class")
+</span><span class="line">[1] "histogram"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>h<span class="o">$</span>mids<span class="p">,</span> h<span class="o">$</span>counts<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">points<span class="p">(</span>h<span class="o">$</span>mids<span class="p">,</span> h<span class="o">$</span>counts<span class="p">,</span> pch<span class="o">=</span><span class="m">20</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">25</span><span class="p">,</span> <span class="s">&quot;C&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>h<span class="o">$</span>mids<span class="p">,</span> h<span class="o">$</span>density<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;green&quot;</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> xlim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">points<span class="p">(</span>h<span class="o">$</span>mids<span class="p">,</span> h<span class="o">$</span>density<span class="p">,</span> pch<span class="o">=</span><span class="m">20</span><span class="p">)</span>
+</span><span class="line">text<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">.25</span><span class="p">,</span> <span class="s">&quot;D&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>v<span class="o">=</span>h<span class="o">$</span>breaks<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-23.png" alt="plot of chunk unnamed-chunk-23" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span>op<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Panels may have the same information and axes don’t need to be repeated.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">op <span class="o">&lt;-</span> par<span class="p">(</span>mfrow<span class="o">=</span>c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> mar<span class="o">=</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> oma<span class="o">=</span>c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> ann<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> labels<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> col<span class="o">=</span>rainbow<span class="p">(</span><span class="m">10</span><span class="p">),</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> labels<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> labels<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;C&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> labels<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;D&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;x-axis&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">1</span><span class="p">,</span> outer<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> line<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;y-axis&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">2</span><span class="p">,</span> outer<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> line<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;title&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> outer<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> line<span class="o">=</span><span class="m">1</span><span class="p">,</span> cex<span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-24.png" alt="plot of chunk unnamed-chunk-24" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span>op<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="barplots">Barplots</h2>
+
+<p>Barplots are commonly used in biology, but are not as straightword as you might hope in R.  Make sure the herbivore data is loaded:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Using what you’ve learned so far, make a new column containing “Both”, “Root only”, “Seed only” and “None” based on the four possible combinations of root and seed herbivores in the dataset. This column needs to be a <code>factor</code> for the analysis we will be conducting and graphing.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="o">$</span>Herbivory<span class="p">[</span>data<span class="o">$</span>Root.herbivore <span class="o">&amp;</span> data<span class="o">$</span>Seed.herbivore<span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Both&quot;</span>
+</span><span class="line">data<span class="o">$</span>Herbivory<span class="p">[</span>data<span class="o">$</span>Root.herbivore <span class="o">&amp;</span> <span class="o">!</span>data<span class="o">$</span>Seed.herbivore<span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Root only&quot;</span>
+</span><span class="line">data<span class="o">$</span>Herbivory<span class="p">[</span><span class="o">!</span>data<span class="o">$</span>Root.herbivore <span class="o">&amp;</span> data<span class="o">$</span>Seed.herbivore<span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Seed only&quot;</span>
+</span><span class="line">data<span class="o">$</span>Herbivory<span class="p">[</span><span class="o">!</span>data<span class="o">$</span>Root.herbivore <span class="o">&amp;</span> <span class="o">!</span>data<span class="o">$</span>Seed.herbivore<span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;None&quot;</span>
+</span><span class="line">data<span class="o">$</span>Herbivory <span class="o">&lt;-</span> factor<span class="p">(</span>data<span class="o">$</span>Herbivory<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Let’s run an ANOVA.  First, let’s look at the linear model: </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mod.lm <span class="o">&lt;-</span> lm<span class="p">(</span>Height <span class="o">~</span> Herbivory<span class="p">,</span> data <span class="o">=</span> data<span class="p">)</span>
+</span><span class="line">summary<span class="p">(</span>mod.lm<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">
+</span><span class="line">Call:
+</span><span class="line">lm(formula = Height ~ Herbivory, data = data)
+</span><span class="line">
+</span><span class="line">Residuals:
+</span><span class="line">   Min     1Q Median     3Q    Max 
+</span><span class="line">-36.20 -11.20  -0.14   8.86  38.86 
+</span><span class="line">
+</span><span class="line">Coefficients:
+</span><span class="line">                   Estimate Std. Error t value Pr(&gt;|t|)
+</span><span class="line">(Intercept)           50.14       2.03   24.67   &lt;2e-16
+</span><span class="line">HerbivoryNone         18.13       3.34    5.43    2e-07
+</span><span class="line">HerbivoryRoot only     2.06       2.76    0.75    0.457
+</span><span class="line">HerbivorySeed only     8.79       3.41    2.57    0.011
+</span><span class="line">
+</span><span class="line">Residual standard error: 14.5 on 165 degrees of freedom
+</span><span class="line">Multiple R-squared: 0.174,	Adjusted R-squared: 0.159 
+</span><span class="line">F-statistic: 11.6 on 3 and 165 DF,  p-value: 6.08e-07 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now an analysis of variance of that linear model:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mod.aov <span class="o">&lt;-</span> aov<span class="p">(</span>mod.lm<span class="p">)</span>
+</span><span class="line">summary<span class="p">(</span>mod.aov<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">         Df Sum Sq Mean Sq F value  Pr(&gt;F)
+</span><span class="line">Herbivory     3   7339    2446    11.6 6.1e-07
+</span><span class="line">Residuals   165  34769     211                </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Okay, so there are significant differences among the treatments.  A Tukey Honest Significance Differences test will suggest where these differences occur:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">tuk <span class="o">&lt;-</span> TukeyHSD<span class="p">(</span>mod.aov<span class="p">)</span>
+</span><span class="line">tuk
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Tukey multiple comparisons of means
+</span><span class="line">    95% family-wise confidence level
+</span><span class="line">
+</span><span class="line">Fit: aov(formula = mod.lm)
+</span><span class="line">
+</span><span class="line">$Herbivory
+</span><span class="line">                       diff       lwr     upr  p adj
+</span><span class="line">None-Both            18.129   9.46062 26.7982 0.0000
+</span><span class="line">Root only-Both        2.063  -5.11292  9.2384 0.8782
+</span><span class="line">Seed only-Both        8.791  -0.07026 17.6529 0.0527
+</span><span class="line">Root only-None      -16.067 -24.49121 -7.6421 0.0000
+</span><span class="line">Seed only-None       -9.338 -19.23811  0.5619 0.0722
+</span><span class="line">Seed only-Root only   6.729  -1.89423 15.3514 0.1829</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>tuk<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-291.png" alt="plot of chunk unnamed-chunk-29" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>tuk<span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-292.png" alt="plot of chunk unnamed-chunk-29" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">op <span class="o">&lt;-</span> par<span class="p">(</span>mar<span class="o">=</span>c<span class="p">(</span><span class="m">5</span><span class="p">,</span> <span class="m">9</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+</span><span class="line">plot<span class="p">(</span>tuk<span class="p">,</span> las<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">par<span class="p">(</span>op<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now let’s summarise the data for plotting means and standard errors.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.sum <span class="o">&lt;-</span> aggregate<span class="p">(</span>Height <span class="o">~</span> Herbivory<span class="p">,</span> FUN <span class="o">=</span> mean<span class="p">,</span> data<span class="o">=</span>data<span class="p">)</span>
+</span><span class="line">data.sum<span class="o">$</span>sd <span class="o">&lt;-</span> aggregate<span class="p">(</span>Height <span class="o">~</span> Herbivory<span class="p">,</span> sd<span class="p">,</span> data<span class="o">=</span>data<span class="p">)</span><span class="o">$</span>Height
+</span><span class="line">data.sum<span class="o">$</span>n <span class="o">&lt;-</span> aggregate<span class="p">(</span>Height <span class="o">~</span> Herbivory<span class="p">,</span> length<span class="p">,</span> data<span class="o">=</span>data<span class="p">)</span><span class="o">$</span>Height
+</span><span class="line">data.sum<span class="o">$</span>se <span class="o">&lt;-</span> data.sum<span class="o">$</span>sd<span class="o">/</span>sqrt<span class="p">(</span>data.sum<span class="o">$</span>n<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Order the data frame by <code>Height</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.sum <span class="o">&lt;-</span> data.sum<span class="p">[</span>order<span class="p">(</span>data.sum<span class="o">$</span>Height<span class="p">),]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Make the barplot, while assigning the barplot object to a variable (why?).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">bp <span class="o">&lt;-</span> barplot<span class="p">(</span>data.sum<span class="o">$</span>Height<span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Height (cm)&quot;</span><span class="p">,</span> names.arg<span class="o">=</span>data.sum<span class="o">$</span>Herbivory<span class="p">,</span> las <span class="o">=</span> <span class="m">2</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">80</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-32.png" alt="plot of chunk unnamed-chunk-32" /> </p>
+
+<p>Now, use the anchor points from <code>bp</code> to add standard error bars:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">bp <span class="o">&lt;-</span> barplot<span class="p">(</span>data.sum<span class="o">$</span>Height<span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Height (cm)&quot;</span><span class="p">,</span> names.arg<span class="o">=</span>data.sum<span class="o">$</span>Herbivory<span class="p">,</span> las <span class="o">=</span> <span class="m">2</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">80</span><span class="p">))</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-33.png" alt="plot of chunk unnamed-chunk-33" /> </p>
+
+<p>If you want to get fancy, you can add line segments to the error bars like this</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">bp <span class="o">&lt;-</span> barplot<span class="p">(</span>data.sum<span class="o">$</span>Height<span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Height (cm)&quot;</span><span class="p">,</span> names.arg<span class="o">=</span>data.sum<span class="o">$</span>Herbivory<span class="p">,</span> las <span class="o">=</span> <span class="m">2</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">80</span><span class="p">))</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">)</span>
+</span><span class="line">os <span class="o">&lt;-</span> <span class="m">0.1</span>  <span class="c1"># some kind of &quot;offset&quot;</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="o">-</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="o">+</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">)</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="o">-</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="o">+</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;Barplots are a pain...&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34" /> </p>
+
+<p>Or use <code>arrows</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">bp <span class="o">&lt;-</span> barplot<span class="p">(</span>data.sum<span class="o">$</span>Height<span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Height (cm)&quot;</span><span class="p">,</span> names.arg<span class="o">=</span>data.sum<span class="o">$</span>Herbivory<span class="p">,</span> las <span class="o">=</span> <span class="m">2</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">80</span><span class="p">))</span>
+</span><span class="line">arrows<span class="p">(</span>bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">,</span> code<span class="o">=</span><span class="m">3</span><span class="p">,</span> angle<span class="o">=</span><span class="m">90</span><span class="p">,</span> length<span class="o">=</span><span class="m">0.03</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-35.png" alt="plot of chunk unnamed-chunk-35" /> </p>
+
+<p>And, finally, some kind of visual reference as to where the statistical differences among treatments lie (very ad hoc):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">bp <span class="o">&lt;-</span> barplot<span class="p">(</span>data.sum<span class="o">$</span>Height<span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Height (cm)&quot;</span><span class="p">,</span> names.arg<span class="o">=</span>data.sum<span class="o">$</span>Herbivory<span class="p">,</span> las <span class="o">=</span> <span class="m">2</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">80</span><span class="p">))</span>
+</span><span class="line">arrows<span class="p">(</span>bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">,</span> code<span class="o">=</span><span class="m">3</span><span class="p">,</span> angle<span class="o">=</span><span class="m">90</span><span class="p">)</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="m">70</span><span class="p">,</span> bp<span class="p">[</span><span class="m">3</span><span class="p">],</span> <span class="m">70</span><span class="p">,</span> lwd<span class="o">=</span><span class="m">2</span><span class="p">)</span> <span class="c1"># lwd &quot;line width&quot;</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="p">[</span><span class="m">3</span><span class="p">],</span> <span class="m">75</span><span class="p">,</span> bp<span class="p">[</span><span class="m">4</span><span class="p">],</span> <span class="m">75</span><span class="p">,</span> lwd<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-36.png" alt="plot of chunk unnamed-chunk-36" /> </p>
+
+<h2 id="exercise-1">Exercise</h2>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">)</span>
+</span><span class="line">data<span class="o">$</span>lWeight <span class="o">&lt;-</span> log10<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Panel A</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">op <span class="o">&lt;-</span> par<span class="p">(</span>mfrow<span class="o">=</span>c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
+</span><span class="line">
+</span><span class="line">mod <span class="o">&lt;-</span> lm<span class="p">(</span>lWeight <span class="o">~</span> Height<span class="p">,</span> data<span class="p">)</span>
+</span><span class="line">summary<span class="p">(</span>mod<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">
+</span><span class="line">Call:
+</span><span class="line">lm(formula = lWeight ~ Height, data = data)
+</span><span class="line">
+</span><span class="line">Residuals:
+</span><span class="line">   Min     1Q Median     3Q    Max 
+</span><span class="line">-0.765 -0.125  0.030  0.140  0.579 
+</span><span class="line">
+</span><span class="line">Coefficients:
+</span><span class="line">            Estimate Std. Error t value Pr(&gt;|t|)
+</span><span class="line">(Intercept) -0.18527    0.06669   -2.78   0.0061
+</span><span class="line">Height       0.01945    0.00116   16.84   &lt;2e-16
+</span><span class="line">
+</span><span class="line">Residual standard error: 0.237 on 167 degrees of freedom
+</span><span class="line">Multiple R-squared: 0.629,	Adjusted R-squared: 0.627 
+</span><span class="line">F-statistic:  284 on 1 and 167 DF,  p-value: &lt;2e-16 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">ss <span class="o">&lt;-</span> seq<span class="p">(</span>min<span class="p">(</span>data<span class="o">$</span>Height<span class="p">),</span> max<span class="p">(</span>data<span class="o">$</span>Height<span class="p">),</span> <span class="m">0.5</span><span class="p">)</span>
+</span><span class="line">ss.conf <span class="o">&lt;-</span> predict<span class="p">(</span>mod<span class="p">,</span> list<span class="p">(</span>Height <span class="o">=</span> ss<span class="p">),</span> interval <span class="o">=</span> <span class="s">&quot;confidence&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>lWeight <span class="o">~</span> Height<span class="p">,</span> data<span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlab<span class="o">=</span>expression<span class="p">(</span>paste<span class="p">(</span><span class="s">&quot;Height (&quot;</span><span class="p">,</span> m<span class="o">^</span><span class="m">2</span><span class="p">,</span> <span class="s">&quot;)&quot;</span><span class="p">)),</span> ylab<span class="o">=</span><span class="s">&quot;Weight (g), log-scale&quot;</span><span class="p">)</span>
+</span><span class="line">polygon<span class="p">(</span>c<span class="p">(</span>ss<span class="p">,</span> rev<span class="p">(</span>ss<span class="p">)),</span> c<span class="p">(</span>ss.conf<span class="p">[,</span><span class="s">&quot;lwr&quot;</span><span class="p">],</span> rev<span class="p">(</span>ss.conf<span class="p">[,</span><span class="s">&quot;upr&quot;</span><span class="p">])),</span> col <span class="o">=</span> rgb<span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">0.2</span><span class="p">),</span> border <span class="o">=</span> <span class="kc">NA</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>ss<span class="p">,</span> ss.conf<span class="p">[,</span><span class="s">&quot;fit&quot;</span><span class="p">])</span>
+</span><span class="line">
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> at <span class="o">=</span> log10<span class="p">(</span>c<span class="p">(</span>seq<span class="p">(</span><span class="m">0.3</span><span class="p">,</span> <span class="m">0.9</span><span class="p">,</span> <span class="m">0.1</span><span class="p">),</span> seq<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">9</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> seq<span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">60</span><span class="p">,</span> <span class="m">10</span><span class="p">))),</span> labels <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span> tck <span class="o">=</span> <span class="m">-0.015</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> at <span class="o">=</span> log10<span class="p">(</span>c<span class="p">(</span><span class="m">0.3</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">30</span><span class="p">)),</span> labels <span class="o">=</span> c<span class="p">(</span><span class="m">0.3</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">10</span><span class="p">,</span> <span class="m">30</span><span class="p">),</span> las <span class="o">=</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;A&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj<span class="o">=</span><span class="m">0</span><span class="p">,</span> cex<span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-38.png" alt="plot of chunk unnamed-chunk-38" /> </p>
+
+<p>Panel B</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">bp <span class="o">&lt;-</span> barplot<span class="p">(</span>data.sum<span class="o">$</span>Height<span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Height (cm)&quot;</span><span class="p">,</span> names.arg<span class="o">=</span>data.sum<span class="o">$</span>Herbivory<span class="p">,</span> las <span class="o">=</span> <span class="m">2</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">80</span><span class="p">))</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">)</span>
+</span><span class="line">
+</span><span class="line">segments<span class="p">(</span>bp<span class="o">-</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="o">+</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">+</span> data.sum<span class="o">$</span>se<span class="p">)</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="o">-</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">,</span> bp<span class="o">+</span>os<span class="p">,</span> data.sum<span class="o">$</span>Height <span class="o">-</span> data.sum<span class="o">$</span>se<span class="p">)</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="p">[</span><span class="m">1</span><span class="p">],</span> <span class="m">70</span><span class="p">,</span> bp<span class="p">[</span><span class="m">3</span><span class="p">],</span> <span class="m">70</span><span class="p">,</span> lwd<span class="o">=</span><span class="m">2</span><span class="p">)</span> <span class="c1"># lwd &quot;line width&quot;</span>
+</span><span class="line">segments<span class="p">(</span>bp<span class="p">[</span><span class="m">3</span><span class="p">],</span> <span class="m">75</span><span class="p">,</span> bp<span class="p">[</span><span class="m">4</span><span class="p">],</span> <span class="m">75</span><span class="p">,</span> lwd<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">mtext<span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">,</span> side<span class="o">=</span><span class="m">3</span><span class="p">,</span> adj<span class="o">=</span><span class="m">0</span><span class="p">,</span> cex<span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-39.png" alt="plot of chunk unnamed-chunk-39" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span>op<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="other-useful-examples">Other useful examples</h2>
+
+<p>Contour or image plots can be used to visualise 3d, matrix or spatial data.  Use the builtin dataset “volcano”:  </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">contour<span class="p">(</span>volcano<span class="p">)</span>
+</span><span class="line">title<span class="p">(</span><span class="s">&quot;Auckland&#39;s Maunga Whau Volcano&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-401.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">rand.scape <span class="o">&lt;-</span> matrix<span class="p">(</span>rnorm<span class="p">(</span><span class="m">10000</span><span class="p">),</span> <span class="m">100</span><span class="p">,</span> <span class="m">100</span><span class="p">)</span>
+</span><span class="line">contour<span class="p">(</span>rand.scape<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-402.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">image<span class="p">(</span>rand.scape<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-403.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">image<span class="p">(</span>volcano<span class="p">,</span> col <span class="o">=</span> rev<span class="p">(</span>heat.colors<span class="p">(</span><span class="m">12</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-404.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">image<span class="p">(</span>volcano<span class="p">,</span> col <span class="o">=</span> terrain.colors<span class="p">(</span><span class="m">12</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-405.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">image<span class="p">(</span>volcano<span class="p">,</span> col <span class="o">=</span> grey<span class="p">(</span>seq<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0.1</span><span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-406.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">filled.contour<span class="p">(</span>volcano<span class="p">,</span> color.palette <span class="o">=</span> terrain.colors<span class="p">,</span> asp <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/plotting-unnamed-chunk-407.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+
+<p>The R package “ggplot” has become popular.  However, you need to learn a syntax that is somewhat different to standard R syntax (hence the reason we did not cover it here).</p>
+
+<p>The R package “lattice” is great for multivariate data. Here’s the volcano again using <code>wireframe()</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">library<span class="p">(</span>lattice<span class="p">)</span>
+</span><span class="line">wireframe<span class="p">(</span>volcano<span class="p">,</span> shade <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> aspect <span class="o">=</span> c<span class="p">(</span><span class="m">61</span><span class="o">/</span><span class="m">87</span><span class="p">,</span> <span class="m">0.4</span><span class="p">),</span> light.source <span class="o">=</span> c<span class="p">(</span><span class="m">10</span><span class="p">,</span><span class="m">0</span><span class="p">,</span><span class="m">10</span><span class="p">))</span>
+</span><span class="line">demo<span class="p">(</span>lattice<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you want to get visually fancy, then take a look at the R package “rgl”.  Rstudio doesn’t seem to handle rgl objects very well.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">library<span class="p">(</span>rgl<span class="p">)</span>
+</span><span class="line">rgl.points<span class="p">(</span>rnorm<span class="p">(</span><span class="m">1000</span><span class="p">),</span> rnorm<span class="p">(</span><span class="m">1000</span><span class="p">),</span> rnorm<span class="p">(</span><span class="m">1000</span><span class="p">),</span> color<span class="o">=</span>heat.colors<span class="p">(</span><span class="m">1000</span><span class="p">))</span>
+</span><span class="line">demo<span class="p">(</span>lsystem<span class="p">)</span>
+</span><span class="line">example<span class="p">(</span>surface3d<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/intro/plotting.html';
+        var disqus_url = 'http://nicercode.github.com/intro/plotting.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,468 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Designing projects - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="The scientific process is naturally incremental, and many projects
+start life as random notes, some code, then a manuscript, and
+eventually &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/blog/2013-04-05-projects/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Designing projects</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-05T14:34:00+11:00" pubdate data-updated="true">05 April 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>The scientific process is naturally incremental, and many projects
+start life as random notes, some code, then a manuscript, and
+eventually everything is a bit mixed together.</p>
+
+<!-- more -->
+
+<blockquote class="twitter-tweet"><p>Managing your projects in a reproducible fashion doesn&#8217;t just make your science reproducible, it makes your life easier.</p>&mdash; Vince Buffalo (@vsbuffalo) <a href="https://twitter.com/vsbuffalo/status/323638476153167872">April 15, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h1 id="directory-layout">Directory layout</h1>
+
+<p>A good project layout helps ensure the</p>
+
+<ul>
+  <li>Integrity of data</li>
+  <li>Portability of the project</li>
+  <li>Easier to pick the project back up after a break</li>
+</ul>
+
+<p>There is no one way to lay a project out.  Daniel and I both have
+different approaches for different projects, reflecting the history of
+the project, who else is collaborating on that project.</p>
+
+<p>Here are a couple of different ideas for laying a project out.  This
+is the basic structure that I tend to use:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">proj/
+</span><span class="line">├── R/
+</span><span class="line">├── data/
+</span><span class="line">├── doc/
+</span><span class="line">├── figs/
+</span><span class="line">└── output/</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>The <code>R</code> directory contains various files with function definitions
+(but <em>only</em> function definitions - no code that actually runs).</p>
+  </li>
+  <li>
+    <p>The <code>data</code> directory contains data used in the analysis.  This is
+treated as <em>read only</em>; in paricular the R files are never allowed
+to write to the files in here.  Depending on the project, these
+might be csv files, a database, and the directory itself may have
+subdirectories.</p>
+  </li>
+  <li>
+    <p>The <code>doc</code> directory contains the paper.  I work in LaTeX which is
+nice because it can pick up figures directly made by R.  Markdown
+can do the same and is starting to get traction among biologists.
+With Word you’ll have to paste them in yourself as the figures
+update.</p>
+  </li>
+  <li>
+    <p>The <code>figs</code> directory contains the figures.  This directory <em>only
+contains generated files</em>; that is, I should always be able to
+delete the contents and regenerate them.</p>
+  </li>
+  <li>
+    <p>The <code>output</code> directory contains simuation output, processed
+datasets, logs, or other processed things.</p>
+  </li>
+</ul>
+
+<p>In this set up, I usually have the R script files that <em>do</em> things in
+the project root:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">proj/
+</span><span class="line">├── R/
+</span><span class="line">├── data/
+</span><span class="line">├── doc/
+</span><span class="line">├── figs/
+</span><span class="line">├── output/
+</span><span class="line">└── analysis.R</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For very simple projects, you might drop the R directory, perhaps
+replacing it with a single file <code>analysis-functions.R</code> which you
+source.</p>
+
+<p>The top of the analysis file usually looks something like</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">library<span class="p">(</span>some_package<span class="p">)</span>
+</span><span class="line">library<span class="p">(</span>some_other_package<span class="p">)</span>
+</span><span class="line">source<span class="p">(</span><span class="s">&quot;R/functions.R&quot;</span><span class="p">)</span>
+</span><span class="line">source<span class="p">(</span><span class="s">&quot;R/utilities.R&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>…followed by the code that loads the data, cleans it up, runs the
+analysis and generates the figures.</p>
+
+<p>Other people have other ideas</p>
+
+<ul>
+  <li>
+    <p><a href="http://www.carlboettiger.info/2012/05/06/research-workflow.html">Carl Boettiger</a>
+is an open science advocate who has described his
+<a href="http://www.carlboettiger.info/2012/05/06/research-workflow.html">layout in detail</a>.
+This layout uses R packages for most of the code organisation, and
+would be a nice approach for large projects.</p>
+  </li>
+  <li>
+    <p><a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1000424">This article</a>
+in <a href="http://www.ploscompbiol.org/">PLOS Computational Biology</a>
+describes a general framework. </p>
+  </li>
+</ul>
+
+<h2 id="treat-data-as-read-only">Treat data as read only</h2>
+
+<p>In my mind, this is probably the most important goal of setting up a
+project.  Data are typically time consuming and/or expensive to
+collect.  Working with them interactively (e.g., in Excel) where they
+can be modified means you are never sure of where the data came from,
+or how they have been modified.  My suggestion is to put your data
+into the <code>data</code> directory and treat it as <em>read only</em>.  Within your
+scripts you might generate derived data sets either temporarily (in an
+R session only) or semi-permanantly (as an file in <code>output/</code>), but the
+original data is always left in an untouched state.</p>
+
+<h2 id="treat-generated-output-as-disposable">Treat generated output as disposable</h2>
+
+<p>In this approach, files in directories <code>figs/</code> and <code>output/</code> are all
+generated by the scripts.  A nice thing about this approach is that if
+the filenames of generated files change (e.g, changing from
+<code>phylogeny.pdf</code> to <code>mammal-phylogeny.pdf</code>) files with the old names
+may still stick around, but because they’re in this directory you know
+you can always delete them.  Before submitting a paper, I will go
+through and delete all the generated files and rerun the analysis to
+make sure that I can create all the analyses and figures from the
+data.</p>
+
+<h2 id="separate-function-definition-and-application">Separate function definition and application</h2>
+
+<p>When your project is new and shiny, the script file usually contains
+many lines of directly executated code.  As it matures, reusable
+chunks get pulled into their own functions.  The actual analysis
+scripts then become relatively short, and use the functions defined in
+scripts in <code>R</code>.  Those scripts do nothing but define functions so that
+they can always be <code>source()</code>‘d by the analysis scripts.</p>
+
+<h1 id="setting-up-a-project-in-rstudio">Setting up a project in RStudio</h1>
+
+<p>This gets rid of the #1 problem with most people’s projects face;
+where do you find the data.  Two solutions people generally come up
+with are:</p>
+
+<ol>
+  <li>Hard code the full filename for each file you load (e.g.,
+<code>/Users/rich/Documents/Projects/Thesis/chapter2/data/mydata.csv</code>)</li>
+  <li>Set the working directory at the beginning of your script file
+<code>/Users/rich/Documents/Projects/Thesis/chapter2</code> then doing
+<code>read.csv("data/mydata.csv")</code></li>
+</ol>
+
+<p>The second of these is probably preferable to the first, because the
+“special case” part is restricted to just one line in your file.
+However, the project is still now quite fragile, because moving it
+from one place to another, you must change this file.  Some examples
+of when you might do this:</p>
+
+<ul>
+  <li>Archiving a project (moving it from a “current projects” directory
+to a new projects directory)</li>
+  <li>Giving the code to somebody else (your labmate, collaborator, supervisor)</li>
+  <li>Uploading the code with your manuscript submission for review, or to
+<a href="http://datadryad.org/">Dryad</a> after acceptance.</li>
+  <li>New computer and new directory layout (especially changing
+platforms, or if your previous mess got too bad and you wanted to
+clean up).</li>
+  <li>Any number of new reasons</li>
+</ul>
+
+<p>The second case hints at a solution too; if we can start R in a
+particular directory then we can just use paths <em>relative to the
+project root</em> and have everything work nicely.</p>
+
+<p>To create a project in R studio:</p>
+
+<ul>
+  <li>“Project”: “Create Project…”</li>
+  <li>choose “New Project, (start a project in a new directory)”.</li>
+  <li>Leave the “Type” as the default.</li>
+  <li>In the “Directory name” type the name for the project.  This might
+be <code>chapter2</code> for a thesis, or something more descriptive like
+<code>fish_behaviour</code>.</li>
+  <li>In the “Create project as a subdirectory of” field select (type or
+browse) for the parent directory of the project.  By default this
+is probably your home directory, but you might prefer your
+Documents folder (I have mine in <code>~/Documents/Projects</code>).</li>
+</ul>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Rich FitzJohn</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-05T14:34:00+11:00" pubdate data-updated="true">05 April 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-04-05-projects/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-04-05-projects/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-03-08-nice-r-code-2013-plans/" title="Previous Post: Plans for 'Nice R code module', Macquarie University 2013">&laquo; Plans for 'Nice R code module', Macquarie University 2013</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013-04-05-why-nice-code/" title="Next Post: Why I want to write nice R code">Why I want to write nice R code &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/blog/2013-04-05-projects/';
+        var disqus_url = 'http://nicercode.github.com/blog/2013-04-05-projects/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

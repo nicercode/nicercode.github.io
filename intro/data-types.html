@@ -1,0 +1,1024 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Data types - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Data types 18 March 2013 Data can have different “types”. The core data types in R are
+“logical” (true/false), “integer” (-1, 0, 1, etc), “numeric” &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/intro/data-types.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Data types</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-18T10:25:00+11:00" pubdate data-updated="true">18 March 2013</time></p>
+  </header>
+  
+  <p>Data can have different “types”.  The core data types in R are
+“logical” (true/false), “integer” (-1, 0, 1, etc), “numeric” or
+“double” (floating point numbers, a.k.a. decimals or real numbers),
+and “character” (strings).  There is also “complex” type for
+complex numbers, but you have to go out of your way to find them.</p>
+
+<p>A <code>logical</code> vector:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">c<span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1]  TRUE FALSE</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>An <code>integer</code> vector: (you rarely need to specify these
+explicitly).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">c<span class="p">(</span><span class="m">1L</span><span class="p">,</span> <span class="m">2L</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1 2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>A <code>numeric</code> vector:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1 2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>A <code>character</code> vector:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">c<span class="p">(</span><span class="s">&quot;string1&quot;</span><span class="p">,</span> <span class="s">&quot;string 2 with spaces&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;string1&quot;              &quot;string 2 with spaces&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(even though they are called “characters”, there is no special type
+for single letters, etc.  So people will refer to these as strings
+and characters fairly interchangeably).</p>
+
+<p>Note that the strings <em>must</em> be quoted.  You can use single or
+double quotes as you fancy, but be consistent.  The difference
+between integer and numeric is subtle and can usually be ignored.
+To force numbers to be integers, you need to specify them with an
+“L” after, as above.  Generally don’t worry about this.</p>
+
+<p>It is possible to refer to <code>TRUE</code> and <code>FALSE</code> as <code>T</code> and <code>F</code>, and
+this practice is fairly widespread.  <strong>Do not do it</strong>.  The values
+<code>TRUE</code> and <code>FALSE</code> are special values are protected – they can
+never be overwritten:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="kc">TRUE</span> <span class="o">&lt;-</span> <span class="kc">FALSE</span>  <span class="c1"># invalid code, causes error</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error: invalid (do_set) left-hand side to assignment</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Wheras the values <code>T</code> and <code>F</code> are just variables bound to the
+values <code>TRUE</code> and <code>FALSE</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="k-Variable">T</span> <span class="o">&lt;-</span> <span class="kc">FALSE</span>
+</span><span class="line"><span class="k-Variable">F</span> <span class="o">&lt;-</span> <span class="kc">TRUE</span>
+</span><span class="line"><span class="k-Variable">T</span>  <span class="c1"># is now FALSE!</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] FALSE</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="k-Variable">F</span>  <span class="c1"># is now TRUE!</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] TRUE</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Do this at the top of of someone’s script and watch their world
+burn.</p>
+
+<p>Some functions will work on any type, others will require specific
+types.  For example, <code>length</code> will give the length for any vector</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">length<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 4</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">length<span class="p">(</span>c<span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 4</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><code>max</code> will give the maximum value for a vector:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">max<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 4</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">max<span class="p">(</span>c<span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;d&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>but <code>sum</code> requires a vector that is <em>not</em> a character vector:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sum<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 10</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sum<span class="p">(</span>c<span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error: invalid &#39;type&#39; (character) of argument</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>How do you tell which of these types you have?  Use the <code>typeof</code>
+function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">typeof<span class="p">(</span>c<span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;logical&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">typeof<span class="p">(</span>c<span class="p">(</span><span class="m">1L</span><span class="p">,</span> <span class="m">2L</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;integer&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">typeof<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;double&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">typeof<span class="p">(</span>c<span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;character&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note that the type of the number 1 is <code>numeric</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">typeof<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;double&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Unless you ask nicely, all values in R are numeric and not
+integer.  But this usually does not matter.</p>
+
+<p>Note: this section actually grossly oversimplifies what is going
+on; see the difference between <code>mode</code>, <code>storage.mode</code>, <code>class</code> and
+<code>typeof</code>.</p>
+
+<h2 id="container-data-types">Container data types</h2>
+
+<p>In R’s terminology, the types above are “atomic data types” as they
+cannot be subdivided any further.  Data go into containers, which
+also have types.</p>
+
+<p>The simplest of these is the <em>vector</em>, which we’ve already seen.  A
+vector contains zero or more elements of <em>a single atomic type</em>.
+So you have a vector of integers, or a vector of characters, etc.
+You can’t have a mix of types within a vector.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">c<span class="p">(</span><span class="m">1.5</span><span class="p">,</span> <span class="s">&quot;a&quot;</span><span class="p">)</span>  <span class="c1"># The number 1.5 is converted into a character string</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] &quot;1.5&quot; &quot;a&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Next simplest is a <em>matrix</em>.  This is a two dimensional object with
+all elements being the same type.  These can be constructed with
+the <code>matrix</code> function</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">m <span class="o">&lt;-</span> matrix<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">6</span><span class="p">),</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">m
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##      [,1] [,2] [,3]</span>
+</span><span class="line"><span class="c1">## [1,]    1    3    5</span>
+</span><span class="line"><span class="c1">## [2,]    2    4    6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Notice that the elements are added column-wise.  A matrix is simply
+a vector that knows its dimension (in this case 2-by-3).  You can
+do element-wise operators on a matrix:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="m">2</span> <span class="o">*</span> m
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##      [,1] [,2] [,3]</span>
+</span><span class="line"><span class="c1">## [1,]    2    6   10</span>
+</span><span class="line"><span class="c1">## [2,]    4    8   12</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">log<span class="p">(</span>m<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##        [,1]  [,2]  [,3]</span>
+</span><span class="line"><span class="c1">## [1,] 0.0000 1.099 1.609</span>
+</span><span class="line"><span class="c1">## [2,] 0.6931 1.386 1.792</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>A “list” is totally different to a vector, but is easily confused.
+A list can contain different types of data.  So we can do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">obj <span class="o">&lt;-</span> list<span class="p">(</span><span class="m">1.5</span><span class="p">,</span> c<span class="p">(</span><span class="kc">TRUE</span><span class="p">,</span> <span class="kc">FALSE</span><span class="p">),</span> c<span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">))</span>
+</span><span class="line">obj
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [[1]]</span>
+</span><span class="line"><span class="c1">## [1] 1.5</span>
+</span><span class="line"><span class="c1">## </span>
+</span><span class="line"><span class="c1">## [[2]]</span>
+</span><span class="line"><span class="c1">## [1]  TRUE FALSE</span>
+</span><span class="line"><span class="c1">## </span>
+</span><span class="line"><span class="c1">## [[3]]</span>
+</span><span class="line"><span class="c1">## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This is a list of length ‘3’ with elements
+1. a numeric vector of length 1 containing the element 1.5
+2. a logical vector of length 2 containing the values <code>TRUE</code> and
+<code>FALSE</code>
+3. a character vector of length 3 containing the elements “a”, “b”,
+and “c”.</p>
+
+<p>A <code>data.frame</code> is actually a list internally, and many approaches
+for working with lists work with <code>data.frame</code>s.  Remember how
+<code>length</code> on a <code>data.frame</code> gave the number of columns?  This is
+why.</p>
+
+<h2 id="factors-vs-strings">Factors vs. strings</h2>
+
+<p>By default, R reads in <code>data.frame</code>s with things that look like
+text as “factors”</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">)</span>
+</span><span class="line">data<span class="o">$</span>Plot
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1] plot-2  plot-2  plot-2  plot-2  plot-2  plot-2  plot-4  plot-6 </span>
+</span><span class="line"><span class="c1">##   [9] plot-6  plot-6  plot-8  plot-8  plot-8  plot-8  plot-8  plot-10</span>
+</span><span class="line"><span class="c1">##  [17] plot-10 plot-10 plot-10 plot-12 plot-12 plot-12 plot-12 plot-12</span>
+</span><span class="line"><span class="c1">##  [25] plot-14 plot-14 plot-14 plot-14 plot-14 plot-16 plot-16 plot-16</span>
+</span><span class="line"><span class="c1">##  [33] plot-16 plot-16 plot-16 plot-16 plot-18 plot-18 plot-18 plot-18</span>
+</span><span class="line"><span class="c1">##  [41] plot-18 plot-18 plot-20 plot-20 plot-20 plot-20 plot-20 plot-20</span>
+</span><span class="line"><span class="c1">##  [49] plot-20 plot-20 plot-22 plot-22 plot-24 plot-24 plot-24 plot-24</span>
+</span><span class="line"><span class="c1">##  [57] plot-24 plot-24 plot-26 plot-26 plot-26 plot-26 plot-26 plot-26</span>
+</span><span class="line"><span class="c1">##  [65] plot-28 plot-28 plot-28 plot-28 plot-28 plot-28 plot-30 plot-30</span>
+</span><span class="line"><span class="c1">##  [73] plot-30 plot-30 plot-30 plot-30 plot-30 plot-32 plot-32 plot-32</span>
+</span><span class="line"><span class="c1">##  [81] plot-34 plot-34 plot-34 plot-34 plot-36 plot-36 plot-36 plot-36</span>
+</span><span class="line"><span class="c1">##  [89] plot-36 plot-36 plot-36 plot-38 plot-38 plot-38 plot-38 plot-38</span>
+</span><span class="line"><span class="c1">##  [97] plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40</span>
+</span><span class="line"><span class="c1">## [105] plot-40 plot-42 plot-42 plot-44 plot-44 plot-44 plot-44 plot-44</span>
+</span><span class="line"><span class="c1">## [113] plot-44 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46</span>
+</span><span class="line"><span class="c1">## [121] plot-48 plot-48 plot-48 plot-48 plot-48 plot-48 plot-50 plot-50</span>
+</span><span class="line"><span class="c1">## [129] plot-50 plot-50 plot-50 plot-50 plot-50 plot-50 plot-52 plot-52</span>
+</span><span class="line"><span class="c1">## [137] plot-52 plot-52 plot-52 plot-52 plot-52 plot-54 plot-54 plot-54</span>
+</span><span class="line"><span class="c1">## [145] plot-54 plot-54 plot-54 plot-54 plot-56 plot-56 plot-56 plot-56</span>
+</span><span class="line"><span class="c1">## [153] plot-56 plot-56 plot-58 plot-58 plot-58 plot-58 plot-58 plot-58</span>
+</span><span class="line"><span class="c1">## [161] plot-58 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60</span>
+</span><span class="line"><span class="c1">## [169] plot-60</span>
+</span><span class="line"><span class="c1">## 30 Levels: plot-10 plot-12 plot-14 plot-16 plot-18 plot-2 ... plot-8</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>A factor is basically a vector of integers (1, 2, 3, …) with a
+small character vector that specifies how to translate these:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">unclass<span class="p">(</span>data<span class="o">$</span>Plot<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1]  6  6  6  6  6  6 17 28 28 28 30 30 30 30 30  1  1  1  1  2  2  2  2</span>
+</span><span class="line"><span class="c1">##  [24]  2  3  3  3  3  3  4  4  4  4  4  4  4  5  5  5  5  5  5  7  7  7  7</span>
+</span><span class="line"><span class="c1">##  [47]  7  7  7  7  8  8  9  9  9  9  9  9 10 10 10 10 10 10 11 11 11 11 11</span>
+</span><span class="line"><span class="c1">##  [70] 11 12 12 12 12 12 12 12 13 13 13 14 14 14 14 15 15 15 15 15 15 15 16</span>
+</span><span class="line"><span class="c1">##  [93] 16 16 16 16 18 18 18 18 18 18 18 18 18 19 19 20 20 20 20 20 20 21 21</span>
+</span><span class="line"><span class="c1">## [116] 21 21 21 21 21 22 22 22 22 22 22 23 23 23 23 23 23 23 23 24 24 24 24</span>
+</span><span class="line"><span class="c1">## [139] 24 24 24 25 25 25 25 25 25 25 26 26 26 26 26 26 27 27 27 27 27 27 27</span>
+</span><span class="line"><span class="c1">## [162] 29 29 29 29 29 29 29 29</span>
+</span><span class="line"><span class="c1">## attr(,&quot;levels&quot;)</span>
+</span><span class="line"><span class="c1">##  [1] &quot;plot-10&quot; &quot;plot-12&quot; &quot;plot-14&quot; &quot;plot-16&quot; &quot;plot-18&quot; &quot;plot-2&quot;  &quot;plot-20&quot;</span>
+</span><span class="line"><span class="c1">##  [8] &quot;plot-22&quot; &quot;plot-24&quot; &quot;plot-26&quot; &quot;plot-28&quot; &quot;plot-30&quot; &quot;plot-32&quot; &quot;plot-34&quot;</span>
+</span><span class="line"><span class="c1">## [15] &quot;plot-36&quot; &quot;plot-38&quot; &quot;plot-4&quot;  &quot;plot-40&quot; &quot;plot-42&quot; &quot;plot-44&quot; &quot;plot-46&quot;</span>
+</span><span class="line"><span class="c1">## [22] &quot;plot-48&quot; &quot;plot-50&quot; &quot;plot-52&quot; &quot;plot-54&quot; &quot;plot-56&quot; &quot;plot-58&quot; &quot;plot-6&quot; </span>
+</span><span class="line"><span class="c1">## [29] &quot;plot-60&quot; &quot;plot-8&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(<code>unclass</code> is a function that stops things behaving using special
+abilities — you won’t use it much!).</p>
+
+<p>One of the most common issues that people have with factors is
+renaming elements.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x.character <span class="o">&lt;-</span> as.character<span class="p">(</span>data<span class="o">$</span>Plot<span class="p">)</span>
+</span><span class="line">x.character<span class="p">[</span>x.character <span class="o">==</span> <span class="s">&quot;plot-2&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;new plot name&quot;</span>
+</span><span class="line">x.character
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1] &quot;new plot name&quot; &quot;new plot name&quot; &quot;new plot name&quot; &quot;new plot name&quot;</span>
+</span><span class="line"><span class="c1">##   [5] &quot;new plot name&quot; &quot;new plot name&quot; &quot;plot-4&quot;        &quot;plot-6&quot;       </span>
+</span><span class="line"><span class="c1">##   [9] &quot;plot-6&quot;        &quot;plot-6&quot;        &quot;plot-8&quot;        &quot;plot-8&quot;       </span>
+</span><span class="line"><span class="c1">##  [13] &quot;plot-8&quot;        &quot;plot-8&quot;        &quot;plot-8&quot;        &quot;plot-10&quot;      </span>
+</span><span class="line"><span class="c1">##  [17] &quot;plot-10&quot;       &quot;plot-10&quot;       &quot;plot-10&quot;       &quot;plot-12&quot;      </span>
+</span><span class="line"><span class="c1">##  [21] &quot;plot-12&quot;       &quot;plot-12&quot;       &quot;plot-12&quot;       &quot;plot-12&quot;      </span>
+</span><span class="line"><span class="c1">##  [25] &quot;plot-14&quot;       &quot;plot-14&quot;       &quot;plot-14&quot;       &quot;plot-14&quot;      </span>
+</span><span class="line"><span class="c1">##  [29] &quot;plot-14&quot;       &quot;plot-16&quot;       &quot;plot-16&quot;       &quot;plot-16&quot;      </span>
+</span><span class="line"><span class="c1">##  [33] &quot;plot-16&quot;       &quot;plot-16&quot;       &quot;plot-16&quot;       &quot;plot-16&quot;      </span>
+</span><span class="line"><span class="c1">##  [37] &quot;plot-18&quot;       &quot;plot-18&quot;       &quot;plot-18&quot;       &quot;plot-18&quot;      </span>
+</span><span class="line"><span class="c1">##  [41] &quot;plot-18&quot;       &quot;plot-18&quot;       &quot;plot-20&quot;       &quot;plot-20&quot;      </span>
+</span><span class="line"><span class="c1">##  [45] &quot;plot-20&quot;       &quot;plot-20&quot;       &quot;plot-20&quot;       &quot;plot-20&quot;      </span>
+</span><span class="line"><span class="c1">##  [49] &quot;plot-20&quot;       &quot;plot-20&quot;       &quot;plot-22&quot;       &quot;plot-22&quot;      </span>
+</span><span class="line"><span class="c1">##  [53] &quot;plot-24&quot;       &quot;plot-24&quot;       &quot;plot-24&quot;       &quot;plot-24&quot;      </span>
+</span><span class="line"><span class="c1">##  [57] &quot;plot-24&quot;       &quot;plot-24&quot;       &quot;plot-26&quot;       &quot;plot-26&quot;      </span>
+</span><span class="line"><span class="c1">##  [61] &quot;plot-26&quot;       &quot;plot-26&quot;       &quot;plot-26&quot;       &quot;plot-26&quot;      </span>
+</span><span class="line"><span class="c1">##  [65] &quot;plot-28&quot;       &quot;plot-28&quot;       &quot;plot-28&quot;       &quot;plot-28&quot;      </span>
+</span><span class="line"><span class="c1">##  [69] &quot;plot-28&quot;       &quot;plot-28&quot;       &quot;plot-30&quot;       &quot;plot-30&quot;      </span>
+</span><span class="line"><span class="c1">##  [73] &quot;plot-30&quot;       &quot;plot-30&quot;       &quot;plot-30&quot;       &quot;plot-30&quot;      </span>
+</span><span class="line"><span class="c1">##  [77] &quot;plot-30&quot;       &quot;plot-32&quot;       &quot;plot-32&quot;       &quot;plot-32&quot;      </span>
+</span><span class="line"><span class="c1">##  [81] &quot;plot-34&quot;       &quot;plot-34&quot;       &quot;plot-34&quot;       &quot;plot-34&quot;      </span>
+</span><span class="line"><span class="c1">##  [85] &quot;plot-36&quot;       &quot;plot-36&quot;       &quot;plot-36&quot;       &quot;plot-36&quot;      </span>
+</span><span class="line"><span class="c1">##  [89] &quot;plot-36&quot;       &quot;plot-36&quot;       &quot;plot-36&quot;       &quot;plot-38&quot;      </span>
+</span><span class="line"><span class="c1">##  [93] &quot;plot-38&quot;       &quot;plot-38&quot;       &quot;plot-38&quot;       &quot;plot-38&quot;      </span>
+</span><span class="line"><span class="c1">##  [97] &quot;plot-40&quot;       &quot;plot-40&quot;       &quot;plot-40&quot;       &quot;plot-40&quot;      </span>
+</span><span class="line"><span class="c1">## [101] &quot;plot-40&quot;       &quot;plot-40&quot;       &quot;plot-40&quot;       &quot;plot-40&quot;      </span>
+</span><span class="line"><span class="c1">## [105] &quot;plot-40&quot;       &quot;plot-42&quot;       &quot;plot-42&quot;       &quot;plot-44&quot;      </span>
+</span><span class="line"><span class="c1">## [109] &quot;plot-44&quot;       &quot;plot-44&quot;       &quot;plot-44&quot;       &quot;plot-44&quot;      </span>
+</span><span class="line"><span class="c1">## [113] &quot;plot-44&quot;       &quot;plot-46&quot;       &quot;plot-46&quot;       &quot;plot-46&quot;      </span>
+</span><span class="line"><span class="c1">## [117] &quot;plot-46&quot;       &quot;plot-46&quot;       &quot;plot-46&quot;       &quot;plot-46&quot;      </span>
+</span><span class="line"><span class="c1">## [121] &quot;plot-48&quot;       &quot;plot-48&quot;       &quot;plot-48&quot;       &quot;plot-48&quot;      </span>
+</span><span class="line"><span class="c1">## [125] &quot;plot-48&quot;       &quot;plot-48&quot;       &quot;plot-50&quot;       &quot;plot-50&quot;      </span>
+</span><span class="line"><span class="c1">## [129] &quot;plot-50&quot;       &quot;plot-50&quot;       &quot;plot-50&quot;       &quot;plot-50&quot;      </span>
+</span><span class="line"><span class="c1">## [133] &quot;plot-50&quot;       &quot;plot-50&quot;       &quot;plot-52&quot;       &quot;plot-52&quot;      </span>
+</span><span class="line"><span class="c1">## [137] &quot;plot-52&quot;       &quot;plot-52&quot;       &quot;plot-52&quot;       &quot;plot-52&quot;      </span>
+</span><span class="line"><span class="c1">## [141] &quot;plot-52&quot;       &quot;plot-54&quot;       &quot;plot-54&quot;       &quot;plot-54&quot;      </span>
+</span><span class="line"><span class="c1">## [145] &quot;plot-54&quot;       &quot;plot-54&quot;       &quot;plot-54&quot;       &quot;plot-54&quot;      </span>
+</span><span class="line"><span class="c1">## [149] &quot;plot-56&quot;       &quot;plot-56&quot;       &quot;plot-56&quot;       &quot;plot-56&quot;      </span>
+</span><span class="line"><span class="c1">## [153] &quot;plot-56&quot;       &quot;plot-56&quot;       &quot;plot-58&quot;       &quot;plot-58&quot;      </span>
+</span><span class="line"><span class="c1">## [157] &quot;plot-58&quot;       &quot;plot-58&quot;       &quot;plot-58&quot;       &quot;plot-58&quot;      </span>
+</span><span class="line"><span class="c1">## [161] &quot;plot-58&quot;       &quot;plot-60&quot;       &quot;plot-60&quot;       &quot;plot-60&quot;      </span>
+</span><span class="line"><span class="c1">## [165] &quot;plot-60&quot;       &quot;plot-60&quot;       &quot;plot-60&quot;       &quot;plot-60&quot;      </span>
+</span><span class="line"><span class="c1">## [169] &quot;plot-60&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Won’t work with factors:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x.factor <span class="o">&lt;-</span> data<span class="o">$</span>Plot
+</span><span class="line">x.factor<span class="p">[</span>x.factor <span class="o">==</span> <span class="s">&quot;plot-2&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;new plot name&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Warning: invalid factor level, NAs generated</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x.factor
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1] &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    &lt;NA&gt;    plot-4  plot-6 </span>
+</span><span class="line"><span class="c1">##   [9] plot-6  plot-6  plot-8  plot-8  plot-8  plot-8  plot-8  plot-10</span>
+</span><span class="line"><span class="c1">##  [17] plot-10 plot-10 plot-10 plot-12 plot-12 plot-12 plot-12 plot-12</span>
+</span><span class="line"><span class="c1">##  [25] plot-14 plot-14 plot-14 plot-14 plot-14 plot-16 plot-16 plot-16</span>
+</span><span class="line"><span class="c1">##  [33] plot-16 plot-16 plot-16 plot-16 plot-18 plot-18 plot-18 plot-18</span>
+</span><span class="line"><span class="c1">##  [41] plot-18 plot-18 plot-20 plot-20 plot-20 plot-20 plot-20 plot-20</span>
+</span><span class="line"><span class="c1">##  [49] plot-20 plot-20 plot-22 plot-22 plot-24 plot-24 plot-24 plot-24</span>
+</span><span class="line"><span class="c1">##  [57] plot-24 plot-24 plot-26 plot-26 plot-26 plot-26 plot-26 plot-26</span>
+</span><span class="line"><span class="c1">##  [65] plot-28 plot-28 plot-28 plot-28 plot-28 plot-28 plot-30 plot-30</span>
+</span><span class="line"><span class="c1">##  [73] plot-30 plot-30 plot-30 plot-30 plot-30 plot-32 plot-32 plot-32</span>
+</span><span class="line"><span class="c1">##  [81] plot-34 plot-34 plot-34 plot-34 plot-36 plot-36 plot-36 plot-36</span>
+</span><span class="line"><span class="c1">##  [89] plot-36 plot-36 plot-36 plot-38 plot-38 plot-38 plot-38 plot-38</span>
+</span><span class="line"><span class="c1">##  [97] plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40</span>
+</span><span class="line"><span class="c1">## [105] plot-40 plot-42 plot-42 plot-44 plot-44 plot-44 plot-44 plot-44</span>
+</span><span class="line"><span class="c1">## [113] plot-44 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46</span>
+</span><span class="line"><span class="c1">## [121] plot-48 plot-48 plot-48 plot-48 plot-48 plot-48 plot-50 plot-50</span>
+</span><span class="line"><span class="c1">## [129] plot-50 plot-50 plot-50 plot-50 plot-50 plot-50 plot-52 plot-52</span>
+</span><span class="line"><span class="c1">## [137] plot-52 plot-52 plot-52 plot-52 plot-52 plot-54 plot-54 plot-54</span>
+</span><span class="line"><span class="c1">## [145] plot-54 plot-54 plot-54 plot-54 plot-56 plot-56 plot-56 plot-56</span>
+</span><span class="line"><span class="c1">## [153] plot-56 plot-56 plot-58 plot-58 plot-58 plot-58 plot-58 plot-58</span>
+</span><span class="line"><span class="c1">## [161] plot-58 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60</span>
+</span><span class="line"><span class="c1">## [169] plot-60</span>
+</span><span class="line"><span class="c1">## 30 Levels: plot-10 plot-12 plot-14 plot-16 plot-18 plot-2 ... plot-8</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Correct way:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x.factor <span class="o">&lt;-</span> data<span class="o">$</span>Plot
+</span><span class="line">levels<span class="p">(</span>x.factor<span class="p">)[</span>levels<span class="p">(</span>x.factor<span class="p">)</span> <span class="o">==</span> <span class="s">&quot;plot-2&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;new plot name&quot;</span>
+</span><span class="line">x.factor
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1] new plot name new plot name new plot name new plot name new plot name</span>
+</span><span class="line"><span class="c1">##   [6] new plot name plot-4        plot-6        plot-6        plot-6       </span>
+</span><span class="line"><span class="c1">##  [11] plot-8        plot-8        plot-8        plot-8        plot-8       </span>
+</span><span class="line"><span class="c1">##  [16] plot-10       plot-10       plot-10       plot-10       plot-12      </span>
+</span><span class="line"><span class="c1">##  [21] plot-12       plot-12       plot-12       plot-12       plot-14      </span>
+</span><span class="line"><span class="c1">##  [26] plot-14       plot-14       plot-14       plot-14       plot-16      </span>
+</span><span class="line"><span class="c1">##  [31] plot-16       plot-16       plot-16       plot-16       plot-16      </span>
+</span><span class="line"><span class="c1">##  [36] plot-16       plot-18       plot-18       plot-18       plot-18      </span>
+</span><span class="line"><span class="c1">##  [41] plot-18       plot-18       plot-20       plot-20       plot-20      </span>
+</span><span class="line"><span class="c1">##  [46] plot-20       plot-20       plot-20       plot-20       plot-20      </span>
+</span><span class="line"><span class="c1">##  [51] plot-22       plot-22       plot-24       plot-24       plot-24      </span>
+</span><span class="line"><span class="c1">##  [56] plot-24       plot-24       plot-24       plot-26       plot-26      </span>
+</span><span class="line"><span class="c1">##  [61] plot-26       plot-26       plot-26       plot-26       plot-28      </span>
+</span><span class="line"><span class="c1">##  [66] plot-28       plot-28       plot-28       plot-28       plot-28      </span>
+</span><span class="line"><span class="c1">##  [71] plot-30       plot-30       plot-30       plot-30       plot-30      </span>
+</span><span class="line"><span class="c1">##  [76] plot-30       plot-30       plot-32       plot-32       plot-32      </span>
+</span><span class="line"><span class="c1">##  [81] plot-34       plot-34       plot-34       plot-34       plot-36      </span>
+</span><span class="line"><span class="c1">##  [86] plot-36       plot-36       plot-36       plot-36       plot-36      </span>
+</span><span class="line"><span class="c1">##  [91] plot-36       plot-38       plot-38       plot-38       plot-38      </span>
+</span><span class="line"><span class="c1">##  [96] plot-38       plot-40       plot-40       plot-40       plot-40      </span>
+</span><span class="line"><span class="c1">## [101] plot-40       plot-40       plot-40       plot-40       plot-40      </span>
+</span><span class="line"><span class="c1">## [106] plot-42       plot-42       plot-44       plot-44       plot-44      </span>
+</span><span class="line"><span class="c1">## [111] plot-44       plot-44       plot-44       plot-46       plot-46      </span>
+</span><span class="line"><span class="c1">## [116] plot-46       plot-46       plot-46       plot-46       plot-46      </span>
+</span><span class="line"><span class="c1">## [121] plot-48       plot-48       plot-48       plot-48       plot-48      </span>
+</span><span class="line"><span class="c1">## [126] plot-48       plot-50       plot-50       plot-50       plot-50      </span>
+</span><span class="line"><span class="c1">## [131] plot-50       plot-50       plot-50       plot-50       plot-52      </span>
+</span><span class="line"><span class="c1">## [136] plot-52       plot-52       plot-52       plot-52       plot-52      </span>
+</span><span class="line"><span class="c1">## [141] plot-52       plot-54       plot-54       plot-54       plot-54      </span>
+</span><span class="line"><span class="c1">## [146] plot-54       plot-54       plot-54       plot-56       plot-56      </span>
+</span><span class="line"><span class="c1">## [151] plot-56       plot-56       plot-56       plot-56       plot-58      </span>
+</span><span class="line"><span class="c1">## [156] plot-58       plot-58       plot-58       plot-58       plot-58      </span>
+</span><span class="line"><span class="c1">## [161] plot-58       plot-60       plot-60       plot-60       plot-60      </span>
+</span><span class="line"><span class="c1">## [166] plot-60       plot-60       plot-60       plot-60      </span>
+</span><span class="line"><span class="c1">## 30 Levels: plot-10 plot-12 plot-14 plot-16 plot-18 ... plot-8</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Factors can be very useful, but can also be very annoying.  To
+disable automatic conversion, use the <code>stringsAsFactors</code> argument
+to <code>read.csv</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">,</span> stringsAsFactors <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">data<span class="o">$</span>Plot
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1] &quot;plot-2&quot;  &quot;plot-2&quot;  &quot;plot-2&quot;  &quot;plot-2&quot;  &quot;plot-2&quot;  &quot;plot-2&quot;  &quot;plot-4&quot; </span>
+</span><span class="line"><span class="c1">##   [8] &quot;plot-6&quot;  &quot;plot-6&quot;  &quot;plot-6&quot;  &quot;plot-8&quot;  &quot;plot-8&quot;  &quot;plot-8&quot;  &quot;plot-8&quot; </span>
+</span><span class="line"><span class="c1">##  [15] &quot;plot-8&quot;  &quot;plot-10&quot; &quot;plot-10&quot; &quot;plot-10&quot; &quot;plot-10&quot; &quot;plot-12&quot; &quot;plot-12&quot;</span>
+</span><span class="line"><span class="c1">##  [22] &quot;plot-12&quot; &quot;plot-12&quot; &quot;plot-12&quot; &quot;plot-14&quot; &quot;plot-14&quot; &quot;plot-14&quot; &quot;plot-14&quot;</span>
+</span><span class="line"><span class="c1">##  [29] &quot;plot-14&quot; &quot;plot-16&quot; &quot;plot-16&quot; &quot;plot-16&quot; &quot;plot-16&quot; &quot;plot-16&quot; &quot;plot-16&quot;</span>
+</span><span class="line"><span class="c1">##  [36] &quot;plot-16&quot; &quot;plot-18&quot; &quot;plot-18&quot; &quot;plot-18&quot; &quot;plot-18&quot; &quot;plot-18&quot; &quot;plot-18&quot;</span>
+</span><span class="line"><span class="c1">##  [43] &quot;plot-20&quot; &quot;plot-20&quot; &quot;plot-20&quot; &quot;plot-20&quot; &quot;plot-20&quot; &quot;plot-20&quot; &quot;plot-20&quot;</span>
+</span><span class="line"><span class="c1">##  [50] &quot;plot-20&quot; &quot;plot-22&quot; &quot;plot-22&quot; &quot;plot-24&quot; &quot;plot-24&quot; &quot;plot-24&quot; &quot;plot-24&quot;</span>
+</span><span class="line"><span class="c1">##  [57] &quot;plot-24&quot; &quot;plot-24&quot; &quot;plot-26&quot; &quot;plot-26&quot; &quot;plot-26&quot; &quot;plot-26&quot; &quot;plot-26&quot;</span>
+</span><span class="line"><span class="c1">##  [64] &quot;plot-26&quot; &quot;plot-28&quot; &quot;plot-28&quot; &quot;plot-28&quot; &quot;plot-28&quot; &quot;plot-28&quot; &quot;plot-28&quot;</span>
+</span><span class="line"><span class="c1">##  [71] &quot;plot-30&quot; &quot;plot-30&quot; &quot;plot-30&quot; &quot;plot-30&quot; &quot;plot-30&quot; &quot;plot-30&quot; &quot;plot-30&quot;</span>
+</span><span class="line"><span class="c1">##  [78] &quot;plot-32&quot; &quot;plot-32&quot; &quot;plot-32&quot; &quot;plot-34&quot; &quot;plot-34&quot; &quot;plot-34&quot; &quot;plot-34&quot;</span>
+</span><span class="line"><span class="c1">##  [85] &quot;plot-36&quot; &quot;plot-36&quot; &quot;plot-36&quot; &quot;plot-36&quot; &quot;plot-36&quot; &quot;plot-36&quot; &quot;plot-36&quot;</span>
+</span><span class="line"><span class="c1">##  [92] &quot;plot-38&quot; &quot;plot-38&quot; &quot;plot-38&quot; &quot;plot-38&quot; &quot;plot-38&quot; &quot;plot-40&quot; &quot;plot-40&quot;</span>
+</span><span class="line"><span class="c1">##  [99] &quot;plot-40&quot; &quot;plot-40&quot; &quot;plot-40&quot; &quot;plot-40&quot; &quot;plot-40&quot; &quot;plot-40&quot; &quot;plot-40&quot;</span>
+</span><span class="line"><span class="c1">## [106] &quot;plot-42&quot; &quot;plot-42&quot; &quot;plot-44&quot; &quot;plot-44&quot; &quot;plot-44&quot; &quot;plot-44&quot; &quot;plot-44&quot;</span>
+</span><span class="line"><span class="c1">## [113] &quot;plot-44&quot; &quot;plot-46&quot; &quot;plot-46&quot; &quot;plot-46&quot; &quot;plot-46&quot; &quot;plot-46&quot; &quot;plot-46&quot;</span>
+</span><span class="line"><span class="c1">## [120] &quot;plot-46&quot; &quot;plot-48&quot; &quot;plot-48&quot; &quot;plot-48&quot; &quot;plot-48&quot; &quot;plot-48&quot; &quot;plot-48&quot;</span>
+</span><span class="line"><span class="c1">## [127] &quot;plot-50&quot; &quot;plot-50&quot; &quot;plot-50&quot; &quot;plot-50&quot; &quot;plot-50&quot; &quot;plot-50&quot; &quot;plot-50&quot;</span>
+</span><span class="line"><span class="c1">## [134] &quot;plot-50&quot; &quot;plot-52&quot; &quot;plot-52&quot; &quot;plot-52&quot; &quot;plot-52&quot; &quot;plot-52&quot; &quot;plot-52&quot;</span>
+</span><span class="line"><span class="c1">## [141] &quot;plot-52&quot; &quot;plot-54&quot; &quot;plot-54&quot; &quot;plot-54&quot; &quot;plot-54&quot; &quot;plot-54&quot; &quot;plot-54&quot;</span>
+</span><span class="line"><span class="c1">## [148] &quot;plot-54&quot; &quot;plot-56&quot; &quot;plot-56&quot; &quot;plot-56&quot; &quot;plot-56&quot; &quot;plot-56&quot; &quot;plot-56&quot;</span>
+</span><span class="line"><span class="c1">## [155] &quot;plot-58&quot; &quot;plot-58&quot; &quot;plot-58&quot; &quot;plot-58&quot; &quot;plot-58&quot; &quot;plot-58&quot; &quot;plot-58&quot;</span>
+</span><span class="line"><span class="c1">## [162] &quot;plot-60&quot; &quot;plot-60&quot; &quot;plot-60&quot; &quot;plot-60&quot; &quot;plot-60&quot; &quot;plot-60&quot; &quot;plot-60&quot;</span>
+</span><span class="line"><span class="c1">## [169] &quot;plot-60&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>My strategy:</p>
+
+<ol>
+  <li>only use factors when you know they are needed, otherwise prefer
+character vectors.</li>
+  <li>delay conversion to factor as long as posible.</li>
+</ol>
+
+<p>They do have uses though.</p>
+
+<ul>
+  <li>Preserve ordering:</li>
+</ul>
+
+<p>By default, ordering is alphabetical; gets confused when number of
+digits changes (“a10” sorts before “a9”).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">table<span class="p">(</span>data<span class="o">$</span>Plot<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## </span>
+</span><span class="line"><span class="c1">## plot-10 plot-12 plot-14 plot-16 plot-18  plot-2 plot-20 plot-22 plot-24 </span>
+</span><span class="line"><span class="c1">##       4       5       5       7       6       6       8       2       6 </span>
+</span><span class="line"><span class="c1">## plot-26 plot-28 plot-30 plot-32 plot-34 plot-36 plot-38  plot-4 plot-40 </span>
+</span><span class="line"><span class="c1">##       6       6       7       3       4       7       5       1       9 </span>
+</span><span class="line"><span class="c1">## plot-42 plot-44 plot-46 plot-48 plot-50 plot-52 plot-54 plot-56 plot-58 </span>
+</span><span class="line"><span class="c1">##       2       6       7       6       8       7       7       6       7 </span>
+</span><span class="line"><span class="c1">##  plot-6 plot-60  plot-8 </span>
+</span><span class="line"><span class="c1">##       3       8       5</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In this data set, the plots are already in native order</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">unique<span class="p">(</span>data<span class="o">$</span>Plot<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##  [1] &quot;plot-2&quot;  &quot;plot-4&quot;  &quot;plot-6&quot;  &quot;plot-8&quot;  &quot;plot-10&quot; &quot;plot-12&quot; &quot;plot-14&quot;</span>
+</span><span class="line"><span class="c1">##  [8] &quot;plot-16&quot; &quot;plot-18&quot; &quot;plot-20&quot; &quot;plot-22&quot; &quot;plot-24&quot; &quot;plot-26&quot; &quot;plot-28&quot;</span>
+</span><span class="line"><span class="c1">## [15] &quot;plot-30&quot; &quot;plot-32&quot; &quot;plot-34&quot; &quot;plot-36&quot; &quot;plot-38&quot; &quot;plot-40&quot; &quot;plot-42&quot;</span>
+</span><span class="line"><span class="c1">## [22] &quot;plot-44&quot; &quot;plot-46&quot; &quot;plot-48&quot; &quot;plot-50&quot; &quot;plot-52&quot; &quot;plot-54&quot; &quot;plot-56&quot;</span>
+</span><span class="line"><span class="c1">## [29] &quot;plot-58&quot; &quot;plot-60&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can pass that in as the <code>levels</code> argument to factor to get this
+ordering</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">tmp <span class="o">&lt;-</span> factor<span class="p">(</span>data<span class="o">$</span>Plot<span class="p">,</span> levels <span class="o">=</span> unique<span class="p">(</span>data<span class="o">$</span>Plot<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which is preserved in functions that use factors</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">table<span class="p">(</span>tmp<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## tmp</span>
+</span><span class="line"><span class="c1">##  plot-2  plot-4  plot-6  plot-8 plot-10 plot-12 plot-14 plot-16 plot-18 </span>
+</span><span class="line"><span class="c1">##       6       1       3       5       4       5       5       7       6 </span>
+</span><span class="line"><span class="c1">## plot-20 plot-22 plot-24 plot-26 plot-28 plot-30 plot-32 plot-34 plot-36 </span>
+</span><span class="line"><span class="c1">##       8       2       6       6       6       7       3       4       7 </span>
+</span><span class="line"><span class="c1">## plot-38 plot-40 plot-42 plot-44 plot-46 plot-48 plot-50 plot-52 plot-54 </span>
+</span><span class="line"><span class="c1">##       5       9       2       6       7       6       8       7       7 </span>
+</span><span class="line"><span class="c1">## plot-56 plot-58 plot-60 </span>
+</span><span class="line"><span class="c1">##       6       7       8</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(this emphasises the “delay conversion” part of the strategy
+above).</p>
+
+<ul>
+  <li>Factors are required for some analyses, and are needed to specify
+“constrasts” in some models.</li>
+</ul>
+
+<hr />
+<p>Back to <a href="/intro">main page</a></p>
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/intro/data-types.html';
+        var disqus_url = 'http://nicercode.github.com/intro/data-types.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

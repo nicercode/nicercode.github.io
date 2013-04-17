@@ -1,0 +1,2184 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Reading in data - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Reading in data 18 March 2013 As empirical biologists, you’ll generally have data to read in.
+You probably have your data in an Excel spreadsheet. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/intro/loading-data.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Reading in data</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-18T10:25:00+11:00" pubdate data-updated="true">18 March 2013</time></p>
+  </header>
+  
+  <p>As empirical biologists, you’ll generally have data to read in.
+You probably have your data in an Excel spreadsheet.  The simplest
+way to load these into R is to save a copy of the data as a comma
+separated values file (csv) and work with that.</p>
+
+<p>It is actually possibl to read directly from Excel (but see the
+<a href="http://cran.r-project.org/web/packages/gdata/index.html">gdata</a>
+package that has a <code>read.xls</code> function, and see
+<a href="http://rwiki.sciviews.org/doku.php?id=tips:data-io:ms_windows">this</a>
+page for other alternatives.  This is usually more hassle than it’s
+worth, and going through a comma separated file is easy enough.</p>
+
+<p>To load the data into R:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(this doesn’t usually produce any output – the data is “just
+there” now).</p>
+
+<p>Clicking the little table icon next to the data in the Workspace
+browser will view the data.  Running <code>View(data)</code> will do the same
+thing.</p>
+
+<p>The <code>data</code> variable contains <code>data.frame</code> object.  It is a number
+of columns of the same length, arranged like a matrix.  That
+sentence is tricky, for reasons that will become apparent.</p>
+
+<p>Often, looking at the first few rows is all you need to remind
+yourself about what is in a data set.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">head<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">1 plot-2           TRUE           TRUE        1     31   4.16         83
+</span><span class="line">2 plot-2           TRUE           TRUE        3     41   5.82        175
+</span><span class="line">3 plot-2           TRUE           TRUE        1     42   3.51         72
+</span><span class="line">4 plot-2           TRUE          FALSE        1     64   7.16        125
+</span><span class="line">5 plot-2           TRUE          FALSE        1     47   6.17        212
+</span><span class="line">6 plot-2           TRUE          FALSE        1     52   5.32        114
+</span><span class="line">  Seeds.in.25.heads
+</span><span class="line">1                 7
+</span><span class="line">2                 0
+</span><span class="line">3                32
+</span><span class="line">4                22
+</span><span class="line">5                 3
+</span><span class="line">6                19</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You can get a vector of names of columns</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">names<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] "Plot"              "Seed.herbivore"    "Root.herbivore"   
+</span><span class="line">[4] "No.stems"          "Height"            "Weight"           
+</span><span class="line">[7] "Seed.heads"        "Seeds.in.25.heads"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You can get the number of rows:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">nrow<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 169</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and the number of columns</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">ncol<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 8</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">length<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 8</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The last one is surprising to most people.  There is a logical (if
+not good) reason for this, which we will get to later.</p>
+
+<p>Aside from issues around factors and character vectors (that we’ll
+cover shortly) this is most of what you need to know about loading
+data.</p>
+
+<p>However, it’s useful to know things about saving it.</p>
+
+<ul>
+  <li>
+    <p>column names should be consistent, the right length, contain no
+special characters.</p>
+  </li>
+  <li>
+    <p>for missing values, either leave them blank or use NA.  But be
+consistent and don’t use -999 or ? or your cat’s name.</p>
+  </li>
+  <li>
+    <p>Be careful with whitespace “x” will be treated differently to
+“x “, and Excel makes it easy to accidently do the latter.
+Consider the <code>strip.white=TRUE</code> argument to <code>read.csv</code>.</p>
+  </li>
+  <li>
+    <p>Think about the type of the data.  We’ll cover this more, but are
+you dealing with a <code>TRUE</code>/<code>FALSE</code> or a category or a count or a
+measurements.</p>
+  </li>
+  <li>
+    <p>Dates and times will cause you nothing but pain.  Excel and R
+<em>both</em> have issues with dates and times, and exporting through
+CSV can make them worse.  I had a case with two different
+year-zero offsets being used in one exported file.  I recommend
+Year-Month-Day (<a href="http://en.wikipedia.org/wiki/ISO_8601">ISO 8601</a>
+format, or different colummns for different entries and combine
+later.</p>
+  </li>
+  <li>
+    <p>Watch out for dashes between numbers.  Excel will convert these
+into dates.  So if you have “Site-Plant” style numbers 5-20 will
+get converted into the 20th of May 1904 or something equally
+useless.  Similar problems happen to
+<a href="http://www.biomedcentral.com/1471-2105/5/80">gene names</a>
+in bioinformatics!</p>
+  </li>
+  <li>
+    <p>Merged rows and columns will not work (or at least not in an
+easily predictible way.</p>
+  </li>
+  <li>
+    <p>Spare rows at the top, or double header rows will not work
+without jumping through hoops.</p>
+  </li>
+  <li>
+    <p>Equations will (should) convert to the value displayed in Excel
+on export.</p>
+  </li>
+</ul>
+
+<h2 id="exercise">Exercise:</h2>
+
+<p>The file <code>data/seed_root_herbivores.txt</code> has <em>almost</em> the same
+data, but in tab separated format (it does have the same number of
+rows and columns).  Look at the ?read.table help page and work out
+how to load this file in.</p>
+
+<p>Remember: <code>==</code> tests for equality, <code>!=</code> tests for inequality</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data2 <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.txt&quot;</span><span class="p">,</span>
+</span><span class="line">                    header<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;;&quot;</span><span class="p">)</span>
+</span><span class="line">data2 <span class="o">==</span> data
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">  [1,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [2,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [3,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [4,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [5,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [6,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [7,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [8,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">  [9,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [10,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [11,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [12,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [13,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [14,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [15,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [16,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [17,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [18,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [19,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line"> [20,] TRUE           TRUE           TRUE     TRUE  FALSE   TRUE
+</span><span class="line"> [21,] TRUE           TRUE           TRUE     TRUE   TRUE   TRUE
+</span><span class="line">   Seed.heads Seeds.in.25.heads
+</span><span class="line">  [1,]       TRUE              TRUE
+</span><span class="line">  [2,]       TRUE              TRUE
+</span><span class="line">  [3,]       TRUE              TRUE
+</span><span class="line">  [4,]       TRUE              TRUE
+</span><span class="line">  [5,]       TRUE              TRUE
+</span><span class="line">  [6,]       TRUE              TRUE
+</span><span class="line">  [7,]       TRUE              TRUE
+</span><span class="line">  [8,]       TRUE              TRUE
+</span><span class="line">  [9,]       TRUE              TRUE
+</span><span class="line"> [10,]       TRUE              TRUE
+</span><span class="line"> [11,]       TRUE              TRUE
+</span><span class="line"> [12,]       TRUE              TRUE
+</span><span class="line"> [13,]       TRUE              TRUE
+</span><span class="line"> [14,]       TRUE              TRUE
+</span><span class="line"> [15,]       TRUE              TRUE
+</span><span class="line"> [16,]       TRUE              TRUE
+</span><span class="line"> [17,]       TRUE              TRUE
+</span><span class="line"> [18,]       TRUE              TRUE
+</span><span class="line"> [19,]       TRUE              TRUE
+</span><span class="line"> [20,]       TRUE              TRUE
+</span><span class="line"> [21,]       TRUE              TRUE
+</span><span class="line"> [ reached getOption("max.print") -- omitted 148 rows ]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>or</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data2 <span class="o">!=</span> data
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">    Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">  [1,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [2,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [3,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [4,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [5,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [6,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [7,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [8,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [9,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [10,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [11,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [12,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [13,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [14,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [15,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [16,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [17,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [18,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [19,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [20,] FALSE          FALSE          FALSE    FALSE   TRUE  FALSE
+</span><span class="line"> [21,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">   Seed.heads Seeds.in.25.heads
+</span><span class="line">  [1,]      FALSE             FALSE
+</span><span class="line">  [2,]      FALSE             FALSE
+</span><span class="line">  [3,]      FALSE             FALSE
+</span><span class="line">  [4,]      FALSE             FALSE
+</span><span class="line">  [5,]      FALSE             FALSE
+</span><span class="line">  [6,]      FALSE             FALSE
+</span><span class="line">  [7,]      FALSE             FALSE
+</span><span class="line">  [8,]      FALSE             FALSE
+</span><span class="line">  [9,]      FALSE             FALSE
+</span><span class="line"> [10,]      FALSE             FALSE
+</span><span class="line"> [11,]      FALSE             FALSE
+</span><span class="line"> [12,]      FALSE             FALSE
+</span><span class="line"> [13,]      FALSE             FALSE
+</span><span class="line"> [14,]      FALSE             FALSE
+</span><span class="line"> [15,]      FALSE             FALSE
+</span><span class="line"> [16,]      FALSE             FALSE
+</span><span class="line"> [17,]      FALSE             FALSE
+</span><span class="line"> [18,]      FALSE             FALSE
+</span><span class="line"> [19,]      FALSE             FALSE
+</span><span class="line"> [20,]      FALSE             FALSE
+</span><span class="line"> [21,]      FALSE             FALSE
+</span><span class="line"> [ reached getOption("max.print") -- omitted 148 rows ]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The point here is that many of the functions and operators in R
+will try to do the Right Thing, depending on what you give them.</p>
+
+<p>This won’t work, because the default arguments of <code>read.table</code> and
+<code>read.csv</code> are different for the header.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">tmp <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.txt&quot;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;;&quot;</span><span class="p">)</span>
+</span><span class="line">head<span class="p">(</span>tmp<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  V1             V2             V3       V4     V5     V6         V7
+</span><span class="line">1   Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">2 plot-2           TRUE           TRUE        1     31   4.16         83
+</span><span class="line">3 plot-2           TRUE           TRUE        3     41   5.82        175
+</span><span class="line">4 plot-2           TRUE           TRUE        1     42   3.51         72
+</span><span class="line">5 plot-2           TRUE          FALSE        1     64   7.16        125
+</span><span class="line">6 plot-2           TRUE          FALSE        1     47   6.17        212
+</span><span class="line">             V8
+</span><span class="line">1 Seeds.in.25.heads
+</span><span class="line">2                 7
+</span><span class="line">3                 0
+</span><span class="line">4                32
+</span><span class="line">5                22
+</span><span class="line">6                 3</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Notice that a fake header (V1, V2, etc) has been created and the
+actual header is now the first row of data.</p>
+
+<h2 id="looking-at-your-data">Looking at your data</h2>
+
+<p>There are other ways of looking at your data.  The <code>summary</code>
+function works with most types, and gives a by-column summary of
+the data set</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">summary<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Plot     Seed.herbivore  Root.herbivore     No.stems    
+</span><span class="line"> plot-40:  9   Mode :logical   Mode :logical   Min.   : 1.00  
+</span><span class="line"> plot-20:  8   FALSE:90        FALSE:58        1st Qu.: 1.00  
+</span><span class="line"> plot-50:  8   TRUE :79        TRUE :111       Median : 1.00  
+</span><span class="line"> plot-60:  8   NA's :0         NA's :0         Mean   : 1.98  
+</span><span class="line"> plot-16:  7                                   3rd Qu.: 3.00  
+</span><span class="line"> plot-30:  7                                   Max.   :10.00  
+</span><span class="line"> (Other):122                                                  
+</span><span class="line"> Height         Weight        Seed.heads   Seeds.in.25.heads
+</span><span class="line"> Min.   :16.0   Min.   : 0.26   Min.   :   3   Min.   :  0.0    
+</span><span class="line"> 1st Qu.:44.0   1st Qu.: 4.08   1st Qu.:  93   1st Qu.: 10.0    
+</span><span class="line"> Median :54.0   Median : 8.05   Median : 175   Median : 19.0    
+</span><span class="line"> Mean   :55.5   Mean   :11.20   Mean   : 226   Mean   : 22.1    
+</span><span class="line"> 3rd Qu.:67.0   3rd Qu.:14.77   3rd Qu.: 303   3rd Qu.: 32.0    
+</span><span class="line"> Max.   :97.0   Max.   :55.51   Max.   :1003   Max.   :100.0    
+</span><span class="line">                                                            </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h1 id="subsetting">Subsetting</h1>
+
+<p>So, we see there is an issue in the file – how to we get to it?</p>
+
+<p>There a bunch of different ways of extracting bits of your data.</p>
+
+<h2 id="columns-of-dataframes">Columns of <code>data.frames</code></h2>
+
+<p>Get the column <code>Plot</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="o">$</span>Plot
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  [1] plot-2  plot-2  plot-2  plot-2  plot-2  plot-2  plot-4  plot-6 
+</span><span class="line">  [9] plot-6  plot-6  plot-8  plot-8  plot-8  plot-8  plot-8  plot-10
+</span><span class="line"> [17] plot-10 plot-10 plot-10 plot-12 plot-12 plot-12 plot-12 plot-12
+</span><span class="line"> [25] plot-14 plot-14 plot-14 plot-14 plot-14 plot-16 plot-16 plot-16
+</span><span class="line"> [33] plot-16 plot-16 plot-16 plot-16 plot-18 plot-18 plot-18 plot-18
+</span><span class="line"> [41] plot-18 plot-18 plot-20 plot-20 plot-20 plot-20 plot-20 plot-20
+</span><span class="line"> [49] plot-20 plot-20 plot-22 plot-22 plot-24 plot-24 plot-24 plot-24
+</span><span class="line"> [57] plot-24 plot-24 plot-26 plot-26 plot-26 plot-26 plot-26 plot-26
+</span><span class="line"> [65] plot-28 plot-28 plot-28 plot-28 plot-28 plot-28 plot-30 plot-30
+</span><span class="line"> [73] plot-30 plot-30 plot-30 plot-30 plot-30 plot-32 plot-32 plot-32
+</span><span class="line"> [81] plot-34 plot-34 plot-34 plot-34 plot-36 plot-36 plot-36 plot-36
+</span><span class="line"> [89] plot-36 plot-36 plot-36 plot-38 plot-38 plot-38 plot-38 plot-38
+</span><span class="line"> [97] plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40
+</span><span class="line">[105] plot-40 plot-42 plot-42 plot-44 plot-44 plot-44 plot-44 plot-44
+</span><span class="line">[113] plot-44 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46
+</span><span class="line">[121] plot-48 plot-48 plot-48 plot-48 plot-48 plot-48 plot-50 plot-50
+</span><span class="line">[129] plot-50 plot-50 plot-50 plot-50 plot-50 plot-50 plot-52 plot-52
+</span><span class="line">[137] plot-52 plot-52 plot-52 plot-52 plot-52 plot-54 plot-54 plot-54
+</span><span class="line">[145] plot-54 plot-54 plot-54 plot-54 plot-56 plot-56 plot-56 plot-56
+</span><span class="line">[153] plot-56 plot-56 plot-58 plot-58 plot-58 plot-58 plot-58 plot-58
+</span><span class="line">[161] plot-58 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60
+</span><span class="line">[169] plot-60
+</span><span class="line">30 Levels: plot-10 plot-12 plot-14 plot-16 plot-18 plot-2 ... plot-8</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This does <em>almost</em> the same thing</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[[</span><span class="s">&quot;Plot&quot;</span><span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  [1] plot-2  plot-2  plot-2  plot-2  plot-2  plot-2  plot-4  plot-6 
+</span><span class="line">  [9] plot-6  plot-6  plot-8  plot-8  plot-8  plot-8  plot-8  plot-10
+</span><span class="line"> [17] plot-10 plot-10 plot-10 plot-12 plot-12 plot-12 plot-12 plot-12
+</span><span class="line"> [25] plot-14 plot-14 plot-14 plot-14 plot-14 plot-16 plot-16 plot-16
+</span><span class="line"> [33] plot-16 plot-16 plot-16 plot-16 plot-18 plot-18 plot-18 plot-18
+</span><span class="line"> [41] plot-18 plot-18 plot-20 plot-20 plot-20 plot-20 plot-20 plot-20
+</span><span class="line"> [49] plot-20 plot-20 plot-22 plot-22 plot-24 plot-24 plot-24 plot-24
+</span><span class="line"> [57] plot-24 plot-24 plot-26 plot-26 plot-26 plot-26 plot-26 plot-26
+</span><span class="line"> [65] plot-28 plot-28 plot-28 plot-28 plot-28 plot-28 plot-30 plot-30
+</span><span class="line"> [73] plot-30 plot-30 plot-30 plot-30 plot-30 plot-32 plot-32 plot-32
+</span><span class="line"> [81] plot-34 plot-34 plot-34 plot-34 plot-36 plot-36 plot-36 plot-36
+</span><span class="line"> [89] plot-36 plot-36 plot-36 plot-38 plot-38 plot-38 plot-38 plot-38
+</span><span class="line"> [97] plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40
+</span><span class="line">[105] plot-40 plot-42 plot-42 plot-44 plot-44 plot-44 plot-44 plot-44
+</span><span class="line">[113] plot-44 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46
+</span><span class="line">[121] plot-48 plot-48 plot-48 plot-48 plot-48 plot-48 plot-50 plot-50
+</span><span class="line">[129] plot-50 plot-50 plot-50 plot-50 plot-50 plot-50 plot-52 plot-52
+</span><span class="line">[137] plot-52 plot-52 plot-52 plot-52 plot-52 plot-54 plot-54 plot-54
+</span><span class="line">[145] plot-54 plot-54 plot-54 plot-54 plot-56 plot-56 plot-56 plot-56
+</span><span class="line">[153] plot-56 plot-56 plot-58 plot-58 plot-58 plot-58 plot-58 plot-58
+</span><span class="line">[161] plot-58 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60
+</span><span class="line">[169] plot-60
+</span><span class="line">30 Levels: plot-10 plot-12 plot-14 plot-16 plot-18 plot-2 ... plot-8</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This is the main difference: if the column name is in a variable,
+then <code>$</code> won’t work, while <code>[[</code> will.  Let’s define a variable <code>v</code>
+that has the name if the first column as its value:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">v <span class="o">&lt;-</span> <span class="s">&quot;Plot&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can extract this column of the data set using the <code>[[</code> notation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[[</span>v<span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  [1] plot-2  plot-2  plot-2  plot-2  plot-2  plot-2  plot-4  plot-6 
+</span><span class="line">  [9] plot-6  plot-6  plot-8  plot-8  plot-8  plot-8  plot-8  plot-10
+</span><span class="line"> [17] plot-10 plot-10 plot-10 plot-12 plot-12 plot-12 plot-12 plot-12
+</span><span class="line"> [25] plot-14 plot-14 plot-14 plot-14 plot-14 plot-16 plot-16 plot-16
+</span><span class="line"> [33] plot-16 plot-16 plot-16 plot-16 plot-18 plot-18 plot-18 plot-18
+</span><span class="line"> [41] plot-18 plot-18 plot-20 plot-20 plot-20 plot-20 plot-20 plot-20
+</span><span class="line"> [49] plot-20 plot-20 plot-22 plot-22 plot-24 plot-24 plot-24 plot-24
+</span><span class="line"> [57] plot-24 plot-24 plot-26 plot-26 plot-26 plot-26 plot-26 plot-26
+</span><span class="line"> [65] plot-28 plot-28 plot-28 plot-28 plot-28 plot-28 plot-30 plot-30
+</span><span class="line"> [73] plot-30 plot-30 plot-30 plot-30 plot-30 plot-32 plot-32 plot-32
+</span><span class="line"> [81] plot-34 plot-34 plot-34 plot-34 plot-36 plot-36 plot-36 plot-36
+</span><span class="line"> [89] plot-36 plot-36 plot-36 plot-38 plot-38 plot-38 plot-38 plot-38
+</span><span class="line"> [97] plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40 plot-40
+</span><span class="line">[105] plot-40 plot-42 plot-42 plot-44 plot-44 plot-44 plot-44 plot-44
+</span><span class="line">[113] plot-44 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46 plot-46
+</span><span class="line">[121] plot-48 plot-48 plot-48 plot-48 plot-48 plot-48 plot-50 plot-50
+</span><span class="line">[129] plot-50 plot-50 plot-50 plot-50 plot-50 plot-50 plot-52 plot-52
+</span><span class="line">[137] plot-52 plot-52 plot-52 plot-52 plot-52 plot-54 plot-54 plot-54
+</span><span class="line">[145] plot-54 plot-54 plot-54 plot-54 plot-56 plot-56 plot-56 plot-56
+</span><span class="line">[153] plot-56 plot-56 plot-58 plot-58 plot-58 plot-58 plot-58 plot-58
+</span><span class="line">[161] plot-58 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60 plot-60
+</span><span class="line">[169] plot-60
+</span><span class="line">30 Levels: plot-10 plot-12 plot-14 plot-16 plot-18 plot-2 ... plot-8</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>but using the <code>$</code> notation won’t work as it will look for the
+column <em>called</em> <code>v</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="o">$</span>v
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">NULL</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It returns <code>NULL</code> to indicate that the column does not exist
+(confusingly, this value can be difficult to work with and give
+cryptic error messages.  More confusingly, getting a nonexistant
+column with <code>[[</code> generates an error instead).</p>
+
+<p>Also, <code>data$P</code> will “expand” to make <code>data$Plot</code>, but <code>data$S</code> will
+return <code>NULL</code> because that is ambiguous.  Always use the full name!</p>
+
+<p>Single square brackets also index the data, but do so differently.
+This returns a <code>data.frame</code> with one column:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">head<span class="p">(</span>data<span class="p">[</span><span class="s">&quot;Plot&quot;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Plot
+</span><span class="line">1 plot-2
+</span><span class="line">2 plot-2
+</span><span class="line">3 plot-2
+</span><span class="line">4 plot-2
+</span><span class="line">5 plot-2
+</span><span class="line">6 plot-2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This returns a <code>data.frame</code> with two columns:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">head<span class="p">(</span>data<span class="p">[</span>c<span class="p">(</span><span class="s">&quot;Plot&quot;</span><span class="p">,</span> <span class="s">&quot;Weight&quot;</span><span class="p">)])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Plot Weight
+</span><span class="line">1 plot-2   4.16
+</span><span class="line">2 plot-2   5.82
+</span><span class="line">3 plot-2   3.51
+</span><span class="line">4 plot-2   7.16
+</span><span class="line">5 plot-2   6.17
+</span><span class="line">6 plot-2   5.32</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(I’m just using <code>head</code> here to keep the output under control.  If
+you actually wanted a <code>data.frame</code> like this you might do</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.sub <span class="o">&lt;-</span> data<span class="p">[</span>c<span class="p">(</span><span class="s">&quot;Plot&quot;</span><span class="p">,</span> <span class="s">&quot;Weight&quot;</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and then continue to use the new <code>data.sub</code> object).</p>
+
+<p>The difference between <code>[</code> and <code>[[</code> can be confusing.</p>
+
+<p>The best explanation I have seen is that imagine that the thing you
+are subsetting is a train with a bunch of carriages.  <code>[x]</code> returns
+a new train with carriages represented by the variable <code>x</code>.  So
+<code>train[c(1,2)]</code> returns a train with just the first two carriages,
+and <code>train[1]</code> returns a train with just the first carriage.  The
+<code>[[</code> operator gets the <em>contents</em> of a single carriage.  So
+<code>train[[1]]</code> gets the <em>contents</em> of the first carriage, and
+<code>train[[c(1,2)]]</code> doesn’t make any sense.</p>
+
+<h2 id="looking-at-your-data-cont">Looking at your data (cont.)</h2>
+
+<p>Plotting is covered in the next R module, but it’s one of the best
+things about R so I can’t resist showing how to do it:</p>
+
+<p>Here is a histogram of the height variable:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">hist<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/intro-unnamed-chunk-20.png" alt="plot of chunk unnamed-chunk-20" /> </p>
+
+<p>(it will appear in the bottom right of your screen)</p>
+
+<p>Here is a scatter plot of Height vs weight:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">,</span> data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/intro-unnamed-chunk-21.png" alt="plot of chunk unnamed-chunk-21" /> </p>
+
+<p>The order of arguments is <em>x</em>-variable, <em>y</em>-variable.</p>
+
+<p>There is an alternative interface using R’s “formulae” – you’ll
+see this a lot in statistical models.  Read this as “<code>Height</code> is a
+function of <code>Weight</code>”.  It makes nicer axis labels, too.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>Height <span class="o">~</span> Weight<span class="p">,</span> data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/intro-unnamed-chunk-22.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+
+<p>Here is a series of bivariate plots for height, weight and the
+number of seed heads:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">pairs<span class="p">(</span>data<span class="p">[</span>c<span class="p">(</span><span class="s">&quot;Height&quot;</span><span class="p">,</span> <span class="s">&quot;Weight&quot;</span><span class="p">,</span> <span class="s">&quot;Seed.heads&quot;</span><span class="p">)])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="../images/intro/intro-unnamed-chunk-23.png" alt="plot of chunk unnamed-chunk-23" /> </p>
+
+<p>The take-home being that R makes it very easy to create graphs, and
+most people who use it casually just make plots of whatever they’re
+looking at.  The plots can vary from quick and dirty like this to
+really beautiful pieces of art.</p>
+
+<h2 id="rows-of-dataframes">Rows of <code>data.frames</code></h2>
+
+<p>Extracting a row always returns a new <code>data.frame</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span><span class="m">10</span><span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"> Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">10 plot-6           TRUE           TRUE        1     33   2.58         43
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">10                 8</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span><span class="m">10</span><span class="o">:</span><span class="m">20</span><span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">10  plot-6           TRUE           TRUE        1     33   2.58         43
+</span><span class="line">11  plot-8          FALSE          FALSE        1     51   5.98        114
+</span><span class="line">12  plot-8          FALSE           TRUE        1     41   2.75         60
+</span><span class="line">13  plot-8          FALSE           TRUE        1     38   2.15         68
+</span><span class="line">14  plot-8          FALSE          FALSE        4     61  21.59        330
+</span><span class="line">15  plot-8          FALSE          FALSE        1     46   6.86        134
+</span><span class="line">16 plot-10           TRUE           TRUE        1     34   3.36         97
+</span><span class="line">17 plot-10           TRUE           TRUE        1     50  15.76        395
+</span><span class="line">18 plot-10           TRUE           TRUE        1     51   8.73        280
+</span><span class="line">19 plot-10           TRUE           TRUE        3     33   3.24         68
+</span><span class="line">20 plot-12          FALSE           TRUE        1     41   2.49         58
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">10                 8
+</span><span class="line">11                 5
+</span><span class="line">12                50
+</span><span class="line">13                52
+</span><span class="line">14                19
+</span><span class="line">15                40
+</span><span class="line">16                 9
+</span><span class="line">17                24
+</span><span class="line">18                11
+</span><span class="line">19                21
+</span><span class="line">20                11</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">10</span><span class="p">),]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"> Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">1  plot-2           TRUE           TRUE        1     31   4.16         83
+</span><span class="line">5  plot-2           TRUE          FALSE        1     47   6.17        212
+</span><span class="line">10 plot-6           TRUE           TRUE        1     33   2.58         43
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">1                  7
+</span><span class="line">5                  3
+</span><span class="line">10                 8</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="be-careful-with-indexing-by-location">Be careful with indexing by location</h2>
+
+<p>The above all index by <em>name</em> or by <em>location</em> (index).  However,
+you generally want to avoid referencing by number in your saved
+code, e.g.:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.height <span class="o">&lt;-</span> data<span class="p">[[</span><span class="m">5</span><span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This is because if you change the order of your spreadsheet (add or
+delete a column), everything that depends on <code>data.height</code> may
+change.  You may also see people do this in their code.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.height <span class="o">&lt;-</span> data<span class="p">[,</span><span class="m">5</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This should really be avoided.  By name is much more robust and
+easy to read later on, even if it is more typing at first.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.height <span class="o">&lt;-</span> data<span class="o">$</span>Height
+</span><span class="line">data.height <span class="o">&lt;-</span> data<span class="p">[[</span><span class="s">&quot;Height&quot;</span><span class="p">]]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>When should you index by location?</p>
+
+<p>When you are <em>computing</em> the indices.  As an example: suppose that
+you wanted every other row (perhaps you’re trying to generate a
+nonrandom some sample of data?)  Remember <code>seq</code> from above?  We can
+generate a sequnce of integers 1, 3, …, up to the last (or second
+to last) row in our data set like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">idx <span class="o">&lt;-</span> seq<span class="p">(</span><span class="m">1</span><span class="p">,</span> nrow<span class="p">(</span>data<span class="p">),</span> by<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then subset like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.oddrows <span class="o">&lt;-</span> data<span class="p">[</span>idx<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Our new data set has half the rows of the old data set:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">nrow<span class="p">(</span>data.oddrows<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 85</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">nrow<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 169</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Because row names are preserved, you can see the odd numbers in the
+row names.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">head<span class="p">(</span>data.oddrows<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"> Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">1  plot-2           TRUE           TRUE        1     31   4.16         83
+</span><span class="line">3  plot-2           TRUE           TRUE        1     42   3.51         72
+</span><span class="line">5  plot-2           TRUE          FALSE        1     47   6.17        212
+</span><span class="line">7  plot-4          FALSE           TRUE        3     57  23.44        522
+</span><span class="line">9  plot-6           TRUE           TRUE        1     40   4.01         81
+</span><span class="line">11 plot-8          FALSE          FALSE        1     51   5.98        114
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">1                  7
+</span><span class="line">3                 32
+</span><span class="line">5                  3
+</span><span class="line">7                  7
+</span><span class="line">9                 46
+</span><span class="line">11                 5</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="indexing-by-logical-vector">Indexing by logical vector</h2>
+
+<p>This is one of the most powerful ways of indexing.</p>
+
+<p>Remember our data mismatch:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">!=</span> data2
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">    Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">  [1,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [2,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [3,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [4,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [5,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [6,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [7,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [8,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">  [9,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [10,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [11,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [12,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [13,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [14,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [15,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [16,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [17,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [18,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [19,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line"> [20,] FALSE          FALSE          FALSE    FALSE   TRUE  FALSE
+</span><span class="line"> [21,] FALSE          FALSE          FALSE    FALSE  FALSE  FALSE
+</span><span class="line">   Seed.heads Seeds.in.25.heads
+</span><span class="line">  [1,]      FALSE             FALSE
+</span><span class="line">  [2,]      FALSE             FALSE
+</span><span class="line">  [3,]      FALSE             FALSE
+</span><span class="line">  [4,]      FALSE             FALSE
+</span><span class="line">  [5,]      FALSE             FALSE
+</span><span class="line">  [6,]      FALSE             FALSE
+</span><span class="line">  [7,]      FALSE             FALSE
+</span><span class="line">  [8,]      FALSE             FALSE
+</span><span class="line">  [9,]      FALSE             FALSE
+</span><span class="line"> [10,]      FALSE             FALSE
+</span><span class="line"> [11,]      FALSE             FALSE
+</span><span class="line"> [12,]      FALSE             FALSE
+</span><span class="line"> [13,]      FALSE             FALSE
+</span><span class="line"> [14,]      FALSE             FALSE
+</span><span class="line"> [15,]      FALSE             FALSE
+</span><span class="line"> [16,]      FALSE             FALSE
+</span><span class="line"> [17,]      FALSE             FALSE
+</span><span class="line"> [18,]      FALSE             FALSE
+</span><span class="line"> [19,]      FALSE             FALSE
+</span><span class="line"> [20,]      FALSE             FALSE
+</span><span class="line"> [21,]      FALSE             FALSE
+</span><span class="line"> [ reached getOption("max.print") -- omitted 148 rows ]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>There is one entry in the <code>Height</code> row that disagrees.  How can we
+extract the line that the mismatch is on?</p>
+
+<p>We could do it by index:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span><span class="m">20</span><span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">20 plot-12          FALSE           TRUE        1     41   2.49         58
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">20                11</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data2<span class="p">[</span><span class="m">20</span><span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">20 plot-12          FALSE           TRUE        1   45.1   2.49         58
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">20                11</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But that requires us to look for the error, note the row, write it
+down, etc.  Boring, and computers are less error prone than
+humans.  Plus, I just said that we should not do that.</p>
+
+<p>This is a logical vector that indicates where the entries in vector
+1 disagree with vector 2:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.differ <span class="o">&lt;-</span> data<span class="o">$</span>Height <span class="o">!=</span> data2<span class="o">$</span>Height
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can index by this - it will return rows for which there are true
+values:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span>data.differ<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">20 plot-12          FALSE           TRUE        1     41   2.49         58
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">20                11</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data2<span class="p">[</span>data.differ<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">20 plot-12          FALSE           TRUE        1   45.1   2.49         58
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">20                11</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You can convert from a logical (<code>TRUE</code>/<code>FALSE</code>) vector to an
+integer vector with the <code>which</code> function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">which<span class="p">(</span>data.differ<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 20</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This can be really useful.</p>
+
+<h3 id="excercise">Excercise:</h3>
+<ol>
+  <li>Return all the rows in <code>data</code> where both data sets have the <em>same</em>
+value for <code>Height</code>.</li>
+  <li>Return all the rows in <code>data</code> from <code>plot-8</code></li>
+</ol>
+
+<h4 id="a-solution">A solution:</h4>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.same <span class="o">&lt;-</span> data<span class="o">$</span>Height <span class="o">==</span> data2<span class="o">$</span>Height
+</span><span class="line">data<span class="p">[</span>data.same<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">1    plot-2           TRUE           TRUE        1     31   4.16
+</span><span class="line">2    plot-2           TRUE           TRUE        3     41   5.82
+</span><span class="line">3    plot-2           TRUE           TRUE        1     42   3.51
+</span><span class="line">4    plot-2           TRUE          FALSE        1     64   7.16
+</span><span class="line">5    plot-2           TRUE          FALSE        1     47   6.17
+</span><span class="line">6    plot-2           TRUE          FALSE        1     52   5.32
+</span><span class="line">7    plot-4          FALSE           TRUE        3     57  23.44
+</span><span class="line">8    plot-6           TRUE           TRUE        2     27   1.76
+</span><span class="line">9    plot-6           TRUE           TRUE        1     40   4.01
+</span><span class="line">10   plot-6           TRUE           TRUE        1     33   2.58
+</span><span class="line">11   plot-8          FALSE          FALSE        1     51   5.98
+</span><span class="line">12   plot-8          FALSE           TRUE        1     41   2.75
+</span><span class="line">13   plot-8          FALSE           TRUE        1     38   2.15
+</span><span class="line">14   plot-8          FALSE          FALSE        4     61  21.59
+</span><span class="line">15   plot-8          FALSE          FALSE        1     46   6.86
+</span><span class="line">16  plot-10           TRUE           TRUE        1     34   3.36
+</span><span class="line">17  plot-10           TRUE           TRUE        1     50  15.76
+</span><span class="line">18  plot-10           TRUE           TRUE        1     51   8.73
+</span><span class="line">19  plot-10           TRUE           TRUE        3     33   3.24
+</span><span class="line">21  plot-12          FALSE           TRUE        2     67  14.06
+</span><span class="line">22  plot-12          FALSE           TRUE        4     30   3.94
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">1           83                 7
+</span><span class="line">2          175                 0
+</span><span class="line">3           72                32
+</span><span class="line">4          125                22
+</span><span class="line">5          212                 3
+</span><span class="line">6          114                19
+</span><span class="line">7          522                 7
+</span><span class="line">8           28                24
+</span><span class="line">9           81                46
+</span><span class="line">10          43                 8
+</span><span class="line">11         114                 5
+</span><span class="line">12          60                50
+</span><span class="line">13          68                52
+</span><span class="line">14         330                19
+</span><span class="line">15         134                40
+</span><span class="line">16          97                 9
+</span><span class="line">17         395                24
+</span><span class="line">18         280                11
+</span><span class="line">19          68                21
+</span><span class="line">21         253                 4
+</span><span class="line">22          85                 6
+</span><span class="line"> [ reached getOption("max.print") -- omitted 147 rows ]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>or:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span><span class="o">!</span>data.differ<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">1    plot-2           TRUE           TRUE        1     31   4.16
+</span><span class="line">2    plot-2           TRUE           TRUE        3     41   5.82
+</span><span class="line">3    plot-2           TRUE           TRUE        1     42   3.51
+</span><span class="line">4    plot-2           TRUE          FALSE        1     64   7.16
+</span><span class="line">5    plot-2           TRUE          FALSE        1     47   6.17
+</span><span class="line">6    plot-2           TRUE          FALSE        1     52   5.32
+</span><span class="line">7    plot-4          FALSE           TRUE        3     57  23.44
+</span><span class="line">8    plot-6           TRUE           TRUE        2     27   1.76
+</span><span class="line">9    plot-6           TRUE           TRUE        1     40   4.01
+</span><span class="line">10   plot-6           TRUE           TRUE        1     33   2.58
+</span><span class="line">11   plot-8          FALSE          FALSE        1     51   5.98
+</span><span class="line">12   plot-8          FALSE           TRUE        1     41   2.75
+</span><span class="line">13   plot-8          FALSE           TRUE        1     38   2.15
+</span><span class="line">14   plot-8          FALSE          FALSE        4     61  21.59
+</span><span class="line">15   plot-8          FALSE          FALSE        1     46   6.86
+</span><span class="line">16  plot-10           TRUE           TRUE        1     34   3.36
+</span><span class="line">17  plot-10           TRUE           TRUE        1     50  15.76
+</span><span class="line">18  plot-10           TRUE           TRUE        1     51   8.73
+</span><span class="line">19  plot-10           TRUE           TRUE        3     33   3.24
+</span><span class="line">21  plot-12          FALSE           TRUE        2     67  14.06
+</span><span class="line">22  plot-12          FALSE           TRUE        4     30   3.94
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">1           83                 7
+</span><span class="line">2          175                 0
+</span><span class="line">3           72                32
+</span><span class="line">4          125                22
+</span><span class="line">5          212                 3
+</span><span class="line">6          114                19
+</span><span class="line">7          522                 7
+</span><span class="line">8           28                24
+</span><span class="line">9           81                46
+</span><span class="line">10          43                 8
+</span><span class="line">11         114                 5
+</span><span class="line">12          60                50
+</span><span class="line">13          68                52
+</span><span class="line">14         330                19
+</span><span class="line">15         134                40
+</span><span class="line">16          97                 9
+</span><span class="line">17         395                24
+</span><span class="line">18         280                11
+</span><span class="line">19          68                21
+</span><span class="line">21         253                 4
+</span><span class="line">22          85                 6
+</span><span class="line"> [ reached getOption("max.print") -- omitted 147 rows ]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>read <code>!x</code> as “not x”,</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span>data<span class="o">$</span>Plot <span class="o">==</span> <span class="s">&quot;plot-8&quot;</span><span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"> Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">11 plot-8          FALSE          FALSE        1     51   5.98        114
+</span><span class="line">12 plot-8          FALSE           TRUE        1     41   2.75         60
+</span><span class="line">13 plot-8          FALSE           TRUE        1     38   2.15         68
+</span><span class="line">14 plot-8          FALSE          FALSE        4     61  21.59        330
+</span><span class="line">15 plot-8          FALSE          FALSE        1     46   6.86        134
+</span><span class="line">   Seeds.in.25.heads
+</span><span class="line">11                 5
+</span><span class="line">12                50
+</span><span class="line">13                52
+</span><span class="line">14                19
+</span><span class="line">15                40</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Subsetting can be useful when you want to look at bits of your
+data.  For example, all the rows where the Height is at least 10
+and there was no seed herbivore:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span>data<span class="o">$</span>Height <span class="o">&gt;</span> <span class="m">10</span> <span class="o">&amp;</span> data<span class="o">$</span>Seed.herbivore<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">1    plot-2           TRUE           TRUE        1     31   4.16
+</span><span class="line">2    plot-2           TRUE           TRUE        3     41   5.82
+</span><span class="line">3    plot-2           TRUE           TRUE        1     42   3.51
+</span><span class="line">4    plot-2           TRUE          FALSE        1     64   7.16
+</span><span class="line">5    plot-2           TRUE          FALSE        1     47   6.17
+</span><span class="line">6    plot-2           TRUE          FALSE        1     52   5.32
+</span><span class="line">8    plot-6           TRUE           TRUE        2     27   1.76
+</span><span class="line">9    plot-6           TRUE           TRUE        1     40   4.01
+</span><span class="line">10   plot-6           TRUE           TRUE        1     33   2.58
+</span><span class="line">16  plot-10           TRUE           TRUE        1     34   3.36
+</span><span class="line">17  plot-10           TRUE           TRUE        1     50  15.76
+</span><span class="line">18  plot-10           TRUE           TRUE        1     51   8.73
+</span><span class="line">19  plot-10           TRUE           TRUE        3     33   3.24
+</span><span class="line">25  plot-14           TRUE           TRUE        1     61  12.74
+</span><span class="line">26  plot-14           TRUE          FALSE        1     50   7.58
+</span><span class="line">27  plot-14           TRUE           TRUE        1     44   1.57
+</span><span class="line">28  plot-14           TRUE          FALSE        1     50   7.96
+</span><span class="line">29  plot-14           TRUE           TRUE        3     45   5.59
+</span><span class="line">37  plot-18           TRUE          FALSE        1     37   3.92
+</span><span class="line">38  plot-18           TRUE          FALSE        1     49   3.99
+</span><span class="line">39  plot-18           TRUE          FALSE        1     72  13.62
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">1           83                 7
+</span><span class="line">2          175                 0
+</span><span class="line">3           72                32
+</span><span class="line">4          125                22
+</span><span class="line">5          212                 3
+</span><span class="line">6          114                19
+</span><span class="line">8           28                24
+</span><span class="line">9           81                46
+</span><span class="line">10          43                 8
+</span><span class="line">16          97                 9
+</span><span class="line">17         395                24
+</span><span class="line">18         280                11
+</span><span class="line">19          68                21
+</span><span class="line">25         371                21
+</span><span class="line">26         145                13
+</span><span class="line">27          36                55
+</span><span class="line">28         162                25
+</span><span class="line">29         173                16
+</span><span class="line">37          98                 1
+</span><span class="line">38          96                 5
+</span><span class="line">39         348                29
+</span><span class="line"> [ reached getOption("max.print") -- omitted 58 rows ]</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The <code>&amp;</code> operator here is a logical “and” (read <code>x &amp; y</code> as “x and
+y”):</p>
+
+<ul>
+  <li><code>TRUE  &amp; TRUE</code>  is <code>TRUE</code></li>
+  <li><code>TRUE  &amp; FALSE</code> is <code>FALSE</code></li>
+  <li><code>FALSE &amp; TRUE</code>  is <code>FALSE</code></li>
+  <li><code>FALSE &amp; FALSE</code> is <code>FALSE</code></li>
+</ul>
+
+<p>In contrast, the <code>|</code> operator is a logical “or” (read as “or”)</p>
+
+<ul>
+  <li><code>TRUE  | TRUE</code>  is <code>TRUE</code></li>
+  <li><code>TRUE  | FALSE</code> is <code>TRUE</code></li>
+  <li><code>FALSE | TRUE</code>  is <code>TRUE</code></li>
+  <li><code>FALSE | FALSE</code> is <code>FALSE</code></li>
+</ul>
+
+<p>The other, less common, operator is the exclusive or:</p>
+
+<ul>
+  <li><code>xor(TRUE,  TRUE)</code>  is <code>FALSE</code></li>
+  <li><code>xor(TRUE,  FALSE)</code> is <code>TRUE</code></li>
+  <li><code>xor(FALSE, TRUE)</code>  is <code>TRUE</code></li>
+  <li><code>xor(FALSE, FALSE)</code> is <code>FALSE</code></li>
+</ul>
+
+<p>So you can do all sorts of crazy things like</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span>data<span class="o">$</span>Plot <span class="o">==</span> <span class="s">&quot;plot-2&quot;</span> <span class="o">&amp;</span> data<span class="o">$</span>Seed.herbivore <span class="o">&amp;</span> data<span class="o">$</span>Root.herbivore<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">1 plot-2           TRUE           TRUE        1     31   4.16         83
+</span><span class="line">2 plot-2           TRUE           TRUE        3     41   5.82        175
+</span><span class="line">3 plot-2           TRUE           TRUE        1     42   3.51         72
+</span><span class="line">  Seeds.in.25.heads
+</span><span class="line">1                 7
+</span><span class="line">2                 0
+</span><span class="line">3                32</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and get all the cases in plot 2 where there were both seed
+herbivores and root herbivores.  Or</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span>data<span class="o">$</span>Height <span class="o">&gt;</span> <span class="m">75</span> <span class="o">&amp;</span> <span class="p">(</span>data<span class="o">$</span>Seed.herbivore <span class="o">|</span> data<span class="o">$</span>Root.herbivore<span class="p">),]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">31  plot-16          FALSE           TRUE        3     76  18.55
+</span><span class="line">42  plot-18           TRUE           TRUE        1     77  16.08
+</span><span class="line">73  plot-30           TRUE           TRUE        1     89  27.70
+</span><span class="line">111 plot-44          FALSE           TRUE        3     80  19.40
+</span><span class="line">112 plot-44          FALSE           TRUE        1     80  15.61
+</span><span class="line">115 plot-46           TRUE           TRUE        1     84  14.64
+</span><span class="line">127 plot-50           TRUE          FALSE        2     94  55.51
+</span><span class="line">131 plot-50           TRUE          FALSE        2     77  12.34
+</span><span class="line">134 plot-50           TRUE          FALSE        3     97  41.21
+</span><span class="line">137 plot-52          FALSE           TRUE        1     76  10.54
+</span><span class="line">147 plot-54           TRUE           TRUE        1     80  28.16
+</span><span class="line">155 plot-58           TRUE          FALSE        1     80  11.56
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">31         379                19
+</span><span class="line">42         261                27
+</span><span class="line">73         561                 3
+</span><span class="line">111        278                41
+</span><span class="line">112        255                 3
+</span><span class="line">115        288                34
+</span><span class="line">127        963                39
+</span><span class="line">131        182                49
+</span><span class="line">134        685                25
+</span><span class="line">137        231                35
+</span><span class="line">147        376                12
+</span><span class="line">155        220                20</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and get all the plants that are quite tall in treatments with
+<em>either</em> a seed herbivore or a root herbivore (or both).</p>
+
+<p>You can build these up if you want:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">idx.tall <span class="o">&lt;-</span> data<span class="o">$</span>Height <span class="o">&gt;</span> <span class="m">75</span>
+</span><span class="line">idx.herbivore <span class="o">&lt;-</span> data<span class="o">$</span>Seed.herbivore <span class="o">|</span> data<span class="o">$</span>Root.herbivore
+</span><span class="line">idx.select <span class="o">&lt;-</span> idx.tall <span class="o">&amp;</span> idx.herbivore
+</span><span class="line">data<span class="p">[</span>idx.select<span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">31  plot-16          FALSE           TRUE        3     76  18.55
+</span><span class="line">42  plot-18           TRUE           TRUE        1     77  16.08
+</span><span class="line">73  plot-30           TRUE           TRUE        1     89  27.70
+</span><span class="line">111 plot-44          FALSE           TRUE        3     80  19.40
+</span><span class="line">112 plot-44          FALSE           TRUE        1     80  15.61
+</span><span class="line">115 plot-46           TRUE           TRUE        1     84  14.64
+</span><span class="line">127 plot-50           TRUE          FALSE        2     94  55.51
+</span><span class="line">131 plot-50           TRUE          FALSE        2     77  12.34
+</span><span class="line">134 plot-50           TRUE          FALSE        3     97  41.21
+</span><span class="line">137 plot-52          FALSE           TRUE        1     76  10.54
+</span><span class="line">147 plot-54           TRUE           TRUE        1     80  28.16
+</span><span class="line">155 plot-58           TRUE          FALSE        1     80  11.56
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">31         379                19
+</span><span class="line">42         261                27
+</span><span class="line">73         561                 3
+</span><span class="line">111        278                41
+</span><span class="line">112        255                 3
+</span><span class="line">115        288                34
+</span><span class="line">127        963                39
+</span><span class="line">131        182                49
+</span><span class="line">134        685                25
+</span><span class="line">137        231                35
+</span><span class="line">147        376                12
+</span><span class="line">155        220                20</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>whatever you find easiest to read and write.</p>
+
+<blockquote>
+  <p>Programs should be written for people to read, and only
+incidentally for machines to execute (Structure and
+Interpretation of Computer Programs” by Abelson and Sussman)</p>
+</blockquote>
+
+<h3 id="the-subset-function-to-simplify-writing-complex-subsets">The <code>subset</code> function to simplify writing complex subsets</h3>
+
+<p>There is a function <code>subset</code> that may help you write complex
+subsets.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">subset<span class="p">(</span>data<span class="p">,</span> Height <span class="o">&gt;</span> <span class="m">75</span> <span class="o">&amp;</span> <span class="p">(</span>Seed.herbivore <span class="o">|</span> Root.herbivore<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">31  plot-16          FALSE           TRUE        3     76  18.55
+</span><span class="line">42  plot-18           TRUE           TRUE        1     77  16.08
+</span><span class="line">73  plot-30           TRUE           TRUE        1     89  27.70
+</span><span class="line">111 plot-44          FALSE           TRUE        3     80  19.40
+</span><span class="line">112 plot-44          FALSE           TRUE        1     80  15.61
+</span><span class="line">115 plot-46           TRUE           TRUE        1     84  14.64
+</span><span class="line">127 plot-50           TRUE          FALSE        2     94  55.51
+</span><span class="line">131 plot-50           TRUE          FALSE        2     77  12.34
+</span><span class="line">134 plot-50           TRUE          FALSE        3     97  41.21
+</span><span class="line">137 plot-52          FALSE           TRUE        1     76  10.54
+</span><span class="line">147 plot-54           TRUE           TRUE        1     80  28.16
+</span><span class="line">155 plot-58           TRUE          FALSE        1     80  11.56
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">31         379                19
+</span><span class="line">42         261                27
+</span><span class="line">73         561                 3
+</span><span class="line">111        278                41
+</span><span class="line">112        255                 3
+</span><span class="line">115        288                34
+</span><span class="line">127        963                39
+</span><span class="line">131        182                49
+</span><span class="line">134        685                25
+</span><span class="line">137        231                35
+</span><span class="line">147        376                12
+</span><span class="line">155        220                20</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This can help, especially interactively, but it can also bite you.
+It is not always obvious where the “value” of the variables in the
+second argument are coming from.  For example:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">subset<span class="p">(</span>data<span class="p">,</span> idx.tall <span class="o">&amp;</span> <span class="p">(</span>Seed.herbivore <span class="o">|</span> Root.herbivore<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">31  plot-16          FALSE           TRUE        3     76  18.55
+</span><span class="line">42  plot-18           TRUE           TRUE        1     77  16.08
+</span><span class="line">73  plot-30           TRUE           TRUE        1     89  27.70
+</span><span class="line">111 plot-44          FALSE           TRUE        3     80  19.40
+</span><span class="line">112 plot-44          FALSE           TRUE        1     80  15.61
+</span><span class="line">115 plot-46           TRUE           TRUE        1     84  14.64
+</span><span class="line">127 plot-50           TRUE          FALSE        2     94  55.51
+</span><span class="line">131 plot-50           TRUE          FALSE        2     77  12.34
+</span><span class="line">134 plot-50           TRUE          FALSE        3     97  41.21
+</span><span class="line">137 plot-52          FALSE           TRUE        1     76  10.54
+</span><span class="line">147 plot-54           TRUE           TRUE        1     80  28.16
+</span><span class="line">155 plot-58           TRUE          FALSE        1     80  11.56
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">31         379                19
+</span><span class="line">42         261                27
+</span><span class="line">73         561                 3
+</span><span class="line">111        278                41
+</span><span class="line">112        255                 3
+</span><span class="line">115        288                34
+</span><span class="line">127        963                39
+</span><span class="line">131        182                49
+</span><span class="line">134        685                25
+</span><span class="line">137        231                35
+</span><span class="line">147        376                12
+</span><span class="line">155        220                20</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This works fine, because it found <code>idx.tall</code>.  So when you read
+your code, you need to think carefully about which values are
+coming from the <code>data.frame</code> and which are coming from elsewhere.</p>
+
+<p>This is an unfortunate example of a function designed to be used by
+beginners, but it only really understandable once you understand
+more of what is going on.  You’ll see it used widely, and it can
+simplify things.  But be careful.</p>
+
+<h2 id="adding-new-columns">Adding new columns</h2>
+
+<p>It is easy to add new columns, perhaps based on old ones:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="o">$</span>small.plant <span class="o">&lt;-</span> data<span class="o">$</span>Height <span class="o">&lt;</span> <span class="m">50</span>
+</span><span class="line">head<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">1 plot-2           TRUE           TRUE        1     31   4.16         83
+</span><span class="line">2 plot-2           TRUE           TRUE        3     41   5.82        175
+</span><span class="line">3 plot-2           TRUE           TRUE        1     42   3.51         72
+</span><span class="line">4 plot-2           TRUE          FALSE        1     64   7.16        125
+</span><span class="line">5 plot-2           TRUE          FALSE        1     47   6.17        212
+</span><span class="line">6 plot-2           TRUE          FALSE        1     52   5.32        114
+</span><span class="line">  Seeds.in.25.heads small.plant
+</span><span class="line">1                 7        TRUE
+</span><span class="line">2                 0        TRUE
+</span><span class="line">3                32        TRUE
+</span><span class="line">4                22       FALSE
+</span><span class="line">5                 3        TRUE
+</span><span class="line">6                19       FALSE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You can delete a column by setting it to <code>NULL</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="o">$</span>small.plant <span class="o">&lt;-</span> <span class="kc">NULL</span>
+</span><span class="line">head<span class="p">(</span>data<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Plot Seed.herbivore Root.herbivore No.stems Height Weight Seed.heads
+</span><span class="line">1 plot-2           TRUE           TRUE        1     31   4.16         83
+</span><span class="line">2 plot-2           TRUE           TRUE        3     41   5.82        175
+</span><span class="line">3 plot-2           TRUE           TRUE        1     42   3.51         72
+</span><span class="line">4 plot-2           TRUE          FALSE        1     64   7.16        125
+</span><span class="line">5 plot-2           TRUE          FALSE        1     47   6.17        212
+</span><span class="line">6 plot-2           TRUE          FALSE        1     52   5.32        114
+</span><span class="line">  Seeds.in.25.heads
+</span><span class="line">1                 7
+</span><span class="line">2                 0
+</span><span class="line">3                32
+</span><span class="line">4                22
+</span><span class="line">5                 3
+</span><span class="line">6                19</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In this data set, the last column contains the number of seeds in
+25 seed heads.  However, there weren’t always 25 seed heads on a
+plant:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="p">[</span>data<span class="o">$</span>Seed.heads <span class="o">&lt;</span> <span class="m">25</span><span class="p">,]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">   Plot Seed.herbivore Root.herbivore No.stems Height Weight
+</span><span class="line">55  plot-24          FALSE           TRUE        1     16   0.26
+</span><span class="line">85  plot-36          FALSE           TRUE        1     43   0.77
+</span><span class="line">107 plot-42           TRUE           TRUE        1     23   0.47
+</span><span class="line">Seed.heads Seeds.in.25.heads
+</span><span class="line">55           4                 1
+</span><span class="line">85          14                 4
+</span><span class="line">107          3                 0</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In these three cases, the column contains the number of seeds over
+<em>all</em> seed heads.</p>
+
+<p><strong>Question</strong>: How do we compute the mean number of seeds per seed
+head?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="o">$</span>Seeds.per.head <span class="o">&lt;-</span> data<span class="o">$</span>Seeds.in.25.heads <span class="o">/</span> <span class="m">25</span>
+</span><span class="line">idx.few.heads <span class="o">&lt;-</span> data<span class="o">$</span>Seed.heads <span class="o">&lt;</span> <span class="m">25</span>
+</span><span class="line">data<span class="o">$</span>Seeds.per.head<span class="p">[</span>idx.few.heads<span class="p">]</span> <span class="o">&lt;-</span>
+</span><span class="line">  data<span class="o">$</span>Seeds.in.25.heads<span class="p">[</span>idx.few.heads<span class="p">]</span> <span class="o">/</span> data<span class="o">$</span>Seed.heads<span class="p">[</span>idx.few.heads<span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>R generally offers several ways of doing things:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">alternative <span class="o">&lt;-</span> data<span class="o">$</span>Seeds.in.25.heads <span class="o">/</span> pmin<span class="p">(</span>data<span class="o">$</span>Seed.heads<span class="p">,</span> <span class="m">25</span><span class="p">)</span>
+</span><span class="line">alternative <span class="o">==</span> data<span class="o">$</span>Seeds.per.head
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  [1] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line"> [15] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line"> [29] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line"> [43] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line"> [57] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line"> [71] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line"> [85] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line"> [99] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line">[113] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line">[127] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line">[141] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line">[155] TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE TRUE
+</span><span class="line">[169] TRUE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Use the <code>all</code> function to determine if all values are TRUE:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">all<span class="p">(</span>alternative <span class="o">==</span> data<span class="o">$</span>Seeds.per.head<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] TRUE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="bonus-topic-indexing-need-not-make-things-smaller">(bonus topic) Indexing need not make things smaller</h2>
+
+<p>Given this vector with the first give letters of the alphabet:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">,</span> <span class="s">&quot;e&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Repeat the first letter once, the second letter twice, etc.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x<span class="p">[</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">3</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">,</span> <span class="m">5</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"> [1] "a" "b" "b" "c" "c" "c" "d" "d" "d" "d" "e" "e" "e" "e" "e"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Much better!</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x<span class="p">[</span>rep<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">)]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"> [1] "a" "b" "b" "c" "c" "c" "d" "d" "d" "d" "e" "e" "e" "e" "e"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><code>rep</code> is incredibly useful, and can be used in many ways.  See the
+help page <code>?rep</code></p>
+
+<hr />
+<p>Back to <a href="/intro">main page</a></p>
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/intro/loading-data.html';
+        var disqus_url = 'http://nicercode.github.com/intro/loading-data.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,24 +1,128 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: module | Nice R Code]]></title>
-  <link href="http://nicercode.github.com/blog/categories/module/atom.xml" rel="self"/>
-  <link href="http://nicercode.github.com/"/>
-  <updated>2013-04-17T15:17:27+10:00</updated>
-  <id>http://nicercode.github.com/</id>
-  <author>
-    <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Why I want to write nice R code - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
 
   
-  <entry>
-    <title type="html"><![CDATA[Why I want to write nice R code]]></title>
-    <link href="http://nicercode.github.com/blog/2013-04-05-why-nice-code/"/>
-    <updated>2013-04-05T14:46:00+11:00</updated>
-    <id>http://nicercode.github.com/blog/why-nice-code</id>
-    <content type="html"><![CDATA[<!-- 
+  <meta name="description" content="<!-- Why are students here
+Goals: performance, learning, affective, social
+Value: attainment, intrinsic, instrumental Instrumental - allows you to &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/blog/2013-04-05-why-nice-code/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Why I want to write nice R code</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-05T14:46:00+11:00" pubdate data-updated="true">05 April 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><!-- 
 Why are students here
 Goals: performance, learning, affective, social
 Value: attainment, intrinsic, instrumental 
@@ -43,7 +147,7 @@ our analyses to macth data availability, at least not without many, many more
 
 <!-- more -->
 
-<p><span class='caption-wrapper right'><img class='caption' src='/images/geeks-vs-nongeeks-repetitive-tasks.png' width='' height='' alt='Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a>' title='Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a>'><span class='caption-text'>Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a></span></span></p>
+<p><span class="caption-wrapper right"><img class="caption" src="/images/geeks-vs-nongeeks-repetitive-tasks.png" width="" height="" alt="Why writing code saves you time with repetitive tasks, by [Bruno Oliveira](https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y)" title="Why writing code saves you time with repetitive tasks, by [Bruno Oliveira](https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y)" /><span class="caption-text">Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a></span></span></p>
 
 <p>The solution is to write scripts in programs like 
 <a href="http://www.r-project.org/">R</a>, <a href="http://www.python.org/">python</a> or 
@@ -77,7 +181,7 @@ Certainly no one is teaching you these skills in your standard biology research
 department.</p>
 
 <blockquote class="twitter-tweet"><p>Learn to code! I worry that most biologists leave uni lacking #1 skill for 21st cent biology. For inspiration <a href="http://t.co/7lzRutYuIw" title="http://code.org">code.org</a> <a href="https://twitter.com/search/%23CODE">#CODE</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/306854385076543488">February 27, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>Observing how colleagues were struggling with their code, we 
 (<a href="http://www.zoology.ubc.ca/~fitzjohn/">Rich FitzJohn</a> and 
@@ -106,7 +210,7 @@ has come to dominate biological research. We are experts, but have more
 experience than many biologists. Hence the nice R code blog.</p>
 
 <blockquote class="twitter-tweet"><p>@<a href="https://twitter.com/phylorich">phylorich</a> Being able to code (in any language) is most important skill for current biology. R is good choice: widely used, high level, free</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/312438921059520512">March 15, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h2 id="key-elements-of-nice-r-code">Key elements of nice R code</h2>
 <p>We will now briefly consider some of the key principles of writing nice code. </p>
@@ -151,8 +255,8 @@ guide.</li>
 
 <h3 id="nice-code-is-reliable-ie-bug-free">Nice code is reliable, i.e. bug free</h3>
 
-<blockquote class="twitter-tweet"><p>Occma's raz0r: if your program isn't working, it's probably just a typo in the code, not an undiscovered bug or thing you're doing wrong</p>&mdash; Alison Abreu-Garcia (@alisonag) <a href="https://twitter.com/alisonag/status/322374461212995584">April 11, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet"><p>Occma&#8217;s raz0r: if your program isn&#8217;t working, it&#8217;s probably just a typo in the code, not an undiscovered bug or thing you&#8217;re doing wrong</p>&mdash; Alison Abreu-Garcia (@alisonag) <a href="https://twitter.com/alisonag/status/322374461212995584">April 11, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>The computer does exactly what you tell it to. If there is a problem in your code, it’s most likely you put it there. How certain 
 are you that your code is error free? More than once I have reached a state 
@@ -176,8 +280,8 @@ colleagues, during review process, or in repositories such as github.</li>
 errors.</li>
 </ul>
 
-<blockquote class="twitter-tweet"><p>"Every bug is two bugs: the bug in your code, and the test you didn't write"@<a href="https://twitter.com/estherbester">estherbester</a> <a href="https://twitter.com/search/%23pycon">#pycon</a></p>&mdash; Ned Batchelder (@nedbat) <a href="https://twitter.com/nedbat/status/312628852558032896">March 15, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet"><p>&#8220;Every bug is two bugs: the bug in your code, and the test you didn&#8217;t write&#8221;@<a href="https://twitter.com/estherbester">estherbester</a> <a href="https://twitter.com/search/%23pycon">#pycon</a></p>&mdash; Ned Batchelder (@nedbat) <a href="https://twitter.com/nedbat/status/312628852558032896">March 15, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h3 id="nice-code-runs-quickly-and-is-therefore-a-pleasure-to-use">Nice code runs quickly and is therefore a pleasure to use</h3>
 
@@ -217,7 +321,7 @@ own machine or by running your code on a cluster.</li>
 
 <p>If you need further motivation, consider this advice</p>
 
-<p><span class='caption-wrapper centre'><img class='caption' src='/images/Maniac.jpg' width='' height='' alt='An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a>' title='An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a>'><span class='caption-text'>An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a></span></span></p>
+<p><span class="caption-wrapper centre"><img class="caption" src="/images/Maniac.jpg" width="" height="" alt="An [advisory pop-up for MS Visual C++](http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer)" title="An [advisory pop-up for MS Visual C++](http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer)" /><span class="caption-text">An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a></span></span></p>
 
 <p>This might seem extreme, until you realise that the maniac serial killer is 
 <strong>you</strong>, and you definitely know where you live. </p>
@@ -248,75 +352,145 @@ reviewer couldn’t understand your code. At worst, some people have had to <a h
 <p>For further inspiration, you may like to check out Greg Wilson’s great article “<a href="http://arxiv.org/abs/1210.0530">Best Practices for Scientific Computing</a>.” </p>
 
 <p><strong>Acknowledgments:</strong> Many thanks to <a href="https://twitter.com/gvwilson">Greg Wilson</a>, <a href="http://inundata.org/">Karthik Ram</a>, <a href="http://schamberlain.github.io/scott/">Scott Chameberlain</a> and <a href="http://www.carlboettiger.info/">Carl Boettiger</a> and <a href="http://www.zoology.ubc.ca/~fitzjohn/">Rich FitzJohn</a> for inspirational chats, code and work. </p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[Plans for 'Nice R code module', Macquarie University 2013]]></title>
-    <link href="http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/"/>
-    <updated>2013-03-08T09:58:00+11:00</updated>
-    <id>http://nicercode.github.com/blog/nice-r-code-2013-plans</id>
-    <content type="html"><![CDATA[<p>Welcome to the Nice R code module. This module is targeted at researchers who 
-are already using R and want to write nicer code. By ‘nicer’ we mean code that 
-is easy to write, is easy to read, runs fast, gives reliable results, is easy 
-to reuse in new projects, and is easy to share with collaborators. When you 
-write nice code, you do better science, are more productive, and have more fun.</p>
 
-<p>We have a tentative schedule of plans for the 2013 Nice R Code module. The 
-module consists of 9 one hour sessions and one 3 hour session. 
-The topics covered fall into two broad categories: <em>workflow</em> and
-<em>coding</em>. Both are essential for writing nicer code.  At the beginning of the 
-module we are going to focus on the
-first, as this will cross over into all computing work people do.</p>
+<span class="byline author vcard">Posted by <span class="fn">Daniel Falster</span></span>
 
-<!-- more -->
+      
 
-<p>The first five sessions will be </p>
 
-<ol>
-  <li>Introduction &amp; project set up (9 April)</li>
-  <li>Version control with git (23 April) – this will be a longer
-session, run with participants from the February software carpentry
-bootcamp.</li>
-  <li>Coding style (7 May)</li>
-  <li>Abstraction and design (21 May)</li>
-  <li>Testing code (4 June)</li>
-</ol>
 
-<p>Except for the version control session, we will meet from 2-3pm in E8C
-212.</p>
 
-<p>These sessions follow very much the same ideas as
-<a href="http://www.software-carpentry.org">software carpentry</a>.  Where we
-differ is that we will be focusing on <a href="http://r-project.org">R</a>, and
-with less emphasis on command line tools and python.</p>
 
-<p>The next sessions (18 June, 2 July, 16 July &amp; 30 July) will either
-work on specific R skills or continue through issues arising from the
-first five sessions, depending on demand.  Possible specific sessions
-include</p>
 
-<ul>
-  <li>Data matching, models and avoiding duplication</li>
-  <li>Higher order functions and functional programming</li>
-  <li>The split/apply/combine pattern</li>
-  <li>Creating better graphs (many possible sessions here)</li>
-  <li>Code reuse and packaging</li>
-  <li>Code profiling and optimisation</li>
-  <li>Using and creating simple databases</li>
-  <li>Text processing</li>
-  <li>Numerical optimisation and algorithms</li>
-  <li>Simulation models (an intro only!)</li>
-  <li>Packages</li>
-</ul>
 
-<p>Along with the skills, we will be doing code review.  The idea will be
-for a participant to meet with us immediately after one session and
-discuss their problems with us.  They then work on their problem over
-the next fortnight and in the next session we will discuss what the
-issues were, the possibilities for overcoming them, and the eventual
-solutions.</p>
-]]></content>
-  </entry>
+
   
-</feed>
+
+
+<time datetime="2013-04-05T14:46:00+11:00" pubdate data-updated="true">05 April 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/module/'>module</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-04-05-why-nice-code/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-04-05-why-nice-code/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-04-05-projects/" title="Previous Post: Designing projects">&laquo; Designing projects</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/blog/2013-04-05-why-nice-code/';
+        var disqus_url = 'http://nicercode.github.com/blog/2013-04-05-why-nice-code/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

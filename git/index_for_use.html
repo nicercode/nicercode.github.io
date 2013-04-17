@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Plans for 'Nice R code module', Macquarie University 2013 - Nice R Code</title>
+  <title>Introduction to git - Nice R Code</title>
   <meta name="author" content="Rich FitzJohn & Daniel Falster">
 
   
-  <meta name="description" content="Welcome to the Nice R code module. This module is targeted at researchers who are already using R and want to write nicer code. By ‘nicer’ we mean &hellip;">
+  <meta name="description" content="Introduction to git 04 April 2013 Git has a reputation for being hard to learn: They say git gets easier once you get the basic idea that branches &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/">
+  <link rel="canonical" href="http://nicercode.github.com/git/index_for_use.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -93,15 +93,11 @@ MathJax.Hub.Config({
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Plans for 'Nice R code module', Macquarie University 2013</h1>
-    
-    
-      <p class="meta">
-        
+    <h1 class="entry-title">Introduction to git</h1>
+    <p class="meta">
 
 
 
@@ -113,125 +109,36 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2013-03-08T09:58:00+11:00" pubdate data-updated="true">08 March 2013</time>
-        
-      </p>
-    
+<time datetime="2013-04-04T09:00:00+11:00" pubdate data-updated="true">04 April 2013</time></p>
   </header>
+  
+  <p>Git has a reputation for being hard to learn:</p>
 
+<blockquote class="twitter-tweet"><p>They say git gets easier once you get the basic idea that branches are homeomorphic endofunctors mapping submanifolds of a Hilbert space.</p>&mdash; Kornel (@pornelski) <a href="https://twitter.com/pornelski/status/316190292443267073">March 25, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<div class="entry-content"><p>Welcome to the Nice R code module. This module is targeted at researchers who 
-are already using R and want to write nicer code. By ‘nicer’ we mean code that 
-is easy to write, is easy to read, runs fast, gives reliable results, is easy 
-to reuse in new projects, and is easy to share with collaborators. When you 
-write nice code, you do better science, are more productive, and have more fun.</p>
+<p>One of the things that will make learning git challenging for many
+ecologists is that most resources (e.g., the excellent
+<a href="http://git-scm.com/book/">git book</a>) assume that you are coming from a
+background of using CVS, SVN or some other centralised version control
+system with a nastry abbrevo.  Therefore, they expect you to already be thinking in one way
+and then show you how to translate those ideas into git’s ideas.</p>
 
-<p>We have a tentative schedule of plans for the 2013 Nice R Code module. The 
-module consists of 9 one hour sessions and one 3 hour session. 
-The topics covered fall into two broad categories: <em>workflow</em> and
-<em>coding</em>. Both are essential for writing nicer code.  At the beginning of the 
-module we are going to focus on the
-first, as this will cross over into all computing work people do.</p>
-
-<!-- more -->
-
-<p>The first five sessions will be </p>
+<p>In a way you’re lucky, as you don’t have to learn a bunch of stuff and
+then unlearn it (e.g., see
+<a href="http://www.reddit.com/r/programming/comments/embdf/git_complicated_of_course_not_commits_map_to/c196s4w">here</a>).
+Some of the things that git does just make sense with cheaper (and
+more decentralised) bandwidth, disk space, and computing power than
+the systems that were developed in the past.</p>
 
 <ol>
-  <li>Introduction &amp; project set up (9 April)</li>
-  <li>Version control with git (23 April) – this will be a longer
-session, run with participants from the February software carpentry
-bootcamp.</li>
-  <li>Coding style (7 May)</li>
-  <li>Abstraction and design (21 May)</li>
-  <li>Testing code (4 June)</li>
+  <li><a href="why.html">What is version control and why would you use it</a></li>
+  <li><a href="workflows.html">Workflows that use version control</a></li>
+  <li><a href="rstudio.html">Version control from within RStudio</a></li>
+  <li><a href="basics.html">Version control basics</a></li>
 </ol>
 
-<p>Except for the version control session, we will meet from 2-3pm in E8C
-212.</p>
-
-<p>These sessions follow very much the same ideas as
-<a href="http://www.software-carpentry.org">software carpentry</a>.  Where we
-differ is that we will be focusing on <a href="http://r-project.org">R</a>, and
-with less emphasis on command line tools and python.</p>
-
-<p>The next sessions (18 June, 2 July, 16 July &amp; 30 July) will either
-work on specific R skills or continue through issues arising from the
-first five sessions, depending on demand.  Possible specific sessions
-include</p>
-
-<ul>
-  <li>Data matching, models and avoiding duplication</li>
-  <li>Higher order functions and functional programming</li>
-  <li>The split/apply/combine pattern</li>
-  <li>Creating better graphs (many possible sessions here)</li>
-  <li>Code reuse and packaging</li>
-  <li>Code profiling and optimisation</li>
-  <li>Using and creating simple databases</li>
-  <li>Text processing</li>
-  <li>Numerical optimisation and algorithms</li>
-  <li>Simulation models (an intro only!)</li>
-  <li>Packages</li>
-</ul>
-
-<p>Along with the skills, we will be doing code review.  The idea will be
-for a participant to meet with us immediately after one session and
-discuss their problems with us.  They then work on their problem over
-the next fortnight and in the next session we will discuss what the
-issues were, the possibilities for overcoming them, and the eventual
-solutions.</p>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Rich FitzJohn & Daniel Falster</span></span>
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-03-08T09:58:00+11:00" pubdate data-updated="true">08 March 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/module/'>module</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/" >Tweet</a>
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2013-02-12-r-ecology-evolution/" title="Previous Post: R in ecology and evolution">&laquo; R in ecology and evolution</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2013-04-05-projects/" title="Next Post: Designing projects">Designing projects &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
   <section>
@@ -291,8 +198,8 @@ solutions.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/';
-        var disqus_url = 'http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/';
+        var disqus_identifier = 'http://nicercode.github.com/git/index_for_use.html';
+        var disqus_url = 'http://nicercode.github.com/git/index_for_use.html';
         var disqus_script = 'embed.js';
       
     (function () {

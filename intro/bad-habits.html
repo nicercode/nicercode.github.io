@@ -1,0 +1,313 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Bad Habits - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Bad Habits 18 March 2013 It is easy to pick up bad habits. Here is a non-exaustive list in no
+particular order Avoid indexing by location unless you &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/intro/bad-habits.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Bad Habits</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-18T10:25:00+11:00" pubdate data-updated="true">18 March 2013</time></p>
+  </header>
+  
+  <p>It is easy to pick up bad habits.  Here is a non-exaustive list in no
+particular order</p>
+
+<ol>
+  <li>
+    <p>Avoid indexing by location unless you compute those locations
+(covered in <a href="loading-data.html">Loading data</a></p>
+  </li>
+  <li>
+    <p>Don’t use <code>T</code> and <code>F</code> as shortcuts for <code>TRUE</code> and <code>FALSE</code>.  This
+dates back to the language that predates R.  For why not to do
+this, try running <code>T &lt;- FALSE</code>.  Now both <code>T</code> and <code>F</code> are <code>FALSE</code>!
+Try running <code>TRUE &lt;- FALSE</code> — R prevents you from doing this.</p>
+  </li>
+  <li>
+    <p>Don’t be inconsistent (i.e., be consistent) with assignment
+symbols, variable names, etc.  The more consistent you are, the
+easier you will find it to revisit your code in the future.</p>
+  </li>
+  <li>
+    <p>Don’t use <code>attach</code>.  I’m debating even listing this function’s
+name, but don’t use it.  If you see it in somebody’s code, don’t
+copy it.  Just trust me on this one.</p>
+  </li>
+  <li>
+    <p>Avoid copy and pasting large chunks of code between projects.  Once
+you get in the habit of making functions, copy <em>those</em> around, but
+I have seen huge messes of code with problems that are impossible
+to track down due to this.</p>
+  </li>
+  <li>
+    <p>Don’t write enormously long functions that are difficult to read
+(this is sometimes unavoidable to a degree in cleaning up
+ecological data).  Try to have each function do just one thing.</p>
+  </li>
+  <li>
+    <p>Don’t write functions that depend on global variables, as this
+makes it hard to use those functions elsewhere (which was the point
+of writing them!).  All data should be given as arguments to the
+function.</p>
+  </li>
+  <li>
+    <p>Do document your work.  You probably cannot have enough describing
+where data files came from, what scripts do what, how particular
+pieces of code work.  Avoid writing comments that just repeat what
+the code says, and try and write comments that describe your
+intent, reasons for approaches, sources of data / code / algorithm
+— things that will make your life easier when you come back to a
+project.</p>
+  </li>
+  <li>
+    <p>Keep things tidy.  Tidy computing workspaces are as important as
+tidy as tidy lab workspaces.  People have thought about this a bit,
+e.g.: <a href="http://dx.doi.org/10.1371/journal.pcbi.1000424">Noble 2009</a>
+(PLOS Computational Biology).  This is a constant battle against
+entropy.</p>
+  </li>
+  <li>
+    <p>Indent your code, and do it consistently.  There are many styles
+   (google around to be amazed) but proper indentation is the
+   difference between easy to read and hard to read code, as indent
+   depth implies something about program structure.  Take our variance
+   function from earlier.</p>
+  </li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">variance <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  n <span class="o">&lt;-</span> length<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">m <span class="o">&lt;-</span> mean<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="m">1</span> <span class="o">/</span> <span class="p">(</span>n<span class="m">-1</span><span class="p">))</span> <span class="o">*</span> sum<span class="p">((</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">variance<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>vs</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">variance <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  n <span class="o">&lt;-</span> length<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">  m <span class="o">&lt;-</span> mean<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">  <span class="p">(</span><span class="m">1</span> <span class="o">/</span> <span class="p">(</span>n<span class="m">-1</span><span class="p">))</span> <span class="o">*</span> sum<span class="p">((</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">variance<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>It is much more obvious that the body of the variance function is
+three lines long in the second version than the first.  Skimming the
+code, you will probably interpret the first version has only having a
+one line body and miss most of the function.</p>
+
+<p>A good rule of thumb is to
+<a href="http://c2.com/cgi/wiki?CodeForTheMaintainer">code for the person who will mantain your code</a>.
+As this is usually you, that should not be too hard to motivate.</p>
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/intro/bad-habits.html';
+        var disqus_url = 'http://nicercode.github.com/intro/bad-habits.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

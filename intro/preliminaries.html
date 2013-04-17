@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Preliminaries - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Preliminaries 18 March 2013 How this is going to go down We are going to cover the material in a different way than you would
+get taught a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/intro/preliminaries.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Preliminaries</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-18T17:21:00+11:00" pubdate data-updated="true">18 March 2013</time></p>
+  </header>
+  
+  <h1 id="how-this-is-going-to-go-down">How this is going to go down</h1>
+
+<p>We are going to cover the material in a different way than you would
+get taught a statistics course, and a different way than you would get
+taught a programming course.</p>
+
+<p>We’re going to start pretty slow, and slowly ramp the pace up.  The
+idea is to get you to a point where you can continue learning
+yourself.  <strong>It is not possible to learn to program in a day</strong>.  It
+will take time and practice.  Don’t wait until the assignment is due,
+or the conference is next week.</p>
+
+<p>If you get lost in the material at the second half of the day, don’t
+despair.  What we cover in the first half will actually account for
+most of what you need to do (apart from statistics and plotting).  If
+you get lost in the first half <em>make sure you speak up</em>.</p>
+
+<p>We’re going to focus on concepts, best practices and workflow almost
+as much on getting you going with the syntax and commands.  R is
+simply too large to teach in just one day (or the three days that the
+full course runs for), and so my main hope is that you get enough of a
+flavour of it to continue the learning process yourself.  I probably
+have more material here than we’ll get through today, and I feel that
+this really just scratches the surface.</p>
+
+<h1 id="learning-r-can-be-frustrating">Learning R can be frustrating</h1>
+
+<ul>
+  <li>Learning R is not necessarily hard, but not necessarily easy
+either.  Different people will make the logical connections faster
+than others, and until it “clicks” it may seem like a battle.</li>
+  <li>Ask questions as you are unclear and we’ll help make those
+connections faster.</li>
+  <li>It is a programming language
+    <ul>
+      <li>don’t think of it a statistical program that you use from a
+command line</li>
+      <li>think of it as a programming language that happens to have a lot
+of statistical functions.</li>
+    </ul>
+  </li>
+  <li>The big challenge is going to be bridging between the nebuluous
+“what I think I want to do” and the precice “computer – this is
+what I need you to do”.</li>
+  <li>It is easy to underestimate how precice instructions need to be.
+We’ll see examples, but things like (“take the mean of the leg
+lengths by species” are intuitively obvious to us, but can be hard
+precicely convey to a computer.
+    <ul>
+      <li>what if there are missing data?</li>
+      <li>does it matter if there are different numbers individual per
+species?</li>
+      <li>does it matter if there are different sized legs on each species
+(which leg?)</li>
+      <li>what happens if someone gave ranges for some of the leg
+measurements, rather than one number?</li>
+      <li>what about subspecies?</li>
+    </ul>
+  </li>
+  <li>There is a good Douglas Adams quote about this: <em>“If you really
+want to understand something, the best way is to try and explain it
+to someone else. That forces you to sort it out in your mind. And
+the more slow and dim-witted your pupil, the more you have to break
+things down into more and more simple ideas. And that’s really the
+essence of programming. By the time you’ve sorted out a complicated
+idea into little steps that even a stupid machine can deal with,
+you’ve learned something about it yourself.”</em> (from Dirk Gentley’s
+Holistic Detective Agency).</li>
+</ul>
+
+<h1 id="rstudio">RStudio</h1>
+
+<p>We’re going to focus on using RStudio for two reasons:</p>
+
+<ol>
+  <li>
+    <p>It makes my life easier: you are all using the same tools and we’ll
+be able to help you with your problems faster.</p>
+  </li>
+  <li>
+    <p>It will make your life easier: it’s got lots of features that help
+people, especially beginners.  It will help you organise your work,
+develop good workflows.  On the other hand, it’s not very intrusive
+and if you use a different interface (such as the plain R interface
+that you installed) it will feel very similar.</p>
+  </li>
+</ol>
+
+<h2 id="getting-started-with-rstudio">Getting started with RStudio</h2>
+
+<p>Load R studio however you do that on your platform.</p>
+
+<p>RStudio has four panes:</p>
+
+<ol>
+  <li>Bottom left – this is the R interpreter.  If you type
+code here, it is “evaulated” so that you get an answer.</li>
+  <li>Top left – editor for writing longer pieces of code.</li>
+  <li>Top right will tell you things about objects in the workspace.
+We’ll get to this soon, but this will be things like data objects,
+or functions that will process them.  It is completely unrelated to
+the file system. The “History” tab will keep an eye on what you’ve
+done.</li>
+  <li>Will display files, plots, packages, and help information, usually
+as needed.</li>
+</ol>
+
+<p>We’ll do everything in a project, as that will help when we get some
+data.</p>
+
+<ul>
+  <li>“Project”: “Create Project…”</li>
+  <li>choose “New Project, (start a project in a new directory)”.</li>
+  <li>Leave the “Type” as the default.</li>
+  <li>In the “Directory name” type the name for the project (in our case
+<code>g2g</code> might be a good name).</li>
+  <li>In the “Create project as a subdirectory of” field select (type or
+browse) for the parent directory of the project.  By default this
+is probably your home directory, but you might prefer your
+Documents folder.</li>
+</ul>
+
+<p>The RStudio window morphs around a bit, and the top left pane will
+disappear.</p>
+
+<p>In the bottom right panel, make sure that the “Files” tab is selected
+and make a new folder called <code>data</code>.  I strongly recommend keeping a
+directory like this in every project that contains your data.  Treat
+it read only (that is, write once, then basically don’t change).  This
+may be a large shift in thinking if you’ve come from doing data
+analysis and management in Excel.</p>
+
+<p>In more complicated projects, I would generally have a folder called
+<code>R</code> that contains scripts and function definitions, another called
+<code>figs</code> that contained figures that I’ve generated, and one called
+<code>doc</code> that contains the manuscript, talks, etc.</p>
+
+<p>We’re going to spend a bit of time using a data set.  You can download
+this from <a href="data/seed_root_herbivores.csv">here</a> and put it into that
+directory.  Download this file, open the <code>g2g/data</code> folder and move it
+there (if you click More: show folder in new window, you’ll get a file
+browser window opening in about the right place).  Similarly, also
+grab <a href="data/seed_root_herbivores.txt">this file</a> and put it in the
+<code>data</code> directory too.</p>
+
+<p>To make sure everything is working properly, in the console window
+type</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">file.exists<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which should print</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] TRUE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<hr />
+<p>Back to <a href="/intro">main page</a></p>
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/intro/preliminaries.html';
+        var disqus_url = 'http://nicercode.github.com/intro/preliminaries.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

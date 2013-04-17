@@ -1,0 +1,350 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Git basics (command line) - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Git basics (command line) 16 April 2013 This will become basics.md once basics.md becomes rstudio.md Essentially, all version control does is store &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/git/basics.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Git basics (command line)</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-16T09:00:00+10:00" pubdate data-updated="true">16 April 2013</time></p>
+  </header>
+  
+  <p><em>This will become basics.md once basics.md becomes rstudio.md</em></p>
+
+<p>Essentially, all version control does is store snapshots of your work
+in time, and keeps track of the parent-child relationship.</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/git-intro-history.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Getting-Started-Git-Basics)" title="From [Pro Git](http://git-scm.com/book/en/Getting-Started-Git-Basics)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Getting-Started-Git-Basics">Pro Git</a></span></span></p>
+
+<p>You can think of your current set of working files are simply the
+child of the last node in this chain (that is, your files are the
+children of the most recent set of files known to the version control
+system).</p>
+
+<p><code>git</code> provides a large number of tools for manipulating this history.
+We’ll only touch on a few, but the number that you need to know for
+day-to-day use is actually quite small.</p>
+
+<p>We’re going to need some terminology:</p>
+
+<ul>
+  <li><strong>Repository</strong>: “Repo” for short; this is a copy of the history of
+your project.  It is stored in a hidden directory within your
+project.  People will talk about “cloning a repo” or “adding things
+to a repo”; these all manipulate the history in some way.</li>
+  <li><strong>Working directory</strong>: This is your copy of a project.  It’s just a
+directory with files and other directories in it.  The repository is
+contained within a <code>.git</code> directory at the root directory of your
+project.</li>
+</ul>
+
+<h1 id="creating-a-repository">Creating a repository</h1>
+
+<p>If you want to create a repository from the command line, use the
+command</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git init</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will print something like</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Initialized empty Git repository in /Users/rich/Desktop/vc/.git/</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>I have deleted the <code>.git</code> directory in the <code>vc</code> project, and
+re-initialised an empty git repository there.</p>
+
+<h1 id="the-add-commit-cycle-revisited">The add-commit cycle, revisited</h1>
+
+<p>We will use a few commands.</p>
+
+<p>The first is <code>git status</code>.  This tells you the status of all the files
+in your project that <em>are not up to date</em>.  At the moment, it
+contains:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"># On branch master
+</span><span class="line">#
+</span><span class="line"># Initial commit
+</span><span class="line">#
+</span><span class="line"># Untracked files:
+</span><span class="line">#   (use "git add &lt;file&gt;..." to include in what will be committed)
+</span><span class="line">#
+</span><span class="line">#	.gitignore
+</span><span class="line">#	script.R
+</span><span class="line">#	vc.Rproj
+</span><span class="line">nothing added to commit but untracked files present (use "git add" to track)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which is essentially the same information as</p>
+
+<p><img src="img/rstudio-not-added.png" /></p>
+
+<p>The command <code>git add</code> does (essentially) the same thing as clicking
+the “Staged” checkbox in Rstudio:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git add script.R
+</span><span class="line">git status
+</span><span class="line"># On branch master
+</span><span class="line">#
+</span><span class="line"># Initial commit
+</span><span class="line">#
+</span><span class="line"># Changes to be committed:
+</span><span class="line">#   (use "git rm --cached &lt;file&gt;..." to unstage)
+</span><span class="line">#
+</span><span class="line">#	new file:   script.R
+</span><span class="line">#
+</span><span class="line"># Untracked files:
+</span><span class="line">#   (use "git add &lt;file&gt;..." to include in what will be committed)
+</span><span class="line">#
+</span><span class="line">#	.gitignore
+</span><span class="line">#	vc.Rproj</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This tells us all of the things that we are going to commit
+(<code>script.R</code>) and the files that git does not know about (<code>.gitignore</code>
+and <code>vc.Rproj</code>).  The command <code>git commit</code> does the actual addition.
+The <code>-m</code> option passes in a message for the commit.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git commit -m "Added function that computes standard error of the mean."</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which prints</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[master (root-commit) 514f871] Added function that computes standard error of the mean.
+</span><span class="line"> 1 file changed, 3 insertions(+)
+</span><span class="line"> create mode 100644 script.R</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which is essentially the same information that RStudio showed after
+committing.</p>
+
+<p>We can add the other files:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git add .gitignore vc.Rproj
+</span><span class="line">git commit -m "Added RStudio</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/git/basics.html';
+        var disqus_url = 'http://nicercode.github.com/git/basics.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,744 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Writing functions - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Writing functions 18 March 2013 At some point, you will want to write a function, and it will
+probably be sooner than you think. Functions are core &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/intro/writing-functions.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Writing functions</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-18T10:25:00+11:00" pubdate data-updated="true">18 March 2013</time></p>
+  </header>
+  
+  <p>At some point, you will want to write a function, and it will
+probably be sooner than you think.  Functions are core to the way
+that R works, and the sooner that you get comfortable writing them,
+the sooner you’ll be able to leverage R’s power, and start having
+fun with it.</p>
+
+<p>The first function most people seem to need to write is to compute
+the standard error of the mean for some variable.  This is defined
+as $\sqrt{\mathrm{var}(x)/n}$ (that is the square root of the
+variance divided by the sample size.</p>
+
+<p>Start by reloading our data set again.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;data/seed_root_herbivores.csv&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can already easily compute the mean</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mean<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 55.54</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and the variance</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">var<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 250.6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and the sample size</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">length<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 169</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>so it seems easy to compute the standard error:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sqrt<span class="p">(</span>var<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span><span class="o">/</span>length<span class="p">(</span>data<span class="o">$</span>Height<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1.218</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>notice how <code>data$Height</code> is repeated there — not desirable.</p>
+
+<p>Suppose we now want the standard error of the dry weight too:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sqrt<span class="p">(</span>var<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span><span class="o">/</span>length<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.7616</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This is basically identical to the height case above.  We’ve copied
+and pasted the definition and replaced the variable that we are
+interested in.  This sort of substitution is tedious and error
+prone, and the sort of things that computers are a lot better at
+doing reliably than humans are.</p>
+
+<p>It is also just not that clear from what is written what the
+<em>point</em> of these lines is.  Later on, you’ll be wondering what
+those lines are doing.</p>
+
+<p>Look more carefully at the two statements and see the similarity in
+form, and what is changing between them.  This pattern is the key
+to writing functions.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sqrt<span class="p">(</span>var<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span><span class="o">/</span>length<span class="p">(</span>data<span class="o">$</span>Height<span class="p">))</span>
+</span><span class="line">sqrt<span class="p">(</span>var<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span><span class="o">/</span>length<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Here is the syntax for defining a function, used to make a standard
+error function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">standard.error <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    sqrt<span class="p">(</span>var<span class="p">(</span>x<span class="p">)</span><span class="o">/</span>length<span class="p">(</span>x<span class="p">))</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The result of the last line is “returned” from the function.</p>
+
+<p>We can call it like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">standard.error<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1.218</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">standard.error<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.7616</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note that <code>x</code> has a special meaning within the curly braces.  If we
+do this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">100</span>
+</span><span class="line">standard.error<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1.218</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>we get the same answer.  Because <code>x</code> appears in the “argument
+list”, it will be treated specially.  Note also that it is
+completely unrelated to the name of what is provided as value to
+the function.</p>
+
+<p>You can define variables within functions</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">standard.error <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    v <span class="o">&lt;-</span> var<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    n <span class="o">&lt;-</span> length<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    sqrt<span class="p">(</span>v<span class="o">/</span>n<span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This can often help you structure your function and your thoughts.</p>
+
+<p>These are also treated specially — they do not affect the main
+workspace (the “global environment”) and are destroyed when the
+function ends.  If you had some value <code>v</code> in the global
+environment, it would be ignored in this function as soon as the
+local <code>v</code> was defined, with the local definition used instead.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">v <span class="o">&lt;-</span> <span class="m">1000</span>
+</span><span class="line">standard.error<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1.218</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Another example.</p>
+
+<p>We used the variance function above, but let’s rewrite it.
+The sample variance is defined as
+<script type="math/tex">\frac{1}{n-1}\left(\sum_{i=1}^n (x_i - \bar x)^2 \right)</script></p>
+
+<p>This case is more compliated, so we’ll do it in pieces.</p>
+
+<p>We’re going to use <code>x</code> for the argument, so name our first input
+data <code>x</code> so we can use it.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x <span class="o">&lt;-</span> data<span class="o">$</span>Height
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The first term is easy:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">n <span class="o">&lt;-</span> length<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line"><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="p">(</span>n <span class="o">-</span> <span class="m">1</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.005952</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The second term is harder.  We want the difference between all the
+<code>x</code> values and the mean.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">m <span class="o">&lt;-</span> mean<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">x <span class="o">-</span> m
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1] -24.5444 -14.5444 -13.5444   8.4556  -8.5444  -3.5444   1.4556</span>
+</span><span class="line"><span class="c1">##   [8] -28.5444 -15.5444 -22.5444  -4.5444 -14.5444 -17.5444   5.4556</span>
+</span><span class="line"><span class="c1">##  [15]  -9.5444 -21.5444  -5.5444  -4.5444 -22.5444 -14.5444  11.4556</span>
+</span><span class="line"><span class="c1">##  [22] -25.5444  -7.5444 -18.5444   5.4556  -5.5444 -11.5444  -5.5444</span>
+</span><span class="line"><span class="c1">##  [29] -10.5444  10.4556  20.4556  21.4556   4.4556  26.4556   5.4556</span>
+</span><span class="line"><span class="c1">##  [36]  16.4556 -18.5444  -6.5444  16.4556   9.4556  -4.5444  21.4556</span>
+</span><span class="line"><span class="c1">##  [43]   3.4556  11.4556 -13.5444 -22.5444 -16.5444 -12.5444 -14.5444</span>
+</span><span class="line"><span class="c1">##  [50]   2.4556  -8.5444 -27.5444  -0.5444 -15.5444 -39.5444  -1.5444</span>
+</span><span class="line"><span class="c1">##  [57]   1.4556  -9.5444 -25.5444 -19.5444   3.4556 -10.5444 -28.5444</span>
+</span><span class="line"><span class="c1">##  [64]  -2.5444  16.4556 -11.5444  -1.5444  13.4556  28.4556 -15.5444</span>
+</span><span class="line"><span class="c1">##  [71]   3.4556 -14.5444  33.4556 -13.5444  -0.5444  11.4556  -5.5444</span>
+</span><span class="line"><span class="c1">##  [78]  -8.5444  -7.5444 -17.5444  -5.5444   3.4556  -9.5444 -23.5444</span>
+</span><span class="line"><span class="c1">##  [85] -12.5444 -18.5444 -17.5444  15.4556  18.4556   1.4556  -9.5444</span>
+</span><span class="line"><span class="c1">##  [92]   6.4556  -4.5444  -9.5444  -0.5444  14.4556  34.4556  19.4556</span>
+</span><span class="line"><span class="c1">##  [99]   0.4556  14.4556   5.4556   1.4556   3.4556   7.4556   3.4556</span>
+</span><span class="line"><span class="c1">## [106] -13.5444 -32.5444  -8.5444 -23.5444  -2.5444  24.4556  24.4556</span>
+</span><span class="line"><span class="c1">## [113] -10.5444   8.4556  28.4556   4.4556 -12.5444 -19.5444  -4.5444</span>
+</span><span class="line"><span class="c1">## [120] -11.5444  -3.5444   0.4556  17.4556   8.4556 -14.5444 -10.5444</span>
+</span><span class="line"><span class="c1">## [127]  38.4556  17.4556   5.4556  11.4556  21.4556  -5.5444  11.4556</span>
+</span><span class="line"><span class="c1">## [134]  41.4556  11.4556   6.4556  20.4556  12.4556  32.4556   8.4556</span>
+</span><span class="line"><span class="c1">## [141]   1.4556  -4.5444  -5.5444   9.4556  -9.5444   7.4556  24.4556</span>
+</span><span class="line"><span class="c1">## [148]  -1.5444   4.4556  -1.5444  -7.5444   0.4556   4.4556  -5.5444</span>
+</span><span class="line"><span class="c1">## [155]  24.4556  15.4556  18.4556  -9.5444 -15.5444   8.4556 -10.5444</span>
+</span><span class="line"><span class="c1">## [162]  12.4556  13.4556  27.4556  41.4556  23.4556  15.4556  -7.5444</span>
+</span><span class="line"><span class="c1">## [169]  18.4556</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then we want to square those differences:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="p">(</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   [1]  602.4265  211.5390  183.4502   71.4975   73.0064   12.5626    2.1188</span>
+</span><span class="line"><span class="c1">##   [8]  814.7816  241.6277  508.2490   20.6514  211.5390  307.8052   29.7638</span>
+</span><span class="line"><span class="c1">##  [15]   91.0952  464.1603   30.7401   20.6514  508.2490  211.5390  131.2313</span>
+</span><span class="line"><span class="c1">##  [22]  652.5153   56.9176  343.8940   29.7638   30.7401  133.2727   30.7401</span>
+</span><span class="line"><span class="c1">##  [29]  111.1839  109.3200  418.4324  460.3437   19.8526  699.8999   29.7638</span>
+</span><span class="line"><span class="c1">##  [36]  270.7875  343.8940   42.8289  270.7875   89.4088   20.6514  460.3437</span>
+</span><span class="line"><span class="c1">##  [43]   11.9413  131.2313  183.4502  508.2490  273.7165  157.3614  211.5390</span>
+</span><span class="line"><span class="c1">##  [50]    6.0301   73.0064  758.6928    0.2963  241.6277 1563.7579    2.3851</span>
+</span><span class="line"><span class="c1">##  [57]    2.1188   91.0952  652.5153  381.9827   11.9413  111.1839  814.7816</span>
+</span><span class="line"><span class="c1">##  [64]    6.4739  270.7875  133.2727    2.3851  181.0537  809.7224  241.6277</span>
+</span><span class="line"><span class="c1">##  [71]   11.9413  211.5390 1119.2786  183.4502    0.2963  131.2313   30.7401</span>
+</span><span class="line"><span class="c1">##  [78]   73.0064   56.9176  307.8052   30.7401   11.9413   91.0952  554.3378</span>
+</span><span class="line"><span class="c1">##  [85]  157.3614  343.8940  307.8052  238.8762  340.6100    2.1188   91.0952</span>
+</span><span class="line"><span class="c1">##  [92]   41.6750   20.6514   91.0952    0.2963  208.9650 1187.1898  378.5212</span>
+</span><span class="line"><span class="c1">##  [99]    0.2076  208.9650   29.7638    2.1188   11.9413   55.5863   11.9413</span>
+</span><span class="line"><span class="c1">## [106]  183.4502 1059.1366   73.0064  554.3378    6.4739  598.0774  598.0774</span>
+</span><span class="line"><span class="c1">## [113]  111.1839   71.4975  809.7224   19.8526  157.3614  381.9827   20.6514</span>
+</span><span class="line"><span class="c1">## [120]  133.2727   12.5626    0.2076  304.6987   71.4975  211.5390  111.1839</span>
+</span><span class="line"><span class="c1">## [127] 1478.8348  304.6987   29.7638  131.2313  460.3437   30.7401  131.2313</span>
+</span><span class="line"><span class="c1">## [134] 1718.5685  131.2313   41.6750  418.4324  155.1425 1053.3674   71.4975</span>
+</span><span class="line"><span class="c1">## [141]    2.1188   20.6514   30.7401   89.4088   91.0952   55.5863  598.0774</span>
+</span><span class="line"><span class="c1">## [148]    2.3851   19.8526    2.3851   56.9176    0.2076   19.8526   30.7401</span>
+</span><span class="line"><span class="c1">## [155]  598.0774  238.8762  340.6100   91.0952  241.6277   71.4975  111.1839</span>
+</span><span class="line"><span class="c1">## [162]  155.1425  181.0537  753.8111 1718.5685  550.1662  238.8762   56.9176</span>
+</span><span class="line"><span class="c1">## [169]  340.6100</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and compute the sum:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sum<span class="p">((</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 42108</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Watch that you don’t do this, which is quite different</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sum<span class="p">(</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1.022e-25</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(this follows from the definition of the mean)</p>
+
+<p>Putting both halves together, the variance is</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="p">(</span>n <span class="o">-</span> <span class="m">1</span><span class="p">))</span> <span class="o">*</span> sum<span class="p">((</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 250.6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Which agrees with R’s variance function</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">var<span class="p">(</span>x<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 250.6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The <code>rm</code> function cleans up:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">rm<span class="p">(</span>n<span class="p">,</span> x<span class="p">,</span> m<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can then define our function, using the pieces that we wrote above.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">variance <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    n <span class="o">&lt;-</span> length<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    m <span class="o">&lt;-</span> mean<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    <span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="p">(</span>n <span class="o">-</span> <span class="m">1</span><span class="p">))</span> <span class="o">*</span> sum<span class="p">((</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And test it:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">variance<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 250.6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">var<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 250.6</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">variance<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 98.02</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">var<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 98.02</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="an-aside-on-floating-point-comparisons">An aside on floating point comparisons:</h3>
+<p>Our function does not exactly agree with R’s function</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">variance<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span> <span class="o">==</span> var<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] FALSE</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This is not because one is more accurate than the other, it is
+because “machine precision” is finite (that is, the number of
+decimal places being kept).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">variance<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span> <span class="o">-</span> var<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 2.842e-14</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This affects all sorts of things:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sqrt<span class="p">(</span><span class="m">2</span><span class="p">)</span> <span class="o">*</span> sqrt<span class="p">(</span><span class="m">2</span><span class="p">)</span>  <span class="c1"># looks like 2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 2</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sqrt<span class="p">(</span><span class="m">2</span><span class="p">)</span> <span class="o">*</span> sqrt<span class="p">(</span><span class="m">2</span><span class="p">)</span> <span class="o">-</span> <span class="m">2</span>  <span class="c1"># but not quite</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 4.441e-16</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>So be careful with <code>==</code> for floating point comparisons.  Usually
+you have do something like:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">abs<span class="p">(</span>x <span class="o">-</span> y<span class="p">)</span> <span class="o">&lt;</span> eps
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For some small value <code>eps</code>.  The <code>all.equal</code> function can be very
+helpful here.</p>
+
+<h3 id="exercise-define-a-function-to-compute-skew">Exercise: define a function to compute skew</h3>
+
+<p>Skewness is a measure of asymmetry of a probability distribution.</p>
+
+<p>It can be defined as</p>
+
+<script type="math/tex; mode=display"> \frac{\frac{1}{n-2}\left(\sum_{i=1}^n(x_i - \bar x)^3\right)}
+        {\mathrm{var}(x)^{3/2}} </script>
+
+<p>Write a function that computes the skewness.</p>
+
+<p>Hints:</p>
+
+<ul>
+  <li>Don’t try to do this in one step, but use intermediate variables
+like the second version of <code>standard.error</code>, or like our
+<code>variance</code> function.</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>
+    <p>The term on the top of the fraction is a lot like the <code>variance</code>
+function.</p>
+  </li>
+  <li>
+    <p>Remember that parentheses can help with order-of-operation
+control.</p>
+  </li>
+  <li>
+    <p>Get the pieces of your function working before putting it all
+together.</p>
+  </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">skewness <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    n <span class="o">&lt;-</span> length<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    v <span class="o">&lt;-</span> var<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    m <span class="o">&lt;-</span> mean<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    third.moment <span class="o">&lt;-</span> <span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="p">(</span>n <span class="o">-</span> <span class="m">2</span><span class="p">))</span> <span class="o">*</span> sum<span class="p">((</span>x <span class="o">-</span> m<span class="p">)</span><span class="o">^</span><span class="m">3</span><span class="p">)</span>
+</span><span class="line">    third.moment<span class="o">/</span><span class="p">(</span>var<span class="p">(</span>x<span class="p">)</span><span class="o">^</span><span class="p">(</span><span class="m">3</span><span class="o">/</span><span class="m">2</span><span class="p">))</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line">skewness<span class="p">(</span>data<span class="o">$</span>Height<span class="p">)</span>  <span class="c1"># should be 0.301</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.3011</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">skewness<span class="p">(</span>data<span class="o">$</span>Weight<span class="p">)</span>  <span class="c1"># should be 1.954</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1.954</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<hr />
+<p>Back to <a href="/intro">main page</a></p>
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/intro/writing-functions.html';
+        var disqus_url = 'http://nicercode.github.com/intro/writing-functions.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
