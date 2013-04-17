@@ -125,5 +125,85 @@ We can add the other files:
 
 ```
 git add .gitignore vc.Rproj
-git commit -m "Added RStudio
+git commit -m "Added RStudio files"
 ```
+
+which will print 
+
+```
+[master 519a8e3] Added RStudio files
+ 2 files changed, 16 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 vc.Rproj
+```
+
+To see the history
+
+```
+git log
+```
+
+which will print something like
+
+```
+commit 519a8e3b3c0558faf8b0ad9c6d7d269e72a6571a
+Author: Rich FitzJohn <rich.fitzjohn@gmail.com>
+Date:   2013-04-17 14:08:09 +1000
+ 
+    Added RStudio files
+ 
+commit 514f871aa41127f94daaeb3360dda6a70ec3fb36
+Author: Rich FitzJohn <rich.fitzjohn@gmail.com>
+Date:   2013-04-17 11:51:54 +1000
+ 
+    Added function that computes standard error of the mean.
+```
+
+This is now the same functionality as we had with RStudio.
+
+## What is going on with those crazy strings of numbers?
+
+You may have noticed the long strings of numbers, such as:
+
+```
+commit 519a8e3b3c0558faf8b0ad9c6d7d269e72a6571a
+```
+
+These are called "hashes"; think of them as a fingerprint of a file,
+or of a commit.  Git uses them everywhere, so these get used where you
+would otherwise use "version1", or "final", etc.
+
+The nice thing about them is that they depend on the entire history of
+a project, so you know that your history is secure.  For example, I
+deleted the full stop at the end of the first commit message
+([don't ask me how](http://stackoverflow.com/a/2119656)) and reran
+`git log`
+
+```
+commit a0f9f692319eb7103bd0485181b45c3bf229851f
+Author: Rich FitzJohn <rich.fitzjohn@gmail.com>
+Date:   2013-04-17 14:08:09 +1000
+
+    Added RStudio files
+
+commit 9b5f828a285577d53dc40a28fa3cd7e4cc1a691d
+Author: Rich FitzJohn <rich.fitzjohn@gmail.com>
+Date:   2013-04-17 11:51:54 +1000
+
+    Added function that computes standard error of the mean
+```
+
+You might expect that the hash for the first commit would change, but
+notice that it is has changed a *lot* for just one character
+difference.  Also notice that the second commit has a new hash too;
+this is because one of the "things" in the second commit is a pointer
+back to the first commit indicating who its parent is.
+
+Confused?  Don't worry.  All you need to know is that the hash
+identifies your **entire project including its history**, and that if
+anything changes anything in the project, the hashes will change.
+This is great because it allows us to use the big ugly strings of
+letters and numbers as a shortcut for a very precise set of
+information.
+
+

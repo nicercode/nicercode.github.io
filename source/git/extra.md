@@ -159,5 +159,3 @@ by the `HEAD` pointer:
 ```
 
 Here, `HEAD` points at `v4`, so that is checked out.
-
-http://pcottle.github.io/learnGitBranching/?NODEMO
