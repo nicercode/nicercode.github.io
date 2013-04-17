@@ -6,13 +6,13 @@ sharing: true
 footer: false
 ---
 
-We have put together the folloing guies on
+We have put together the following guides on
 
-1. A genetral [introduction to R](../intro/)
+1. A general [introduction to R](../intro/)
 2. Version control in R with [git](../git/)
 
 
-We have also put toegtehrr a list of 
+We have also put together a list of 
 
 1. General R [resources](../intro/resources.html) to help you continue
 learning.

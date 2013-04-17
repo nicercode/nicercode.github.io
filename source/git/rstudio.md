@@ -6,7 +6,11 @@ comments: true
 sharing: true
 footer: false
 ---
-  
+
+<blockquote class="twitter-tweet"><p>Rstudio has super simple point-and-click version control (via git) baked in for "projects". No excuses for not using it! (via @<a href="https://twitter.com/danmcglinn">danmcglinn</a>)</p>&mdash; Rich FitzJohn (@phylorich) <a href="https://twitter.com/phylorich/status/301107009573490688">February 11, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+ 
+ 
 ## Baby steps with RStudio
 
 RStudio has git built in, and we're going to use that to get started.

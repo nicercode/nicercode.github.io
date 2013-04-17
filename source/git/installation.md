@@ -17,13 +17,13 @@ Installing git should be fairly straightforward on most platforms.
 ### For Windows:
 
 * Run the downloaded "exe" file; the installer is a typical windows
-  one -- accept the licence (GNU GPL).  The defult options for the
+  one -- accept the licence (GNU GPL).  The default options for the
   "Select components" window should be good for everyone.  In
   particular, the "Advanced context menu (git-cheetah plugin)" under
   "Windows Explorer integration" should be selected.  It's up to you
   if you want icons peppered around as Windows likes to do.
-* When prompted about "Adusting your PATH environment", select the
-  **second** option (Run Git from the Windows Command Prompt).  This
+* When prompted about "Adjusting your PATH environment", select the
+  **second option (Run Git from the Windows Command Prompt)**.  This
   will help RStudio find git and save a step later.
 * Accept the default for line endings; there is no joy to be had here,
   but this is probably the least bad option.
@@ -40,7 +40,7 @@ Installing git should be fairly straightforward on most platforms.
 ## Testing that the installation works
 
 For **Windows**, git will have installed something called "Git Bash"
-on your computer.  This is not a game about assulting annoying people.
+on your computer.  This is not a game about assaulting annoying people.
 Open this (could be an icon on the desktop, could be in the start
 menu).
 

@@ -29,13 +29,18 @@ ever larger amounts of data to ask novel questions and get papers published.
 Yet, the standard tools used by many biologists -  point and click programs for 
 manipulating data, doing stats and making plots - do not allow us to scale-up 
 our analyses to macth data availability, at least not without many, many more 
-'clicks'. The solution is to write scripts in programs like 
-[R](http://www.r-project.org/), [python](http://www.python.org/) or 
-[matlab](http://www.mathworks.com.au/products/matlab/). Scripting allows you to 
-automate analyses, and therefore [scale-up without a big increase in 
-effort](http://i.imgur.com/SbzNW8s.png).  
+'clicks'. 
 
 <!-- more -->
+
+{% imgcap right /images/geeks-vs-nongeeks-repetitive-tasks.png Why writing code saves you time with repetitive tasks, by [Bruno Oliveira](https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y)%}
+
+The solution is to write scripts in programs like 
+[R](http://www.r-project.org/), [python](http://www.python.org/) or 
+[matlab](http://www.mathworks.com.au/products/matlab/). Scripting allows you to 
+automate analyses, and therefore scale-up without a big increase in 
+effort.  
+
 
 Writing code also offers other benefits to research. When your 
 analyses are documented in a script, it is easier to pick up a project and 
@@ -44,9 +49,6 @@ of code can also be reused in new projects, saving vast amount of time. Writing
 code also allows for effective collaboration with people from all over the 
 world. For all these reasons, many researchers are now learning how to write 
 code.
-
-<blockquote class="twitter-tweet"><p>Learn to code! I worry that most biologists leave uni lacking #1 skill for 21st cent biology. For inspiration <a href="http://t.co/7lzRutYuIw" title="http://code.org">code.org</a> <a href="https://twitter.com/search/%23CODE">#CODE</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/306854385076543488">February 27, 2013</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 Yet, most researchers have no or limited formal training in computer science, 
 and thus struggle to write nice code. Most of us are self-taught, having used a 
@@ -65,14 +67,22 @@ discussing the qualities of nice code and teaching you good coding habits.
 Certainly no one is teaching you these skills in your standard biology research 
 department.
 
+<blockquote class="twitter-tweet"><p>Learn to code! I worry that most biologists leave uni lacking #1 skill for 21st cent biology. For inspiration <a href="http://t.co/7lzRutYuIw" title="http://code.org">code.org</a> <a href="https://twitter.com/search/%23CODE">#CODE</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/306854385076543488">February 27, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 Observing how colleagues were struggling with their code, we 
 ([Rich FitzJohn](http://www.zoology.ubc.ca/~fitzjohn/) and 
 [Daniel Falster](http://www.falsters.net/daniel)) have teamed up to bring you 
 the [nice R code](http://nicercode.github.io/) course and blog. We are 
 targeting researchers who are already using R and want to take their coding to 
-the next level. Our goal is to help you write nicer code. **By 'nicer' we mean 
+the next level. Our goal is to help you write nicer code. 
+
+> By 'nicer' we mean 
 code that is easy to read, easy to write, runs fast, gives reliable results, is 
-easy to reuse in new projects, and is easy to share with collaborators.** We 
+easy to reuse in new projects, and is easy to share with collaborators.
+
+We 
 will be focussing on elements of workflow, good coding habits and some tricks,
 that will help transform your code from messy to nice.
 
@@ -87,6 +97,7 @@ experience than many biologists. Hence the nice R code blog.
 
 <blockquote class="twitter-tweet"><p>@<a href="https://twitter.com/phylorich">phylorich</a> Being able to code (in any language) is most important skill for current biology. R is good choice: widely used, high level, free</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/312438921059520512">March 15, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 ## Key elements of nice R code
 We will now briefly consider some of the key principles of writing nice code. 
@@ -153,6 +164,7 @@ errors.
 
 <blockquote class="twitter-tweet"><p>"Every bug is two bugs: the bug in your code, and the test you didn't write"@<a href="https://twitter.com/estherbester">estherbester</a> <a href="https://twitter.com/search/%23pycon">#pycon</a></p>&mdash; Ned Batchelder (@nedbat) <a href="https://twitter.com/nedbat/status/312628852558032896">March 15, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 ### Nice code runs quickly and is therefore a pleasure to use
 
