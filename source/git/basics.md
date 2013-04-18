@@ -159,8 +159,6 @@ Date:   2013-04-17 11:51:54 +1000
     Added function that computes standard error of the mean.
 ```
 
-This is now the same functionality as we had with RStudio.
-
 ## What is going on with those crazy strings of numbers?
 
 You may have noticed the long strings of numbers, such as:
@@ -206,4 +204,86 @@ This is great because it allows us to use the big ugly strings of
 letters and numbers as a shortcut for a very precise set of
 information.
 
+## What changed?
 
+The other thing that we could do in RStudio is see the lines of code
+that changed.  This is incredibly useful, and once you start thinking
+with version control you'll constantly look to see what has changed.
+The confidence that you can always go back is what makes version
+control empowering.
+
+Suppose we change the `script.R` file again:
+
+```r
+# Standard error function
+se <- function(x, na.rm=TRUE) {
+  n <- if ( na.rm ) length(na.omit(x)) else x
+  sqrt(var(x, na.rm=na.rm) / n)
+}
+```
+
+we'll see that `git status` reports that the file has changed:
+
+```
+# On branch master
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#	modified:   script.R
+#
+no changes added to commit (use "git add" and/or "git commit -a")
+```
+
+The command `git diff` shows the change between the contents of the
+working directory and the changes that would be commited.  So with
+nothing to commit, this is the difference between the files in the
+directory and the last revision.  Running `git diff` reports:
+
+```plain
+diff --git a/script.R b/script.R
+index 22431f2..9f9ad79 100644
+--- a/script.R
++++ b/script.R
+@@ -1,3 +1,5 @@
+ # Standard error function
+-se <- function(x)
+-  sqrt(var(x, na.rm=TRUE) / length(na.omit(x)))
++se <- function(x, na.rm=TRUE) {
++  n <- if ( na.rm ) length(na.omit(x)) else x
++  sqrt(var(x, na.rm=na.rm) / n)
++}
+```
+
+if we add the file to "stage" it with:
+
+```
+git add script.R
+```
+
+and rerun `git diff`, there is no output.  The command `git status`
+now reports
+
+```
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   script.R
+#
+```
+
+indicating that `script.R` will be added when we do `git commit`.  You
+can review what would be commited line-by-line by running
+
+```
+git diff --cached
+```
+
+which compares the contents of the staged changes with the previous
+version.
+
+*(Probably worth reviewing the three stage git figure here, and
+ perhaps indicating that it is possible to do a working-directory vs
+ last-commit diff with* `git diff HEAD`*)*
+ 

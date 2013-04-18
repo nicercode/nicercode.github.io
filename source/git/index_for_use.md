@@ -30,3 +30,7 @@ the systems that were developed in the past.
 2. [Workflows that use version control](workflows.html)
 3. [Version control from within RStudio](rstudio.html)
 4. [Version control basics](basics.html)
+5. [Branches, and why you would use them](branches.html)
+6. [Remotes: keeping your work elsewhere](remotes.html)
+7. [Collaborative coding with git](collaboration.html)
+8. [Topics not covered](not-covered.html)
