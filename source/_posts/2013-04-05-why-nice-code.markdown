@@ -92,7 +92,7 @@ These boot camps aim to help researchers be more productive by teaching them
 basic computing skills. Unlike other software courses we had attended, the 
 focus in the boot camps was on good programming habits and design. As 
 biologists, we saw a need for more material focussed on R, the language that 
-has come to dominate biological research. We are experts, but have more 
+has come to dominate biological research. We are not experts, but have more 
 experience than many biologists. Hence the nice R code blog.
 
 <blockquote class="twitter-tweet"><p>@<a href="https://twitter.com/phylorich">phylorich</a> Being able to code (in any language) is most important skill for current biology. R is good choice: widely used, high level, free</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/312438921059520512">March 15, 2013</a></blockquote>
@@ -214,12 +214,12 @@ carpentry course,
 > The single biggest reason you should write nice code is so that your future 
 >  self can understand it.
 
-As a by product, we also note that code that is easy to read is also easy to 
+As a by product, code that is easy to read is also easy to 
 reuse in new projects and share with colleagues, including as online 
 supplementary material. Increasingly, journals are requiring code be submitted 
 as part of the review process and often published online. Alas, much of the 
 current crop of code is difficult to read. At best, having messy code may reduce 
-the impact of your paper. But you might also have the paper get rejected because the 
+the impact of your paper. But you might also get rejected because the 
 reviewer couldn't understand your code. At worst, some people have had to [retract high profile work because of bugs in their code](http://www.sciencemag.org/content/314/5807/1856.summary).
 
 It's time to write some nice R code.
