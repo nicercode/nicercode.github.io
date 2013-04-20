@@ -104,10 +104,9 @@ We will now briefly consider some of the key principles of writing nice code.
 
 ### Nice code is easy to read
 
-> Programs should be written for people to read, and only incidentally for 
-machines to execute.
-> -- from "Structure and Interpretation of Computer Programs" by Abelson and 
-Sussman
+{% blockquote Abelson and Sussman, Structure and Interpretation of Computer Programs %}
+Programs should be written for people to read, and only incidentally for 
+machines to execute. {% endblockquote %}
 
 Readability is by far the most important guiding principle for writing nicer 
 code. **Anyone (especially you) should be able to pick up any of your 
@@ -207,11 +206,13 @@ return to nearly every piece of code you wrote and need to understand it
 afresh. If it is messy code, you will spend a lot of time going over it to 
 understand what you did, possibly a week, month, year or decade ago. Although 
 you are unlikely get so frustrated as to seek bloody revenge on your former 
-self, you might come close. As Greg Wilson stated clearly in our software 
-carpentry course, 
+self, you might come close. 
+{% blockquote Greg Wilson, software carpentry course %}
+The single biggest reason you should write nice code is so that your future
+ self can understand it.
+{% endblockquote %}
 
-> The single biggest reason you should write nice code is so that your future 
->  self can understand it.
+
 
 As a by product, code that is easy to read is also easy to 
 reuse in new projects and share with colleagues, including as online 
