@@ -1,0 +1,331 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Branches - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Branches 16 April 2013 Note for all that follows: This may help you, but if it just
+confuses you, forget it. Just know that this exists, and that it &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/git/branches.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Branches</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-16T09:00:00+10:00" pubdate data-updated="true">16 April 2013</time></p>
+  </header>
+  
+  <p><strong>Note for all that follows:</strong> <em>This may help you, but if it just
+confuses you, forget it.  Just know that this exists, and that it
+might be useful.  By the time you’re comfortable enough with the core
+concepts and tools, this may help.  But you don’t <strong>have</strong> to know how
+to do branching to use version control.  In fact, branching is fairly
+rare in most other version control systems.</em></p>
+
+<p>A linear history is fine, but that is often not how science
+progresses.</p>
+
+<p>Suppose that you’ve got your project working, but want to get tidy it
+up a bit in a way that requires major surgery and you want to be able
+to get back to where you were.</p>
+
+<p>Alternatively, suppose that you want to try two different ways of
+implementing something.</p>
+
+<p>In my case, I have a package that I mantain – sometimes I need to add
+bug fixes to the released version without wanting to publish the
+broken development code.</p>
+
+<p>What if you wanted to go back to an old version and continue
+development from there?</p>
+
+<p>In all of these scenarios, we might want to work on a “branch” of the
+project.</p>
+
+<h2 id="what-do-branches-look-like">What do branches look like?</h2>
+
+<p><em>Diagram from pro git book, showing no branches, then branches</em></p>
+
+<p><em>In class, perhaps draw on the board</em></p>
+
+<p><em>Diagram of different workflows – the simple git one, the one Matt
+ sent me, the git flow workflow</em></p>
+
+<p><em>Identify that the branch they are currently on is called master, but
+ that is just a convention</em></p>
+
+<h2 id="listing-branches">Listing branches</h2>
+
+<p>The command <code>git branch</code> lists the branches git knows about.  By
+default, there is only one branch and it is called <code>master</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git branch
+</span><span class="line">* master</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The asterix next to this indicates that this is the <em>current</em> branch.
+If you pass in the <code>-v</code> argument (for <strong>verbose</strong>), you get</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git branch -v
+</span><span class="line">* master a0f9f69 Added RStudio files</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which adds the shortened version of the SHA hash and the last commit
+message.</p>
+
+<h2 id="creating-branches">Creating branches</h2>
+
+<p>There are two ways of creating branches in git.  The first is to use
+<code>git branch</code>.  The command </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git branch new_idea</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>creates a new branch called <code>new_idea</code>, but does not change to it.
+Rerunning <code>git branch -v</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">* master   a0f9f69 Added RStudio files
+</span><span class="line">  new_idea a0f9f69 Added RStudio files</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We now have two branches, both at the same point on the tree.  The
+asterix indicates that we are on the branch <code>master</code>.</p>
+
+<p>You can change to a branch by using <code>git checkout</code>.  So to switch to
+the <code>new_idea</code> branch, you would do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout new_idea</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which lets you know that it worked</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Switched to branch 'new_idea'</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You can switch back to master by doing</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout master
+</span><span class="line">Switched to branch 'master'</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and can delete branches by passing <code>-d</code> to <code>git branch</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git branch -d new_idea</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which prints</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Deleted branch new_idea (was a0f9f69).</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The other way of creating a branch and switching to it is </p>
+
+<ul>
+  <li>Creating branches with <code>branch</code> and <code>checkout -b</code></li>
+  <li>Switching branches with <code>checkout</code></li>
+  <li>How the graph looks</li>
+  <li>Combining branches with <code>merge</code></li>
+  <li>Combining branches with <code>rebase</code></li>
+  <li>The idea of fast-forwarding</li>
+  <li>The idea of a nice history</li>
+  <li>Creating a branch off an old version</li>
+</ul>
+
+<p><a href="http://pcottle.github.io/learnGitBranching/?NODEMO">Git branching demo</a></p>
+
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-02-12-r-ecology-evolution/">R in ecology and evolution</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/git/branches.html';
+        var disqus_url = 'http://nicercode.github.com/git/branches.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

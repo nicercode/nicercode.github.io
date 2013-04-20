@@ -14,15 +14,23 @@
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/2013-04-05-why-nice-code/</loc>
-        <lastmod>2013-04-17T06:01:05+10:00</lastmod>
+        <lastmod>2013-04-20T14:20:06+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/archives/</loc>
-        <lastmod>2013-04-17T14:41:42+10:00</lastmod>
+        <lastmod>2013-04-20T14:20:06+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/basics.html</loc>
-        <lastmod>2013-04-17T14:25:32+10:00</lastmod>
+        <lastmod>2013-04-20T14:21:48+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/git/branches.html</loc>
+        <lastmod>2013-04-20T14:21:48+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/git/collaboration.html</loc>
+        <lastmod>2013-04-20T14:21:48+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/</loc>
@@ -30,11 +38,19 @@
     </url>
     <url>
         <loc>http://nicercode.github.com/git/index_for_use.html</loc>
-        <lastmod>2013-04-17T14:25:32+10:00</lastmod>
+        <lastmod>2013-04-20T14:21:48+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/installation.html</loc>
         <lastmod>2013-04-17T15:03:34+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/git/not-covered.html</loc>
+        <lastmod>2013-04-20T14:21:48+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/git/remotes.html</loc>
+        <lastmod>2013-04-20T14:21:48+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/rstudio.html</loc>
@@ -58,7 +74,7 @@
     </url>
     <url>
         <loc>http://nicercode.github.com/</loc>
-        <lastmod>2013-04-17T14:41:42+10:00</lastmod>
+        <lastmod>2013-04-20T14:20:06+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/bad-habits.html</loc>

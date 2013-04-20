@@ -253,7 +253,208 @@ committing.</p>
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 </pre></td><td class="code"><pre><code class=""><span class="line">git add .gitignore vc.Rproj
-</span><span class="line">git commit -m "Added RStudio</span></code></pre></td></tr></table></div></figure></notextile></div>
+</span><span class="line">git commit -m "Added RStudio files"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will print </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[master 519a8e3] Added RStudio files
+</span><span class="line"> 2 files changed, 16 insertions(+)
+</span><span class="line"> create mode 100644 .gitignore
+</span><span class="line"> create mode 100644 vc.Rproj</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>To see the history</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git log</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will print something like</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">commit 519a8e3b3c0558faf8b0ad9c6d7d269e72a6571a
+</span><span class="line">Author: Rich FitzJohn &lt;rich.fitzjohn@gmail.com&gt;
+</span><span class="line">Date:   2013-04-17 14:08:09 +1000
+</span><span class="line"> 
+</span><span class="line">    Added RStudio files
+</span><span class="line"> 
+</span><span class="line">commit 514f871aa41127f94daaeb3360dda6a70ec3fb36
+</span><span class="line">Author: Rich FitzJohn &lt;rich.fitzjohn@gmail.com&gt;
+</span><span class="line">Date:   2013-04-17 11:51:54 +1000
+</span><span class="line"> 
+</span><span class="line">    Added function that computes standard error of the mean.</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="what-is-going-on-with-those-crazy-strings-of-numbers">What is going on with those crazy strings of numbers?</h2>
+
+<p>You may have noticed the long strings of numbers, such as:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">commit 519a8e3b3c0558faf8b0ad9c6d7d269e72a6571a</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>These are called “hashes”; think of them as a fingerprint of a file,
+or of a commit.  Git uses them everywhere, so these get used where you
+would otherwise use “version1”, or “final”, etc.</p>
+
+<p>The nice thing about them is that they depend on the entire history of
+a project, so you know that your history is secure.  For example, I
+deleted the full stop at the end of the first commit message
+(<a href="http://stackoverflow.com/a/2119656">don’t ask me how</a>) and reran
+<code>git log</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">commit a0f9f692319eb7103bd0485181b45c3bf229851f
+</span><span class="line">Author: Rich FitzJohn &lt;rich.fitzjohn@gmail.com&gt;
+</span><span class="line">Date:   2013-04-17 14:08:09 +1000
+</span><span class="line">
+</span><span class="line">    Added RStudio files
+</span><span class="line">
+</span><span class="line">commit 9b5f828a285577d53dc40a28fa3cd7e4cc1a691d
+</span><span class="line">Author: Rich FitzJohn &lt;rich.fitzjohn@gmail.com&gt;
+</span><span class="line">Date:   2013-04-17 11:51:54 +1000
+</span><span class="line">
+</span><span class="line">    Added function that computes standard error of the mean</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You might expect that the hash for the first commit would change, but
+notice that it is has changed a <em>lot</em> for just one character
+difference.  Also notice that the second commit has a new hash too;
+this is because one of the “things” in the second commit is a pointer
+back to the first commit indicating who its parent is.</p>
+
+<p>Confused?  Don’t worry.  All you need to know is that the hash
+identifies your <strong>entire project including its history</strong>, and that if
+anything changes anything in the project, the hashes will change.
+This is great because it allows us to use the big ugly strings of
+letters and numbers as a shortcut for a very precise set of
+information.</p>
+
+<h2 id="what-changed">What changed?</h2>
+
+<p>The other thing that we could do in RStudio is see the lines of code
+that changed.  This is incredibly useful, and once you start thinking
+with version control you’ll constantly look to see what has changed.
+The confidence that you can always go back is what makes version
+control empowering.</p>
+
+<p>Suppose we change the <code>script.R</code> file again:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1"># Standard error function</span>
+</span><span class="line">se <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> na.rm<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  n <span class="o">&lt;-</span> <span class="kr">if</span> <span class="p">(</span> na.rm <span class="p">)</span> length<span class="p">(</span>na.omit<span class="p">(</span>x<span class="p">))</span> <span class="kr">else</span> x
+</span><span class="line">  sqrt<span class="p">(</span>var<span class="p">(</span>x<span class="p">,</span> na.rm<span class="o">=</span>na.rm<span class="p">)</span> <span class="o">/</span> n<span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>we’ll see that <code>git status</code> reports that the file has changed:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1"># On branch master</span>
+</span><span class="line"><span class="c1"># Changes not staged for commit:</span>
+</span><span class="line"><span class="c1">#   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)</span>
+</span><span class="line"><span class="c1">#   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)</span>
+</span><span class="line"><span class="c1">#</span>
+</span><span class="line"><span class="c1">#	modified:   script.R</span>
+</span><span class="line"><span class="c1">#</span>
+</span><span class="line">no changes added to commit <span class="p">(</span>use <span class="s">&quot;git add&quot;</span> and<span class="o">/</span>or <span class="s">&quot;git commit -a&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The command <code>git diff</code> shows the change between the contents of the
+working directory and the changes that would be commited.  So with
+nothing to commit, this is the difference between the files in the
+directory and the last revision.  Running <code>git diff</code> reports:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">diff --git a/script.R b/script.R
+</span><span class="line">index 22431f2..9f9ad79 100644
+</span><span class="line">--- a/script.R
+</span><span class="line">+++ b/script.R
+</span><span class="line">@@ -1,3 +1,5 @@
+</span><span class="line"> # Standard error function
+</span><span class="line">-se &lt;- function(x)
+</span><span class="line">-  sqrt(var(x, na.rm=TRUE) / length(na.omit(x)))
+</span><span class="line">+se &lt;- function(x, na.rm=TRUE) {
+</span><span class="line">+  n &lt;- if ( na.rm ) length(na.omit(x)) else x
+</span><span class="line">+  sqrt(var(x, na.rm=na.rm) / n)
+</span><span class="line">+}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>if we add the file to “stage” it with:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git add script.R</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and rerun <code>git diff</code>, there is no output.  The command <code>git status</code>
+now reports</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"># On branch master
+</span><span class="line"># Changes to be committed:
+</span><span class="line">#   (use "git reset HEAD &lt;file&gt;..." to unstage)
+</span><span class="line">#
+</span><span class="line">#	modified:   script.R
+</span><span class="line">#</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>indicating that <code>script.R</code> will be added when we do <code>git commit</code>.  You
+can review what would be commited line-by-line by running</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git diff --cached</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which compares the contents of the staged changes with the previous
+version.</p>
+
+<p><em>(Probably worth reviewing the three stage git figure here, and
+ perhaps indicating that it is possible to do a working-directory vs
+ last-commit diff with</em> <code>git diff HEAD</code><em>)</em></p>
+
 
   
 </article>
