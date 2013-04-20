@@ -28,7 +28,7 @@ also seems to be on the rise. Researchers therefore need to be able to handle
 ever larger amounts of data to ask novel questions and get papers published.
 Yet, the standard tools used by many biologists -  point and click programs for 
 manipulating data, doing stats and making plots - do not allow us to scale-up 
-our analyses to macth data availability, at least not without many, many more 
+our analyses to match data availability, at least not without many, many more 
 'clicks'. 
 
 <!-- more -->
@@ -129,12 +129,11 @@ materials.
 names 
 - Use comments, design features, and meaningful variable or function names 
 to capture the intent of your code, i.e. describe what it is *meant* to do
-- Use version control. There are many reasons for using version control. 
-One is that it stores seamlessly archives older versions of your code, 
-permitting you to ruthlessly yet safely delete old files, and therefore helps 
-reduce clutter. 
-- Apply a consistent style, such as that described in  the google R style 
-guide.
+- Use version control. Of the many reasons for using version control, one is 
+that it archives older versions of your code, permitting you to ruthlessly 
+yet safely delete old files. This helps reduce clutter and improves readability. 
+- Apply a consistent style, such as that described in  the [google R style 
+guide](http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html).
 
 
 ### Nice code is reliable, i.e. bug free
@@ -192,9 +191,9 @@ own machine or by running your code on a cluster.
 There are many benefits of writing nicer code:
 
 - **Better science**: nice code allows you to handle bigger data sets and has less bugs.
-- **More fun**: spend less time wrestling with R, and more time workoing with data.
+- **More fun**: spend less time wrestling with R, and more time working with data.
 - **Become more efficient**: Nice code is reusable, sharable, and quicker to run. 
-- **Future employment**: You should consider anything you write (open or closed) to be a potential advert to a future employer. Code has impact. Code sharing [sites like github now make resumes for you](http://resume.github.io/?cboettig), to capture yout impact.  Scientists with an analytical bent are often [sought-after in the natural sciences](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271).
+- **Future employment**: You should consider anything you write (open or closed) to be a potential advert to a future employer. Code has impact. Code sharing [sites like github now make resumes for you](http://resume.github.io/?cboettig), to capture your impact.  Scientists with an analytical bent are often [sought-after in the natural sciences](http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271).
 
 If you need further motivation, consider this advice
 
@@ -217,7 +216,7 @@ carpentry course,
 As a by product, code that is easy to read is also easy to 
 reuse in new projects and share with colleagues, including as online 
 supplementary material. Increasingly, journals are requiring code be submitted 
-as part of the review process and often published online. Alas, much of the 
+as part of the review process and these are often published online. Alas, much of the 
 current crop of code is difficult to read. At best, having messy code may reduce 
 the impact of your paper. But you might also get rejected because the 
 reviewer couldn't understand your code. At worst, some people have had to [retract high profile work because of bugs in their code](http://www.sciencemag.org/content/314/5807/1856.summary).
