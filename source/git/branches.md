@@ -119,17 +119,57 @@ which prints
 Deleted branch new_idea (was a0f9f69).
 ```
 
-The other way of creating a branch and switching to it is 
+The other way of creating a branch and switching to it is to pass `-b`
+as an argument to checkout:
+
+```
+git checkout -b new_idea
+Switched to a new branch 'new_idea'
+```
+
+Now `git branch` shows:
+
+```
+  master
+* new_idea
+```
+
+as we both *created* and *switched to* the new branch `new_idea`.
+
+## How branches grow
+
+New work is commited to the current active branch (the one with the
+asterisk next to it in `git branch` (at the moment this is the branch
+`new_idea`.  So if we edit a file and do `git commit`.
+
+```
+# ...edit file...
+git add script.R
+git commit -m "Modified function to make NA treatment optional"
+```
+
+*Picture of what happened*
+
+You can also see a picture of this with some arguments to `git log`:
+
+```
+git log --graph --decorate --pretty=oneline --abbrev-commit
+* 37485b1 (HEAD, new_idea) Modified function to make NA treatment optional
+* a0f9f69 (master) Added RStudio files
+* 9b5f828 Added function that computes standard error of the mean
+```
+
+(which will even be in colour if you [set that up](setup.html#Colour))
+
+Suppose that you are happy with the changes that you made and want to
+merge them into your `master` branch.
+
+*Picture of what we're trying to do*
 
 
 
 
 
-
-
-
-* Creating branches with `branch` and `checkout -b`
-* Switching branches with `checkout`
 * How the graph looks
 * Combining branches with `merge`
 * Combining branches with `rebase`
