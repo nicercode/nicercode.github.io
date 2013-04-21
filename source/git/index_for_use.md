@@ -1,33 +1,30 @@
 ---
 layout: page
-title: "Introduction to git"
+title: "Introduction to version control using git"
 date: 2013-04-04 09:00
 comments: true
 sharing: true
 footer: false
 ---
 
-Git has a reputation for being hard to learn:
+{% blockquote Karthik Ram http://www.scfbm.org/content/8/1/7/abstract Source Code for Biology and Medicine 8:7 %}
+ Version control systems (VCS), which have long been used to maintain code 
+repositories in the software industry, are now finding new applications in 
+science. One such open source VCS, git, provides a lightweight yet robust 
+framework that is ideal for managing the full suite of research outputs such as 
+datasets, statistical code, figures, lab notes, and manuscripts. 
+{% endblockquote %}
 
-<blockquote class="twitter-tweet"><p>They say git gets easier once you get the basic idea that branches are homeomorphic endofunctors mapping submanifolds of a Hilbert space.</p>&mdash; Kornel (@pornelski) <a href="https://twitter.com/pornelski/status/316190292443267073">March 25, 2013</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-One of the things that will make learning git challenging for many
-ecologists is that most resources (e.g., the excellent
-[git book](http://git-scm.com/book/)) assume that you are coming from a
-background of using CVS, SVN or some other centralised version control
-system with a nastry abbrevo.  Therefore, they expect you to already be thinking in one way
-and then show you how to translate those ideas into git's ideas.
-
-In a way you're lucky, as you don't have to learn a bunch of stuff and
-then unlearn it (e.g., see
-[here](http://www.reddit.com/r/programming/comments/embdf/git_complicated_of_course_not_commits_map_to/c196s4w)).
-Some of the things that git does just make sense with cheaper (and
-more decentralised) bandwidth, disk space, and computing power than
-the systems that were developed in the past.
+Using a good version control system, such as git, is probably the most important
+habit you need for writing nicer code. Below you'll find the nicercode guide 
+to version control using git, written especially for ecologists who haven't used 
+other version control systems before.  (We're using "ecologists" as a shorthand 
+here.  It's not an exclusive term -- many geneticists or other scientists will 
+have the a similar backgorund, toolset and needs.)
 
 1. [What is version control and why would you use it](why.html)
 2. [Workflows that use version control](workflows.html)
+3. [Overview of git system](overview.html)
 3. [Version control from within RStudio](rstudio.html)
 4. [Version control basics](basics.html)
 5. [Branches, and why you would use them](branches.html)

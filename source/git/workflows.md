@@ -18,6 +18,8 @@ these are workflows that people already use.
 
 ## 1. The lone scientist
 
+{% imgcap right /git/img/motherhubbertocat.png [Lone Octodex](http://octodex.github.com/motherhubbertocat/)%}
+
 This workflow will seem very familiar to anyone working on a project
 where they are the main contributor, especially PhD students.  You do
 some work, and then you save the contents of your directory.  It looks
@@ -83,3 +85,7 @@ Most software projects in the world operate in this way, but this is
 not actually that common for ecologists.  This is the jumping off
 point for most dicussions on using version control, but we'll leave it
 until later.
+
+
+{% imgcap centre  /git/img/socialite.png Collaborative Github Octodex by [Cameron McEfee](http://www.cameronmcefee.com/) %}
+
