@@ -30,8 +30,6 @@ have the a similar background, toolset and needs.)
 5. [Version control basics](basics.html)
 6. [Branches, and why you would use them](branches.html)
 7. [Remotes: keeping your work elsewhere](remotes.html)
-8. [Collaborative coding with git](collaboration.html)
-9. [Topics not covered](not-covered.html)
 
 ## Other resources
 
