@@ -15,6 +15,8 @@ these are workflows that people already use.
 	of git, or of repository.  Or use this as an opportunity to
 	introduce the comments in an abstract way that is independent of
 	the implementation. -->
+	
+<!-- RGF: we really only give people the tools to do 1 in the material -->
 
 ## 1. The lone scientist
 
@@ -37,16 +39,10 @@ I have a desktop for doing computing that requires grunt, and a laptop
 for cafe work or travel, and I need to keep my projects synchronised.
 [Dropbox](http://www.dropbox.com) largely solves this problem when you
 don't care about version control, and some people will use it with the
-workflow above.
-
-However, this can lead to corruption in your git repository (e.g., if
-the network connection is a bit flakey and part of the `.git`
-directory is migrated, changes are made on one copy, then conflicted
-copies appear corrupting the repository -- and all of its history).
-This may also not be ideal if one of the computers is a mac and the
-other is Windows.  Another issue happens if both end up simultaneously
-edited, as you end up with filenames like `xxxx (conflicted copy).R`,
-which would break any script that relied on `xxxx.R`
+workflow above (be careful though as this can lead to corruption in
+your git repository -- e.g., see
+[this thread](http://stackoverflow.com/questions/1960799/using-git-and-dropbox-together-effectively)
+on stack overflow).
 
 In this workflow, you will usually work on computer A, "push" all your
 changes to a server (say, bitbucket or github), then "pull" changes
@@ -84,8 +80,6 @@ at the same time.  It quickly becomes desirable to denote a
 Most software projects in the world operate in this way, but this is
 not actually that common for ecologists.  This is the jumping off
 point for most dicussions on using version control, but we'll leave it
-until later.
-
+until later, if we get time to cover it.
 
 {% imgcap centre  /git/img/socialite.png Collaborative Github Octodex by [Cameron McEfee](http://www.cameronmcefee.com/) %}
-

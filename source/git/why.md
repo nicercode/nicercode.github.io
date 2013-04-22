@@ -32,7 +32,7 @@ Having a good fossil history has numerous possible uses :
 1. **You noticed that your code is doing odd things now and didn't used
 to.** Look at and run a version from the last known good code and try
 to work out what changed (after this, you should write a unit test --
-in a couple of weeks).
+we'll cover this in a couple of weeks).
 
 2. **You deleted some code and want to get it back.**  This has a less
 obvious, but much more common (and perhaps more important) advantage;
@@ -85,8 +85,8 @@ include
 * Every so often you zip up the whole project directory and save it with
   the date appended to the filename.
   
-Most ecologists we have adopted at least one of these techniques for
-doing version control.
+Most ecologists we know have adopted at least one of these techniques
+for doing version control.
   
 In addition, you'll often see people suggesting putting headers like
 this in your code file:
