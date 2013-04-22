@@ -12,6 +12,8 @@
 - separating source and generated files (+ using .gitignore)
 - caching long running calculations
 - never using numberic indices to refer to row names
+- git tags for tracking manuscript progress
+  https://twitter.com/TheAtavism/status/321785736489746433
 
 * Version control
 http://nakedstartup.com/2010/04/simple-daily-git-workflow

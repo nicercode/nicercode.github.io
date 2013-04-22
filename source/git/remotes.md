@@ -16,3 +16,7 @@ footer: false
 
 [Push and delete branches](http://gitready.com/beginner/2009/02/02/push-and-delete-branches.html)
 
+```
+git remote add origin git@github.com:richfitz/test.git
+git push -u origin master
+```
