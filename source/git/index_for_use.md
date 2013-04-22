@@ -26,12 +26,12 @@ have the a similar background, toolset and needs.)
 2. [Workflows that use version control](workflows.html)
 3. [Overview of git system](overview.html)
 3. [Version control from within RStudio](rstudio.html)
-4. [Version control basics](basics.html)
-5. [Branches, and why you would use them](branches.html)
-6. [Remotes: keeping your work elsewhere](remotes.html)
-7. [Collaborative coding with git](collaboration.html)
-8. [Topics not covered](not-covered.html)
-
+4. [Digression: a 5 minute intro to the shell](5-min-unix-intro.html)
+5. [Version control basics](basics.html)
+6. [Branches, and why you would use them](branches.html)
+7. [Remotes: keeping your work elsewhere](remotes.html)
+8. [Collaborative coding with git](collaboration.html)
+9. [Topics not covered](not-covered.html)
 
 ## Other resources
 
@@ -44,5 +44,3 @@ You may also be interested in these blog posts and papers, discussing the use of
 
 - Ram (2013) "Git can facilitate greater reproducibility and increased transparency in science" [Source Code for Biology and Medicine 8:7](http://www.scfbm.org/content/8/1/7/abstract)
 - Rogers (2013) “The GitHub Revolution: Why We’re All in Open Source Now” [Wired Opinion](http://www.wired.com/opinion/2013/03/github/)
-
-
