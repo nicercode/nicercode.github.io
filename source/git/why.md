@@ -7,21 +7,10 @@ sharing: true
 footer: false
 ---
 
-<blockquote class="twitter-tweet"><p>Coders - use version control, it rocks. 
-Big thanks to @<a href="https://twitter.com/phylorich">phylorich</a> for 
-introducing me to git. Starter's guide: <a href="http://t.co/LFtHf1pX" 
-title="http://git-scm.com/book/en/Getting-Started-About-Version-Control">git-scm
-.com/book/en/Gettin…</a></p>&mdash; Daniel Falster (@adaptive_plant) <a 
-href="https://twitter.com/adaptive_plant/status/267855974637920257">November 
-12, 2012</a></blockquote>
-<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-
 There are many reasons to use version control, and some of these may only
 become apparent after you have incorporated it into your workflow (it's a bit
 like "why use R" or "why document your code").  However, we can immediately 
-indentify 
-a set of advantages that are very common.
+identify a set of advantages that are very common.
 
 Most of these come from having **a fossil record that captures the evolution of 
 your project** (including 
@@ -46,7 +35,7 @@ to work out what changed (after this, you should write a unit test --
 in a couple of weeks).
 
 2. **You deleted some code and want to get it back.**  This has a less
-obvious, but much more common (and perhaps more important) advantge;
+obvious, but much more common (and perhaps more important) advantage;
 you will be more likely to delete old code rather than commenting it
 out, leaving you with shorter, more readable scripts.
 
@@ -68,11 +57,11 @@ awry.
 solving a problem** and review which one you like best (or show them to
 someone else).
 
-8. Gives you **an auditable project history**; you know when you did what
+8. Gives you **an audit-able project history**; you know when you did what
 you did.
 
 The other great reason for using version control is that it allows for effective
-and trasnparent collabortion among small or large groups of scientists.
+and transparent collaboration among small or large groups of scientists.
 
 <blockquote class="twitter-tweet"><p>“GitHub has empowered a new generation of 
 people to collaborate, create, produce.” <a href="http://t.co/aSbXZBXHkW" 
@@ -86,8 +75,8 @@ href="https://twitter.com/_inundata/status/309812088103137281">March 7,
 ## You are already using version control
 
 Whether you recognise it or not, you are most likely already using some form of 
-version control to achieve some of the advantages outlined above. this might 
-include any of 
+version control to achieve some of the advantages outlined above. This might 
+include
 
 * Commented out bits of code / text
 * Files with numbers afterwards (`thesis_v1.doc`, `thesis_v2.doc`,
@@ -96,7 +85,7 @@ include any of
 * Every so often you zip up the whole project directory and save it with
   the date appended to the filename.
   
-Most ecologists we have adotped at least one of these techniques for
+Most ecologists we have adopted at least one of these techniques for
 doing version control.
   
 In addition, you'll often see people suggesting putting headers like
@@ -122,6 +111,15 @@ Another thing you'll find in many people's code is large chunks of old
 code, commented-out because you think you might need it it again one day.
 
 ## There is a better way
+
+<blockquote class="twitter-tweet"><p>Coders - use version control, it rocks. 
+Big thanks to @<a href="https://twitter.com/phylorich">phylorich</a> for 
+introducing me to git. Starter's guide: <a href="http://t.co/LFtHf1pX" 
+title="http://git-scm.com/book/en/Getting-Started-About-Version-Control">git-scm
+.com/book/en/Gettin…</a></p>&mdash; Daniel Falster (@adaptive_plant) <a 
+href="https://twitter.com/adaptive_plant/status/267855974637920257">November 
+12, 2012</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
 <blockquote class="twitter-tweet" data-cards="hidden"><p>Love Git- best version 
@@ -152,10 +150,12 @@ overlap only in that there is usually some history going back.
   versions of files, check out by either checkpoint or time (not just
   last time, etc).-->
 
-A good version control system does not substitue for a good backup 
+A good version control system does not substitute for a good backup 
 system. *Backing up* offers a complementary set of functions that
-overlap only partially overalp with those offered by version control. 
-In general, you need both.  I have all my projects under version
+only partially overlap with those offered by version control. 
+In general, you need both.  
+
+I have all my projects under version
 control, and my whole documents directory under backup.  If my
 computer fails, I immediately copy my documents directory from the
 backup to a new computer.  I only need to get the last version though.
@@ -165,8 +165,8 @@ modification was months ago, while most backup system will be
 seriously thinning by this point (moving to monthly snapshots at best,
 and you probably have to pay for that).
 
-Other systems, like Dropbox, are more like backups, as though only store a 
-limited version of your project history.
+Other systems, like Dropbox, are more like backups, as they do not 
+store your project history.
 
 ## Do I really need something so complicated? ##
 
@@ -190,7 +190,7 @@ challenging for many
 ecologists is that most resources (e.g., the excellent
 [git book](http://git-scm.com/book/)) assume that you are coming from a
 background of using CVS, SVN or some other centralised version control
-system with a nastry abbrevo.  Therefore, they expect you to already be 
+system with a nasty abbrevo.  Therefore, they expect you to already be 
 thinking in one way
 and then show you how to translate those ideas into git's ideas.
 
