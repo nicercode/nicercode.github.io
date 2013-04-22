@@ -82,3 +82,9 @@ tend to have fewer, larger commits. some of the advantages of small commits are
 In the [software carpentry](http://software-carpentry.org/) module we attended, Greg 
 Wilson suggested we aim for work cycle of about 1 hr.
  
+You should aim to only commit once a piece of code works, so that you leave your code in 
+working order. Thus
+
+{% blockquote Karthik Ram http://www.scfbm.org/content/8/1/7/abstract Source Code for Biology and Medicine 8:7 %}
+Commits serve as checkpoints where individual files or an entire project can be safely reverted to when necessary.
+{% endblockquote %}
