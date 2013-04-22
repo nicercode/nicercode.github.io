@@ -25,11 +25,12 @@ have the a similar background, toolset and needs.)
 1. [What is version control and why would you use it](why.html)
 2. [Workflows that use version control](workflows.html)
 3. [Overview of git system](overview.html)
-3. [Version control from within RStudio](rstudio.html)
-4. [Digression: a 5 minute intro to the shell](5-min-unix-intro.html)
-5. [Version control basics](basics.html)
-6. [Branches, and why you would use them](branches.html)
-7. [Remotes: keeping your work elsewhere](remotes.html)
+4. [Digression: setting git up](setup.html)
+5. [Version control from within RStudio](rstudio.html)
+6. [Digression: a 5 minute intro to the shell](5-min-unix-intro.html)
+7. [Version control basics](basics.html)
+8. [Branches, and why you would use them](branches.html)
+9. [Remotes: keeping your work elsewhere](remotes.html)
 
 ## Other resources
 
