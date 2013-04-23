@@ -9,8 +9,8 @@
   <meta name="author" content="Rich FitzJohn & Daniel Falster">
 
   
-  <meta name="description" content="Why use version control 16 April 2013 I’m using “ecologists” as a shorthand here. It’s not an exclusive
-term – many geneticists or other scientists &hellip;">
+  <meta name="description" content="Why use version control 16 April 2013 There are many reasons to use version control, and some of these may only
+become apparent after you have &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -113,58 +113,95 @@ MathJax.Hub.Config({
 <time datetime="2013-04-16T09:00:00+10:00" pubdate data-updated="true">16 April 2013</time></p>
   </header>
   
-  <p>I’m using “ecologists” as a shorthand here.  It’s not an exclusive
-term – many geneticists or other scientists will do the same thing,
-or have the same needs.</p>
+  <p>There are many reasons to use version control, and some of these may only
+become apparent after you have incorporated it into your workflow (it’s a bit
+like “why use R” or “why document your code”).  However, we can immediately 
+identify a set of advantages that are very common.</p>
 
-<blockquote>
-  <p>Version control systems (VCS), which have long been used to maintain code repositories in the software industry, are now finding new applications in science. One such open source VCS, git, provides a lightweight yet robust framework that is ideal for managing the full suite of research outputs such as datasets, statistical code, figures, lab notes, and manuscripts. 
-– Karthik Ram, Source Code for Biology and Medicine 8:7 </p>
-</blockquote>
+<p>Most of these come from having <strong>a fossil record that captures the evolution of 
+your project</strong> (including 
+code, data, documentation, analyses, figures, talks, etc).  </p>
 
-<blockquote class="twitter-tweet"><p>“GitHub has empowered a new generation of people to collaborate, create, produce.” <a href="http://t.co/aSbXZBXHkW" title="http://bit.ly/13JH7VL">bit.ly/13JH7VL</a></p>&mdash; Karthik Ram (@_inundata) <a href="https://twitter.com/_inundata/status/309812088103137281">March 7, 2013</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p><img class="centre" src="img/evolution_computer.jpg" /></p>
 
-<blockquote class="twitter-tweet"><p>Contributed my first bit of code to a git repo yesterday, I love it! <a href="https://t.co/9FU2Yuxi" title="https://github.com/mexitek/phpColors">github.com/mexitek/phpCol…</a> @<a href="https://twitter.com/github">github</a> @<a href="https://twitter.com/mexitek">mexitek</a></p>&mdash; Daniel Pataki (@danielpataki) <a href="https://twitter.com/danielpataki/status/302812382298779648">February 16, 2013</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>This fossil record, or project history, is
+a series of revisions that connect to each other between the present
+and the start of the project.  At any time you can go back to previous
+versions, see what you did, and run the code as though you have stepped back in 
+time.  </p>
 
-<blockquote class="twitter-tweet"><p>Even if git isn&#8217;t your flavor, you gotta love <a href="https://gist.github.com/">https://gist.github.com/</a> - posting code snippets that other people can fork is beautiful.</p>&mdash; Jon Galloway (@jongalloway) <a href="https://twitter.com/jongalloway/status/72932987511128064">May 24, 2011</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p><img class="right" src="img/Back-to-the-Future.jpg" /></p>
 
-<blockquote class="twitter-tweet"><p>Welcome to a New Gist: At GitHub we love using Gist to share code. Whether it&#8217;s a simple snippet or&#8230; <a href="http://t.co/vq8UN8jB" title="http://bit.ly/Ug12CC">bit.ly/Ug12CC</a> <a href="https://twitter.com/search/%23github">#github</a> <a href="https://twitter.com/search/%23git">#git</a></p>&mdash; Pablo Rodriguez (@derfarg) <a href="https://twitter.com/derfarg/status/278621287583207424">December 11, 2012</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p>Having a good fossil history has numerous possible uses :</p>
 
-<p>https://github.com/blog/1276-welcome-to-a-new-gist</p>
+<ol>
+  <li>
+    <p><strong>You noticed that your code is doing odd things now and didn’t used
+to.</strong> Look at and run a version from the last known good code and try
+to work out what changed (after this, you should write a unit test –
+we’ll cover this in a couple of weeks).</p>
+  </li>
+  <li>
+    <p><strong>You deleted some code and want to get it back.</strong>  This has a less
+obvious, but much more common (and perhaps more important) advantage;
+you will be more likely to delete old code rather than commenting it
+out, leaving you with shorter, more readable scripts.</p>
+  </li>
+  <li>
+    <p><strong>You want to show your supervisor what you did last week.</strong></p>
+  </li>
+  <li>
+    <p>Inversely, on a collaborative project, <strong>see what your collaborators
+wrote last week.</strong></p>
+  </li>
+  <li>
+    <p>You reformatted everything from numbered citation styles to
+author-year after being rejected from journal A and sending your paper
+to journal B.  Journal B didn’t want the paper anyway, so you can <strong>get
+the previous version back.</strong></p>
+  </li>
+  <li>
+    <p><strong>You want to experiment</strong> and try something that might break huge
+pieces of your project, and know that you can back out if things go
+awry.</p>
+  </li>
+  <li>
+    <p>Similarly, <strong>you want to try a couple of different strategies for
+solving a problem</strong> and review which one you like best (or show them to
+someone else).</p>
+  </li>
+  <li>
+    <p>Gives you <strong>an audit-able project history</strong>; you know when you did what
+you did.</p>
+  </li>
+</ol>
 
-<p>http://blogs.biomedcentral.com/bmcblog/2013/02/28/version-control-for-scientific-research/</p>
+<p>The other great reason for using version control is that it allows for effective
+and transparent collaboration among small or large groups of scientists.</p>
 
-<p>Resources: </p>
-
-<ul>
-  <li>Books: Git pro and <a href="http://www.syncfusion.com/resources/techportal/ebooks/git">Git succintly</a></li>
-  <li></li>
-</ul>
-
-<blockquote class="twitter-tweet"><p>Rstudio has super simple point-and-click version control (via git) baked in for &#8220;projects&#8221;. No excuses for not using it! (via @<a href="https://twitter.com/danmcglinn">danmcglinn</a>)</p>&mdash; Rich FitzJohn (@phylorich) <a href="https://twitter.com/phylorich/status/301107009573490688">February 11, 2013</a></blockquote>
-<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-
-<blockquote class="twitter-tweet"><p>Coders - use version control, it rocks. Big thanks to @<a href="https://twitter.com/phylorich">phylorich</a> for introducing me to git. Starter&#8217;s guide: <a href="http://t.co/LFtHf1pX" title="http://git-scm.com/book/en/Getting-Started-About-Version-Control">git-scm.com/book/en/Gettin…</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/267855974637920257">November 12, 2012</a></blockquote>
+<blockquote class="twitter-tweet"><p>“GitHub has empowered a new generation of 
+people to collaborate, create, produce.” <a href="http://t.co/aSbXZBXHkW" title="http://bit.ly/13JH7VL">bit.ly/13JH7VL</a></p>&mdash; Karthik Ram 
+(@_inundata) <a href="https://twitter.com/_inundata/status/309812088103137281">March 7, 
+2013</a></blockquote>
 <script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h2 id="you-are-already-using-version-control">You are already using version control</h2>
 
+<p>Whether you recognise it or not, you are most likely already using some form of 
+version control to achieve some of the advantages outlined above. This might 
+include</p>
+
 <ul>
   <li>Commented out bits of code / text</li>
   <li>Files with numbers afterwards (<code>thesis_v1.doc</code>, <code>thesis_v2.doc</code>,
-<code>thesis_final.doc</code>, <code>thesis_final2.doc</code>, etc)</li>
-  <li>Zip up the whole project directory every so often and save it with
+<code>thesis_final.doc</code>, <code>thesis_final2.doc</code>, etc) (like in this hilarious 
+<a href="http://www.phdcomics.com/comics/archive.php?comicid=1531">Phd Comic</a>)</li>
+  <li>Every so often you zip up the whole project directory and save it with
 the date appended to the filename.</li>
 </ul>
 
-<p><a href="http://www.phdcomics.com/comics/archive.php?comicid=1531">PhD comic</a></p>
-
-<p>Most ecologists seem to invent at least one of these techniques for
-doing version control</p>
+<p>Most ecologists we know have adopted at least one of these techniques
+for doing version control.</p>
 
 <p>In addition, you’ll often see people suggesting putting headers like
 this in your code file:</p>
@@ -184,88 +221,51 @@ files <strong>I</strong> modified in the last month), there is no checking on th
 contents of the fields (dates in the future, forgetting to update
 dates, inconsistent names, email addresses).  The <em>point</em> of these
 headers is nice — keep track of who did what and when, but this is
-far easier to do with version control.</p>
+far easier to achieve under a good version control system.</p>
 
-<p>Commented out old bits of code.</p>
+<p>Another thing you’ll find in many people’s code is large chunks of old 
+code, commented-out because you think you might need it it again one day.</p>
 
-<h2 id="why-use-version-control">Why use version control?</h2>
+<h2 id="there-is-a-better-way">There is a better way</h2>
 
-<p>There are many reasons to use version control, and many are only
-apparent after you have incorporated it into your workflow (it’s a bit
-like “why use R” or “why document your code”).  However, there is a
-set of advantages that are very common.</p>
+<blockquote class="twitter-tweet"><p>Coders - use version control, it rocks. 
+Big thanks to @<a href="https://twitter.com/phylorich">phylorich</a> for 
+introducing me to git. Starter&#8217;s guide: <a href="http://t.co/LFtHf1pX" title="http://git-scm.com/book/en/Getting-Started-About-Version-Control">git-scm
+.com/book/en/Gettin…</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/267855974637920257">November 
+12, 2012</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<p>Most of these revolve around the fossil record in your code.  This is
-a series of revisions that connect to each other between the present
-and the first piece of code you wrote.  Be able to go back to previous
-versions of your code, and see what you did.  This has numerous use
-cases:</p>
-
-<ol>
-  <li>
-    <p>You noticed that your code is doing odd things now and didn’t used
-to.  Look at and run a version from the last known good code and try
-to work out what changed (after this, you should write a unit test –
-in a couple of weeks).</p>
-  </li>
-  <li>
-    <p>You deleted some code and want to get it back.  This has a less
-obvious, but much more common (and perhaps more important) advantge;
-you will be more likely to delete old code rather than commenting it
-out, leaving you with shorter, more readable scripts.</p>
-  </li>
-  <li>
-    <p>You want to show your supervisor what you did last week.</p>
-  </li>
-  <li>
-    <p>Inversely, on a collaborative project, see what your collaborators
-wrote last week.</p>
-  </li>
-  <li>
-    <p>You reformatted everything from numbered citation styles to
-author-year after being rejected from journal A and sending your paper
-to journal B.  Journal B didn’t want the paper anyway, so you can get
-the previous version back.</p>
-  </li>
-  <li>
-    <p>You want to experiment and try something that might break huge
-pieces of your project, and know that you can back out if things go
-awry.</p>
-  </li>
-  <li>
-    <p>Similarly, you want to try a couple of different strategies for
-solving a problem and review which one you like best (or show them to
-someone else).</p>
-  </li>
-  <li>
-    <p>Gives you an auditable project history; you know when you did what
-you did.</p>
-  </li>
-</ol>
+<blockquote class="twitter-tweet" data-cards="hidden"><p>Love Git- best version 
+control out there&#8230;@<a href="https://twitter.com/repotodd">repotodd</a>: I&#8217;m 
+learning how to push it with Try Git!<a href="http://t.co/zZyWQE27" title="http://bit.ly/TryGit">bit.ly/TryGit</a> via @<a href="https://twitter.com/codeschool">codeschool</a></p>&mdash; Jennie Behave 
+(@Jennie_Behave) <a href="https://twitter.com/Jennie_Behave/status/284421029017841665">December 27, 
+2012</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h2 id="version-control-is-not-a-back-up">Version control is not a back up</h2>
 
-<p>It appears that this is like a brilliant backup system, but you need a
+<!--
+It appears that this is like a brilliant backup system, but you need a
 backup too.  Backing up is a complementary set of functions that
-overlap only in that there is usually some history going back.</p>
+overlap only in that there is usually some history going back.
 
-<ul>
-  <li>
-    <p>Back up but not git: corruption of repository, generated files that
-are not part of a repository but time consuming, installed software
-and other system issues.  It is possible (but often hard) to break
-your git repository; you might reclone from somewhere or you might
-grab the last copy of a backup.  Backup systems usually have larger
-capacity than online version control systems.</p>
-  </li>
-  <li>
-    <p>Git but not backup: semantics around files, parallel branched
-versions of files, check out by either checkpoint or time (not just
-last time, etc).</p>
-  </li>
-</ul>
+* Back up but not git: corruption of repository, generated files that
+  are not part of a repository but time consuming, installed software
+  and other system issues.  It is possible (but often hard) to break
+  your git repository; you might reclone from somewhere or you might
+  grab the last copy of a backup.  Backup systems usually have larger
+  capacity than online version control systems.
 
-<p>In general, you need both.  I have all my projects under version
+* Git but not backup: semantics around files, parallel branched
+  versions of files, check out by either checkpoint or time (not just
+  last time, etc).-->
+
+<p>A good version control system does not substitute for a good backup 
+system. <em>Backing up</em> offers a complementary set of functions that
+only partially overlap with those offered by version control. 
+In general, you need both.  </p>
+
+<p>I have all my projects under version
 control, and my whole documents directory under backup.  If my
 computer fails, I immediately copy my documents directory from the
 backup to a new computer.  I only need to get the last version though.
@@ -274,6 +274,57 @@ history of any project and see the work.  For some projects, the last
 modification was months ago, while most backup system will be
 seriously thinning by this point (moving to monthly snapshots at best,
 and you probably have to pay for that).</p>
+
+<p>Other systems, like Dropbox, are more like backups, as they do not 
+store your project history.</p>
+
+<h2 id="do-i-really-need-something-so-complicated">Do I really need something so complicated?</h2>
+
+<p>It’s true that git has a reputation for being hard to learn:</p>
+
+<blockquote class="twitter-tweet"><p>They say git gets easier once you get the 
+basic idea that branches are homeomorphic endofunctors mapping submanifolds of 
+a Hilbert space.</p>&mdash; Kornel (@pornelski) <a href="https://twitter.com/pornelski/status/316190292443267073">March 25, 
+2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<p>It involves:</p>
+
+<ul>
+  <li>New concepts</li>
+  <li>Some geeky tools</li>
+  <li>A bit of hard work. </li>
+</ul>
+
+<p>But believe us, it is worth it. One of the things that will make learning git 
+challenging for many
+ecologists is that most resources (e.g., the excellent
+<a href="http://git-scm.com/book/">git book</a>) assume that you are coming from a
+background of using CVS, SVN or some other centralised version control
+system with a nasty abbrevo.  Therefore, they expect you to already be 
+thinking in one way
+and then show you how to translate those ideas into git’s ideas.</p>
+
+<p>In a way you’re lucky, as you don’t have to learn a bunch of stuff and
+then unlearn it (e.g., see
+<a href="http://www.reddit.com/r/programming/comments/embdf/git_complicated_of_cou
+rse_not_commits_map_to/c196s4w">here</a>).
+Some of the things that git does just make sense with cheaper (and
+more decentralised) bandwidth, disk space, and computing power than
+the systems that were developed in the past.</p>
+
+<p>If the last two paragraphs meant very little too you, that’s good. It means we 
+have a nice clean 
+blank slate on which to work. </p>
+
+<p>Let’s begin.</p>
+
+<blockquote class="twitter-tweet"><p>Contributed my first bit of code to a git 
+repo yesterday, I love it! <a href="https://t.co/9FU2Yuxi" title="https://github.com/mexitek/phpColors">github.com/mexitek/phpCol…</a> @<a href="https://twitter.com/github">github</a> @<a href="https://twitter.com/mexitek">mexitek</a></p>&mdash; Daniel Pataki 
+(@danielpataki) <a href="https://twitter.com/danielpataki/status/302812382298779648">February 16, 
+2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
   
 </article>
@@ -291,6 +342,10 @@ and you probably have to pay for that).</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>

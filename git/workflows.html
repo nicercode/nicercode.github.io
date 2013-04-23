@@ -122,7 +122,11 @@ these are workflows that people already use.</p>
 	introduce the comments in an abstract way that is independent of
 	the implementation. -->
 
+<!-- RGF: we really only give people the tools to do 1 in the material -->
+
 <h2 id="the-lone-scientist">1. The lone scientist</h2>
+
+<p><span class="caption-wrapper right"><img class="caption" src="/git/img/motherhubbertocat.png" width="" height="" alt="[Lone Octodex](http://octodex.github.com/motherhubbertocat/)" title="[Lone Octodex](http://octodex.github.com/motherhubbertocat/)" /><span class="caption-text"><a href="http://octodex.github.com/motherhubbertocat/">Lone Octodex</a></span></span></p>
 
 <p>This workflow will seem very familiar to anyone working on a project
 where they are the main contributor, especially PhD students.  You do
@@ -143,16 +147,10 @@ like:</p>
 for cafe work or travel, and I need to keep my projects synchronised.
 <a href="http://www.dropbox.com">Dropbox</a> largely solves this problem when you
 don’t care about version control, and some people will use it with the
-workflow above.</p>
-
-<p>However, this can lead to corruption in your git repository (e.g., if
-the network connection is a bit flakey and part of the <code>.git</code>
-directory is migrated, changes are made on one copy, then conflicted
-copies appear corrupting the repository – and all of its history).
-This may also not be ideal if one of the computers is a mac and the
-other is Windows.  Another issue happens if both end up simultaneously
-edited, as you end up with filenames like <code>xxxx (conflicted copy).R</code>,
-which would break any script that relied on <code>xxxx.R</code></p>
+workflow above (be careful though as this can lead to corruption in
+your git repository – e.g., see
+<a href="http://stackoverflow.com/questions/1960799/using-git-and-dropbox-together-effectively">this thread</a>
+on stack overflow).</p>
 
 <p>In this workflow, you will usually work on computer A, “push” all your
 changes to a server (say, bitbucket or github), then “pull” changes
@@ -190,7 +188,9 @@ at the same time.  It quickly becomes desirable to denote a
 <p>Most software projects in the world operate in this way, but this is
 not actually that common for ecologists.  This is the jumping off
 point for most dicussions on using version control, but we’ll leave it
-until later.</p>
+until later, if we get time to cover it.</p>
+
+<p><span class="caption-wrapper centre"><img class="caption" src="/git/img/socialite.png" width="" height="" alt="Collaborative Github Octodex by [Cameron McEfee](http://www.cameronmcefee.com/)" title="Collaborative Github Octodex by [Cameron McEfee](http://www.cameronmcefee.com/)" /><span class="caption-text">Collaborative Github Octodex by <a href="http://www.cameronmcefee.com/">Cameron McEfee</a></span></span></p>
 
   
 </article>
@@ -208,6 +208,10 @@ until later.</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>

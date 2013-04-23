@@ -9,8 +9,8 @@
   <meta name="author" content="Rich FitzJohn & Daniel Falster">
 
   
-  <meta name="description" content="Remotes 16 April 2013 A bit about github and bitbucket How they help you synchronise between people, between computers, or
-publish code. How to set &hellip;">
+  <meta name="description" content="Remotes 16 April 2013 Git is an example of “distributed version control”, in contrast with
+earlier models of “centralised version control”. Other &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -113,17 +113,52 @@ MathJax.Hub.Config({
 <time datetime="2013-04-16T09:00:00+10:00" pubdate data-updated="true">16 April 2013</time></p>
   </header>
   
-  <ul>
-  <li>A bit about github and bitbucket</li>
-  <li>How they help you synchronise between people, between computers, or
-publish code.</li>
-  <li>How to set up a github project</li>
-  <li>How to push code to github</li>
-  <li>How to clone a project</li>
-</ul>
+  <p>Git is an example of “distributed version control”, in contrast with
+earlier models of “centralised version control”.  Other distributed
+version control systems include
+<a href="http://mercurial.selenic.com/">mercurial</a>, <a href="http://darcs.net/">darcs</a>
+and <a href="http://bazaar.canonical.com/">bazzar</a>.</p>
 
-<p><a href="http://gitready.com/beginner/2009/02/02/push-and-delete-branches.html">Push and delete branches</a></p>
+<p>One of the nice things about distributed verison control is, well,
+distributing your code <em>including its history</em>.  Sites like
+<a href="http://github.com">github</a> and <a href="http://bitbucket.org">bitbucket</a> have
+become very popular with academics and non-academics for distributing
+source and for managing projects.</p>
 
+<p>As an example of how this is has been used, see
+<a href="https://github.com/weecology/data-sharing-paper">this paper</a> by Ethan
+White and the <a href="http://weecology.org/">“weecology” lab</a>.  You can see
+the whole history of the project, and how different people have
+contributed.  In particular, you can see the
+<a href="https://github.com/weecology/data-sharing-paper/network">graph</a> of
+how different changes were incorporated by different authors.  This is
+a fairly extreme example!</p>
+
+<p>Most of my PhD research is contained within a
+<a href="https://github.com/richfitz/diversitree">repository on github</a> that I
+still mantain.  Because this is a project that people have used for a
+while, it’s nice that the full history is mantained as people can run
+analyses against previous versions of the package if their results
+change.</p>
+
+<p>Both bitbucket and github offer academic accounts, but require you to
+sign up with your university email.</p>
+
+<p>Setting up a project on one of these sites is as easy as:</p>
+
+<ol>
+  <li>Creating the repository online (click a button prominently
+displayed on the website).</li>
+  <li>Tell your <em>local</em> git repository about the presence of a
+repository, with something like <code>git remote add origin
+git@github.com:usernane/reponame.git</code></li>
+  <li>“Push” your content to the website with <code>git push -u origin master</code></li>
+</ol>
+
+<p>There is a bit more to it than that, but if you treat the repository
+as “write only” (that is just push changes), you’ll just have to do
+<code>git push</code> to push up all the new commits you’ve made since last time
+you pushed.</p>
 
   
 </article>
@@ -141,6 +176,10 @@ publish code.</li>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>

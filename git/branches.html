@@ -116,8 +116,8 @@ MathJax.Hub.Config({
   <p><strong>Note for all that follows:</strong> <em>This may help you, but if it just
 confuses you, forget it.  Just know that this exists, and that it
 might be useful.  By the time you’re comfortable enough with the core
-concepts and tools, this may help.  But you don’t <strong>have</strong> to know how
-to do branching to use version control.  In fact, branching is fairly
+concepts and tools, this may help.  But you don’t have to know how to
+do branching to use version control.  In fact, branching is fairly
 rare in most other version control systems.</em></p>
 
 <p>A linear history is fine, but that is often not how science
@@ -142,15 +142,90 @@ project.</p>
 
 <h2 id="what-do-branches-look-like">What do branches look like?</h2>
 
-<p><em>Diagram from pro git book, showing no branches, then branches</em></p>
+<p>Suppose that we have a repository with three commits: <code>C0</code>, <code>C1</code> and
+<code>C2</code>:</p>
 
-<p><em>In class, perhaps draw on the board</em></p>
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-base.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
 
-<p><em>Diagram of different workflows – the simple git one, the one Matt
- sent me, the git flow workflow</em></p>
+<p>at the moment there is only one branch: “<code>master</code>”.  Now imagine that
+we’re going to do some work starting at this point – we’ll create a
+new branch that starts from our current point (<code>C2</code>), in this case
+called <code>iss53</code> (the diagrams come from the excellent
+<a href="http://git-scm.com/book">Pro Git</a> book, and I’ve not redrawn them –
+for an ecologist this might be “experiment” or “reorganise_data”).</p>
 
-<p><em>Identify that the branch they are currently on is called master, but
- that is just a convention</em></p>
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-just-branched.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>We then continue to do work on this new branch:</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-extend.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>At this point, we might be happy with the new work and just want to
+merge the branches back together (moving the <code>master</code> pointer up to
+<code>C3</code>).  </p>
+
+<p>Alternatively, you might have to do some work on <code>master</code> (perhaps
+your supervisor needs you to tweak a figure for a talk they are giving
+<em>right now</em>, but your current state on <code>iss53</code> would break it).  You
+could then switch back to branch <code>master</code> and do some more work there
+too:</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-split.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>(Note that the <code>iss53</code> branch has been renamed <code>experiment</code> here!)
+Now you your history has diverged – both commits <code>C3</code> and <code>C4</code> have
+<code>C2</code> as a parent, but they consist of different work.  You have a
+choice of how you want to resolve the diverge this to get the work
+done on <code>C3</code> and <code>C4</code> onto the same branch.  First you can <strong>merge</strong>
+the changes together:</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-merge.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>this means that <code>C5</code> has two parents (<code>C3</code> and <code>C4</code>) and that it
+includes the content of both.</p>
+
+<p>Alternatively there is a strategy called <strong>rebase</strong> where we would
+replay the changes on the <code>experiment</code> branch on the <code>master</code> branch,
+which gives a linear history:</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-rebase.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>What this does is to look at the difference between <code>C3</code> and <code>C2</code>, and
+then apply that difference to <code>C4</code> so that the new commit <code>C3'</code>
+contains the results of <code>C4</code> and <code>C3</code>.  The old <code>C3</code> commit is then
+dropped.</p>
+
+<p>Note that the <strong>contents</strong> of <code>C3'</code> and <code>C5</code> will likely be the same
+at the end of these two operations – the difference is in the
+interpretation of how they came into being.</p>
+
+<h2 id="workflows-that-use-branches">Workflows that use branches</h2>
+
+<p>Branches most naturally appear in a project that is simultaneously
+being worked on by different people.  It turns out the git will see
+branches in someone else’s repository essentially like branches in
+your own, and lots of cool ways of working with branches become
+possible.</p>
+
+<p>They also are important for single-user workflows.  I use them for
+testing ideas that I’m not sure about:</p>
+
+<ul>
+  <li>Create a branch</li>
+  <li>Commit a bunch of work to it</li>
+  <li>Decide if I like the work and if so…</li>
+  <li>Merge it back into the main branch</li>
+</ul>
+
+<p>This idea is nicely formalised in
+<a href="http://nakedstartup.com/2010/04/simple-daily-git-workflow">this flow chart</a>.</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/git-branch-simple.png" width="" height="" alt="From [this talk](http://zachholman.com/talk/how-github-uses-github-to-build-github/)" title="From [this talk](http://zachholman.com/talk/how-github-uses-github-to-build-github/)" /><span class="caption-text">From <a href="http://zachholman.com/talk/how-github-uses-github-to-build-github/">this talk</a></span></span></p>
+
+<p>Much more complicated (but powerful in the right hands) workflows are
+possible, such as the so-called
+<a href="http://nvie.com/posts/a-successful-git-branching-model/">git-flow</a>
+workflow.</p>
 
 <h2 id="listing-branches">Listing branches</h2>
 
@@ -162,7 +237,7 @@ default, there is only one branch and it is called <code>master</code>.</p>
 </pre></td><td class="code"><pre><code class=""><span class="line">git branch
 </span><span class="line">* master</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>The asterix next to this indicates that this is the <em>current</em> branch.
+<p>The asterisk next to this indicates that this is the <em>current</em> branch.
 If you pass in the <code>-v</code> argument (for <strong>verbose</strong>), you get</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -190,7 +265,7 @@ Rerunning <code>git branch -v</code>:</p>
 </span><span class="line">  new_idea a0f9f69 Added RStudio files</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>We now have two branches, both at the same point on the tree.  The
-asterix indicates that we are on the branch <code>master</code>.</p>
+asterisk indicates that we are on the branch <code>master</code>.</p>
 
 <p>You can change to a branch by using <code>git checkout</code>.  So to switch to
 the <code>new_idea</code> branch, you would do:</p>
@@ -220,21 +295,211 @@ the <code>new_idea</code> branch, you would do:</p>
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class=""><span class="line">Deleted branch new_idea (was a0f9f69).</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>The other way of creating a branch and switching to it is </p>
+<p>The other way of creating a branch and switching to it is to pass <code>-b</code>
+as an argument to checkout:</p>
 
-<ul>
-  <li>Creating branches with <code>branch</code> and <code>checkout -b</code></li>
-  <li>Switching branches with <code>checkout</code></li>
-  <li>How the graph looks</li>
-  <li>Combining branches with <code>merge</code></li>
-  <li>Combining branches with <code>rebase</code></li>
-  <li>The idea of fast-forwarding</li>
-  <li>The idea of a nice history</li>
-  <li>Creating a branch off an old version</li>
-</ul>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout -b new_idea
+</span><span class="line">Switched to a new branch 'new_idea'</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><a href="http://pcottle.github.io/learnGitBranching/?NODEMO">Git branching demo</a></p>
+<p>Now <code>git branch</code> shows:</p>
 
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  master
+</span><span class="line">* new_idea</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>as we both <em>created</em> and <em>switched to</em> the new branch <code>new_idea</code>.</p>
+
+<h2 id="how-branches-grow">How branches grow</h2>
+
+<p>New work is commited to the current active branch (the one with the
+asterisk next to it in <code>git branch</code> (at the moment this is the branch
+<code>new_idea</code>.  So if we edit a file and do <code>git commit</code>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"># ...edit file...
+</span><span class="line">git add script.R
+</span><span class="line">git commit -m "Modified function to make NA treatment optional"</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The history is now equivalent to this picture from before:
+<img src="/git/img/pro-git-branch-extend.png" /></p>
+
+<p>You can also see a picture of this with some arguments to <code>git log</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git log --graph --decorate --pretty=oneline --abbrev-commit
+</span><span class="line">* 37485b1 (HEAD, new_idea) Modified function to make NA treatment optional
+</span><span class="line">* a0f9f69 (master) Added RStudio files
+</span><span class="line">* 9b5f828 Added function that computes standard error of the mean</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(which will even be in colour if you <a href="setup.html#Colour">set that up</a>)</p>
+
+<h2 id="merging-branches-back-together">Merging branches back together</h2>
+
+<p>Suppose that you are happy with the changes that you made and want to
+merge them into your <code>master</code> branch.</p>
+
+<p>To do the merge, you first check the <code>master</code> branch back out:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout master</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will output</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Switched to branch 'master'</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>then</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git merge new_idea</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will output</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Updating a0f9f69..37485b1
+</span><span class="line">Fast-forward
+</span><span class="line"> script.R | 3 +-
+</span><span class="line"> 1 file changed, 3 insertions(+), 2 deletions(-)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>telling you that <code>master</code> was “fast-forwarded” from <code>a0f9f69</code> to
+<code>37485b1</code>, changing one file (<code>script.R</code>) by inserting three lines and
+deleting two.</p>
+
+<p>The tree now has two branches that “point” at the last commit:
+<code>master</code> and <code>new_idea</code>.  We can delete the <code>new_idea</code> branch with</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git branch -d new_idea</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(the <code>-d</code> argument stands for <strong>delete</strong>).</p>
+
+<h2 id="merging-when-branches-have-diverged">Merging when branches have diverged</h2>
+
+<p>If you have a history like this one:</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-split.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>as noted above you have two choices – you can <strong>merge</strong> or you can
+<strong>rebase</strong>.  Suppose for now that we have checked out <code>experiment</code>.
+You would switch to to branch <code>master</code> by running</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout master</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and then merge the experiment in with</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git merge experiment</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which gives a history like this:</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-merge.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>The alternative would be to run 
+&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<span class="line-number">2</span>
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class=""><span class="line">git checkout master
+</span><span class="line">git rebase experiment</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+
+<p>which results in a history like this:</p>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/pro-git-branch-rebase.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" title="From [Pro Git](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging">Pro Git</a></span></span></p>
+
+<p>In both cases, you could delete the experiment branch with</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git branch -d experiment</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>What you chose is often mostly a matter of taste (and there are a
+diversity of opinions on this).  For a single-user workflow it often
+does not make much difference.</p>
+
+<p>Sometimes, the change on a branch all falls in a logical chunk, and it
+might make good sense to merge that in with <code>merge</code> to reflect this in
+your history.  Other times, the different branches just reflect
+working on different computers, or changes that make sense when
+reordered linearly.  In that case, <code>rebase</code> is often the best bet.</p>
+
+<h2 id="branches-and-old-versions">Branches and old versions</h2>
+
+<p>Suppose that you want to look an old version (say, <code>C2</code> in the graphs
+above).  You can simply do to</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout C2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will produce the rather scary message:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">You are in 'detached HEAD' state. You can look around, make experimental
+</span><span class="line">changes and commit them, and you can discard any commits you make in this
+</span><span class="line">state without impacting any branches by performing another checkout.
+</span><span class="line">
+</span><span class="line">If you want to create a new branch to retain commits you create, you may
+</span><span class="line">do so (now or later) by using -b with the checkout command again. Example:
+</span><span class="line">
+</span><span class="line">  git checkout -b new_branch_name
+</span><span class="line">
+</span><span class="line">HEAD is now at 5d522e6... Added RStudio files</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/headless-mode.jpg" width="" height="" alt="Headless mode is not as bad for you as it was for [Marie Antoinette](http://en.wikipedia.org/wiki/Marie_Antoinette)" title="Headless mode is not as bad for you as it was for [Marie Antoinette](http://en.wikipedia.org/wiki/Marie_Antoinette)" /><span class="caption-text">Headless mode is not as bad for you as it was for <a href="http://en.wikipedia.org/wiki/Marie_Antoinette">Marie Antoinette</a></span></span></p>
+
+<p>What this means:
+ - you can’t commit anything
+ - any changes you make will be lost when you go back to a “proper” branch.</p>
+
+<p>If you did want to start a branch here, you can do </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout -b revisit_old_analysis</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will start a new branch at the point <code>C2</code>.  You can then
+continue adding to that branch with <code>git commit</code>, or just easily
+switch back to it.</p>
+
+<p>You could also have done both things in one step, from <code>master</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">git checkout -b revisit_old_analysis C2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which would start a new branch called <code>revisit_old_analysis</code> at the
+point in history <code>C2</code>.</p>
+
+<h2 id="concluding-remarks">Concluding remarks</h2>
+
+<p>Branching is git’s “killer feature” – the thing that it does better
+than most other version control systems.  Branches are addictive, and
+once you get used to using them, you’ll find all sorts of use for
+them.  Branches are very fast to create, to switch between, and to
+destroy.  If they help you structure your work, you should use them!</p>
+
+<p>There is an incredible
+<a href="http://pcottle.github.io/learnGitBranching/?NODEMO">Git branching demo</a>
+that is useful to work through learning about git branches.  It has a
+<a href="http://pcottle.github.io/learnGitBranching/">tutorial mode</a> with lots
+of lessons, and a
+<a href="http://pcottle.github.io/learnGitBranching/?demo">demo mode</a> with a
+dizzying array of crazy history-altering moves.</p>
 
   
 </article>
@@ -252,6 +517,10 @@ the <code>new_idea</code> branch, you would do:</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>

@@ -5,14 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Introduction to R - Nice R Code</title>
+  <title>Git overview - Nice R Code</title>
   <meta name="author" content="Rich FitzJohn & Daniel Falster">
 
   
-  <meta name="description" content="Introduction to R 18 March 2013 These are the help pages for the
-Genes to Geosciences
-introduction to R
-module. Topics we will cover today: &hellip;">
+  <meta name="description" content="Git overview 16 April 2013 Essentially, all version control does is store snapshots of your work
+in time, and keeps track of the parent-child &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +19,7 @@ module. Topics we will cover today: &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicercode.github.com/intro/">
+  <link rel="canonical" href="http://nicercode.github.com/git/overview.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -99,7 +97,7 @@ MathJax.Hub.Config({
 <article role="article">
   
   <header>
-    <h1 class="entry-title">Introduction to R</h1>
+    <h1 class="entry-title">Git overview</h1>
     <p class="meta">
 
 
@@ -112,45 +110,96 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2013-03-18T10:25:00+11:00" pubdate data-updated="true">18 March 2013</time></p>
+<time datetime="2013-04-16T09:00:00+10:00" pubdate data-updated="true">16 April 2013</time></p>
   </header>
   
-  <p>These are the help pages for the
-<a href="http://www.gg.mq.edu.au">Genes to Geosciences</a>
-<a href="http://www.gg.mq.edu.au/rep/#GG_R_modules">introduction to R</a>
-module.</p>
+  <p>Essentially, all version control does is store snapshots of your work
+in time, and keeps track of the parent-child relationships.</p>
 
-<p>Topics we will cover today:</p>
+<p><span class="caption-wrapper"><img class="caption" src="/git/img/git-intro-history.png" width="" height="" alt="From [Pro Git](http://git-scm.com/book/en/Getting-Started-Git-Basics)" title="From [Pro Git](http://git-scm.com/book/en/Getting-Started-Git-Basics)" /><span class="caption-text">From <a href="http://git-scm.com/book/en/Getting-Started-Git-Basics">Pro Git</a></span></span></p>
 
-<ol>
-  <li><a href="preliminaries.html">Preliminaries</a>: Getting your environment set
-up.</li>
-  <li><a href="getting-started.html">Getting started</a>: Starting R, using it as
-a calculator, and variables.</li>
-  <li><a href="loading-data.html">Loading data</a>: Reading in data, viewing, and
-subsetting.</li>
-  <li><a href="writing-functions.html">Writing functions</a>: Avoiding errors and
-better describing your intent.</li>
-  <li><a href="data-types.html">Data types</a>: A digression on data types</li>
-  <li><a href="repeating-things.html">Repeating things</a>: Introduction to ways of
-automating repetitive tasks.</li>
-  <li><a href="missing-data.html">Missing data</a>: Another digression on missing
-data.</li>
-</ol>
+<p>You can think of your current set of working files as simply the
+child of the last node in this chain (that is, your files are the
+children of the most recent set of files known to the version control
+system).</p>
 
-<p>I’ve collected a few <a href="resources.html">resources</a> to help you continue
-learning.</p>
+<p><code>git</code> provides a large number of tools for manipulating this history.
+We’ll only touch on a few, but the number that you need to know for
+day-to-day use is actually quite small.</p>
 
-<p>I’ve also made a non-exhaustive list of <a href="bad-habits.html">bad habits</a>
-that you should avoid and tips you should follow.</p>
+<p>First, we’re going to need some terminology:</p>
 
-<p>We can’t possibly cover everything, <a href="not-covered.html">for example</a>.</p>
+<ul>
+  <li><strong>Repository</strong>: “Repo” for short; this is a copy of the history of
+your project.  It is <strong>stored in a hidden directory within your
+  project</strong>.  People will talk about “cloning a repo” or “adding things
+to a repo”; these all manipulate the history in some way.</li>
+  <li><strong>Working directory</strong>: This is your copy of a project.  It’s just a
+directory with files and other directories in it.  The repository is
+contained within a <code>.git</code> directory at the root directory of your
+project.</li>
+</ul>
 
-<h2 id="slides-from-the-other-days">Slides from the other days:</h2>
+<p>One of the distinguishing and great features about git is that the 
+repo contains the entire history of the project, i.e. if your project
+moves, the history travels with it. So if you clone your work to a 
+new computer, or a collaborator gets involved (more on
+how to do that later), they have the full project history available. 
+This is called <a href="en.wikipedia.org/wiki/
+Distributed_revision_control">distributed version control</a>.</p>
 
-<p>Afternoon of day two: <a href="stats.html">statistics</a> (by Drew Allen).</p>
+<h2 id="what-goes-in-my-repository">What goes in my repository?</h2>
 
-<p>Morning of day three: <a href="plotting.html">plotting</a> (by Josh Madin).</p>
+<p>You should establish a new repo for each project you are working on. As we 
+<a href="http://nicercode.github.io/blog/2013-04-05-projects/">discussed previously</a>) 
+the project folder should contain everything related to a particular project, 
+including inputs (data, images, notes), analysis scripts and outputs (figures, 
+tables.) The content of your project will evolve over time and this will be tracked 
+within the git repo. </p>
+
+<p>But not all of your project folder contents will be stored within the git 
+system. As a general guide, we suggest you make a folder called outputs. This is 
+where you should save figures and other outputs from your analysis scripts. These 
+outputs do not need to be tracked, as they can be reproduced at any time by 
+rerunning the script. Later we’ll show you how to <code>ignore</code> certain files in git. </p>
+
+<h2 id="the-commit-cycle">The commit cycle</h2>
+
+<p>Your project develops as you do work. During this process you make a series of 
+small changes such as</p>
+
+<ul>
+  <li>writing some code </li>
+  <li>importing/entering  new data</li>
+  <li>reorganising your files</li>
+  <li>making a figure</li>
+  <li>writing bits of reports or papers.</li>
+</ul>
+
+<p>The idea with git is that you break up your project activity into a series of small 
+tasks, each corresponding to a ‘commit’. So the cycle goes </p>
+
+<blockquote>
+  <p>Checkout project –&gt; do work –&gt; review changes –&gt; commit</p>
+</blockquote>
+
+<p>Anecdotal evidence suggests experienced programmers break up their project into 
+lots of small pieces, and have lots of commits in their work cycle, while novices 
+tend to have fewer, larger commits. some of the advantages of small commits are</p>
+
+<ul>
+  <li>helps you to focus on one small piece of a much larger puzzle</li>
+  <li>it’s easier to recover if something goes wrong</li>
+  <li>you have a greater sense of achievement. </li>
+</ul>
+
+<p>In the <a href="http://software-carpentry.org/">software carpentry</a> module we attended, Greg 
+Wilson suggested we aim for work cycle of about 1 hr.</p>
+
+<p>You should aim to only commit once a piece of code works, so that you leave your code in 
+working order. Thus</p>
+
+<blockquote><p>Commits serve as checkpoints where individual files or an entire project can be safely reverted to when necessary.</p><footer><strong>Karthik Ram</strong> <cite><a href="http://www.scfbm.org/content/8/1/7/abstract">Source Code for Biology and Medicine 8:7</a></cite></footer></blockquote>
 
   
 </article>
@@ -216,8 +265,8 @@ that you should avoid and tips you should follow.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://nicercode.github.com/intro/index.html';
-        var disqus_url = 'http://nicercode.github.com/intro/index.html';
+        var disqus_identifier = 'http://nicercode.github.com/git/overview.html';
+        var disqus_url = 'http://nicercode.github.com/git/overview.html';
         var disqus_script = 'embed.js';
       
     (function () {

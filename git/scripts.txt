@@ -1,0 +1,55 @@
+{
+  "goalTreeString": "{\"branches\":{\"master\":{\"target\":\"C2\",\"id\":\"master\"},\"newidea\":{\"target\":\"C2\",\"id\":\"newidea\"}},\"commits\":{\"C0\":{\"parents\":[],\"id\":\"C0\",\"rootCommit\":true},\"C1\":{\"parents\":[\"C0\"],\"id\":\"C1\"},\"C2\":{\"parents\":[\"C1\"],\"id\":\"C2\"}},\"HEAD\":{\"target\":\"master\",\"id\":\"HEAD\"}}",
+  "solutionCommand": "git checkout -b newidea;git commit;git checkout master;git merge newidea",
+  "startTree": "{\"branches\":{\"master\":{\"target\":\"C1\",\"id\":\"master\"}},\"commits\":{\"C0\":{\"parents\":[],\"id\":\"C0\",\"rootCommit\":true},\"C1\":{\"parents\":[\"C0\"],\"id\":\"C1\"}},\"HEAD\":{\"target\":\"master\",\"id\":\"HEAD\"}}",
+  "name": {
+    "en_US": "Simple feature branch"
+  },
+  "hint": {
+    "en_US": ""
+  },
+  "startDialog": {
+    "en_US": {
+      "childViews": [
+        {
+          "type": "GitDemonstrationView",
+          "options": {
+            "beforeMarkdowns": [
+              "## Simple feature branch",
+              "",
+              "This is the simple branch from the \"Nice R code\" git intro.  ",
+              "",
+              "Do some work on a branch \"newidea\", then merge that back into master.",
+              "",
+              ""
+            ],
+            "afterMarkdowns": [
+              "Both branches new point at the same commit and we could delete the newidea branch with \"git -d newidea\""
+            ],
+            "command": "git checkout -b newidea;\ngit commit;\ngit checkout master;\ngit merge newidea",
+            "beforeCommand": ""
+          }
+        },
+        {
+          "type": "GitDemonstrationView",
+          "options": {
+            "beforeMarkdowns": [
+              "## Enter some markdown!",
+              "",
+              "",
+              ""
+            ],
+            "afterMarkdowns": [
+              "## Enter some markdown!",
+              "",
+              "",
+              ""
+            ],
+            "command": "git commit",
+            "beforeCommand": "git checkout -b bugFix"
+          }
+        }
+      ]
+    }
+  }
+}
