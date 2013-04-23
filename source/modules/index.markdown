@@ -32,13 +32,13 @@ The  module consists of 9 one hour sessions and one 3 hour session.
 The topics covered fall into two broad categories: *workflow* and
 *coding*. The first five sessions will be 
 
-1. [Why write nice code](http://nicercode.github.io/blog/2013-04-05-why-nice-code/) and [project set up](http://nicercode.github.io/blog/2013-04-05-projects/) (9 April)
-2. Version control with git (23 April) -- note this is a special 3hr
+1. [Why write nice code](../blog/2013-04-05-why-nice-code/) and [project set up](../blog/2013-04-05-projects/) (9 April)
+2. Version control with git, [materials](../git/)and [blog](../blog/2013-04-23-git/) (23 April) -- note this is a special 3hr
 session, run with participants from the February software carpentry
 bootcamp.
-3. Coding style (7 May)
-4. Abstraction and design (21 May)
-5. Testing code (4 June)
+4. Abstraction and design (7 May)
+5. Testing code (21 May)
+3. Coding style (4 June)
 
 Except for the version control session, we will meet from 2-3pm in E8C
 212. Room for session 2 is F7B 110.

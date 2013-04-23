@@ -34,12 +34,14 @@ have the a similar background, toolset and needs.)
 
 ## Other resources
 
-There are many other tutorials and resources about git. Of all of those, these come recommended
+There are many other tutorials and resources about git. Here we only list a few 
 
 - Chapters 1-3 of the excellent [git book](http://git-scm.com/book/)
 - [git succinctly](http://www.syncfusion.com/resources/techportal/ebooks/git), another free book.
+- Documentation on the [official git site](http://git-scm.com/documentation), or [git reference site](http://gitref.org/)
 
 You may also be interested in these blog posts and papers, discussing the use of git in science
 
+- Another talk on [git for scientists](http://karthikram.github.io/git_intro/), by [Karthik Ram](https://twitter.com/_inundata)
 - Ram (2013) "Git can facilitate greater reproducibility and increased transparency in science" [Source Code for Biology and Medicine 8:7](http://www.scfbm.org/content/8/1/7/abstract)
 - Rogers (2013) “The GitHub Revolution: Why We’re All in Open Source Now” [Wired Opinion](http://www.wired.com/opinion/2013/03/github/)
