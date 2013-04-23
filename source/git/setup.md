@@ -102,7 +102,7 @@ term, you may find something like using
 
 ### Colour
 
-By default (on **Mac** and **Linux** at leat), the command line is
+By default (on **Mac** and **Linux** at least), the command line is
 fairly stark, but git has options to spruce it up with nice colours.
 More than just look pretty, these allow you to much more easily scan
 output.

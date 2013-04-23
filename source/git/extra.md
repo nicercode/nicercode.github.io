@@ -1,3 +1,52 @@
+### Version control and word
+
+When talking about branches, talk about how track changes nightmares
+work in Word.  Do the one-person track change scenario
+(async. collab), then talk about how multiple people getting involved
+makes it harder.  Talk about how one of the things that makes this
+hard is again the metadata issue -- we never really capture who
+branched off whom.
+
+### Reverting things
+
+This is one of the big selling points.  Make it clear that what I do,
+and what many people do, is just go rummaging around on one of the
+websites.  I can show an example from github perhaps.  Make point that
+it is easier to remember how to poke around a website than to remember
+syntax if you don't use it regularly.
+
+Go back to an old version:
+   `git checkout -b new_master`
+   `git revert`
+  
+Or more adventurously (for unpublished history)
+   `git checkout -b master_backup`
+   `git branch -d master`
+   `git checkout -b master old_version`
+  
+Go back to old version of single *file*
+   `git checkout old_version -- path/file.R`
+followed by 
+   `git add path/file.R`
+   `git commit path/file.R -m "Restored old version of file"`
+to add it to the repository.
+
+Discard working copy changes for a single file
+   `git checkout -- path/file.R`
+Multiple files is harder -- can be done with `git reset HEAD`, but I
+like
+   `git stash`
+   `git stash drop`
+
+Unstage changes (as mentioned in `git status`)
+   `git reset HEAD path/file.R`
+possibly followed by 
+   `git checkout -- path/file.R`
+to discard local changes too
+
+Related: view file from previous version
+    `git show old_version:file/path.R`
+
 ### Localisation
 
 If you want dates in ISO 8601 (YYYY-MM-DD) format (rather than in
