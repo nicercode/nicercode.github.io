@@ -282,8 +282,4 @@ git diff --cached
 
 which compares the contents of the staged changes with the previous
 version.
-
-*(Probably worth reviewing the three stage git figure here, and
- perhaps indicating that it is possible to do a working-directory vs
- last-commit diff with* `git diff HEAD`*)*
  
