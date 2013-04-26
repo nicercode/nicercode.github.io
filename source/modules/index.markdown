@@ -33,7 +33,7 @@ The topics covered fall into two broad categories: *workflow* and
 *coding*. The first five sessions will be 
 
 1. [Why write nice code](../blog/2013-04-05-why-nice-code/) and [project set up](../blog/2013-04-05-projects/) (9 April)
-2. Version control with git, [materials](../git/)and [blog](../blog/2013-04-23-git/) (23 April) -- note this is a special 3hr
+2. Version control with git, [materials](../git/) and [blog](../blog/2013-04-23-git/) (23 April) -- note this is a special 3hr
 session, run with participants from the February software carpentry
 bootcamp.
 4. Abstraction and design (7 May)

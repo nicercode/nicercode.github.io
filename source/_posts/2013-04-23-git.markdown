@@ -7,12 +7,12 @@ categories: module
 ---
 
 Thanks to everyone who came along and was such good sports with
-learning git today.  The notes are available (in fairly raw form)
-[here](/git).  Please let us know where they are unclear and we will
+learning git today. Hopefully you now have enough tools to help you use git in your own
+projects. The notes are available (in fairly raw form)
+[here](/git). Please let us know where they are unclear and we will
 update them.
 
-Hopefully you now have enough tools to help you use git in your own
-projects.  To re-emphasise our closing message -- start using it on a
+To re-emphasise our closing message -- start using it on a
 project, start thinking about what you want to track, and start
 thinking about what constitutes a logical commit.  Once you get into a
 rhythm it will seem much easier.  Bring your questions along to the
