@@ -47,6 +47,6 @@ footer: false
 	 **reference manual**, not as tutorials.  There are examples at the
 	 bottom of each page that are useful for seeing how functions are used.
 	 However, working out what function you need is often half the battle.
-
+ * Also, see[ Scott Chamberlain's list of R resources](http://schamberlain.github.io/R-esources.html)
 ---
 Back to [main page](/intro)

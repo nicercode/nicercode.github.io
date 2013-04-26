@@ -7,7 +7,7 @@ sharing: true
 footer: false
 ---
 
-*This will become basics.md once basics.md becomes rstudio.md*
+<!--*This will become basics.md once basics.md becomes rstudio.md*-->
 
 Essentially, all version control does is store snapshots of your work
 in time, and keeps track of the parent-child relationship.
