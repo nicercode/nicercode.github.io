@@ -1,4 +1,4 @@
-## Intro ##
+## Intro
 
 This package contains materials for the [Nice R Code 
 blog](http://nicercode.github.com/), run by Rich FitzJohn and Daniel Falster. 
@@ -9,6 +9,12 @@ The site is deployed on github at
 bitbucket repo. The only thing that happens on github is to deploy. 
 
 [Octopress documentation](http://octopress.org/docs/) 
+
+## Formatting changes to consider
+
+- indentation of lists, works well on phones, but not on desktop
+- fontsize too big?
+- add about page with bios
 
 ## Setting up on a new machine ##
 
