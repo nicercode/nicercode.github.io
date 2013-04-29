@@ -2,6 +2,10 @@
 
 # Post #
 
+## markdown editors
+
+http://markable.in/
+http://www.sublimetext.com/
 
 knitr in Rstudio
 
