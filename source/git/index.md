@@ -34,11 +34,13 @@ have the a similar background, toolset and needs.)
 
 ## Other resources
 
-There are many other tutorials and resources about git. Here we only list a few 
+There are many other tutorials and resources about git. Here we are a few 
 
-- Chapters 1-3 of the excellent [git book](http://git-scm.com/book/)
+- We recommend chapters 1-3 of the excellent [git book](http://git-scm.com/book/)
 - [git succinctly](http://www.syncfusion.com/resources/techportal/ebooks/git), another free book.
 - Documentation on the [official git site](http://git-scm.com/documentation), or [git reference site](http://gitref.org/)
+- [Git Immersion](http://gitimmersion.com/).
+
 
 You may also be interested in these blog posts and papers, discussing the use of git in science
 
