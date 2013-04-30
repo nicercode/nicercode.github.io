@@ -40,7 +40,11 @@ There are many other tutorials and resources about git. Here we are a few
 - [git succinctly](http://www.syncfusion.com/resources/techportal/ebooks/git), another free book.
 - Documentation on the [official git site](http://git-scm.com/documentation), or [git reference site](http://gitref.org/)
 - [Git Immersion](http://gitimmersion.com/).
-
+- The [Rstudio intro to version control](http://www.rstudio.com/ide/docs/version_control/overview?version=0.97.318&mode=desktop)
+- [Wikipedia's entryabout git](http://en.wikipedia.org/wiki/Git_%28software%29)
+- Some other tutorials: http://sixrevisions.com/resources/git-tutorials-beginners/
+- [A detailed lecture by Scott Charcon about github, an site for hosting git packages](http://www.youtube.com/watch?v=ZDR433b0HJY)
+- [A list of graphical git programs](http://git-scm.com/downloads/guis)
 
 You may also be interested in these blog posts and papers, discussing the use of git in science
 
