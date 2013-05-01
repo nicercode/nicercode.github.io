@@ -80,6 +80,23 @@ You can now use the function anywhere in your analysis. In thinking about how yo
 - Functions can be passed as arguments to other functions
 - You can define a function inside of another function
 
+## What makes for a good function?
+
+### It's short 
+<blockquote class="twitter-tweet"><p>If you've written a function whose body is 2,996 lines of code, you're doing it wrong.</p>&mdash; M Butcher (@technosophos) <a href="https://twitter.com/technosophos/status/322392537983746049">April 11, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+### Performs a single operation
+
+<blockquote class="twitter-tweet"><p>The reason for writing a function is not to reuse its code, but to name the operation it performs.</p>&mdash; Tim Ottinger (@tottinge) <a href="https://twitter.com/tottinge/status/293776089099153408">January 22, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+### Uses intuitive variable names
+
+<blockquote class="twitter-tweet"><p>"The name of a variable, function, or class, should answer all the big questions." - Uncle Bob Martin, Clean Code</p>&mdash; Gustavo Rod. Baldera (@gbaldera) <a href="https://twitter.com/gbaldera/status/327063173721100288">April 24, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+
 ## <a id="niceRFunctions"> How functions help you write Nice R Code
 
 As a reminder, the goal of this course and blog is to help you write nice R code. By that we mean code that is easy to write, is easy to read, runs quickly, gives reliable results, is easy to reuse in new projects, and is easy to share with collaborators. Functions help achieve all of these. 
@@ -115,6 +132,10 @@ easy to plug pieces to together
 This material written for  coders with limited experience. 
 
 Design big topic, much more to cover. Arguably key skill of good software engineers.
+
+<blockquote class="twitter-tweet"><p>The more I write code, the more abstract it gets. And with more abstractions, the apps are easier to maintain. Been working for years...</p>&mdash; Justin Kimbrell (@justin_kimbrell) <a href="https://twitter.com/justin_kimbrell/status/329054399425019906">April 30, 2013</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
 
 ## Further reading
 
