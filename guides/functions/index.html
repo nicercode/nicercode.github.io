@@ -1,0 +1,395 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Functions - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Functions 30 April 2013 <!-- ## Goals for this post 1. Understand *why* to move code from in-place into a function.
+2. Understand R's function &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/guides/functions/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Functions</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-30T14:08:00+10:00" pubdate data-updated="true">30 April 2013</time></p>
+  </header>
+  
+  <!-- ## Goals for this post
+
+1. Understand *why* to move code from in-place into a function.
+2. Understand R's function syntax (argument lists, defaults, return
+   semantics) and scoping rules.
+ -->
+
+<p>Abstracting your code into many small functions is key for writing nice R code. In our experience, few biologists use functions in their code. Where people do use functions, they don’t use them enough. R has many built in functions, and you can access many more by installing new packages. So there’s no-doubt you already <em>use</em> functions. This guide will show how to <em>write</em> your own functions, and explain why this is helpful for writing nice R code. </p>
+
+<p>Below we briefly introduce function syntax, and then look at how functions help you to write nice R code. Nice coders with more experience may want to <a href="#niceRFunctions">skip the first section.</a></p>
+
+<h2 id="writing-your-own-r-function">Writing your own R function</h2>
+
+<p>Writing functions is simple. Paste the following code into your console</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">sumSquare &lt;- function(x,y){ x^2+y^2 }</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You have now created a function called <code>sumSquare</code> which requires two arguments and returns the sum of the squares of these arguments. Since you ran the code through the console, the function is now available, like any of the other built-in functions within R. Running <code>sumSquare(3,4)</code> should give you the answer <code>25</code>. </p>
+
+<p>The procedure for writing any other functions is similar, involving three key steps:</p>
+
+<ol>
+  <li>Define the function, </li>
+  <li>Load the function into memory,</li>
+  <li>Use the function.</li>
+</ol>
+
+<h3 id="defining-a-function">Defining a function</h3>
+<p>Functions are defined by code with a specific format:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fName &lt;- function(arg1, arg2, arg3=2, ...){
+</span><span class="line">    newVar = sin(arg1) + sin(arg2)  # do Some Useful Stuff
+</span><span class="line">    newVar / arg3   # return value 
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><strong>fName</strong>: is the functions name. This can be anything, but you should avoid using names that are used elsewhere in R, such as <code>dir</code>, <code>function</code>, <code>plot</code>, etc. </p>
+
+<p><strong>arg1, arg2, arg3</strong>: these are the <code>arguments</code> of the function, also called <code>formals</code>. You can write a function with any number of arguments. These can be any R object: numbers, strings, arrays, data frames, of even pointers to other functions; anything that is needed for the <em>fName</em> function to run.</p>
+
+<p>Some arguments have default values specified, such as <code>arg3</code> in our example. Arguments without a default MUST have a value supplied for the function to run. You do not need to provide a value for those arguments with a default, as the function will use the default value.</p>
+
+<p><strong>The ‘…’ argument</strong>: The <code>...</code> code in the function definition allows for other arguments to be passed into the function, and passed onto to another function. This technique is often in plotting.</p>
+
+<p><strong>Function body</strong>: The function code between the within the <code>{}</code> brackets is run every time the function is called. This code might be very long or very short. It <em>does not matter</em> how complex your function is. Small functions are useful, large functions are useful. Although if you have a large function, you would be well-advised to construct it from a bunch of small functions. More on that below.</p>
+
+<p><strong>Return value</strong>: The last line of the code is the value that will be <code>returned</code> by the function. It is not necessary that a function return anything, for example a function that makes a plot might not return anything, whereas a function that does a mathematical operation might return a number, or a list. </p>
+
+<h3 id="load-the-function-into-memory">Load the function into memory</h3>
+<p>For R to be able to execute your function, it needs first to be read into memory. This is just like loading a library, until you do it the functions contained within it cannot be called.</p>
+
+<p>There are two methods for loading functions into the memory:</p>
+
+<ol>
+  <li>Copy the function text and paste it into the console </li>
+  <li>Use the <code>source()</code> function to load your functions from file.</li>
+</ol>
+
+<p>Our recommendation for writing nice R code is that in most cases, you should use the second of these options. Put your functions into a file with an intuitive name, like <code>plotting-fun.R</code> and save this file within the <code>R</code> folder in <a href="http://nicercode.github.io/blog/2013-04-05-projects/">your project</a>. You can then read the function into memory by calling:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">source("R/plotting-fun.R")</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>From the point of view of writing nice code, this approach is nice because it leaves you with an uncluttered analysis script, and a repository of useful functions that can be loaded into any analysis script in your project.</p>
+
+<h3 id="use-the-function">Use the function.</h3>
+
+<p>You can now use the function anywhere in your analysis. In thinking about how you use functions, consider the following:</p>
+
+<ul>
+  <li>Functions in R can be treated much like any other R object. </li>
+  <li>Functions can be passed as arguments to other functions</li>
+  <li>You can define a function inside of another function</li>
+</ul>
+
+<h2 id="what-makes-for-a-good-function">What makes for a good function?</h2>
+
+<h3 id="its-short">It’s short</h3>
+<blockquote class="twitter-tweet"><p>If you&#8217;ve written a function whose body is 2,996 lines of code, you&#8217;re doing it wrong.</p>&mdash; M Butcher (@technosophos) <a href="https://twitter.com/technosophos/status/322392537983746049">April 11, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h3 id="performs-a-single-operation">Performs a single operation</h3>
+
+<blockquote class="twitter-tweet"><p>The reason for writing a function is not to reuse its code, but to name the operation it performs.</p>&mdash; Tim Ottinger (@tottinge) <a href="https://twitter.com/tottinge/status/293776089099153408">January 22, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h3 id="uses-intuitive-variable-names">Uses intuitive variable names</h3>
+
+<blockquote class="twitter-tweet"><p>&#8220;The name of a variable, function, or class, should answer all the big questions.&#8221; - Uncle Bob Martin, Clean Code</p>&mdash; Gustavo Rod. Baldera (@gbaldera) <a href="https://twitter.com/gbaldera/status/327063173721100288">April 24, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="a-idnicerfunctions-how-functions-help-you-write-nice-r-code"><a id="niceRFunctions"> How functions help you write Nice R Code</a></h2>
+
+<p>As a reminder, the goal of this course and blog is to help you write nice R code. By that we mean code that is easy to write, is easy to read, runs quickly, gives reliable results, is easy to reuse in new projects, and is easy to share with collaborators. Functions help achieve all of these. </p>
+
+<h3 id="making-code-more-readable">Making code more readable</h3>
+
+<p>Readability</p>
+
+<ul>
+  <li>Re-emphasise how this is  the most important part of writing code.</li>
+  <li>describe the what not the how – function names tell you what the
+  code <em>will</em> do, not the mechanics of <em>how</em> it will do it.</li>
+</ul>
+
+<p>Examples of reading a function calling a function.</p>
+
+<h3 id="maintaining-a-clean-workspace">Maintaining a clean workspace</h3>
+<ul>
+  <li>clean up scope – more easily reason about the behavior of the program</li>
+  <li>global variables and scope</li>
+</ul>
+
+<h3 id="avoiding-coding-errors">Avoiding coding errors</h3>
+
+<ul>
+  <li>bugs: avoid scope-related and mutability bugs.  E.g., a global
+variable ‘x’ that is used in multiple places.</li>
+  <li>DRY </li>
+</ul>
+
+<h3 id="becoming-more-productive">Becoming more productive</h3>
+
+<p>reuse – within a project DRY. Make you more productive.  Between projects is harder.</p>
+
+<p>easy to plug pieces to together</p>
+
+<h2 id="further-comments-on-abstraction-and-design">Further comments on abstraction and design</h2>
+
+<p>This material written for  coders with limited experience. </p>
+
+<p>Design big topic, much more to cover. Arguably key skill of good software engineers.</p>
+
+<blockquote class="twitter-tweet"><p>The more I write code, the more abstract it gets. And with more abstractions, the apps are easier to maintain. Been working for years&#8230;</p>&mdash; Justin Kimbrell (@justin_kimbrell) <a href="https://twitter.com/justin_kimbrell/status/329054399425019906">April 30, 2013</a></blockquote>
+<script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<h2 id="further-reading">Further reading</h2>
+
+<p>If you want to read more about function syntax, check out the following:</p>
+
+<ul>
+  <li><a href="http://cran.r-project.org/doc/manuals/R-intro.html#Writing-your-own-R-intro.html#Writing-your-own-functions">The official R intro material on writing your own functions</a></li>
+  <li><a href="https://github.com/hadley/devtools/wiki/Functions">Hadley’s information on functions</a></li>
+</ul>
+
+<p>Also include some general references about design and abstraction</p>
+
+
+  
+    <footer>
+      <p class="meta">
+        
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-30T14:08:00+10:00" pubdate data-updated="true">30 April 2013</time>
+        
+      </p>
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/guides/functions/index.html" data-via="" data-counturl="http://nicercode.github.com/guides/functions/index.html" >Tweet</a>
+  
+  
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/guides/functions/index.html';
+        var disqus_url = 'http://nicercode.github.com/guides/functions/index.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

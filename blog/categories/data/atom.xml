@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: data | Nice R Code]]></title>
+  <link href="http://nicercode.github.com/blog/categories/data/atom.xml" rel="self"/>
+  <link href="http://nicercode.github.com/"/>
+  <updated>2013-05-02T17:04:35+10:00</updated>
+  <id>http://nicercode.github.com/</id>
+  <author>
+    <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Excel and line endings]]></title>
+    <link href="http://nicercode.github.com/blog/2013-04-30-excel-and-line-endings/"/>
+    <updated>2013-04-30T09:39:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/excel-and-line-endings</id>
+    <content type="html"><![CDATA[<p>On a Mac, Excel produces csv files with the wrong line endings, which
+causes problems for git (amongst other things).</p>
+
+<p>This issue plagues at least
+<a href="http://developmentality.wordpress.com/2010/12/06/excel-2008-for-macs-csv-bug/">Excel 2008</a>
+and 2011, and possibly other versions.</p>
+
+<p>Basically, saving a file as comma separated values (csv) uses a
+carriage return <code>\r</code> rather than a line feed <code>\n</code> as a newline.  Way
+back before OS X, this was actually the correct Mac file ending, but
+after the move to be more unix-y, the correct line ending should be
+<code>\n</code>.</p>
+
+<!-- more -->
+
+<p>Given that nothing has used this as the proper line endings for over a
+decade, this is a bug.  It’s a real pity that Microsoft does not see
+fit to fix it.</p>
+
+<h2 id="why-this-is-a-problem">Why this is a problem</h2>
+
+<p>This breaks a number of scripts that require specific line endings.</p>
+
+<p>This also causes problems when version controlling your data.  In
+particular, tools like <code>git diff</code> basically stop working as they work
+line-by-line and see only one long line
+(e.g. <a href="http://stackoverflow.com/questions/11531084/strange-git-line-ending-issue">here</a>).
+Not having <code>diff</code> work properly makes it really hard to see where
+changes have occurred in your data.</p>
+
+<p>Git has really nice facilities for translating between different line
+endings – in particular between Windows and Unix/(new) Mac endings.
+However, they do basically nothing with old-style Mac endings because
+<em>no sane application should create them</em>.  See
+<a href="https://github.com/git/git/blob/master/convert.c#L93">here</a>, for
+example.</p>
+
+<h2 id="a-solution">A solution</h2>
+<p>There are at leat two stack overflow questions that deal with this 
+(<a href="http://stackoverflow.com/questions/10491564/git-and-cr-vs-lf-but-not-crlf?rq=1">1</a>
+and
+(<a href="http://stackoverflow.com/questions/11531084/strange-git-line-ending-issue">2</a>).</p>
+
+<p>The solution is to edit <code>.git/config</code> (within your repository) to add
+lines saying:</p>
+
+<p><code>
+[filter "cr"]
+    clean = LC_CTYPE=C awk '{printf(\"%s\\n\", $0)}' | LC_CTYPE=C tr '\\r' '\\n'
+    smudge = tr '\\n' '\\r'
+</code></p>
+
+<p>and then create a file <code>.gitattributes</code> that contains the line</p>
+
+<p><code>
+*.csv filter=cr
+</code></p>
+
+<p>This translates the line endings on import and back again on export
+(so you never change your working file).  Things like <code>git diff</code> use
+the “clean” version, and so magically start working again.</p>
+
+<p>While the <code>.gitattributes</code> file can be (and should be) put under
+version control, the <code>.git/config</code> file needs to be set up separately
+on <em>every clone</em>.  There are good reasons for this (see
+<a href="http://stackoverflow.com/questions/6547933/is-it-possible-to-clone-git-config-from-remote-location">here</a>.
+It would be possible to automate this to some degree with the
+<code>--config</code> argument to <code>git clone</code>, but that’s still basically manual.</p>
+
+<h2 id="issues">Issues</h2>
+
+<p>This seems to generally work, but twice in use large numbers of files
+have been marked as changed when the filter got out-of-sync.  We never
+worked out what caused this, but one possible culprit seems to be
+<a href="http://www.dropbox.com">Dropbox</a> (but you probably should not keep
+repositories on dropbox anyway).</p>
+
+<h2 id="alternative-solutions">Alternative solutions</h2>
+
+<p>The nice thing about the clean/smudge solution is that it leaves files
+in the working directory unmodified.  An alternative approach would be
+to set up a pre-commit-hook that ran csv files through a similar
+filter.  This will modify the contents of the working directory (and
+may require reloading the files in Excel) but from that point on the
+file will have proper line endings.</p>
+
+<p>More manually, if files are saved as “Windows comma separated (.csv)”
+you will get windows-style line endings (<code>\r\n</code>) which are at least
+treated properly by git and are in common usage this century.
+However, this requires more remembering and makes saving csv files
+from Excel even more tricky than normal.</p>
+]]></content>
+  </entry>
+  
+</feed>
