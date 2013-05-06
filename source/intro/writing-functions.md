@@ -13,8 +13,9 @@ that R works, and the sooner that you get comfortable writing them,
 the sooner you'll be able to leverage R's power, and start having
 fun with it.
 
-The first function most people seem to need to write is to compute
-the standard error of the mean for some variable.  This is defined
+The first function many people seem to need to write is to compute
+the standard error of the mean for some variable, because curiusly
+this function does not come with R's base package.  This is defined
 as $\sqrt{\mathrm{var}(x)/n}$ (that is the square root of the
 variance divided by the sample size.
 
