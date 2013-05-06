@@ -1,7 +1,8 @@
 load.data <- function() {
   url <-
     "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR93_Aug2008.txt"
-  download.maybe(url, "pantheria.txt")
+  if ( !file.exists("pantheria.txt") )
+    download.file(url, "pantheria.txt")
   data.all <- read.table("pantheria.txt", as.is=TRUE,
                          header=TRUE, sep="\t", check.names=FALSE,
                          na.strings="-999")
@@ -23,24 +24,6 @@ load.data <- function() {
   data
 }
 
-download.maybe <- function(url, filename) {
-  if ( !file.exists(filename) )
-    download.file(url, filename)
-}
-
-axis.log <- function(side, ...) {
-  usr <- par("usr")
-  r <- round(if (side %in% c(1, 3)) usr[1:2] else usr[3:4])
-  at <- seq(r[1], r[2])
-  lab <- do.call(expression, lapply(at, function(i) bquote(10^.(i))))
-  axis(1, at=10^at, lab, ...)
-}
-
-make.transparent <- function(col, transparency=0.5) {
-  tmp <- col2rgb(col)/255
-  rgb(tmp[1,], tmp[2,], tmp[3,], alpha=1-transparency)
-}
-
 plot.longevity <- function(data, focus,
                            col.bg=make.transparent("grey", .5),
                            col.focus=make.transparent("blue", .2),
@@ -53,6 +36,23 @@ plot.longevity <- function(data, focus,
   title(main=focus, line=1)
 }
 
+## Nice log-10 axis labels
+axis.log <- function(side, ...) {
+  usr <- par("usr")
+  r <- round(if (side %in% c(1, 3)) usr[1:2] else usr[3:4])
+  at <- seq(r[1], r[2])
+  lab <- do.call(expression, lapply(at, function(i) bquote(10^.(i))))
+  axis(1, at=10^at, lab, ...)
+}
+
+## Semitransparent colours
+make.transparent <- function(col, transparency=0.5) {
+  tmp <- col2rgb(col)/255
+  rgb(tmp[1,], tmp[2,], tmp[3,], alpha=1-transparency)
+}
+
+## Add points and fit for one order of data.  If order is NULL, do
+## *all* orders.
 add.order <- function(data, order, col, pch=19) {
   if ( is.null(order) )
     data.order <- data
