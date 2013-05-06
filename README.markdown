@@ -16,6 +16,10 @@ bitbucket repo. The only thing that happens on github is to deploy.
 - fontsize too big?
 - add about page with bios
 
+## Formatting conventions
+
+- dots for 
+
 ## Setting up on a new machine ##
 
 Here are summary instructions for setting up on a new machine. For more info 
