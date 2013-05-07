@@ -131,7 +131,7 @@ tmp <- unlist(lens)
 hist(tmp[tmp <= 200], main="", xlab="Function length (lines)")
 ```
 
-{% img figures/function-length-distribution.png }
+{% img figures/function-length-distribution.png %}
 
 Then plot the distribution of the per-package median (that is, for
 each package compute the median function length in terms of lines of
