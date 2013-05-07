@@ -17,6 +17,8 @@ In contrast to the messy script, this one sources a function "script-fun.R", whi
 
 
 ```r
+rm(list=ls(all=TRUE)) #start with empty workspace
+
 source("script-fun.R")
 
 data <- load.data()
@@ -57,6 +59,8 @@ plotMatrix<-function(data, vars, order,
     }
   }    
 }
+
+vars<-names(data)
 
 pdf("Matrix.plot.pdf", height =12, width=12)
 plotMatrix(data, vars[6:10], "Carnivora")

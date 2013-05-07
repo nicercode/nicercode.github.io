@@ -19,6 +19,9 @@ categories:
 **The solution:** Look at the *nice* code [here](after.html).
 
 ```r
+
+rm(list=ls(all=TRUE)) #start with empty workspace
+
 ## Load the data
 url <-
   "http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR93_Aug2008.txt"
