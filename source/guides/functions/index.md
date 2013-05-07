@@ -24,11 +24,26 @@ installing new packages. So there's no-doubt you already *use*
 functions. This guide will show how to *write* your own functions, and
 explain why this is helpful for writing nice R code.
 
+## An example
+
+Many of the benefits of using functions are more obvious by
+demonstration than by description.  First exhibit is a script
+[that does not use functions](before.html).  We think that this is
+typical of the sort of scripts that ecologists end up with when
+analysing data.
+
+This script can be simplified considerably by using functions, as
+[this script](after.html) shows.
+
+Note that while we've called these "before" and "after", more
+typically the process of moving code into functions happens
+incrementally while writing code.
+
+## Writing your own R functions
+
 Below we briefly introduce function syntax, and then look at how
 functions help you to write nice R code. Nice coders with more
 experience may want to [skip the first section.](#niceRFunctions)
-
-## Writing your own R functions
 
 Writing functions is simple. Paste the following code into your console
 
@@ -263,62 +278,9 @@ particular output.
 In our experience, people seem to think that functions are only needed
 when you need to use a piece of code multiple times, or when you have
 a really large problem.  However, many functions are actually very
-small.
-
-We wrote some code to test 
-
-```r
-function.length <- function(f) {
-  if ( is.character(f) )
-    f <- match.fun(f)
-  length(deparse(f))
-}
-
-# Filter package objects to just return functions.
-package.functions <- function(package) {
-  objects <- ls(name=sprintf("package:%s", package))
-  is.function <- sapply(objects, function(x) exists(x, mode="function"))
-  objects[is.function]
-}
-
-package.function.lengths <- function(package)
-  sort(sapply(package.functions(package), function.length))
-```
-
-```
-library(utils)
-packages <- rownames(installed.packages())
-```
-
-I have 138 packages installed on my computer (mostly through
-dependencies).  We need to load them all before we can access the
-functions within:
-
-```
-for (p in packages)
-  library(p, character.only=TRUE)
-```
-
-Then we can apply the `package.function.lengths` to each package.
-
-```
-lens <- lapply(packages, package.function.lengths)
-```
-
-Then plot the distribution of the per-package median (that is, for
-each package compute the median function length in terms of lines of
-code and plot the distribution of those medians).
-
-```
-lens.median <- sapply(lens, median)
-hist(lens.median, main="", xlab="Per-package median function length")
-```
-
-{% img img/length.png %}
-
-The median package has a median function length of 16 lines.  There
-are handful of extremely long functions in most packages; over all
-packages, the median "longest function" is 120 lines.
+small.  [This post](/posts/2013-05-07-how-long-is-a-function.html)
+looks at the distribution of function length among R packages, and
+finds that long functions are the exception, rather than the norm.
 
 ## Concluding thoughts
 

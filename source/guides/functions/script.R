@@ -1,8 +1,8 @@
-
 source("script-fun.R")
 
 data <- load.data()
 
+## Plot Mass against Longevity for Carnivora and for Chiroptera
 plot.pair(data, "Mass", "Longevity", "Carnivora")
 plot.pair(data, "Mass", "Longevity", "Chiroptera")
 
@@ -29,9 +29,9 @@ plotMatrix<-function(data, vars, order,
                      mar=c(5, 5, 0.5, 0.5), 
                      oma=c(0.5, 0.5, 0.5, 0.5)) {
   par(mfrow=c(length(vars), length(vars)), mar=mar, oma=oma)
-  for(i in vars) {
-    for(j in vars) {
-      if(i != j)
+  for (i in vars) {
+    for (j in vars) {
+      if (i != j)
         plot.pair(data, i, j, order, col.focus=col.focus)               
       else
         plot.new()
@@ -43,11 +43,9 @@ pdf("Matrix.plot.pdf", height =12, width=12)
 plotMatrix(data, vars[6:10], "Carnivora")
 dev.off()
 
-# Scale up - repeat for all orders.
+## Scale up - repeat for all orders.
 for (order in names(cols)) {
   pdf(paste0("Matrix.plot-", order,".pdf"), height =12, width=12)
   plotMatrix(data, vars[6:10], order, col.focus = make.transparent(cols[[order]]))
   dev.off()  
 }
-
-
