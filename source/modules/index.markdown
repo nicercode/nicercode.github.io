@@ -36,7 +36,8 @@ The topics covered fall into two broad categories: *workflow* and
 2. Version control with git, [materials](../git/) and [blog](../blog/2013-04-23-git/) (23 April) -- note this is a special 3hr
 session, run with participants from the February software carpentry
 bootcamp.
-4. Abstraction and design (7 May)
+4. [Functions and astraction](/guides/functions), with a blog post on
+[function length](/blog/2013-05-07-how-long-is-a-function").
 5. Testing code (21 May)
 3. Coding style (4 June)
 
