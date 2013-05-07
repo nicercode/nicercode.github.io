@@ -299,7 +299,11 @@ MathJax.Hub.Config({
 <span class="line-number">171</span>
 <span class="line-number">172</span>
 <span class="line-number">173</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Load the data</span>
+<span class="line-number">174</span>
+<span class="line-number">175</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">rm<span class="p">(</span>list<span class="o">=</span>ls<span class="p">(</span>all<span class="o">=</span><span class="kc">TRUE</span><span class="p">))</span> <span class="c1">#start with empty workspace</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Load the data</span>
 </span><span class="line">url <span class="o">&lt;-</span>
 </span><span class="line">  <span class="s">&quot;http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR93_Aug2008.txt&quot;</span>
 </span><span class="line"><span class="kr">if</span> <span class="p">(</span> <span class="o">!</span>file.exists<span class="p">(</span><span class="s">&quot;pantheria.txt&quot;</span><span class="p">)</span> <span class="p">)</span>
