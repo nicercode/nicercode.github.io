@@ -1,0 +1,605 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>A script without using functions - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="A script without using functions 07 May 2013 The challenge: The Pantheria dataset is a species-level database of life history, ecology, and &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/guides/functions/before.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">A script without using functions</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-07T11:10:00+10:00" pubdate data-updated="true">07 May 2013</time></p>
+  </header>
+  
+  <p><strong>The challenge:</strong> The <a href="http://esapubs.org/archive/ecol/E090/184/">Pantheria dataset</a> is a species-level database of life history, ecology, and geography of extant and recently extinct mammals. The script below  downloads the data, and make plots of some variables against each other, highlighting different orders in the plots.  </p>
+
+<p><strong>The Problem:</strong> This script is provided as an example of <em>messy</em> code. It is typical of the code written by many biologists, (including our past selves). Some problems with it include:</p>
+
+<ul>
+  <li>It is difficult to read - what is doing?</li>
+  <li>There are large amounts of repeated code. </li>
+  <li>When we want to change something, we need to do it in many places.</li>
+  <li>The code adds lots of objects to the workspace. These are difficult to keep track of and make bugs more likely. </li>
+</ul>
+
+<p><strong>The solution:</strong> Look at the <em>nice</em> code <a href="after.html">here</a>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+<span class="line-number">62</span>
+<span class="line-number">63</span>
+<span class="line-number">64</span>
+<span class="line-number">65</span>
+<span class="line-number">66</span>
+<span class="line-number">67</span>
+<span class="line-number">68</span>
+<span class="line-number">69</span>
+<span class="line-number">70</span>
+<span class="line-number">71</span>
+<span class="line-number">72</span>
+<span class="line-number">73</span>
+<span class="line-number">74</span>
+<span class="line-number">75</span>
+<span class="line-number">76</span>
+<span class="line-number">77</span>
+<span class="line-number">78</span>
+<span class="line-number">79</span>
+<span class="line-number">80</span>
+<span class="line-number">81</span>
+<span class="line-number">82</span>
+<span class="line-number">83</span>
+<span class="line-number">84</span>
+<span class="line-number">85</span>
+<span class="line-number">86</span>
+<span class="line-number">87</span>
+<span class="line-number">88</span>
+<span class="line-number">89</span>
+<span class="line-number">90</span>
+<span class="line-number">91</span>
+<span class="line-number">92</span>
+<span class="line-number">93</span>
+<span class="line-number">94</span>
+<span class="line-number">95</span>
+<span class="line-number">96</span>
+<span class="line-number">97</span>
+<span class="line-number">98</span>
+<span class="line-number">99</span>
+<span class="line-number">100</span>
+<span class="line-number">101</span>
+<span class="line-number">102</span>
+<span class="line-number">103</span>
+<span class="line-number">104</span>
+<span class="line-number">105</span>
+<span class="line-number">106</span>
+<span class="line-number">107</span>
+<span class="line-number">108</span>
+<span class="line-number">109</span>
+<span class="line-number">110</span>
+<span class="line-number">111</span>
+<span class="line-number">112</span>
+<span class="line-number">113</span>
+<span class="line-number">114</span>
+<span class="line-number">115</span>
+<span class="line-number">116</span>
+<span class="line-number">117</span>
+<span class="line-number">118</span>
+<span class="line-number">119</span>
+<span class="line-number">120</span>
+<span class="line-number">121</span>
+<span class="line-number">122</span>
+<span class="line-number">123</span>
+<span class="line-number">124</span>
+<span class="line-number">125</span>
+<span class="line-number">126</span>
+<span class="line-number">127</span>
+<span class="line-number">128</span>
+<span class="line-number">129</span>
+<span class="line-number">130</span>
+<span class="line-number">131</span>
+<span class="line-number">132</span>
+<span class="line-number">133</span>
+<span class="line-number">134</span>
+<span class="line-number">135</span>
+<span class="line-number">136</span>
+<span class="line-number">137</span>
+<span class="line-number">138</span>
+<span class="line-number">139</span>
+<span class="line-number">140</span>
+<span class="line-number">141</span>
+<span class="line-number">142</span>
+<span class="line-number">143</span>
+<span class="line-number">144</span>
+<span class="line-number">145</span>
+<span class="line-number">146</span>
+<span class="line-number">147</span>
+<span class="line-number">148</span>
+<span class="line-number">149</span>
+<span class="line-number">150</span>
+<span class="line-number">151</span>
+<span class="line-number">152</span>
+<span class="line-number">153</span>
+<span class="line-number">154</span>
+<span class="line-number">155</span>
+<span class="line-number">156</span>
+<span class="line-number">157</span>
+<span class="line-number">158</span>
+<span class="line-number">159</span>
+<span class="line-number">160</span>
+<span class="line-number">161</span>
+<span class="line-number">162</span>
+<span class="line-number">163</span>
+<span class="line-number">164</span>
+<span class="line-number">165</span>
+<span class="line-number">166</span>
+<span class="line-number">167</span>
+<span class="line-number">168</span>
+<span class="line-number">169</span>
+<span class="line-number">170</span>
+<span class="line-number">171</span>
+<span class="line-number">172</span>
+<span class="line-number">173</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Load the data</span>
+</span><span class="line">url <span class="o">&lt;-</span>
+</span><span class="line">  <span class="s">&quot;http://esapubs.org/archive/ecol/E090/184/PanTHERIA_1-0_WR93_Aug2008.txt&quot;</span>
+</span><span class="line"><span class="kr">if</span> <span class="p">(</span> <span class="o">!</span>file.exists<span class="p">(</span><span class="s">&quot;pantheria.txt&quot;</span><span class="p">)</span> <span class="p">)</span>
+</span><span class="line">  download.file<span class="p">(</span>url<span class="p">,</span> <span class="s">&quot;pantheria.txt&quot;</span><span class="p">)</span>
+</span><span class="line">data.all <span class="o">&lt;-</span> read.table<span class="p">(</span><span class="s">&quot;pantheria.txt&quot;</span><span class="p">,</span> as.is<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span>
+</span><span class="line">                       header<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;\t&quot;</span><span class="p">,</span> check.names<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span>
+</span><span class="line">                       na.strings<span class="o">=</span><span class="s">&quot;-999&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Subset interesting columns and rename</span>
+</span><span class="line">cols <span class="o">&lt;-</span> c<span class="p">(</span>Order<span class="o">=</span><span class="s">&quot;MSW93_Order&quot;</span><span class="p">,</span>
+</span><span class="line">          Family<span class="o">=</span><span class="s">&quot;MSW93_Family&quot;</span><span class="p">,</span>
+</span><span class="line">          Genus<span class="o">=</span><span class="s">&quot;MSW93_Genus&quot;</span><span class="p">,</span>
+</span><span class="line">          Species<span class="o">=</span><span class="s">&quot;MSW93_Species&quot;</span><span class="p">,</span>
+</span><span class="line">          Mass<span class="o">=</span><span class="s">&quot;5-1_AdultBodyMass_g&quot;</span><span class="p">,</span>
+</span><span class="line">          Length<span class="o">=</span><span class="s">&quot;13-1_AdultHeadBodyLen_mm&quot;</span><span class="p">,</span>
+</span><span class="line">          Longevity<span class="o">=</span><span class="s">&quot;17-1_MaxLongevity_m&quot;</span><span class="p">,</span>
+</span><span class="line">          Metabolic.rate <span class="o">=</span> <span class="s">&quot;5-2_BasalMetRateMass_g&quot;</span><span class="p">,</span>
+</span><span class="line">          Gestation.length<span class="o">=</span> <span class="s">&quot;9-1_GestationLen_d&quot;</span><span class="p">,</span>
+</span><span class="line">          HomeRange <span class="o">=</span> <span class="s">&quot;22-1_HomeRange_km2&quot;</span><span class="p">,</span>
+</span><span class="line">          OffspringSize<span class="o">=</span><span class="s">&quot;5-3_NeonateBodyMass_g&quot;</span><span class="p">,</span>
+</span><span class="line">          PopulationDensity<span class="o">=</span><span class="s">&quot;21-1_PopulationDensity_n/km2&quot;</span><span class="p">,</span>
+</span><span class="line">          AgeAtMaturation<span class="o">=</span><span class="s">&quot;23-1_SexualMaturityAge_d&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">data <span class="o">&lt;-</span> data.all<span class="p">[</span>cols<span class="p">]</span>
+</span><span class="line">names<span class="p">(</span>data<span class="p">)</span> <span class="o">&lt;-</span> names<span class="p">(</span>cols<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Convert longevity in months to years</span>
+</span><span class="line">data<span class="o">$</span>Longevity <span class="o">&lt;-</span> data<span class="o">$</span>Longevity <span class="o">/</span> <span class="m">12</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>Longevity <span class="o">~</span> Mass<span class="p">,</span> data<span class="p">,</span> log<span class="o">=</span><span class="s">&quot;xy&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Body mass (g)&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Longevity (years)&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add nice log-10 labels to the plot</span>
+</span><span class="line">usr <span class="o">&lt;-</span> par<span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">)</span>
+</span><span class="line">r <span class="o">&lt;-</span> round<span class="p">(</span>usr<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">at <span class="o">&lt;-</span> seq<span class="p">(</span>r<span class="p">[</span><span class="m">1</span><span class="p">],</span> r<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">lab <span class="o">&lt;-</span> do.call<span class="p">(</span>expression<span class="p">,</span> lapply<span class="p">(</span>at<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">)</span> bquote<span class="p">(</span><span class="m">10</span><span class="o">^</span>.<span class="p">(</span>i<span class="p">))))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> at<span class="o">=</span><span class="m">10</span><span class="o">^</span>at<span class="p">,</span> lab<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Note: we use log10 here because that&#39;s what the plot uses (not</span>
+</span><span class="line"><span class="c1">## natural logs)</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Longevity<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data<span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add focus group of points for Carnivora</span>
+</span><span class="line">data.order <span class="o">&lt;-</span> data<span class="p">[</span>data<span class="o">$</span>Order <span class="o">==</span> <span class="s">&quot;Carnivora&quot;</span><span class="p">,]</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Longevity<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data.order<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>Longevity <span class="o">~</span> Mass<span class="p">,</span> data.order<span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;Carnivora&quot;</span><span class="p">,</span> line<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>Longevity <span class="o">~</span> Mass<span class="p">,</span> data<span class="p">,</span> log<span class="o">=</span><span class="s">&quot;xy&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Body mass (g)&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Longevity (years)&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add nice log-10 labels to the plot</span>
+</span><span class="line">usr <span class="o">&lt;-</span> par<span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">)</span>
+</span><span class="line">r <span class="o">&lt;-</span> round<span class="p">(</span>usr<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">at <span class="o">&lt;-</span> seq<span class="p">(</span>r<span class="p">[</span><span class="m">1</span><span class="p">],</span> r<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">lab <span class="o">&lt;-</span> do.call<span class="p">(</span>expression<span class="p">,</span> lapply<span class="p">(</span>at<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">)</span> bquote<span class="p">(</span><span class="m">10</span><span class="o">^</span>.<span class="p">(</span>i<span class="p">))))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> at<span class="o">=</span><span class="m">10</span><span class="o">^</span>at<span class="p">,</span> lab<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Note: we use log10 here because that&#39;s what the plot uses (not</span>
+</span><span class="line"><span class="c1">## natural logs)</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Longevity<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data<span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add focus group of points for Chiroptera</span>
+</span><span class="line">data.order <span class="o">&lt;-</span> data<span class="p">[</span>data<span class="o">$</span>Order <span class="o">==</span> <span class="s">&quot;Chiroptera&quot;</span><span class="p">,]</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Longevity<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data.order<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>Longevity <span class="o">~</span> Mass<span class="p">,</span> data.order<span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;Chiroptera&quot;</span><span class="p">,</span> line<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="c1">## Repeat for another variable pair</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>Gestation.length <span class="o">~</span> Mass<span class="p">,</span> data<span class="p">,</span> log<span class="o">=</span><span class="s">&quot;xy&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Body mass (g)&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Gestation.length (d)&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add nice log-10 labels to the plot</span>
+</span><span class="line">usr <span class="o">&lt;-</span> par<span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">)</span>
+</span><span class="line">r <span class="o">&lt;-</span> round<span class="p">(</span>usr<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">at <span class="o">&lt;-</span> seq<span class="p">(</span>r<span class="p">[</span><span class="m">1</span><span class="p">],</span> r<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">lab <span class="o">&lt;-</span> do.call<span class="p">(</span>expression<span class="p">,</span> lapply<span class="p">(</span>at<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">)</span> bquote<span class="p">(</span><span class="m">10</span><span class="o">^</span>.<span class="p">(</span>i<span class="p">))))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> at<span class="o">=</span><span class="m">10</span><span class="o">^</span>at<span class="p">,</span> lab<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Note: we use log10 here because that&#39;s what the plot uses (not</span>
+</span><span class="line"><span class="c1">## natural logs)</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Gestation.length<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data<span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add focus group of points for Carnivora</span>
+</span><span class="line">data.order <span class="o">&lt;-</span> data<span class="p">[</span>data<span class="o">$</span>Order <span class="o">==</span> <span class="s">&quot;Carnivora&quot;</span><span class="p">,]</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Gestation.length<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data.order<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>Gestation.length <span class="o">~</span> Mass<span class="p">,</span> data.order<span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;Carnivora&quot;</span><span class="p">,</span> line<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>Gestation.length <span class="o">~</span> Mass<span class="p">,</span> data<span class="p">,</span> log<span class="o">=</span><span class="s">&quot;xy&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Body mass (g)&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Gestation.length (d)&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add nice log-10 labels to the plot</span>
+</span><span class="line">usr <span class="o">&lt;-</span> par<span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">)</span>
+</span><span class="line">r <span class="o">&lt;-</span> round<span class="p">(</span>usr<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">at <span class="o">&lt;-</span> seq<span class="p">(</span>r<span class="p">[</span><span class="m">1</span><span class="p">],</span> r<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">lab <span class="o">&lt;-</span> do.call<span class="p">(</span>expression<span class="p">,</span> lapply<span class="p">(</span>at<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">)</span> bquote<span class="p">(</span><span class="m">10</span><span class="o">^</span>.<span class="p">(</span>i<span class="p">))))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> at<span class="o">=</span><span class="m">10</span><span class="o">^</span>at<span class="p">,</span> lab<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Note: we use log10 here because that&#39;s what the plot uses (not</span>
+</span><span class="line"><span class="c1">## natural logs)</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Gestation.length<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data<span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add focus group of points for Chiroptera</span>
+</span><span class="line">data.order <span class="o">&lt;-</span> data<span class="p">[</span>data<span class="o">$</span>Order <span class="o">==</span> <span class="s">&quot;Chiroptera&quot;</span><span class="p">,]</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>Gestation.length<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data.order<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>Gestation.length <span class="o">~</span> Mass<span class="p">,</span> data.order<span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;Chiroptera&quot;</span><span class="p">,</span> line<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">
+</span><span class="line"><span class="c1">## And another variable pair</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>OffspringSize <span class="o">~</span> Mass<span class="p">,</span> data<span class="p">,</span> log<span class="o">=</span><span class="s">&quot;xy&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Body mass (g)&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Offspring size (g)&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add nice log-10 labels to the plot</span>
+</span><span class="line">usr <span class="o">&lt;-</span> par<span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">)</span>
+</span><span class="line">r <span class="o">&lt;-</span> round<span class="p">(</span>usr<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">at <span class="o">&lt;-</span> seq<span class="p">(</span>r<span class="p">[</span><span class="m">1</span><span class="p">],</span> r<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">lab <span class="o">&lt;-</span> do.call<span class="p">(</span>expression<span class="p">,</span> lapply<span class="p">(</span>at<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">)</span> bquote<span class="p">(</span><span class="m">10</span><span class="o">^</span>.<span class="p">(</span>i<span class="p">))))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> at<span class="o">=</span><span class="m">10</span><span class="o">^</span>at<span class="p">,</span> lab<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Note: we use log10 here because that&#39;s what the plot uses (not</span>
+</span><span class="line"><span class="c1">## natural logs)</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>OffspringSize<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data<span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add focus group of points for Carnivora</span>
+</span><span class="line">data.order <span class="o">&lt;-</span> data<span class="p">[</span>data<span class="o">$</span>Order <span class="o">==</span> <span class="s">&quot;Carnivora&quot;</span><span class="p">,]</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>OffspringSize<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data.order<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>OffspringSize <span class="o">~</span> Mass<span class="p">,</span> data.order<span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;Carnivora&quot;</span><span class="p">,</span> line<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>OffspringSize <span class="o">~</span> Mass<span class="p">,</span> data<span class="p">,</span> log<span class="o">=</span><span class="s">&quot;xy&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Body mass (g)&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Offspring size (g)&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add nice log-10 labels to the plot</span>
+</span><span class="line">usr <span class="o">&lt;-</span> par<span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">)</span>
+</span><span class="line">r <span class="o">&lt;-</span> round<span class="p">(</span>usr<span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">at <span class="o">&lt;-</span> seq<span class="p">(</span>r<span class="p">[</span><span class="m">1</span><span class="p">],</span> r<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span><span class="line">lab <span class="o">&lt;-</span> do.call<span class="p">(</span>expression<span class="p">,</span> lapply<span class="p">(</span>at<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">)</span> bquote<span class="p">(</span><span class="m">10</span><span class="o">^</span>.<span class="p">(</span>i<span class="p">))))</span>
+</span><span class="line">axis<span class="p">(</span><span class="m">1</span><span class="p">,</span> at<span class="o">=</span><span class="m">10</span><span class="o">^</span>at<span class="p">,</span> lab<span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Note: we use log10 here because that&#39;s what the plot uses (not</span>
+</span><span class="line"><span class="c1">## natural logs)</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>OffspringSize<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data<span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#66666666&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line"><span class="c1">## Add focus group of points for Chiroptera</span>
+</span><span class="line">data.order <span class="o">&lt;-</span> data<span class="p">[</span>data<span class="o">$</span>Order <span class="o">==</span> <span class="s">&quot;Chiroptera&quot;</span><span class="p">,]</span>
+</span><span class="line">fit <span class="o">&lt;-</span> lm<span class="p">(</span>log10<span class="p">(</span>OffspringSize<span class="p">)</span> <span class="o">~</span> log10<span class="p">(</span>Mass<span class="p">),</span> data.order<span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>OffspringSize <span class="o">~</span> Mass<span class="p">,</span> data.order<span class="p">,</span> pch<span class="o">=</span><span class="m">19</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>fit<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;#ff000066&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;Chiroptera&quot;</span><span class="p">,</span> line<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Download this script <a href="script-no-functions.R">here</a></p>
+
+  
+    <footer>
+      <p class="meta">
+        
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-07T11:10:00+10:00" pubdate data-updated="true">07 May 2013</time>
+        
+      </p>
+      
+        <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/guides/functions/before.html" data-via="" data-counturl="http://nicercode.github.com/guides/functions/before.html" >Tweet</a>
+  
+  
+  
+</div>
+
+      
+    </footer>
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-why-nice-code/">Why I want to write nice R code</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-05-projects/">Designing projects</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/guides/functions/before.html';
+        var disqus_url = 'http://nicercode.github.com/guides/functions/before.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

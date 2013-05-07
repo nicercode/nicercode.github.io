@@ -4,7 +4,7 @@
   <title><![CDATA[Nice R Code]]></title>
   <link href="http://nicercode.github.com/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-05-02T17:04:35+10:00</updated>
+  <updated>2013-05-07T13:50:06+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -12,6 +12,189 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[How long is a function?]]></title>
+    <link href="http://nicercode.github.com/blog/2013-05-07-how-long-is-a-function/"/>
+    <updated>2013-05-07T11:10:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/how-long-is-a-function</id>
+    <content type="html"><![CDATA[<p>Within the R project and contributed packages, how long do functions
+tend to be?  In our experience, people seem to think that functions
+are only needed when you need to use a piece of code multiple times,
+or when you have a really large problem.  However, many functions are
+actually very small.</p>
+
+<!-- more -->
+
+<p>R allows a lot of “computation on the language”, simply meaning that
+we can look inside objects easily.  Here is a function that returns
+the number of lines in a function.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">function.length <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>f<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="kr">if</span> <span class="p">(</span>is.character<span class="p">(</span>f<span class="p">))</span>
+</span><span class="line">    f <span class="o">&lt;-</span> match.fun<span class="p">(</span>f<span class="p">)</span>
+</span><span class="line">  length<span class="p">(</span>deparse<span class="p">(</span>f<span class="p">))</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This works because <code>deparse</code> converts an object back into text (that
+could in turn be parsed):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">writeLines<span class="p">(</span>deparse<span class="p">(</span>function.length<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">function (f) 
+</span><span class="line">{
+</span><span class="line">    if (is.character(f)) 
+</span><span class="line">        f &lt;- match.fun(f)
+</span><span class="line">    length(deparse(f))
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>so the <code>function.length</code> function is itself 6 lines long by this
+measure.  Note that the formatting is actually a bit different, in
+particular indentation, braces position and spacing is different,
+following the likes of the R-core style guide.</p>
+
+<p>Most packages consist mostly of functions: here is a function that
+extracts all functions from a package:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">package.functions &lt;- function(package) {
+</span><span class="line">  pkg &lt;- sprintf("package:%s", package)
+</span><span class="line">  object.names &lt;- ls(name=pkg)
+</span><span class="line">  objects &lt;- lapply(object.names, get, pkg)
+</span><span class="line">  names(objects) &lt;- object.names
+</span><span class="line">  objects[sapply(objects, is.function)]
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Finally, we can get the lengths of all functions in a package:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">package.function.lengths &lt;- function(package)
+</span><span class="line">  vapply(package.functions(package), function.length, integer(1))</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Looking at the recommended package “boot”</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">library<span class="p">(</span>boot<span class="p">)</span>
+</span><span class="line">package.function.lengths<span class="p">(</span><span class="s">&quot;boot&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">     abc.ci            boot      boot.array         boot.ci 
+</span><span class="line">         54             126              56              80 
+</span><span class="line">   censboot         control            corr            cum3 
+</span><span class="line">        137              72               8               8 
+</span><span class="line">     cv.glm     EEF.profile      EL.profile          empinf 
+</span><span class="line">         42              16              27              79 
+</span><span class="line">   envelope        exp.tilt      freq.array        glm.diag 
+</span><span class="line">         56              49               7              19 
+</span><span class="line"> glm.diag.plots     imp.moments        imp.prob    imp.quantile 
+</span><span class="line">         69              37              34              39 
+</span><span class="line">imp.weights       inv.logit jack.after.boot       k3.linear 
+</span><span class="line">         34               2              69              14 
+</span><span class="line">     lik.CI   linear.approx           logit     nested.corr 
+</span><span class="line">         36              34               2              28 
+</span><span class="line">    norm.ci          saddle    saddle.distn         simplex 
+</span><span class="line">         33             179             281              65 
+</span><span class="line">   smooth.f       tilt.boot          tsboot      var.linear 
+</span><span class="line">         36              57              97              14 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>I have 138 packages installed on my computer (mostly through
+dependencies – small compared with the ~4000 on CRAN!).  We need to
+load them all before we can access the functions within:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">library<span class="p">(</span>utils<span class="p">)</span>
+</span><span class="line">packages <span class="o">&lt;-</span> rownames<span class="p">(</span>installed.packages<span class="p">())</span>
+</span><span class="line"><span class="kr">for</span> <span class="p">(</span>p <span class="kr">in</span> packages<span class="p">)</span>
+</span><span class="line">  library<span class="p">(</span>p<span class="p">,</span> character.only<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then we can apply the <code>package.function.lengths</code> to each package.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">lens <span class="o">&lt;-</span> lapply<span class="p">(</span>packages<span class="p">,</span> package.function.lengths<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The median function length is only 12 lines (and remember that
+includes things like the function arguments)!</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">median<span class="p">(</span>unlist<span class="p">(</span>lens<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 12</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The distribution of function lengths is strongly right skewed, with
+most functions being very short.  Ignoring the 1% of functions that
+are longer than 200 lines long, the distribution of function lengths
+looks like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">tmp &lt;- unlist(lens)
+</span><span class="line">hist(tmp[tmp &lt;= 200], main="", xlab="Function length (lines)")</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="http://nicercode.github.com/images/function-length-distribution.png" /></p>
+
+<p>Then plot the distribution of the per-package median (that is, for
+each package compute the median function length in terms of lines of
+code and plot the distribution of those medians).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">lens.median &lt;- sapply(lens, median)
+</span><span class="line">hist(lens.median, main="", xlab="Per-package median function length")</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="http://nicercode.github.com/images/function-length-median.png" /></p>
+
+<p>The median package has a median function length of 16 lines.  There
+are handful of extremely long functions in most packages; over all
+packages, the median “longest function” is 120 lines.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Excel and line endings]]></title>

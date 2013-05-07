@@ -121,53 +121,114 @@ MathJax.Hub.Config({
    semantics) and scoping rules.
  -->
 
-<p>Abstracting your code into many small functions is key for writing nice R code. In our experience, few biologists use functions in their code. Where people do use functions, they don’t use them enough. R has many built in functions, and you can access many more by installing new packages. So there’s no-doubt you already <em>use</em> functions. This guide will show how to <em>write</em> your own functions, and explain why this is helpful for writing nice R code. </p>
+<p>Abstracting your code into many small functions is key for writing
+nice R code. In our experience, biologists are initially reluctant to
+use functions in their code. Where people do use functions, they don’t
+use them enough, or try to make their functions do too much at once.</p>
 
-<p>Below we briefly introduce function syntax, and then look at how functions help you to write nice R code. Nice coders with more experience may want to <a href="#niceRFunctions">skip the first section.</a></p>
+<p>R has many built in functions, and you can access many more by
+installing new packages. So there’s no-doubt you already <em>use</em>
+functions. This guide will show how to <em>write</em> your own functions, and
+explain why this is helpful for writing nice R code.</p>
 
-<h2 id="writing-your-own-r-function">Writing your own R function</h2>
+<h2 id="an-example">An example</h2>
+
+<p>Many of the benefits of using functions are more obvious by
+demonstration than by description.  First exhibit is a script
+<a href="before.html">that does not use functions</a>.  We think that this is
+typical of the sort of scripts that ecologists end up with when
+analysing data.</p>
+
+<p>This script can be simplified considerably by using functions, as
+<a href="after.html">this script</a> shows.</p>
+
+<p>Note that while we’ve called these “before” and “after”, more
+typically the process of moving code into functions happens
+incrementally while writing code.</p>
+
+<h2 id="writing-your-own-r-functions">Writing your own R functions</h2>
+
+<p>Below we briefly introduce function syntax, and then look at how
+functions help you to write nice R code. Nice coders with more
+experience may want to <a href="#niceRFunctions">skip the first section.</a></p>
 
 <p>Writing functions is simple. Paste the following code into your console</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">sumSquare &lt;- function(x,y){ x^2+y^2 }</span></code></pre></td></tr></table></div></figure></notextile></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sum.of.squares <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span>y<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  x<span class="o">^</span><span class="m">2</span> <span class="o">+</span> y<span class="o">^</span><span class="m">2</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>You have now created a function called <code>sumSquare</code> which requires two arguments and returns the sum of the squares of these arguments. Since you ran the code through the console, the function is now available, like any of the other built-in functions within R. Running <code>sumSquare(3,4)</code> should give you the answer <code>25</code>. </p>
+<p>You have now created a function called <code>sum.of.squares</code> which requires
+two arguments and returns the sum of the squares of these
+arguments. Since you ran the code through the console, the function is
+now available, like any of the other built-in functions within
+R. Running <code>sum.of.squares(3,4)</code> will give you the answer <code>25</code>.</p>
 
-<p>The procedure for writing any other functions is similar, involving three key steps:</p>
+<p>The procedure for writing any other functions is similar, involving
+three key steps:</p>
 
 <ol>
   <li>Define the function, </li>
-  <li>Load the function into memory,</li>
+  <li>Load the function into the R session,</li>
   <li>Use the function.</li>
 </ol>
 
 <h3 id="defining-a-function">Defining a function</h3>
 <p>Functions are defined by code with a specific format:</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">fName &lt;- function(arg1, arg2, arg3=2, ...){
-</span><span class="line">    newVar = sin(arg1) + sin(arg2)  # do Some Useful Stuff
-</span><span class="line">    newVar / arg3   # return value 
-</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class="code"><pre><code class="r"><span class="line">function.name <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>arg1<span class="p">,</span> arg2<span class="p">,</span> arg3<span class="o">=</span><span class="m">2</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  newVar <span class="o">&lt;-</span> sin<span class="p">(</span>arg1<span class="p">)</span> <span class="o">+</span> sin<span class="p">(</span>arg2<span class="p">)</span>  <span class="c1"># do Some Useful Stuff</span>
+</span><span class="line">  newVar <span class="o">/</span> arg3   <span class="c1"># return value </span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><strong>fName</strong>: is the functions name. This can be anything, but you should avoid using names that are used elsewhere in R, such as <code>dir</code>, <code>function</code>, <code>plot</code>, etc. </p>
+<p><strong>function.name</strong>: is the function’s name. This can be any valid
+variable name, but you should avoid using names that are used
+elsewhere in R, such as <code>dir</code>, <code>function</code>, <code>plot</code>, etc.</p>
 
-<p><strong>arg1, arg2, arg3</strong>: these are the <code>arguments</code> of the function, also called <code>formals</code>. You can write a function with any number of arguments. These can be any R object: numbers, strings, arrays, data frames, of even pointers to other functions; anything that is needed for the <em>fName</em> function to run.</p>
+<p><strong>arg1, arg2, arg3</strong>: these are the <code>arguments</code> of the function, also
+called <code>formals</code>. You can write a function with any number of
+arguments. These can be any R object: numbers, strings, arrays, data
+frames, of even pointers to other functions; anything that is needed
+for the function.name function to run.</p>
 
-<p>Some arguments have default values specified, such as <code>arg3</code> in our example. Arguments without a default MUST have a value supplied for the function to run. You do not need to provide a value for those arguments with a default, as the function will use the default value.</p>
+<p>Some arguments have default values specified, such as <code>arg3</code> in our
+example. Arguments without a default <strong>must</strong> have a value supplied
+for the function to run. You do not need to provide a value for those
+arguments with a default, as the function will use the default value.</p>
 
-<p><strong>The ‘…’ argument</strong>: The <code>...</code> code in the function definition allows for other arguments to be passed into the function, and passed onto to another function. This technique is often in plotting.</p>
+<p><strong>The ‘…’ argument</strong>: The <code>...</code>, or ellipsis, element in the
+function definition allows for other arguments to be passed into the
+function, and passed onto to another function. This technique is often
+in plotting, but has uses in many other places.</p>
 
-<p><strong>Function body</strong>: The function code between the within the <code>{}</code> brackets is run every time the function is called. This code might be very long or very short. It <em>does not matter</em> how complex your function is. Small functions are useful, large functions are useful. Although if you have a large function, you would be well-advised to construct it from a bunch of small functions. More on that below.</p>
+<p><strong>Function body</strong>: The function code between the within the <code>{}</code>
+brackets is run every time the function is called. This code might be
+very long or very short.  Ideally functions are short and do just one
+thing – problems are rarely too small to benefit from some
+abstraction.  Sometimes a large function is unavoidable, but usually
+these can be in turn constructed from a bunch of small functions.
+More on that below.</p>
 
-<p><strong>Return value</strong>: The last line of the code is the value that will be <code>returned</code> by the function. It is not necessary that a function return anything, for example a function that makes a plot might not return anything, whereas a function that does a mathematical operation might return a number, or a list. </p>
+<p><strong>Return value</strong>: The last line of the code is the value that will be
+<code>returned</code> by the function. It is not necessary that a function return
+anything, for example a function that makes a plot might not return
+anything, whereas a function that does a mathematical operation might
+return a number, or a list.</p>
 
-<h3 id="load-the-function-into-memory">Load the function into memory</h3>
-<p>For R to be able to execute your function, it needs first to be read into memory. This is just like loading a library, until you do it the functions contained within it cannot be called.</p>
+<h3 id="load-the-function-into-the-r-session">Load the function into the R session</h3>
+
+<p>For R to be able to execute your function, it needs first to be read
+into memory. This is just like loading a library, until you do it the
+functions contained within it cannot be called.</p>
 
 <p>There are two methods for loading functions into the memory:</p>
 
@@ -176,24 +237,75 @@ MathJax.Hub.Config({
   <li>Use the <code>source()</code> function to load your functions from file.</li>
 </ol>
 
-<p>Our recommendation for writing nice R code is that in most cases, you should use the second of these options. Put your functions into a file with an intuitive name, like <code>plotting-fun.R</code> and save this file within the <code>R</code> folder in <a href="http://nicercode.github.io/blog/2013-04-05-projects/">your project</a>. You can then read the function into memory by calling:</p>
+<p>Our recommendation for writing nice R code is that in most cases, you
+should use the second of these options. Put your functions into a file
+with an intuitive name, like <code>plotting-fun.R</code> and save this file
+within the <code>R</code> folder in
+<a href="http://nicercode.github.io/blog/2013-04-05-projects/">your project</a>. You
+can then read the function into memory by calling:</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">source("R/plotting-fun.R")</span></code></pre></td></tr></table></div></figure></notextile></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">source<span class="p">(</span><span class="s">&quot;R/plotting-fun.R&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>From the point of view of writing nice code, this approach is nice because it leaves you with an uncluttered analysis script, and a repository of useful functions that can be loaded into any analysis script in your project.</p>
+<p>From the point of view of writing nice code, this approach is nice
+because it leaves you with an uncluttered analysis script, and a
+repository of useful functions that can be loaded into any analysis
+script in your project.  It also lets you group related functions
+together easily.</p>
 
-<h3 id="use-the-function">Use the function.</h3>
+<h3 id="using-your-function">Using your function</h3>
 
-<p>You can now use the function anywhere in your analysis. In thinking about how you use functions, consider the following:</p>
+<p>You can now use the function anywhere in your analysis. In thinking
+about how you use functions, consider the following:</p>
 
 <ul>
   <li>Functions in R can be treated much like any other R object. </li>
-  <li>Functions can be passed as arguments to other functions</li>
-  <li>You can define a function inside of another function</li>
+  <li>Functions can be passed as arguments to other functions or returned
+from other functions.</li>
+  <li>You can define a function inside of another function.</li>
 </ul>
 
-<h2 id="what-makes-for-a-good-function">What makes for a good function?</h2>
+<h3 id="a-little-more-on-the-ellipsis-argument">A little more on the ellipsis argument</h3>
+
+<p>The ellipsis argument <code>...</code> is a powerful way of passing an arbitrary
+number of functions to a lower level function.  This is how</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.frame<span class="p">(</span>a<span class="o">=</span><span class="m">1</span><span class="p">,</span> b<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>returns a <code>data.frame</code> with two columns and </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data.frame<span class="p">(</span>a<span class="o">=</span><span class="m">1</span><span class="p">,</span> b<span class="o">=</span><span class="m">2</span><span class="p">,</span> c<span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>returns a <code>data.frame</code> with three columns.</p>
+
+<p>Here’s a really daft example.  Suppose you wanted a function that
+plots <code>x</code>/<code>y</code> points in red, but you want all of <code>plot</code>’s other
+tricks.  You can write the function like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">red.plot <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> <span class="kc">...</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  plot<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and then do</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">red.plot<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;My x axis&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;My y axis&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and your new function will automatically pass the arguments <code>xlab</code> and
+<code>ylab</code> through to plot, even though you never told <code>red.plot</code> about
+them.</p>
+
+<h2 id="a-idnicerfunctions-what-makes-for-a-good-function"><a id="niceRFunctions"> What makes for a good function?</a></h2>
 
 <h3 id="its-short">It’s short</h3>
 <blockquote class="twitter-tweet"><p>If you&#8217;ve written a function whose body is 2,996 lines of code, you&#8217;re doing it wrong.</p>&mdash; M Butcher (@technosophos) <a href="https://twitter.com/technosophos/status/322392537983746049">April 11, 2013</a></blockquote>
@@ -204,12 +316,12 @@ MathJax.Hub.Config({
 <blockquote class="twitter-tweet"><p>The reason for writing a function is not to reuse its code, but to name the operation it performs.</p>&mdash; Tim Ottinger (@tottinge) <a href="https://twitter.com/tottinge/status/293776089099153408">January 22, 2013</a></blockquote>
 <script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<h3 id="uses-intuitive-variable-names">Uses intuitive variable names</h3>
+<h3 id="uses-intuitive-names">Uses intuitive names</h3>
 
 <blockquote class="twitter-tweet"><p>&#8220;The name of a variable, function, or class, should answer all the big questions.&#8221; - Uncle Bob Martin, Clean Code</p>&mdash; Gustavo Rod. Baldera (@gbaldera) <a href="https://twitter.com/gbaldera/status/327063173721100288">April 24, 2013</a></blockquote>
 <script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<h2 id="a-idnicerfunctions-how-functions-help-you-write-nice-r-code"><a id="niceRFunctions"> How functions help you write Nice R Code</a></h2>
+<h2 id="how-functions-help-you-write-nice-r-code">How functions help you write Nice R Code</h2>
 
 <p>As a reminder, the goal of this course and blog is to help you write nice R code. By that we mean code that is easy to write, is easy to read, runs quickly, gives reliable results, is easy to reuse in new projects, and is easy to share with collaborators. Functions help achieve all of these. </p>
 
@@ -217,39 +329,90 @@ MathJax.Hub.Config({
 
 <p>Readability</p>
 
-<ul>
-  <li>Re-emphasise how this is  the most important part of writing code.</li>
-  <li>describe the what not the how – function names tell you what the
-  code <em>will</em> do, not the mechanics of <em>how</em> it will do it.</li>
-</ul>
+<p>Consider two short pieces of of code:</p>
 
-<p>Examples of reading a function calling a function.</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data<span class="o">$</span>response.logit <span class="o">&lt;-</span> log<span class="p">(</span>data<span class="o">$</span>response <span class="o">/</span> <span class="p">(</span><span class="m">1</span> <span class="o">-</span> data<span class="o">$</span>response<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<h3 id="maintaining-a-clean-workspace">Maintaining a clean workspace</h3>
-<ul>
-  <li>clean up scope – more easily reason about the behavior of the program</li>
-  <li>global variables and scope</li>
-</ul>
+<p>and</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">logit <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>p<span class="p">)</span>
+</span><span class="line">  log<span class="p">(</span>p <span class="o">/</span> <span class="p">(</span><span class="m">1</span><span class="o">-</span>p<span class="p">))</span>
+</span><span class="line">
+</span><span class="line">data<span class="o">$</span>response.logit <span class="o">&lt;-</span> logit<span class="p">(</span>data<span class="o">$</span>response<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>the first is much shorter than the second (1 line vs 3) but it is much
+less easy to understand.  You can read the application of the function
+as a sentence (<code>response.logit</code> is the logit transform of
+<code>data$response</code>) and you’re not bogged down in the detail of how a
+logit transformation actually happens.  The second form is also more
+reliable than the first, as the variable <code>data$response</code> is used only
+once – it would not be possible for the <code>p</code> within <code>logit</code> to point
+at two different variables.</p>
+
+<p>The most important thing that writing functions helps is for you to
+concentrate on writing code that describes <em>what</em> will happen, not
+<em>how</em> it will happen.  The <em>how</em> becomes an implementation issue that
+you don’t have to worry about.  </p>
+
+<p>For example, we could define the logit function as</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">logit <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>p<span class="p">)</span>
+</span><span class="line">  log<span class="p">(</span>p<span class="p">)</span> <span class="o">-</span> log<span class="p">(</span><span class="m">1</span> <span class="o">-</span> p<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and our code would still work.</p>
 
 <h3 id="avoiding-coding-errors">Avoiding coding errors</h3>
 
-<ul>
-  <li>bugs: avoid scope-related and mutability bugs.  E.g., a global
-variable ‘x’ that is used in multiple places.</li>
-  <li>DRY </li>
-</ul>
+<p>By using functions, you limit the <strong>scope</strong> of variables.  In the
+<code>logit</code> function, the <code>p</code> variable is only valid within the body of
+the <code>logit</code> function – it is unaffected by any other variable called
+<code>p</code> and it does not affect any other variable called <code>p</code>.  This means
+when you read code you don’t have to look elsewhere to reason about
+what values variables might take.</p>
+
+<p>Along similar lines, as much as possible functions should be self
+contained and not depend on things like global variables (these are
+variables you’ve defined in the main workspace that would show up in
+RStudio’s object list).</p>
 
 <h3 id="becoming-more-productive">Becoming more productive</h3>
 
-<p>reuse – within a project DRY. Make you more productive.  Between projects is harder.</p>
+<p>Functions enable easy reuse within a project, helping you not to
+repeat yourself.  If you see blocks of similar lines of code through
+your project, those are usually candidates for being moved into
+functions.</p>
 
-<p>easy to plug pieces to together</p>
+<p>If your calculations are performed through a series of functions, then
+the project becomes more modular and easier to change.  This is
+especially the case for which a particular input always gives a
+particular output.</p>
 
-<h2 id="further-comments-on-abstraction-and-design">Further comments on abstraction and design</h2>
+<h2 id="how-long-is-a-piece-of-string">How long is a piece of string?</h2>
 
-<p>This material written for  coders with limited experience. </p>
+<p>In our experience, people seem to think that functions are only needed
+when you need to use a piece of code multiple times, or when you have
+a really large problem.  However, many functions are actually very
+small.  <a href="/posts/2013-05-07-how-long-is-a-function.html">This post</a>
+looks at the distribution of function length among R packages, and
+finds that long functions are the exception, rather than the norm.</p>
 
-<p>Design big topic, much more to cover. Arguably key skill of good software engineers.</p>
+<h2 id="concluding-thoughts">Concluding thoughts</h2>
+
+<p>This material written for coders with limited experience.  Program
+design is a bigger topic than could be covered in a whole course, and we
+haven’t even begun to scratch the surface here.  Using functions is
+just one tool in ensuring that your code will be easy for you to read
+in future, but it is an essential tool.</p>
 
 <blockquote class="twitter-tweet"><p>The more I write code, the more abstract it gets. And with more abstractions, the apps are easier to maintain. Been working for years&#8230;</p>&mdash; Justin Kimbrell (@justin_kimbrell) <a href="https://twitter.com/justin_kimbrell/status/329054399425019906">April 30, 2013</a></blockquote>
 <script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -259,11 +422,11 @@ variable ‘x’ that is used in multiple places.</li>
 <p>If you want to read more about function syntax, check out the following:</p>
 
 <ul>
-  <li><a href="http://cran.r-project.org/doc/manuals/R-intro.html#Writing-your-own-R-intro.html#Writing-your-own-functions">The official R intro material on writing your own functions</a></li>
-  <li><a href="https://github.com/hadley/devtools/wiki/Functions">Hadley’s information on functions</a></li>
+  <li>The <a href="http://cran.r-project.org/doc/manuals/R-intro.html#Writing-your-own-R-intro.html#Writing-your-own-functions">official R intro material on writing your own functions</a></li>
+  <li>Our <a href="http://nicercode.github.io/intro/writing-functions.html">intro to R guide to writing functions</a>
+with information for a total beginner</li>
+  <li><a href="https://twitter.com/hadleywickham">Hadley Wickam’s</a> information on <a href="https://github.com/hadley/devtools/wiki/Functions">functions for intermediate and advanced users</a>.</li>
 </ul>
-
-<p>Also include some general references about design and abstraction</p>
 
 
   
@@ -314,6 +477,10 @@ variable ‘x’ that is used in multiple places.</li>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
       </li>
     
@@ -327,10 +494,6 @@ variable ‘x’ that is used in multiple places.</li>
     
       <li class="post">
         <a href="/blog/2013-04-05-projects/">Designing projects</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-03-08-nice-r-code-2013-plans/">Plans for 'Nice R code module', Macquarie University 2013</a>
       </li>
     
   </ul>
