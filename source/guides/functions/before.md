@@ -7,6 +7,17 @@ sharing: true
 categories: 
 ---
 
+**The challenge:** The [Pantheria dataset](http://esapubs.org/archive/ecol/E090/184/) is a species-level database of life history, ecology, and geography of extant and recently extinct mammals. The script below  downloads the data, and make plots of some variables against each other, highlighting different orders in the plots.  
+
+**The Problem:** This script is provided as an example of *messy* code. It is typical of the code written by many biologists, (including our past selves). Some problems with it include:
+
+- It is difficult to read - what is doing?
+- There are large amounts of repeated code. 
+- When we want to change something, we need to do it in many places.
+- The code adds lots of objects to the workspace. These are difficult to keep track of and make bugs more likely. 
+
+**The solution:** Look at the *nice* code [here](after.html).
+
 ```r
 ## Load the data
 url <-

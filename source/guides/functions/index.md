@@ -285,7 +285,7 @@ finds that long functions are the exception, rather than the norm.
 ## Concluding thoughts
 
 This material written for coders with limited experience.  Program
-design bigger topic than could be covered in a whole course, and we
+design is a bigger topic than could be covered in a whole course, and we
 haven't even begun to scratch the surface here.  Using functions is
 just one tool in ensuring that your code will be easy for you to read
 in future, but it is an essential tool.
@@ -297,9 +297,9 @@ in future, but it is an essential tool.
 
 If you want to read more about function syntax, check out the following:
 
-- [The official R intro material on writing your own functions](http://cran.r-project.org/doc/manuals/R-intro.html#Writing-your-own-R-intro.html#Writing-your-own-functions)
-- [Our intro to R guide to writing functions](http://nicercode.github.io/intro/writing-functions.html)
+- The [official R intro material on writing your own functions](http://cran.r-project.org/doc/manuals/R-intro.html#Writing-your-own-R-intro.html#Writing-your-own-functions)
+- Our [intro to R guide to writing functions](http://nicercode.github.io/intro/writing-functions.html)
   with information for a total beginner
-- [Hadley's information on functions](https://github.com/hadley/devtools/wiki/Functions) with information for intermediate and advanced users.
+- [Hadley Wickam's](https://twitter.com/hadleywickham) information on [functions for intermediate and advanced users](https://github.com/hadley/devtools/wiki/Functions).
 
 

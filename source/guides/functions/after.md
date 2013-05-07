@@ -7,7 +7,14 @@ sharing: true
 categories: 
 ---
 
-The main script
+Here is another script for analysing the Patheria dataset, this time written with functions (see the *messy* version [here](before.html)). As before, we want to download the [Pantheria dataset](http://esapubs.org/archive/ecol/E090/184/), and make some plots of species-level life history variables, highlighting different orders in the plots.   
+
+In contrast to the messy script, this one sources a function "script-fun.R", which contains a bunch of useful functions for plotting the data. These functions are included at the bottom of this page. As a result, our analysis script 
+
+- Is much shorter and more readable than the messy code.
+- Is less likely to contain bugs, because it maintains a clean workspace, and each bit of code is only written once
+- Does a lot more, with just a few more lines of code. By combining the functions we can make many more plots, much faster. 
+
 
 ```r
 source("script-fun.R")
