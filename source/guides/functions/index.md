@@ -15,9 +15,9 @@ footer: true
  -->
 
 Abstracting your code into many small functions is key for writing
-nice R code. In our experience, few biologists use functions in their
-code. Where people do use functions, they don't use them enough, or
-try to make their functions do too much at once.
+nice R code. In our experience, biologists are initially reluctant to
+use functions in their code. Where people do use functions, they don't
+use them enough, or try to make their functions do too much at once.
 
 R has many built in functions, and you can access many more by
 installing new packages. So there's no-doubt you already *use*

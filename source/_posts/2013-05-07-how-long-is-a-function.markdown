@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "How long is a function"
+title: "How long is a function?"
 date: 2013-05-07 11:10
 comments: true
 author: Rich FitzJohn
@@ -12,6 +12,8 @@ tend to be?  In our experience, people seem to think that functions
 are only needed when you need to use a piece of code multiple times,
 or when you have a really large problem.  However, many functions are
 actually very small.
+
+<!-- more -->
 
 R allows a lot of "computation on the language", simply meaning that
 we can look inside objects easily.  Here is a function that returns
@@ -67,6 +69,7 @@ package.function.lengths <- function(package)
 ```
 
 Looking at the recommended package "boot"
+
 ```r
 library(boot)
 package.function.lengths("boot")
@@ -131,7 +134,7 @@ tmp <- unlist(lens)
 hist(tmp[tmp <= 200], main="", xlab="Function length (lines)")
 ```
 
-{% img figures/function-length-distribution.png %}
+{% img /images/function-length-distribution.png %}
 
 Then plot the distribution of the per-package median (that is, for
 each package compute the median function length in terms of lines of
@@ -142,7 +145,7 @@ lens.median <- sapply(lens, median)
 hist(lens.median, main="", xlab="Per-package median function length")
 ```
 
-{% img figures/function-length-median.png %}
+{% img /images/function-length-median.png %}
 
 The median package has a median function length of 16 lines.  There
 are handful of extremely long functions in most packages; over all
