@@ -1,0 +1,135 @@
+---
+layout: post
+title: "Modifying data with lookup tables"
+author: Daniel Falster
+date: 2013-05-14 08:20
+comments: true
+publish: true
+categories: 
+---
+
+<!-- The problem:
+- importing new data
+- amount of code to be written (opportunities for mistake)
+- separating data from scripts
+- maintaining record of where data came from
+
+Common approach
+- long sequence of data modifying code
+
+Solution
+- use lookup table, find and replace
+ -->
+
+In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a "find" and "replace" on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame -- although you should *never* do this, I suspect this method is quite common. A second -- and widely used -- approach for adding information is to modify the values using code in your script. The third -- and nicest -- way of adding information is to use a lookup table. 
+
+<!-- more -->
+
+One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:
+
+```r
+raw$species[raw$id=="1"] <- "Banksia oblongifolia"  
+raw$species[raw$id=="2"] <- "Banksia ericifolia"
+```
+
+or add some details, for example in this case location, latitude, longitude and mean annual precipitation:
+
+```r
+raw$location[raw$id=="1"] <-"NSW"
+raw$latitude[raw$id=="1"] <- -37
+raw$longitude[raw$id=="1"] <- 40
+raw$map[raw$id=="1"] <- 1208
+raw$map[raw$id=="1"] <- 1226
+```
+
+In large analyses, this type of code may go for hundreds of lines. 
+
+Now before we go on, let me say that this approach to adding data is *much* better than editing your datafile directly, for the following two reasons:
+
+1. It maintains the integrity of your raw data file
+2. You can see where the new value came from (it was added in a script), and modify it later if needed.
+
+There is also nothing *wrong* with adding data this way. However, it is what we would consider *messy* code, for these reaosns: 
+
+- Long chunks of code modifying data is inherently difficult to read.
+- There's a lot of typing involved, so lot's of work, and thus opportunities for error.
+- It's harder to change variable names when they are embedded in code all over the place.
+
+A far *nicer* way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:
+
+
+```{r, echo=FALSE}
+#Setup 
+
+# Generate data
+generateData <- function(length=20){
+  x <- runif(length)
+  data <- data.frame(x=x, y = 2+ 3*x + runif(length(x)))
+  data$id <- sort(sample(4, length(x), replace=TRUE)) 
+  data$y <- data$y + data$id*0.2
+  data
+}
+
+myData <- generateData()
+
+#Load addNewData function from github
+library(devtools, quietly=TRUE)
+# source_gist("5589956") - broken in latest devtools, issue submitted
+
+library(RCurl, quietly=TRUE)
+if ( !file.exists("addNewData.r") ){
+  url <- "https://gist.github.com/dfalster/5589956/raw/44c20bfcbbf03fcb227c7501d9afd3f32ec7215d/addNewData.R"
+ cat(getURL(url, ssl.verifypeer = FALSE), file= "addNewData.r")  
+  }
+
+#download data file from github gist 5589956
+library(RCurl, quietly=TRUE)
+if ( !file.exists("dataNew.csv") ){
+  url <- "https://gist.github.com/dfalster/5589956/raw/64c2ad2f58bc281538d52cf55671b580ad9b10af/dataNew.csv"
+ cat(getURL(url, ssl.verifypeer = FALSE), file= "dataNew.csv")    
+  }
+
+```
+
+```{r}
+read.csv("dataNew.csv")
+```
+
+
+The columns of this table are
+
+- **lookupVariable** is the name of the variable in the parent data we want to match against. If left  blank, change all rows.
+- **lookupValue** is the value of lookupVariable to match against
+- **newVariable** is the variable to be changed
+- **newValue** is the value of `newVariable` for matched rows
+- **source** includes any notes about where the data came from (e.g., who made the change)
+
+So the table documents the changes we want to make to our dataframe. The function [addNewData.R](https://gist.github.com/dfalster/5589956) then takes this filename for this table and applies it to thedata frame. For example let's assume we have a data frame called `data`
+
+
+```{r}
+myData
+
+```
+
+and want to apply the table given above, we simply write
+
+```{r}
+source("addNewData.r")
+allowedVars<-c("species", "family", "location")
+addNewData("dataNew.csv", myData, allowedVars)
+```
+
+The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of *data* in a file, which is preferable to having data mixed in with our code. 
+
+You can use this approach 
+You can find the example files used here, as a [github gist](https://gist.github.com/dfalster/5589956)
+
+```{r, echo=FALSE}
+
+#cleanup 
+d<-file.remove("dataNew.csv")
+d<-file.remove("addNewData.r")
+
+```
+
