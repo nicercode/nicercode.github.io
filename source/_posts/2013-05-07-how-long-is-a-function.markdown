@@ -134,7 +134,7 @@ tmp <- unlist(lens)
 hist(tmp[tmp <= 200], main="", xlab="Function length (lines)")
 ```
 
-{% img /images/function-length-distribution.png %}
+{% img /images/2013-05-07-how-long-is-a-function/function-length-distribution.png %}
 
 Then plot the distribution of the per-package median (that is, for
 each package compute the median function length in terms of lines of
@@ -145,7 +145,7 @@ lens.median <- sapply(lens, median)
 hist(lens.median, main="", xlab="Per-package median function length")
 ```
 
-{% img /images/function-length-median.png %}
+{% img /images/2013-05-07-how-long-is-a-function/function-length-median.png %}
 
 The median package has a median function length of 16 lines.  There
 are handful of extremely long functions in most packages; over all

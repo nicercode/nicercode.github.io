@@ -33,7 +33,7 @@ our analyses to match data availability, at least not without many, many more
 
 <!-- more -->
 
-{% imgcap right /images/geeks-vs-nongeeks-repetitive-tasks.png Why writing code saves you time with repetitive tasks, by [Bruno Oliveira](https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y)%}
+{% imgcap right /images/2013-04-05-why-nice-code/geeks-vs-nongeeks-repetitive-tasks.png Why writing code saves you time with repetitive tasks, by [Bruno Oliveira](https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y)%}
 
 The solution is to write scripts in programs like 
 [R](http://www.r-project.org/), [python](http://www.python.org/) or 
@@ -196,7 +196,7 @@ There are many benefits of writing nicer code:
 
 If you need further motivation, consider this advice
 
-{% imgcap centre /images/Maniac.jpg An [advisory pop-up for MS Visual C++](http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer) %}
+{% imgcap centre /images/2013-04-05-why-nice-code/Maniac.jpg An [advisory pop-up for MS Visual C++](http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer) %}
 
 This might seem extreme, until you realise that the maniac serial killer is 
 **you**, and you definitely know where you live. 
