@@ -138,117 +138,148 @@ Solution
 - use lookup table, find and replace
  -->
 
-In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a "find" and "replace" on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame -- although you should *never* do this, I suspect this method is quite common. A second -- and widely used -- approach for adding information is to modify the values using code in your script. The third -- and nicest -- way of adding information is to use a lookup table. 
+<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table. </p>
 
 <!-- more -->
 
-One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:
+<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:</p>
 
-```r
-raw$species[raw$id=="1"] <- "Banksia oblongifolia"  
-raw$species[raw$id=="2"] <- "Banksia ericifolia"
-```
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">raw$species[raw$id=="1"] &lt;- "Banksia oblongifolia"  
+</span><span class="line">raw$species[raw$id=="2"] &lt;- "Banksia ericifolia"</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-or add some details, for example in this case location, latitude, longitude and mean annual precipitation:
+<p>or add some details, for example in this case location, latitude, longitude and mean annual precipitation:</p>
 
-```r
-raw$location[raw$id=="1"] <-"NSW"
-raw$latitude[raw$id=="1"] <- -37
-raw$longitude[raw$id=="1"] <- 40
-raw$map[raw$id=="1"] <- 1208
-raw$map[raw$id=="1"] <- 1226
-```
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">raw$location[raw$id=="1"] &lt;-"NSW"
+</span><span class="line">raw$latitude[raw$id=="1"] &lt;- -37
+</span><span class="line">raw$longitude[raw$id=="1"] &lt;- 40
+</span><span class="line">raw$map[raw$id=="1"] &lt;- 1208
+</span><span class="line">raw$map[raw$id=="1"] &lt;- 1226</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-In large analyses, this type of code may go for hundreds of lines. 
+<p>In large analyses, this type of code may go for hundreds of lines. </p>
 
-Now before we go on, let me say that this approach to adding data is *much* better than editing your datafile directly, for the following two reasons:
+<p>Now before we go on, let me say that this approach to adding data is <em>much</em> better than editing your datafile directly, for the following two reasons:</p>
 
-1. It maintains the integrity of your raw data file
-2. You can see where the new value came from (it was added in a script), and modify it later if needed.
+<ol>
+  <li>It maintains the integrity of your raw data file</li>
+  <li>You can see where the new value came from (it was added in a script), and modify it later if needed.</li>
+</ol>
 
-There is also nothing *wrong* with adding data this way. However, it is what we would consider *messy* code, for these reaosns: 
+<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reaosns: </p>
 
-- Long chunks of code modifying data is inherently difficult to read.
-- There's a lot of typing involved, so lot's of work, and thus opportunities for error.
-- It's harder to change variable names when they are embedded in code all over the place.
+<ul>
+  <li>Long chunks of code modifying data is inherently difficult to read.</li>
+  <li>There’s a lot of typing involved, so lot’s of work, and thus opportunities for error.</li>
+  <li>It’s harder to change variable names when they are embedded in code all over the place.</li>
+</ul>
 
-A far *nicer* way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:
+<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:</p>
 
+<div>
+  <pre><code class="r">read.csv(&quot;dataNew.csv&quot;)</code></pre>
+</div>
 
-```{r, echo=FALSE}
-#Setup 
+<div>
+  <pre><code class="text">##   lookupVariable lookupValue newVariable              newValue
+## 1             id           1     species  Banksia oblongifolia
+## 2             id           2     species    Banksia ericifolia
+## 3             id           3     species       Banksia serrata
+## 4             id           4     species       Banksia grandis
+## 5                         NA      family            Proteaceae
+## 6                         NA    location                   NSW
+## 7             id           4    location                    WA
+##            source
+## 1  Daniel Falster
+## 2  Daniel Falster
+## 3  Daniel Falster
+## 4  Daniel Falster
+## 5  Daniel Falster
+## 6  Daniel Falster
+## 7  Daniel Falster</code></pre>
+</div>
 
-# Generate data
-generateData <- function(length=20){
-  x <- runif(length)
-  data <- data.frame(x=x, y = 2+ 3*x + runif(length(x)))
-  data$id <- sort(sample(4, length(x), replace=TRUE)) 
-  data$y <- data$y + data$id*0.2
-  data
-}
+<p>The columns of this table are</p>
 
-myData <- generateData()
+<ul>
+  <li><strong>lookupVariable</strong> is the name of the variable in the parent data we want to match against. If left  blank, change all rows.</li>
+  <li><strong>lookupValue</strong> is the value of lookupVariable to match against</li>
+  <li><strong>newVariable</strong> is the variable to be changed</li>
+  <li><strong>newValue</strong> is the value of <code>newVariable</code> for matched rows</li>
+  <li><strong>source</strong> includes any notes about where the data came from (e.g., who made the change)</li>
+</ul>
 
-#Load addNewData function from github
-library(devtools, quietly=TRUE)
-# source_gist("5589956") - broken in latest devtools, issue submitted
+<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> then takes this filename for this table and applies it to thedata frame. For example let’s assume we have a data frame called <code>data</code></p>
 
-library(RCurl, quietly=TRUE)
-if ( !file.exists("addNewData.r") ){
-  url <- "https://gist.github.com/dfalster/5589956/raw/44c20bfcbbf03fcb227c7501d9afd3f32ec7215d/addNewData.R"
- cat(getURL(url, ssl.verifypeer = FALSE), file= "addNewData.r")  
-  }
+<div>
+  <pre><code class="r">myData</code></pre>
+</div>
 
-#download data file from github gist 5589956
-library(RCurl, quietly=TRUE)
-if ( !file.exists("dataNew.csv") ){
-  url <- "https://gist.github.com/dfalster/5589956/raw/64c2ad2f58bc281538d52cf55671b580ad9b10af/dataNew.csv"
- cat(getURL(url, ssl.verifypeer = FALSE), file= "dataNew.csv")    
-  }
+<div>
+  <pre><code class="text">##          x     y id
+## 1  0.93160 5.433  1
+## 2  0.24875 3.868  2
+## 3  0.92273 5.944  2
+## 4  0.85384 5.541  2
+## 5  0.30378 3.985  2
+## 6  0.41205 4.415  2
+## 7  0.35158 4.440  2
+## 8  0.13920 3.007  2
+## 9  0.16579 2.976  2
+## 10 0.66290 5.315  3
+## 11 0.25720 3.755  3
+## 12 0.88086 5.345  3
+## 13 0.11784 3.183  3
+## 14 0.01423 3.749  4
+## 15 0.23359 4.264  4
+## 16 0.33614 4.433  4
+## 17 0.52122 4.393  4
+## 18 0.11616 3.603  4
+## 19 0.90871 6.379  4
+## 20 0.75664 5.838  4</code></pre>
+</div>
 
-```
+<p>and want to apply the table given above, we simply write</p>
 
-```{r}
-read.csv("dataNew.csv")
-```
+<div>
+  <pre><code class="r">source(&quot;addNewData.r&quot;)
+allowedVars &lt;- c(&quot;species&quot;, &quot;family&quot;, &quot;location&quot;)
+addNewData(&quot;dataNew.csv&quot;, myData, allowedVars)</code></pre>
+</div>
 
+<div>
+  <pre><code class="text">##          x     y id              species     family location
+## 1  0.93160 5.433  1 Banksia oblongifolia Proteaceae      NSW
+## 2  0.24875 3.868  2   Banksia ericifolia Proteaceae      NSW
+## 3  0.92273 5.944  2   Banksia ericifolia Proteaceae      NSW
+## 4  0.85384 5.541  2   Banksia ericifolia Proteaceae      NSW
+## 5  0.30378 3.985  2   Banksia ericifolia Proteaceae      NSW
+## 6  0.41205 4.415  2   Banksia ericifolia Proteaceae      NSW
+## 7  0.35158 4.440  2   Banksia ericifolia Proteaceae      NSW
+## 8  0.13920 3.007  2   Banksia ericifolia Proteaceae      NSW
+## 9  0.16579 2.976  2   Banksia ericifolia Proteaceae      NSW
+## 10 0.66290 5.315  3      Banksia serrata Proteaceae      NSW
+## 11 0.25720 3.755  3      Banksia serrata Proteaceae      NSW
+## 12 0.88086 5.345  3      Banksia serrata Proteaceae      NSW
+## 13 0.11784 3.183  3      Banksia serrata Proteaceae      NSW
+## 14 0.01423 3.749  4      Banksia grandis Proteaceae       WA
+## 15 0.23359 4.264  4      Banksia grandis Proteaceae       WA
+## 16 0.33614 4.433  4      Banksia grandis Proteaceae       WA
+## 17 0.52122 4.393  4      Banksia grandis Proteaceae       WA
+## 18 0.11616 3.603  4      Banksia grandis Proteaceae       WA
+## 19 0.90871 6.379  4      Banksia grandis Proteaceae       WA
+## 20 0.75664 5.838  4      Banksia grandis Proteaceae       WA</code></pre>
+</div>
 
-The columns of this table are
+<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code. </p>
 
-- **lookupVariable** is the name of the variable in the parent data we want to match against. If left  blank, change all rows.
-- **lookupValue** is the value of lookupVariable to match against
-- **newVariable** is the variable to be changed
-- **newValue** is the value of `newVariable` for matched rows
-- **source** includes any notes about where the data came from (e.g., who made the change)
-
-So the table documents the changes we want to make to our dataframe. The function [addNewData.R](https://gist.github.com/dfalster/5589956) then takes this filename for this table and applies it to thedata frame. For example let's assume we have a data frame called `data`
-
-
-```{r}
-myData
-
-```
-
-and want to apply the table given above, we simply write
-
-```{r}
-source("addNewData.r")
-allowedVars<-c("species", "family", "location")
-addNewData("dataNew.csv", myData, allowedVars)
-```
-
-The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of *data* in a file, which is preferable to having data mixed in with our code. 
-
-You can use this approach 
-You can find the example files used here, as a [github gist](https://gist.github.com/dfalster/5589956)
-
-```{r, echo=FALSE}
-
-#cleanup 
-d<-file.remove("dataNew.csv")
-d<-file.remove("addNewData.r")
-
-```
+<p>You can use this approach 
+You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a></p>
 
 </div>
 
@@ -275,6 +306,12 @@ d<-file.remove("addNewData.r")
 <time datetime="2013-05-14T08:20:00+10:00" pubdate data-updated="true">14 May 2013</time>
       
 
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/draft/'>draft</a>, <a class='category' href='/blog/categories/project/'>project</a>
+  
+</span>
+
 
     </p>
     
@@ -292,7 +329,7 @@ d<-file.remove("addNewData.r")
         <a class="basic-alignment left" href="/blog/2013-05-07-how-long-is-a-function/" title="Previous Post: How long is a function?">&laquo; How long is a function?</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013-05-14-modifying-data-with-lookup-tables/" title="Next Post: Modifying data with lookup tables">Modifying data with lookup tables &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2013-05-17-organising-my-project/" title="Next Post: Organizing the project directory">Organizing the project directory &raquo;</a>
       
     </p>
   </footer>
@@ -321,15 +358,15 @@ d<-file.remove("addNewData.r")
       </li>
     
       <li class="post">
-        <a href="/blog/2013-05-14-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
-      </li>
-    
-      <li class="post">
         <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
       </li>
     
       <li class="post">
         <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
       </li>
     
   </ul>

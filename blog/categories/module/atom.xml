@@ -4,7 +4,7 @@
   <title><![CDATA[Category: module | Nice R Code]]></title>
   <link href="http://nicercode.github.com/blog/categories/module/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-05-20T15:16:50+10:00</updated>
+  <updated>2013-05-20T17:00:02+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -23,9 +23,9 @@
 <p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
 
 <!--more -->
-<p><img src="../../images/directory1_before.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory1_before.png"></p>
 
-<p><img src="../../images/directory2_before.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory2_before.png"></p>
 
 <p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
 
@@ -36,7 +36,7 @@
   <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
 </ul>
 
-<p><img src="../../images/directory_after.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory_after.png"></p>
 
 <p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
 
@@ -106,7 +106,7 @@ our analyses to match data availability, at least not without many, many more
 
 <!-- more -->
 
-<p><span class='caption-wrapper right'><img class='caption' src='/images/geeks-vs-nongeeks-repetitive-tasks.png' width='' height='' alt='Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a>' title='Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a>'><span class='caption-text'>Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a></span></span></p>
+<p><span class='caption-wrapper right'><img class='caption' src='/images/2013-04-05-why-nice-code/geeks-vs-nongeeks-repetitive-tasks.png' width='' height='' alt='Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a>' title='Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a>'><span class='caption-text'>Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a></span></span></p>
 
 <p>The solution is to write scripts in programs like 
 <a href="http://www.r-project.org/">R</a>, <a href="http://www.python.org/">python</a> or 
@@ -274,7 +274,7 @@ own machine or by running your code on a cluster.</li>
 
 <p>If you need further motivation, consider this advice</p>
 
-<p><span class='caption-wrapper centre'><img class='caption' src='/images/Maniac.jpg' width='' height='' alt='An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a>' title='An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a>'><span class='caption-text'>An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a></span></span></p>
+<p><span class='caption-wrapper centre'><img class='caption' src='/images/2013-04-05-why-nice-code/Maniac.jpg' width='' height='' alt='An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a>' title='An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a>'><span class='caption-text'>An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a></span></span></p>
 
 <p>This might seem extreme, until you realise that the maniac serial killer is 
 <strong>you</strong>, and you definitely know where you live. </p>

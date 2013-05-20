@@ -4,7 +4,7 @@
   <title><![CDATA[Category: draft | Nice R Code]]></title>
   <link href="http://nicercode.github.com/blog/categories/draft/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-05-20T15:16:50+10:00</updated>
+  <updated>2013-05-20T17:00:02+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -23,9 +23,9 @@
 <p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
 
 <!--more -->
-<p><img src="../../images/directory1_before.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory1_before.png"></p>
 
-<p><img src="../../images/directory2_before.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory2_before.png"></p>
 
 <p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
 
@@ -36,7 +36,7 @@
   <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
 </ul>
 
-<p><img src="../../images/directory_after.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory_after.png"></p>
 
 <p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
 
@@ -68,14 +68,14 @@ Solution
 
 <p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:</p>
 
-<p><code>r
+<p><code>
 raw$species[raw$id=="1"] &lt;- "Banksia oblongifolia"  
 raw$species[raw$id=="2"] &lt;- "Banksia ericifolia"
 </code></p>
 
 <p>or add some details, for example in this case location, latitude, longitude and mean annual precipitation:</p>
 
-<p><code>r
+<p><code>
 raw$location[raw$id=="1"] &lt;-"NSW"
 raw$latitude[raw$id=="1"] &lt;- -37
 raw$longitude[raw$id=="1"] &lt;- 40
@@ -102,12 +102,13 @@ raw$map[raw$id=="1"] &lt;- 1226
 
 <p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:</p>
 
-<p><code>r
-read.csv("dataNew.csv")
-</code></p>
+<p><div>
+  <pre><code class='r'>read.csv(“dataNew.csv”)</code></pre>
+</div>
+</p>
 
-<p><code>
-##   lookupVariable lookupValue newVariable              newValue
+<p><div>
+  <pre><code class='text'>##   lookupVariable lookupValue newVariable              newValue
 ## 1             id           1     species  Banksia oblongifolia
 ## 2             id           2     species    Banksia ericifolia
 ## 3             id           3     species       Banksia serrata
@@ -122,8 +123,9 @@ read.csv("dataNew.csv")
 ## 4  Daniel Falster
 ## 5  Daniel Falster
 ## 6  Daniel Falster
-## 7  Daniel Falster
-</code></p>
+## 7  Daniel Falster</code></pre>
+</div>
+</p>
 
 <p>The columns of this table are</p>
 
@@ -137,65 +139,69 @@ read.csv("dataNew.csv")
 
 <p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> then takes this filename for this table and applies it to thedata frame. For example let’s assume we have a data frame called <code>data</code></p>
 
-<p><code>r
-myData
-</code></p>
+<p><div>
+  <pre><code class='r'>myData</code></pre>
+</div>
+</p>
 
-<p><code>
-##          x     y id
-## 1  0.51999 4.566  1
-## 2  0.36587 3.968  1
-## 3  0.12694 3.146  1
-## 4  0.41474 3.572  1
-## 5  0.45692 4.380  1
-## 6  0.29388 3.732  1
-## 7  0.47997 4.461  1
-## 8  0.91902 5.860  2
-## 9  0.88202 6.022  2
-## 10 0.47166 3.856  2
-## 11 0.25470 3.199  2
-## 12 0.82700 5.530  3
-## 13 0.08925 3.609  3
-## 14 0.47196 4.136  3
-## 15 0.59161 4.472  3
-## 16 0.21928 3.559  4
-## 17 0.87277 6.087  4
-## 18 0.01210 3.216  4
-## 19 0.73606 5.870  4
-## 20 0.09848 3.612  4
-</code></p>
+<p><div>
+  <pre><code class='text'>##          x     y id
+## 1  0.93160 5.433  1
+## 2  0.24875 3.868  2
+## 3  0.92273 5.944  2
+## 4  0.85384 5.541  2
+## 5  0.30378 3.985  2
+## 6  0.41205 4.415  2
+## 7  0.35158 4.440  2
+## 8  0.13920 3.007  2
+## 9  0.16579 2.976  2
+## 10 0.66290 5.315  3
+## 11 0.25720 3.755  3
+## 12 0.88086 5.345  3
+## 13 0.11784 3.183  3
+## 14 0.01423 3.749  4
+## 15 0.23359 4.264  4
+## 16 0.33614 4.433  4
+## 17 0.52122 4.393  4
+## 18 0.11616 3.603  4
+## 19 0.90871 6.379  4
+## 20 0.75664 5.838  4</code></pre>
+</div>
+</p>
 
 <p>and want to apply the table given above, we simply write</p>
 
-<p><code>r
-source("addNewData.r")
-allowedVars &lt;- c("species", "family", "location")
-addNewData("dataNew.csv", myData, allowedVars)
-</code></p>
+<p><div>
+  <pre><code class='r'>source(“addNewData.r”)
+allowedVars &amp;lt;- c(“species”, “family”, “location”)
+addNewData(“dataNew.csv”, myData, allowedVars)</code></pre>
+</div>
+</p>
 
-<p><code>
-##          x     y id              species     family location
-## 1  0.51999 4.566  1 Banksia oblongifolia Proteaceae      NSW
-## 2  0.36587 3.968  1 Banksia oblongifolia Proteaceae      NSW
-## 3  0.12694 3.146  1 Banksia oblongifolia Proteaceae      NSW
-## 4  0.41474 3.572  1 Banksia oblongifolia Proteaceae      NSW
-## 5  0.45692 4.380  1 Banksia oblongifolia Proteaceae      NSW
-## 6  0.29388 3.732  1 Banksia oblongifolia Proteaceae      NSW
-## 7  0.47997 4.461  1 Banksia oblongifolia Proteaceae      NSW
-## 8  0.91902 5.860  2   Banksia ericifolia Proteaceae      NSW
-## 9  0.88202 6.022  2   Banksia ericifolia Proteaceae      NSW
-## 10 0.47166 3.856  2   Banksia ericifolia Proteaceae      NSW
-## 11 0.25470 3.199  2   Banksia ericifolia Proteaceae      NSW
-## 12 0.82700 5.530  3      Banksia serrata Proteaceae      NSW
-## 13 0.08925 3.609  3      Banksia serrata Proteaceae      NSW
-## 14 0.47196 4.136  3      Banksia serrata Proteaceae      NSW
-## 15 0.59161 4.472  3      Banksia serrata Proteaceae      NSW
-## 16 0.21928 3.559  4      Banksia grandis Proteaceae       WA
-## 17 0.87277 6.087  4      Banksia grandis Proteaceae       WA
-## 18 0.01210 3.216  4      Banksia grandis Proteaceae       WA
-## 19 0.73606 5.870  4      Banksia grandis Proteaceae       WA
-## 20 0.09848 3.612  4      Banksia grandis Proteaceae       WA
-</code></p>
+<p><div>
+  <pre><code class='text'>##          x     y id              species     family location
+## 1  0.93160 5.433  1 Banksia oblongifolia Proteaceae      NSW
+## 2  0.24875 3.868  2   Banksia ericifolia Proteaceae      NSW
+## 3  0.92273 5.944  2   Banksia ericifolia Proteaceae      NSW
+## 4  0.85384 5.541  2   Banksia ericifolia Proteaceae      NSW
+## 5  0.30378 3.985  2   Banksia ericifolia Proteaceae      NSW
+## 6  0.41205 4.415  2   Banksia ericifolia Proteaceae      NSW
+## 7  0.35158 4.440  2   Banksia ericifolia Proteaceae      NSW
+## 8  0.13920 3.007  2   Banksia ericifolia Proteaceae      NSW
+## 9  0.16579 2.976  2   Banksia ericifolia Proteaceae      NSW
+## 10 0.66290 5.315  3      Banksia serrata Proteaceae      NSW
+## 11 0.25720 3.755  3      Banksia serrata Proteaceae      NSW
+## 12 0.88086 5.345  3      Banksia serrata Proteaceae      NSW
+## 13 0.11784 3.183  3      Banksia serrata Proteaceae      NSW
+## 14 0.01423 3.749  4      Banksia grandis Proteaceae       WA
+## 15 0.23359 4.264  4      Banksia grandis Proteaceae       WA
+## 16 0.33614 4.433  4      Banksia grandis Proteaceae       WA
+## 17 0.52122 4.393  4      Banksia grandis Proteaceae       WA
+## 18 0.11616 3.603  4      Banksia grandis Proteaceae       WA
+## 19 0.90871 6.379  4      Banksia grandis Proteaceae       WA
+## 20 0.75664 5.838  4      Banksia grandis Proteaceae       WA</code></pre>
+</div>
+</p>
 
 <p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code. </p>
 

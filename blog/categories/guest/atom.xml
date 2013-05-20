@@ -4,7 +4,7 @@
   <title><![CDATA[Category: guest | Nice R Code]]></title>
   <link href="http://nicercode.github.com/blog/categories/guest/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-05-20T15:16:50+10:00</updated>
+  <updated>2013-05-20T17:00:02+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -23,9 +23,9 @@
 <p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
 
 <!--more -->
-<p><img src="../../images/directory1_before.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory1_before.png"></p>
 
-<p><img src="../../images/directory2_before.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory2_before.png"></p>
 
 <p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
 
@@ -36,7 +36,7 @@
   <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
 </ul>
 
-<p><img src="../../images/directory_after.png"></p>
+<p><img src="../../images/2013-05-17-organising-my-project/directory_after.png"></p>
 
 <p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
 
