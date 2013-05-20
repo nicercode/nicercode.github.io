@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Modifying data with lookup tables - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="<!-- The problem:
+- importing new data
+- amount of code to be written (opportunities for mistake)
+- separating data from scripts
+- maintaining record &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Modifying data with lookup tables</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-14T08:20:00+10:00" pubdate data-updated="true">14 May 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><!-- The problem:
+- importing new data
+- amount of code to be written (opportunities for mistake)
+- separating data from scripts
+- maintaining record of where data came from
+
+Common approach
+- long sequence of data modifying code
+
+Solution
+- use lookup table, find and replace
+ -->
+
+In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a "find" and "replace" on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame -- although you should *never* do this, I suspect this method is quite common. A second -- and widely used -- approach for adding information is to modify the values using code in your script. The third -- and nicest -- way of adding information is to use a lookup table. 
+
+<!-- more -->
+
+One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:
+
+```r
+raw$species[raw$id=="1"] <- "Banksia oblongifolia"  
+raw$species[raw$id=="2"] <- "Banksia ericifolia"
+```
+
+or add some details, for example in this case location, latitude, longitude and mean annual precipitation:
+
+```r
+raw$location[raw$id=="1"] <-"NSW"
+raw$latitude[raw$id=="1"] <- -37
+raw$longitude[raw$id=="1"] <- 40
+raw$map[raw$id=="1"] <- 1208
+raw$map[raw$id=="1"] <- 1226
+```
+
+In large analyses, this type of code may go for hundreds of lines. 
+
+Now before we go on, let me say that this approach to adding data is *much* better than editing your datafile directly, for the following two reasons:
+
+1. It maintains the integrity of your raw data file
+2. You can see where the new value came from (it was added in a script), and modify it later if needed.
+
+There is also nothing *wrong* with adding data this way. However, it is what we would consider *messy* code, for these reaosns: 
+
+- Long chunks of code modifying data is inherently difficult to read.
+- There's a lot of typing involved, so lot's of work, and thus opportunities for error.
+- It's harder to change variable names when they are embedded in code all over the place.
+
+A far *nicer* way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:
+
+
+```{r, echo=FALSE}
+#Setup 
+
+# Generate data
+generateData <- function(length=20){
+  x <- runif(length)
+  data <- data.frame(x=x, y = 2+ 3*x + runif(length(x)))
+  data$id <- sort(sample(4, length(x), replace=TRUE)) 
+  data$y <- data$y + data$id*0.2
+  data
+}
+
+myData <- generateData()
+
+#Load addNewData function from github
+library(devtools, quietly=TRUE)
+# source_gist("5589956") - broken in latest devtools, issue submitted
+
+library(RCurl, quietly=TRUE)
+if ( !file.exists("addNewData.r") ){
+  url <- "https://gist.github.com/dfalster/5589956/raw/44c20bfcbbf03fcb227c7501d9afd3f32ec7215d/addNewData.R"
+ cat(getURL(url, ssl.verifypeer = FALSE), file= "addNewData.r")  
+  }
+
+#download data file from github gist 5589956
+library(RCurl, quietly=TRUE)
+if ( !file.exists("dataNew.csv") ){
+  url <- "https://gist.github.com/dfalster/5589956/raw/64c2ad2f58bc281538d52cf55671b580ad9b10af/dataNew.csv"
+ cat(getURL(url, ssl.verifypeer = FALSE), file= "dataNew.csv")    
+  }
+
+```
+
+```{r}
+read.csv("dataNew.csv")
+```
+
+
+The columns of this table are
+
+- **lookupVariable** is the name of the variable in the parent data we want to match against. If left  blank, change all rows.
+- **lookupValue** is the value of lookupVariable to match against
+- **newVariable** is the variable to be changed
+- **newValue** is the value of `newVariable` for matched rows
+- **source** includes any notes about where the data came from (e.g., who made the change)
+
+So the table documents the changes we want to make to our dataframe. The function [addNewData.R](https://gist.github.com/dfalster/5589956) then takes this filename for this table and applies it to thedata frame. For example let's assume we have a data frame called `data`
+
+
+```{r}
+myData
+
+```
+
+and want to apply the table given above, we simply write
+
+```{r}
+source("addNewData.r")
+allowedVars<-c("species", "family", "location")
+addNewData("dataNew.csv", myData, allowedVars)
+```
+
+The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of *data* in a file, which is preferable to having data mixed in with our code. 
+
+You can use this approach 
+You can find the example files used here, as a [github gist](https://gist.github.com/dfalster/5589956)
+
+```{r, echo=FALSE}
+
+#cleanup 
+d<-file.remove("dataNew.csv")
+d<-file.remove("addNewData.r")
+
+```
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Daniel Falster</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-14T08:20:00+10:00" pubdate data-updated="true">14 May 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-05-07-how-long-is-a-function/" title="Previous Post: How long is a function?">&laquo; How long is a function?</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013-05-14-modifying-data-with-lookup-tables/" title="Next Post: Modifying data with lookup tables">Modifying data with lookup tables &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-14-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-14-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/';
+        var disqus_url = 'http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

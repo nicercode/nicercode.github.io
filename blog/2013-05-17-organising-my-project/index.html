@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>R in ecology and evolution - Nice R Code</title>
+  <title>Organizing the project directory - Nice R Code</title>
   <meta name="author" content="Rich FitzJohn & Daniel Falster">
 
   
-  <meta name="description" content="On this blog, we (Daniel Falster and I) are hoping to record bits of
-information about using R for ecology and evolution. Communicating
-tips person- &hellip;">
+  <meta name="description" content="This is a guest post by Marcela Diaz, a PhD student at Macquarie University. Until recently, I hadn’t given much attention to organising files in my &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ tips person- &hellip;">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicercode.github.com/blog/2013-02-12-r-ecology-evolution/">
+  <link rel="canonical" href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -100,7 +98,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">R in ecology and evolution</h1>
+      <h1 class="entry-title">Organizing the project directory</h1>
     
     
       <p class="meta">
@@ -116,18 +114,36 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2013-02-12T17:57:00+11:00" pubdate data-updated="true">12 February 2013</time>
+<time datetime="2013-05-17T08:20:00+10:00" pubdate data-updated="true">17 May 2013</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>On this blog, we (Daniel Falster and I) are hoping to record bits of
-information about using R for ecology and evolution.  Communicating
-tips person-to-person is too inefficient, and recently helping out at
-a <a href="http://software-carpentry.org">software carpentry</a> boot camp made
-us interested in broadcasting ideas more widely.</p>
+<div class="entry-content"><p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
+
+<p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
+
+<!--more -->
+<p><img src="../../images/directory1_before.png" /></p>
+
+<p><img src="../../images/directory2_before.png" /></p>
+
+<p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
+
+<ul>
+  <li>Data: which contains both my base (raw) data and the processed data </li>
+  <li>Output: data and figures generated in R</li>
+  <li>R: R scripts with all new functions I created as part of the cleaning directory process and in an attempt to write nicer code. </li>
+  <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
+</ul>
+
+<p><img src="../../images/directory_after.png" /></p>
+
+<p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
+
+<p>Setting up the new directory and sorting the existing files in the new folders didn’t take long and was relatively easy. Now it is really simple to find files and keep track of current and old figures. I no longer need to use spotlight to find the latest version of each script. From my experience this improved the organization and efficiency of my project; I  highly recommend keeping a good project layout. </p>
 </div>
 
 
@@ -136,7 +152,7 @@ us interested in broadcasting ideas more widely.</p>
       
   
 
-<span class="byline author vcard">Posted by <span class="fn">Rich FitzJohn</span></span>
+<span class="byline author vcard">Posted by <span class="fn">Marcela Diaz</span></span>
 
       
 
@@ -150,15 +166,21 @@ us interested in broadcasting ideas more widely.</p>
   
 
 
-<time datetime="2013-02-12T17:57:00+11:00" pubdate data-updated="true">12 February 2013</time>
+<time datetime="2013-05-17T08:20:00+10:00" pubdate data-updated="true">17 May 2013</time>
       
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/2013-mq/'>2013-MQ</a>, <a class='category' href='/blog/categories/draft/'>draft</a>, <a class='category' href='/blog/categories/guest/'>guest</a>, <a class='category' href='/blog/categories/module/'>module</a>, <a class='category' href='/blog/categories/project/'>project</a>
+  
+</span>
 
 
     </p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-02-12-r-ecology-evolution/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-02-12-r-ecology-evolution/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-05-17-organising-my-project/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-05-17-organising-my-project/" >Tweet</a>
   
   
   
@@ -167,8 +189,8 @@ us interested in broadcasting ideas more widely.</p>
     
     <p class="meta">
       
+        <a class="basic-alignment left" href="/blog/2013-05-14-modifying-data-with-lookup-tables/" title="Previous Post: Modifying data with lookup tables">&laquo; Modifying data with lookup tables</a>
       
-        <a class="basic-alignment right" href="/blog/2013-03-08-nice-r-code-2013-plans/" title="Next Post: Plans for 'Nice R code module', Macquarie University 2013">Plans for 'Nice R code module', Macquarie University 2013 &raquo;</a>
       
     </p>
   </footer>
@@ -235,8 +257,8 @@ us interested in broadcasting ideas more widely.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://nicercode.github.com/blog/2013-02-12-r-ecology-evolution/';
-        var disqus_url = 'http://nicercode.github.com/blog/2013-02-12-r-ecology-evolution/';
+        var disqus_identifier = 'http://nicercode.github.com/blog/2013-05-17-organising-my-project/';
+        var disqus_url = 'http://nicercode.github.com/blog/2013-05-17-organising-my-project/';
         var disqus_script = 'embed.js';
       
     (function () {

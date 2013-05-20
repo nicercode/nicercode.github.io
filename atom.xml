@@ -4,7 +4,7 @@
   <title><![CDATA[Nice R Code]]></title>
   <link href="http://nicercode.github.com/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-05-07T15:44:04+10:00</updated>
+  <updated>2013-05-20T15:16:50+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -12,6 +12,393 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Organizing the project directory]]></title>
+    <link href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/"/>
+    <updated>2013-05-17T08:20:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/organising-my-project</id>
+    <content type="html"><![CDATA[<p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
+
+<p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
+
+<!--more -->
+<p><img src="../../images/directory1_before.png" /></p>
+
+<p><img src="../../images/directory2_before.png" /></p>
+
+<p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
+
+<ul>
+  <li>Data: which contains both my base (raw) data and the processed data </li>
+  <li>Output: data and figures generated in R</li>
+  <li>R: R scripts with all new functions I created as part of the cleaning directory process and in an attempt to write nicer code. </li>
+  <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
+</ul>
+
+<p><img src="../../images/directory_after.png" /></p>
+
+<p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
+
+<p>Setting up the new directory and sorting the existing files in the new folders didn’t take long and was relatively easy. Now it is really simple to find files and keep track of current and old figures. I no longer need to use spotlight to find the latest version of each script. From my experience this improved the organization and efficiency of my project; I  highly recommend keeping a good project layout. </p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Modifying data with lookup tables]]></title>
+    <link href="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/"/>
+    <updated>2013-05-14T08:20:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/modifying-data-with-lookup-tables</id>
+    <content type="html"><![CDATA[<!-- The problem:
+- importing new data
+- amount of code to be written (opportunities for mistake)
+- separating data from scripts
+- maintaining record of where data came from
+
+Common approach
+- long sequence of data modifying code
+
+Solution
+- use lookup table, find and replace
+ -->
+
+In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a &#8220;find&#8221; and &#8220;replace&#8221; on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame &#8211; although you should *never* do this, I suspect this method is quite common. A second &#8211; and widely used &#8211; approach for adding information is to modify the values using code in your script. The third &#8211; and nicest &#8211; way of adding information is to use a lookup table. 
+
+<!-- more -->
+
+One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:
+
+&#8220;`r
+raw$species[raw$id==&#8221;1&#8221;] <- "Banksia oblongifolia"  
+raw$species[raw$id=="2"] <- "Banksia ericifolia"
+```
+
+or add some details, for example in this case location, latitude, longitude and mean annual precipitation:
+
+```r
+raw$location[raw$id=="1"] <-"NSW"
+raw$latitude[raw$id=="1"] <- -37
+raw$longitude[raw$id=="1"] <- 40
+raw$map[raw$id=="1"] <- 1208
+raw$map[raw$id=="1"] <- 1226
+```
+
+In large analyses, this type of code may go for hundreds of lines. 
+
+Now before we go on, let me say that this approach to adding data is *much* better than editing your datafile directly, for the following two reasons:
+
+1. It maintains the integrity of your raw data file
+2. You can see where the new value came from (it was added in a script), and modify it later if needed.
+
+There is also nothing *wrong* with adding data this way. However, it is what we would consider *messy* code, for these reaosns: 
+
+- Long chunks of code modifying data is inherently difficult to read.
+- There's a lot of typing involved, so lot's of work, and thus opportunities for error.
+- It's harder to change variable names when they are embedded in code all over the place.
+
+A far *nicer* way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:
+
+
+```{r, echo=FALSE}
+#Setup 
+
+# Generate data
+generateData <- function(length=20){
+  x <- runif(length)
+  data <- data.frame(x=x, y = 2+ 3*x + runif(length(x)))
+  data$id <- sort(sample(4, length(x), replace=TRUE)) 
+  data$y <- data$y + data$id*0.2
+  data
+}
+
+myData <- generateData()
+
+#Load addNewData function from github
+library(devtools, quietly=TRUE)
+# source_gist("5589956") - broken in latest devtools, issue submitted
+
+library(RCurl, quietly=TRUE)
+if ( !file.exists("addNewData.r") ){
+  url <- "https://gist.github.com/dfalster/5589956/raw/44c20bfcbbf03fcb227c7501d9afd3f32ec7215d/addNewData.R"
+ cat(getURL(url, ssl.verifypeer = FALSE), file= "addNewData.r")  
+  }
+
+#download data file from github gist 5589956
+library(RCurl, quietly=TRUE)
+if ( !file.exists("dataNew.csv") ){
+  url <- "https://gist.github.com/dfalster/5589956/raw/64c2ad2f58bc281538d52cf55671b580ad9b10af/dataNew.csv"
+ cat(getURL(url, ssl.verifypeer = FALSE), file= "dataNew.csv")    
+  }
+
+```
+
+```{r}
+read.csv("dataNew.csv")
+```
+
+
+The columns of this table are
+
+- **lookupVariable** is the name of the variable in the parent data we want to match against. If left  blank, change all rows.
+- **lookupValue** is the value of lookupVariable to match against
+- **newVariable** is the variable to be changed
+- **newValue** is the value of `newVariable` for matched rows
+- **source** includes any notes about where the data came from (e.g., who made the change)
+
+So the table documents the changes we want to make to our dataframe. The function [addNewData.R](https://gist.github.com/dfalster/5589956) then takes this filename for this table and applies it to thedata frame. For example let's assume we have a data frame called `data`
+
+
+```{r}
+myData
+
+```
+
+and want to apply the table given above, we simply write
+
+```{r}
+source("addNewData.r")
+allowedVars<-c("species", "family", "location")
+addNewData("dataNew.csv", myData, allowedVars)
+```
+
+The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of *data* in a file, which is preferable to having data mixed in with our code. 
+
+You can use this approach 
+You can find the example files used here, as a [github gist](https://gist.github.com/dfalster/5589956)
+
+```{r, echo=FALSE}
+
+#cleanup 
+d<-file.remove("dataNew.csv")
+d<-file.remove("addNewData.r")
+
+```
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Modifying data with lookup tables]]></title>
+    <link href="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/"/>
+    <updated>2013-05-14T08:20:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/modifying-data-with-lookup-tables</id>
+    <content type="html"><![CDATA[<!-- The problem:
+- importing new data
+- amount of code to be written (opportunities for mistake)
+- separating data from scripts
+- maintaining record of where data came from
+
+Common approach
+- long sequence of data modifying code
+
+Solution
+- use lookup table, find and replace
+ -->
+
+<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table. </p>
+
+<!-- more -->
+
+<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">raw<span class="o">$</span>species<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Banksia oblongifolia&quot;</span>
+</span><span class="line">raw<span class="o">$</span>species<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;2&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Banksia ericifolia&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>or add some details, for example in this case location, latitude, longitude and mean annual precipitation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">raw<span class="o">$</span>location<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span><span class="s">&quot;NSW&quot;</span>
+</span><span class="line">raw<span class="o">$</span>latitude<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">-37</span>
+</span><span class="line">raw<span class="o">$</span>longitude<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">40</span>
+</span><span class="line">raw<span class="o">$</span>map<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">1208</span>
+</span><span class="line">raw<span class="o">$</span>map<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">1226</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In large analyses, this type of code may go for hundreds of lines. </p>
+
+<p>Now before we go on, let me say that this approach to adding data is <em>much</em> better than editing your datafile directly, for the following two reasons:</p>
+
+<ol>
+  <li>It maintains the integrity of your raw data file</li>
+  <li>You can see where the new value came from (it was added in a script), and modify it later if needed.</li>
+</ol>
+
+<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reaosns: </p>
+
+<ul>
+  <li>Long chunks of code modifying data is inherently difficult to read.</li>
+  <li>There’s a lot of typing involved, so lot’s of work, and thus opportunities for error.</li>
+  <li>It’s harder to change variable names when they are embedded in code all over the place.</li>
+</ul>
+
+<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">read.csv<span class="p">(</span><span class="s">&quot;dataNew.csv&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##   lookupVariable lookupValue newVariable              newValue</span>
+</span><span class="line"><span class="c1">## 1             id           1     species  Banksia oblongifolia</span>
+</span><span class="line"><span class="c1">## 2             id           2     species    Banksia ericifolia</span>
+</span><span class="line"><span class="c1">## 3             id           3     species       Banksia serrata</span>
+</span><span class="line"><span class="c1">## 4             id           4     species       Banksia grandis</span>
+</span><span class="line"><span class="c1">## 5                         NA      family            Proteaceae</span>
+</span><span class="line"><span class="c1">## 6                         NA    location                   NSW</span>
+</span><span class="line"><span class="c1">## 7             id           4    location                    WA</span>
+</span><span class="line"><span class="c1">##            source</span>
+</span><span class="line"><span class="c1">## 1  Daniel Falster</span>
+</span><span class="line"><span class="c1">## 2  Daniel Falster</span>
+</span><span class="line"><span class="c1">## 3  Daniel Falster</span>
+</span><span class="line"><span class="c1">## 4  Daniel Falster</span>
+</span><span class="line"><span class="c1">## 5  Daniel Falster</span>
+</span><span class="line"><span class="c1">## 6  Daniel Falster</span>
+</span><span class="line"><span class="c1">## 7  Daniel Falster</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The columns of this table are</p>
+
+<ul>
+  <li><strong>lookupVariable</strong> is the name of the variable in the parent data we want to match against. If left  blank, change all rows.</li>
+  <li><strong>lookupValue</strong> is the value of lookupVariable to match against</li>
+  <li><strong>newVariable</strong> is the variable to be changed</li>
+  <li><strong>newValue</strong> is the value of <code>newVariable</code> for matched rows</li>
+  <li><strong>source</strong> includes any notes about where the data came from (e.g., who made the change)</li>
+</ul>
+
+<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> then takes this filename for this table and applies it to thedata frame. For example let’s assume we have a data frame called <code>data</code></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">myData
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##          x     y id</span>
+</span><span class="line"><span class="c1">## 1  0.51999 4.566  1</span>
+</span><span class="line"><span class="c1">## 2  0.36587 3.968  1</span>
+</span><span class="line"><span class="c1">## 3  0.12694 3.146  1</span>
+</span><span class="line"><span class="c1">## 4  0.41474 3.572  1</span>
+</span><span class="line"><span class="c1">## 5  0.45692 4.380  1</span>
+</span><span class="line"><span class="c1">## 6  0.29388 3.732  1</span>
+</span><span class="line"><span class="c1">## 7  0.47997 4.461  1</span>
+</span><span class="line"><span class="c1">## 8  0.91902 5.860  2</span>
+</span><span class="line"><span class="c1">## 9  0.88202 6.022  2</span>
+</span><span class="line"><span class="c1">## 10 0.47166 3.856  2</span>
+</span><span class="line"><span class="c1">## 11 0.25470 3.199  2</span>
+</span><span class="line"><span class="c1">## 12 0.82700 5.530  3</span>
+</span><span class="line"><span class="c1">## 13 0.08925 3.609  3</span>
+</span><span class="line"><span class="c1">## 14 0.47196 4.136  3</span>
+</span><span class="line"><span class="c1">## 15 0.59161 4.472  3</span>
+</span><span class="line"><span class="c1">## 16 0.21928 3.559  4</span>
+</span><span class="line"><span class="c1">## 17 0.87277 6.087  4</span>
+</span><span class="line"><span class="c1">## 18 0.01210 3.216  4</span>
+</span><span class="line"><span class="c1">## 19 0.73606 5.870  4</span>
+</span><span class="line"><span class="c1">## 20 0.09848 3.612  4</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and want to apply the table given above, we simply write</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">source<span class="p">(</span><span class="s">&quot;addNewData.r&quot;</span><span class="p">)</span>
+</span><span class="line">allowedVars <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;species&quot;</span><span class="p">,</span> <span class="s">&quot;family&quot;</span><span class="p">,</span> <span class="s">&quot;location&quot;</span><span class="p">)</span>
+</span><span class="line">addNewData<span class="p">(</span><span class="s">&quot;dataNew.csv&quot;</span><span class="p">,</span> myData<span class="p">,</span> allowedVars<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##          x     y id              species     family location</span>
+</span><span class="line"><span class="c1">## 1  0.51999 4.566  1 Banksia oblongifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 2  0.36587 3.968  1 Banksia oblongifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 3  0.12694 3.146  1 Banksia oblongifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 4  0.41474 3.572  1 Banksia oblongifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 5  0.45692 4.380  1 Banksia oblongifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 6  0.29388 3.732  1 Banksia oblongifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 7  0.47997 4.461  1 Banksia oblongifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 8  0.91902 5.860  2   Banksia ericifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 9  0.88202 6.022  2   Banksia ericifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 10 0.47166 3.856  2   Banksia ericifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 11 0.25470 3.199  2   Banksia ericifolia Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 12 0.82700 5.530  3      Banksia serrata Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 13 0.08925 3.609  3      Banksia serrata Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 14 0.47196 4.136  3      Banksia serrata Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 15 0.59161 4.472  3      Banksia serrata Proteaceae      NSW</span>
+</span><span class="line"><span class="c1">## 16 0.21928 3.559  4      Banksia grandis Proteaceae       WA</span>
+</span><span class="line"><span class="c1">## 17 0.87277 6.087  4      Banksia grandis Proteaceae       WA</span>
+</span><span class="line"><span class="c1">## 18 0.01210 3.216  4      Banksia grandis Proteaceae       WA</span>
+</span><span class="line"><span class="c1">## 19 0.73606 5.870  4      Banksia grandis Proteaceae       WA</span>
+</span><span class="line"><span class="c1">## 20 0.09848 3.612  4      Banksia grandis Proteaceae       WA</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code. </p>
+
+<p>You can use this approach 
+You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[How long is a function?]]></title>

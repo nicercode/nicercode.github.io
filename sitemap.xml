@@ -2,171 +2,183 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://nicercode.github.com/blog/2013-02-12-r-ecology-evolution/</loc>
-        <lastmod>2013-04-09T12:57:55+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/</loc>
-        <lastmod>2013-04-16T15:22:22+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/2013-04-05-projects/</loc>
-        <lastmod>2013-04-17T14:41:42+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/2013-04-05-why-nice-code/</loc>
-        <lastmod>2013-05-02T17:02:19+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/2013-04-23-git/</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/2013-04-30-excel-and-line-endings/</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/2013-05-07-how-long-is-a-function/</loc>
-        <lastmod>2013-05-07T13:23:27+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/</loc>
+        <lastmod>2013-05-20T15:08:34+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/</loc>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
+    </url>
+    <url>
+        <loc>http://nicercode.github.com/blog/2013-05-17-organising-my-project/</loc>
+        <lastmod>2013-05-20T15:09:59+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/about/</loc>
-        <lastmod>2013-05-06T14:20:38+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/blog/archives/</loc>
-        <lastmod>2013-05-07T13:23:27+10:00</lastmod>
+        <lastmod>2013-05-20T15:09:59+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/5-min-unix-intro.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/basics.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/branches.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/collaboration.html</loc>
-        <lastmod>2013-04-20T14:21:48+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/index_before_class.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/installation.html</loc>
-        <lastmod>2013-04-17T15:03:34+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/not-covered.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/overview.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/remotes.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/rstudio.html</loc>
-        <lastmod>2013-04-17T15:16:15+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/setup.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/why.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/git/workflows.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/guide.html</loc>
-        <lastmod>2013-05-07T15:41:17+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/guides/functions/after.html</loc>
-        <lastmod>2013-05-07T15:40:57+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/guides/functions/before.html</loc>
-        <lastmod>2013-05-07T15:40:57+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/guides/functions/</loc>
-        <lastmod>2013-05-07T13:31:32+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/</loc>
-        <lastmod>2013-05-07T13:23:27+10:00</lastmod>
+        <lastmod>2013-05-20T15:09:59+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/bad-habits.html</loc>
-        <lastmod>2013-04-03T10:58:46+11:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/data-types.html</loc>
-        <lastmod>2013-04-16T14:36:43+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/getting-started.html</loc>
-        <lastmod>2013-04-16T14:36:43+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/</loc>
-        <lastmod>2013-04-05T14:32:52+11:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/loading-data.html</loc>
-        <lastmod>2013-04-16T14:36:43+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/missing-data.html</loc>
-        <lastmod>2013-04-16T14:36:43+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/not-covered.html</loc>
-        <lastmod>2013-04-03T10:58:46+11:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/plotting.html</loc>
-        <lastmod>2013-04-16T14:36:43+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/preliminaries.html</loc>
-        <lastmod>2013-04-03T10:58:46+11:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/repeating-things.html</loc>
-        <lastmod>2013-04-16T14:36:43+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/resources.html</loc>
-        <lastmod>2013-05-02T13:47:21+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/stats.html</loc>
-        <lastmod>2013-04-03T10:58:46+11:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/intro/writing-functions.html</loc>
-        <lastmod>2013-05-06T14:28:47+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/modules/</loc>
-        <lastmod>2013-05-07T15:40:51+10:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
     <url>
         <loc>http://nicercode.github.com/robots.txt</loc>
@@ -174,6 +186,6 @@
     </url>
     <url>
         <loc>http://nicercode.github.com/sandbox.html</loc>
-        <lastmod>2013-04-03T10:58:46+11:00</lastmod>
+        <lastmod>2013-05-20T14:56:29+10:00</lastmod>
     </url>
 </urlset>
