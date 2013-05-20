@@ -16,6 +16,21 @@ Using a small modification to the pagination plug-in [described here](arshad.git
 
 Draft posts can then be viewed at [http://nicercode.github.io/blog/categories/draft/](http://nicercode.github.io/blog/categories/draft/)
 
+## Working with Rmd files
+
+Rmd files should be kept in the `_drafts` directory, as they cause problems when posted in the `_posts` directory.  The function `knit_post` function can is used to publish suitable md and associated image files from the `_drafts` to over to the `_posts` directory. 
+
+```r
+source("knit_post.R")
+
+# Setting publish = FALSE will produce files in the _drafts directory, for review 
+knit_post("trial.Rmd", publish=FALSE)
+
+# Setting publish = TRUE will publish post to _posts, figures to _images and delete corresponding files from the drafts directory
+
+knit_post("trial.Rmd", publish=TRUE)
+```
+
 ## Formatting changes to consider
 
 - indentation of lists, works well on phones, but not on desktop

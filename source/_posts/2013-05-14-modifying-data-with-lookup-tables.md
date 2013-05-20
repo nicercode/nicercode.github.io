@@ -4,8 +4,8 @@ title: "Modifying data with lookup tables"
 author: Daniel Falster
 date: 2013-05-14 08:20
 comments: true
-publish: false
-categories: draft
+publish: true
+categories: 
 ---
 
 <!-- The problem:
@@ -21,20 +21,22 @@ Solution
 - use lookup table, find and replace
  -->
 
+
 In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a "find" and "replace" on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame -- although you should *never* do this, I suspect this method is quite common. A second -- and widely used -- approach for adding information is to modify the values using code in your script. The third -- and nicest -- way of adding information is to use a lookup table. 
 
 <!-- more -->
 
 One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:
 
-```r
+
+```
 raw$species[raw$id=="1"] <- "Banksia oblongifolia"  
 raw$species[raw$id=="2"] <- "Banksia ericifolia"
 ```
 
 or add some details, for example in this case location, latitude, longitude and mean annual precipitation:
 
-```r
+```
 raw$location[raw$id=="1"] <-"NSW"
 raw$latitude[raw$id=="1"] <- -37
 raw$longitude[raw$id=="1"] <- 40
@@ -62,11 +64,13 @@ A far *nicer* way to add data to an existing data frame is to use a lookup table
 
 
 
-```r
+{% highlight r %}
 read.csv("dataNew.csv")
-```
+{% endhighlight %}
 
-```
+
+
+{% highlight text %}
 ##   lookupVariable lookupValue newVariable              newValue
 ## 1             id           1     species  Banksia oblongifolia
 ## 2             id           2     species    Banksia ericifolia
@@ -83,7 +87,7 @@ read.csv("dataNew.csv")
 ## 5  Daniel Falster
 ## 6  Daniel Falster
 ## 7  Daniel Falster
-```
+{% endhighlight %}
 
 
 
@@ -99,67 +103,71 @@ So the table documents the changes we want to make to our dataframe. The functio
 
 
 
-```r
+{% highlight r %}
 myData
-```
+{% endhighlight %}
 
-```
+
+
+{% highlight text %}
 ##          x     y id
-## 1  0.51999 4.566  1
-## 2  0.36587 3.968  1
-## 3  0.12694 3.146  1
-## 4  0.41474 3.572  1
-## 5  0.45692 4.380  1
-## 6  0.29388 3.732  1
-## 7  0.47997 4.461  1
-## 8  0.91902 5.860  2
-## 9  0.88202 6.022  2
-## 10 0.47166 3.856  2
-## 11 0.25470 3.199  2
-## 12 0.82700 5.530  3
-## 13 0.08925 3.609  3
-## 14 0.47196 4.136  3
-## 15 0.59161 4.472  3
-## 16 0.21928 3.559  4
-## 17 0.87277 6.087  4
-## 18 0.01210 3.216  4
-## 19 0.73606 5.870  4
-## 20 0.09848 3.612  4
-```
+## 1  0.93160 5.433  1
+## 2  0.24875 3.868  2
+## 3  0.92273 5.944  2
+## 4  0.85384 5.541  2
+## 5  0.30378 3.985  2
+## 6  0.41205 4.415  2
+## 7  0.35158 4.440  2
+## 8  0.13920 3.007  2
+## 9  0.16579 2.976  2
+## 10 0.66290 5.315  3
+## 11 0.25720 3.755  3
+## 12 0.88086 5.345  3
+## 13 0.11784 3.183  3
+## 14 0.01423 3.749  4
+## 15 0.23359 4.264  4
+## 16 0.33614 4.433  4
+## 17 0.52122 4.393  4
+## 18 0.11616 3.603  4
+## 19 0.90871 6.379  4
+## 20 0.75664 5.838  4
+{% endhighlight %}
 
 
 and want to apply the table given above, we simply write
 
 
-```r
+{% highlight r %}
 source("addNewData.r")
 allowedVars <- c("species", "family", "location")
 addNewData("dataNew.csv", myData, allowedVars)
-```
+{% endhighlight %}
 
-```
+
+
+{% highlight text %}
 ##          x     y id              species     family location
-## 1  0.51999 4.566  1 Banksia oblongifolia Proteaceae      NSW
-## 2  0.36587 3.968  1 Banksia oblongifolia Proteaceae      NSW
-## 3  0.12694 3.146  1 Banksia oblongifolia Proteaceae      NSW
-## 4  0.41474 3.572  1 Banksia oblongifolia Proteaceae      NSW
-## 5  0.45692 4.380  1 Banksia oblongifolia Proteaceae      NSW
-## 6  0.29388 3.732  1 Banksia oblongifolia Proteaceae      NSW
-## 7  0.47997 4.461  1 Banksia oblongifolia Proteaceae      NSW
-## 8  0.91902 5.860  2   Banksia ericifolia Proteaceae      NSW
-## 9  0.88202 6.022  2   Banksia ericifolia Proteaceae      NSW
-## 10 0.47166 3.856  2   Banksia ericifolia Proteaceae      NSW
-## 11 0.25470 3.199  2   Banksia ericifolia Proteaceae      NSW
-## 12 0.82700 5.530  3      Banksia serrata Proteaceae      NSW
-## 13 0.08925 3.609  3      Banksia serrata Proteaceae      NSW
-## 14 0.47196 4.136  3      Banksia serrata Proteaceae      NSW
-## 15 0.59161 4.472  3      Banksia serrata Proteaceae      NSW
-## 16 0.21928 3.559  4      Banksia grandis Proteaceae       WA
-## 17 0.87277 6.087  4      Banksia grandis Proteaceae       WA
-## 18 0.01210 3.216  4      Banksia grandis Proteaceae       WA
-## 19 0.73606 5.870  4      Banksia grandis Proteaceae       WA
-## 20 0.09848 3.612  4      Banksia grandis Proteaceae       WA
-```
+## 1  0.93160 5.433  1 Banksia oblongifolia Proteaceae      NSW
+## 2  0.24875 3.868  2   Banksia ericifolia Proteaceae      NSW
+## 3  0.92273 5.944  2   Banksia ericifolia Proteaceae      NSW
+## 4  0.85384 5.541  2   Banksia ericifolia Proteaceae      NSW
+## 5  0.30378 3.985  2   Banksia ericifolia Proteaceae      NSW
+## 6  0.41205 4.415  2   Banksia ericifolia Proteaceae      NSW
+## 7  0.35158 4.440  2   Banksia ericifolia Proteaceae      NSW
+## 8  0.13920 3.007  2   Banksia ericifolia Proteaceae      NSW
+## 9  0.16579 2.976  2   Banksia ericifolia Proteaceae      NSW
+## 10 0.66290 5.315  3      Banksia serrata Proteaceae      NSW
+## 11 0.25720 3.755  3      Banksia serrata Proteaceae      NSW
+## 12 0.88086 5.345  3      Banksia serrata Proteaceae      NSW
+## 13 0.11784 3.183  3      Banksia serrata Proteaceae      NSW
+## 14 0.01423 3.749  4      Banksia grandis Proteaceae       WA
+## 15 0.23359 4.264  4      Banksia grandis Proteaceae       WA
+## 16 0.33614 4.433  4      Banksia grandis Proteaceae       WA
+## 17 0.52122 4.393  4      Banksia grandis Proteaceae       WA
+## 18 0.11616 3.603  4      Banksia grandis Proteaceae       WA
+## 19 0.90871 6.379  4      Banksia grandis Proteaceae       WA
+## 20 0.75664 5.838  4      Banksia grandis Proteaceae       WA
+{% endhighlight %}
 
 
 The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of *data* in a file, which is preferable to having data mixed in with our code. 

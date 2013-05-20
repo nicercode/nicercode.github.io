@@ -4,7 +4,7 @@ title: "Organizing the project directory"
 author: Marcela Diaz
 date: 2013-05-17 08:20
 comments: true
-publish: false
+publish: true
 categories: project guest module 2013-MQ draft
 ---
 
