@@ -10,6 +10,12 @@ bitbucket repo. The only thing that happens on github is to deploy.
 
 [Octopress documentation](http://octopress.org/docs/) 
 
+## Excluding posts from front page
+
+Using a small modification to the pagination plug-in [described here](arshad.github.io/blog/2012/05/10/recipe-hiding-posts-from-the-octopress-front-page/) post can be excluded from the front page by marking them draft (see _config.yaml for the list of categories to be shown or excluded on front page).
+
+Draft posts can then be viewed at [http://nicercode.github.io/blog/categories/draft/](http://nicercode.github.io/blog/categories/draft/)
+
 ## Formatting changes to consider
 
 - indentation of lists, works well on phones, but not on desktop

@@ -46,6 +46,10 @@ titlecase: false       # Converts page and post titles to titlecase
 
 sidebar: collapse
 
+# tweak to exclude drafts froms front page - see arshad.github.io/blog/2012/05/10/recipe-hiding-posts-from-the-octopress-front-page/
+front_page_categories: [draft] # A list of categories for the front page
+front_page_categories_op : 'hide' # Whether to show or hide the list of categories from front_page_categories
+
 # list each of the sidebar modules you want to include, in the order you want them to appear.
 # To add custom asides, create files in /source/_includes/custom/asides/ and add them to the list like 'custom/asides/custom_aside_name.html'
 default_asides: [asides/recent_posts.html, asides/github.html, asides/twitter.html, asides/delicious.html, asides/pinboard.html, asides/googleplus.html]
