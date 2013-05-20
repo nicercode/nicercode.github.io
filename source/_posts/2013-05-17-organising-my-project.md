@@ -5,7 +5,7 @@ author: Marcela Diaz
 date: 2013-05-17 08:20
 comments: true
 publish: true
-categories: project guest module 2013-MQ draft
+categories: project guest module 2013-MQ
 ---
 
 This is a guest post by Marcela Diaz, a PhD student at Macquarie University. 
