@@ -51,7 +51,7 @@ world. For all these reasons, many researchers are now learning how to write
 code.
 
 Yet, most researchers have no or limited formal training in computer science, 
-and thus struggle to write nice code. Most of us are self-taught, having used a 
+and thus struggle to write nice code ([Merali 2010](http://dx.doi.org/10.1038/467775a)). Most of us are self-taught, having used a 
 mix of books, advice from other amateur coders, internet posts, and lots of 
 trial and error. Soon after have we written our first R script, our hard drives 
 explode with large bodies of barely readable code that we only half understand, 
