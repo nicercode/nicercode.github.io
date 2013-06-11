@@ -1,0 +1,1 @@
+/Users/rich/Documents/Teaching/mcmc/combined.R
