@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "A quick guie to repetition"
+title: "A quick guide to repetition"
 date: 2013-03-18 10:25
 comments: true
 sharing: true
