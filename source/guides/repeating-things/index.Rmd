@@ -12,7 +12,7 @@ code](../functions/). Ideally you have a function that performs a single
 operation, and now you want to use it many times to do the same operation on
 lots of different data. The naive way to do that would be something like this:
 
-```{r}
+```{r, eval=FALSE}
   res1 <-  f(input1)
   res2 <-  f(input2)
   ...
@@ -61,7 +61,7 @@ the following two reasons:
 2. It permits you to write horrible code, like this example from my earlier
    work:
 
-```{r}
+```{r, eval=FALSE}
   for(n in 1:n.spp)
     {
     Ind = unique(Raw[Raw$SPP==as.character(sp.list$SPP[n]), "INDIV"]);
@@ -98,13 +98,13 @@ The main problems with this code are that
 
 Compare that to something like this
 
-```{r}
+```{r, eval=FALSE}
   lapply(unique(Raw$SPP), makePlot, data = Raw)
 ```
 That's much nicer! It's obvious what the loop does, and no new variables are
 created. Of course, for the code to work, we need to define the function
 
-```{r}
+```{r, eval=FALSE}
 makePlot <- function(species, data){
   ... #do stuff
 }
@@ -151,7 +151,7 @@ data-frames), before you proceed.
 
 ## Basic syntax
 
-```{r}
+```{r, eval=FALSE}
 result <- lapply(X, f, ...)
 ```
 
@@ -166,7 +166,7 @@ series of steps on a large number of similar objects.  The way to do this is to
 have a series of lapply statements, with the output of one providing the input to
 another:
 
-```{r}
+```{r, eval=FALSE}
 first.step <- lapply(X, first.function)
 second.step <- lapply(first.step, next.function)
 ```
@@ -181,12 +181,12 @@ have a function `test` which takes the path of a file, loads the data, and tests
 it against some hypothesised value H0. We can run the function on the file
 "myfile.csv" as follows.
 
-```{r}
+```{r, eval=FALSE}
 result <- test("myfile.csv", H0=1)
 ```
 
 We could then run the test on a bunch of files using lapply:
-```{r}
+```{r, eval=FALSE}
 files <- c("myfile1.csv", "myfile2.csv", "myfile3.csv")
 result <- lapply(files, test, H0=1)
 ```
@@ -195,7 +195,7 @@ But notice, that in this example, the **only this that differs** between the run
 is a single number in the file name. So we could save ourselves typing these by
 adding an extra step to generate the file names
 
-```{r}
+```{r, eval=FALSE}
 files <- lapply(1:10, function(x){paste0("myfile", x, ".csv")})
 result <- lapply(files, test, H0=1)
 ```
@@ -222,12 +222,13 @@ Another great feature of lapply is that is **makes it really easy to parallelise
 your code**. All computers now contain multiple CPUs, and these can all be put to
 work using the great [multicore package](http://www.rforge.net/multicore/).
 
-```{r}
+```{r, eval=FALSE}
 result <- lapply(x, f)   #apply f to x using a single core and lapply
 
 library(multicore)
 result <- mclapply(x, f) #same thing using all the cores in your machine
 ```
+
 # sapply, tapply and aggregate
 
  "compute summary statistics for some response variable grouped by grouping variable, returning a vector, list or matrix"
