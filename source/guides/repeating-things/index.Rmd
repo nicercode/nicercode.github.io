@@ -19,26 +19,32 @@ lots of different data. The naive way to do that would be something like this:
   res10 <-  f(input10)
 ```
 
-But this isn't very *nice*. Yes, by using a function, you have reduced a
-substantial amount of repetition. That IS nice. But there is still repetition.
-Repeating yourself will cost you time, both now and later, and potentially
-introduce some nasty  bugs. When it comes to repetition, well, just don't.
+But this isn't very *nice*. Yes, by using a function, you have reduced
+a substantial amount of repetition. That **is** nice. But there is
+still repetition.  Repeating yourself will cost you time, both now and
+later, and potentially introduce some nasty bugs. When it comes to
+repetition, well, just don't.
 
-The nice way of repeating elements of code is to use a loop of some sort. A
-loop is a coding structure that reruns the same bit of code over and  over, but
-with only small fragments differing between runs. In R there  is a whole family
-of looping functions, each with their own strengths.
+The nice way of repeating elements of code is to use a loop of some
+sort. A loop is a coding structure that reruns the same bit of code
+over and over, but with only small fragments differing between
+runs. In R there is a whole family of looping functions, each with
+their own strengths.
 
 # The split--apply--combine pattern
 
-First, it is good to recognise that most operations that involve looping are
-instances of the *split apply combine* strategy. You start with a bunch of data.
-Then you then **Split** it up into many smaller datasets, **Apply** a function
-to each piece, and finally **Combine** the results back together.
+First, it is good to recognise that most operations that involve
+looping are instances of the *split-apply-combine* strategy (this term
+and idea comes from the prolific [Hadley Wickham](http://had.co.nz/),
+who coined the term in [this
+paper](http://vita.had.co.nz/papers/plyr.html)).  You start with a
+bunch of data.  Then you then **Split** it up into many smaller
+datasets, **Apply** a function to each piece, and finally **Combine**
+the results back together.
 
-Some data arrives already in its pieces - e.g. output files from from a leaf
-scanner or temperature machine. Your job is then to analyse each bit, and put
-them together into a larger data set.
+Some data arrives already in its pieces - e.g. output files from from
+a leaf scanner or temperature machine. Your job is then to analyse
+each bit, and put them together into a larger data set.
 
 Sometimes the combine phase means making a new data frame, other times it might
 mean something more abstract, like combining a bunch of plots in a report.
@@ -110,37 +116,41 @@ makePlot <- function(species, data){
 }
 ```
 
-which actually makes our plot, but having all that detail off in a function has
-many benefits. Most of all it makes your code more reliable and easier to read.
+which actually makes our plot, but having all that detail off in a
+function has many benefits. Most of all it makes your code more
+reliable and easier to read.
 
-So our reason for avoiding `for` loops, and the similar functions `while` and `repeat`,
-is that the other looping functions, like
-`lapply`, demand that you write nicer code, so that's we'll focus on first.
+So our reason for avoiding `for` loops, and the similar functions
+`while` and `repeat`, is that the other looping functions, like
+`lapply`, demand that you write nicer code, so that's we'll focus on
+first.
 
 # The apply family
 
 There are several related function in R which allow you to apply some function
 to a series of objects (eg. vectors, matrices, dataframes or files). They include:
 
-- lapply
-- sapply
-- tapply
-- aggregate
-- mapply
-- apply.
+- `lapply`
+- `sapply`
+- `tapply`
+- `aggregate`
+- `mapply`
+- `apply`.
 
-Each repeats a function or operation on a series of elements, but they differ in
-the data types they accept and return. What they all in common is that **order
-of operation is not important**.  This is crucial. If each each operation is
-independent, then you can run them in whatever order you like. Generally, we
-argue that you should only use the generic looping functions `for`,
-`while`, and `repeat` when the order or operations *IS* important. Otherwise
+Each repeats a function or operation on a series of elements, but they
+differ in the data types they accept and return. What they all in
+common is that **order of iteration is not important**.  This is
+crucial. If each each iteration is independent, then you can cycle
+through them in whatever order you like. Generally, we argue that you
+should only use the generic looping functions `for`, `while`, and
+`repeat` when the order or operations **is** important. Otherwise
 reach for one of the apply tools.
 
-# lapply
+# lapply and sapply
 
-`lapply` applies a function to each element of a list (or vector), collecting
-results in a list.
+`lapply` applies a function to each element of a list (or vector),
+collecting results in a list.  `sapply` does the same, but will try to
+*simplify* the output if possible.
 
 Lists are a very powerful and flexible data structure that few people seem to
 know about. Moreover, they are the building block for other data structures,
@@ -206,17 +216,136 @@ wanted, to 10000000 files, if needed.
 
 ## Example - plotting temperature for many sites using open weather data
 
-The following code provides an example of an analysis pipeline.
+Let's look at the weather in some eastern Australian cities over the
+last couple of days.  The website
+[openweathermap.com](http://openweathermap.org) provides access to all
+sorts of neat data, lots of it essentially real time.  We've parcelled
+up some on the nicercode website to use.  In theory, this sort of
+analysis script could use the weather data directly, but we don't want
+to hammer their website too badly.  The code used to generate these
+files is [here](https://gist.github.com/richfitz/5795029).
 
+We want to look at the temperatures over the last few days for the cities
 
-## Tricks
+``` {r }
+cities <- c("Melbourne", "Sydney", "Brisbane", "Cairns")
+```
 
-### Combining output
+The data are stored in a url scheme where the Sydney data is at
+[http://nicercode.github.io/guides/repeating-things/data/Sydney.csv](http://nicercode.github.io/guides/repeating-things/data/Sydney.csv)
+and so on.  
 
-TODO (RF): use do.call(rbind) to combining together
+The URLs that we need are therefore:
+``` {r}
+urls <-
+  sprintf("http://nicercode.github.io/guides/repeating-things/data/%s.csv",
+          cities)
+urls
+```
 
-Use sapply:  - sapply --> vector, matrix
+We can write a function to download a file if it does not exist:
 
+``` {r}
+download.maybe <- function(url, refetch=FALSE, path=".") {
+  dest <- file.path(path, basename(url))
+  if (refetch || !file.exists(dest))
+    download.file(url, dest)
+  dest
+}
+```
+
+and then run that over the urls:
+
+``` {r}
+path <- "data"
+dir.create(path)
+files <- sapply(urls, download.maybe, path=path)
+names(files) <- cities
+```
+
+Notice that we never specify the order of which file is downloaded in
+which order; we just say "apply this function (`download.maybe`) to
+this list of urls.  We also pass the `path` argument to every function
+call.  So it was as if we'd written
+
+``` {r, eval=FALSE}
+download.maybe(url[[1]], path=path)
+download.maybe(url[[2]], path=path)
+download.maybe(url[[3]], path=path)
+download.maybe(url[[4]], path=path)
+```
+
+but much less boring, and scalable to more files.
+
+The first column, `time` of each file is a string representing date
+and time, which needs processing into R's native time format (dealing
+with times in R (or frankly, in any language) is a complete pain).  In
+a real case, there might be many steps involved in processing each
+file.  We can make a function like this:
+
+``` {r}
+load.file <- function(filename) {
+  d <- read.csv(filename, stringsAsFactors=FALSE)
+  d$time <- as.POSIXlt(d$time)
+  d
+}
+```
+
+that reads in a file given a filename, and then apply that function to
+each filename using `lapply`:
+
+```{r}
+data <- lapply(files, load.file)
+names(data) <- cities
+```
+
+We now have a **list**, where each element is a `data.frame` of
+weather data:
+
+```{r}
+head(data$Sydney)
+```
+
+We can use `lapply` or `sapply` to easy ask the same question to each
+element of this list.  For example, how many rows of data are there?
+
+```{r}
+sapply(data, nrow)
+```
+
+What is the hottest temperature recorded by city?
+```{r}
+sapply(data, function(x) max(x$temp))
+```
+
+or, estimate the autocorrelation function for each set:
+
+``` {r}
+autocor <- lapply(data, function(x) acf(x$temp, lag.max=24))
+par(mfrow=c(2,2))
+plot(autocor$Sydney)
+plot(autocor$Cairns)
+```
+
+I find that for loops can be easier to plot data, partly because
+there is nothing to *collect* (or combine) at each iteration.
+
+```{r}
+xlim <- range(sapply(data, function(x) range(x$time)))
+ylim <- range(sapply(data, function(x) range(x[-1])))
+plot(data[[1]]$time, data[[1]]$temp, ylim=ylim, type="n",
+     xlab="Time", ylab="Temperature")
+cols <- 1:4
+for (i in seq_along(data))
+  lines(data[[i]]$time, data[[i]]$temp, col=cols[i])
+```
+
+```{r}
+plot(data[[1]]$time, data[[1]]$temp, ylim=ylim, type="n",
+     xlab="Time", ylab="Temperature")
+mapply(function(x, col) lines(x$time, x$temp, col),
+       data, cols)
+```
 
 ### Parallelising your code
 
@@ -231,16 +360,16 @@ library(multicore)
 result <- mclapply(x, f) #same thing using all the cores in your machine
 ```
 
-# sapply, tapply and aggregate
+# tapply and aggregate
 
-As we saw above, lists can be very useful, but if you don't want output as a
-list, they can be a little awkward to work with. `sapply`, `tapply` and
-`aggregate` provide other ways of repeating things, with more customised
-output.
+In the case above, we had naturally "split" data; we had a vector of
+city names that led to a list of different data.frames of weather
+data.  Sometimes the "split" operation depends on a factor.  For
+example, you might have an experiment where you measured the size of
+plants at different levels of added fertiliser - you then want to know
+the mean height as a function of this treatment.
 
-We're going to illustrate the strengths of each, with an example. For that, we
-need some data. We're going to use some [data on seinfeld episodes]
-(https://github.com/audy/smalldata), taken from the [Internet movie Data Base]
+However, we're actiually going to use some data on [ratings of seinfeld episodes](https://github.com/audy/smalldata), taken from the [Internet movie Database]
 (http://www.reddit.com/r/dataisbeautiful/comments/1g7jw2/seinfeld_imdb_episode_ratings_oc/).
 
 ``` {r }
@@ -338,15 +467,17 @@ which is the same as what we got before:
 identical(rating.new, rating)
 ```
 
-Of course, we're not the first people to try this.  This is EXACTLY
+Of course, we're not the first people to try this.  This is **exactly**
 what the `tapply` function does (but with a few bells and whistles,
 especially around missing values, factor levels, additional
 arguments and multiple grouping factors at once).
 ``` {r }
 tapply(dat$Rating, dat$Season, mean)
 ```
-So using tapply, you can do all the above manipulation in a
+So using `tapply`, you can do all the above manipulation in a
 single line.
+
+There are a couple of limitations of `tapply`.
 
 The first is that getting the season out of `tapply` is quite
 hard.  We could do:
@@ -362,7 +493,8 @@ Better could be to use
 sort(unique(dat$Season))
 ```
 
-But that requires knowing what is going on inside of `tapply`.
+But that requires knowing what is going on inside of `tapply` (that
+unique levels are sorted and data are returned in that order).
 
 I suspect that this approach:
 ``` {r }
@@ -370,6 +502,9 @@ first <- function(x) x[[1]]
 tapply(dat$Season, dat$Season, first)
 ```
 is probably the most fool-proof, but it's certainly not pretty.
+
+However, the returned format is extremely flexible.  If you do:
+
 
 
 The `aggregate` function provides a simplfied interface to `tapply`
