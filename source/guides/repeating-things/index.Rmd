@@ -96,7 +96,7 @@ The main problems with this code are that
 - it is hard to read
 - all the variables are stored in the global scope, which is dangerous.
 
-Compare that to something like this
+All it's doing is making a plot! Compare that to something like this
 
 ```{r, eval=FALSE}
   lapply(unique(Raw$SPP), makePlot, data = Raw)
@@ -113,8 +113,9 @@ makePlot <- function(species, data){
 which actually makes our plot, but having all that detail off in a function has
 many benefits. Most of all it makes your code more reliable and easier to read.
 
-So our reason for avoiding for, is that the other looping functions, like
-lapply, demand that you write nicer code, so that's we'll focus on first.
+So our reason for avoiding `for` loops, and the similar functions `while` and `repeat`,
+is that the other looping functions, like
+`lapply`, demand that you write nicer code, so that's we'll focus on first.
 
 # The apply family
 
@@ -130,9 +131,9 @@ to a series of objects (eg. vectors, matrices, dataframes or files). They includ
 
 Each repeats a function or operation on a series of elements, but they differ in
 the data types they accept and return. What they all in common is that **order
-of operation is not important**.  This is
-crucial. If each each operation is independent, then you can run them in
-whatever order you like. Generally, we argue that you should only use the generic looping functions `for`,
+of operation is not important**.  This is crucial. If each each operation is
+independent, then you can run them in whatever order you like. Generally, we
+argue that you should only use the generic looping functions `for`,
 `while`, and `repeat` when the order or operations *IS* important. Otherwise
 reach for one of the apply tools.
 
@@ -203,8 +204,9 @@ result <- lapply(files, test, H0=1)
 The nice things about that piece of code is that it would extend as long as we
 wanted, to 10000000 files, if needed.
 
-## Example - plotting temperature for hundreds of sites using open weather data
+## Example - plotting temperature for many sites using open weather data
 
+The following code provides an example of an analysis pipeline.
 
 
 ## Tricks
@@ -231,18 +233,27 @@ result <- mclapply(x, f) #same thing using all the cores in your machine
 
 # sapply, tapply and aggregate
 
- "compute summary statistics for some response variable grouped by grouping variable, returning a vector, list or matrix"
+As we saw above, lists can be very useful, but if you don't want output as a
+list, they can be a little awkward to work with. `sapply`, `tapply` and
+`aggregate` provide other ways of repeating things, with more customised
+output.
+
+We're going to illustrate the strengths of each, with an example. For that, we
+need some data. We're going to use some [data on seinfeld episodes]
+(https://github.com/audy/smalldata), taken from the [Internet movie Data Base]
+(http://www.reddit.com/r/dataisbeautiful/comments/1g7jw2/seinfeld_imdb_episode_ratings_oc/).
 
 ``` {r }
 library(downloader)
 download("https://raw.github.com/audy/smalldata/master/seinfeld.csv",
          "seinfeld.csv")
 dat <- read.csv("seinfeld.csv", stringsAsFactors=FALSE)
-```
 
+```
 Columns are Season (number), Episode (number), Title (of the
 episode), Rating (according to IMDb) and Votes (to construct the
 rating).
+
 ``` {r }
 head(dat)
 ```
@@ -259,6 +270,7 @@ Hypothesis: Seinfeld used to be funny, but got progressively less
 good as it became too mainstream.  Or, does the mean episode rating
 per season decrease?
 
+Now, we want to calculate the average rating per season:
 ``` {r }
 mean(dat$Rating[dat$Season == 1])
 mean(dat$Rating[dat$Season == 2])
@@ -268,7 +280,7 @@ and so on until:
 mean(dat$Rating[dat$Season == 9])
 ```
 
-As with most things, we *could* do this with a for loop:
+As with most things, we *could* automate this with a for loop:
 
 ``` {r }
 seasons <- sort(unique(dat$Season))
@@ -277,8 +289,8 @@ for (i in seq_along(seasons))
   rating[i] <- mean(dat$Rating[dat$Season == seasons[i]])
 ```
 
-That's actually not that horrible to do.  But we could do it
-easier.  We could first *split* the ratings by season:
+That's actually not that horrible to do.  But we it could be
+nicer.  We first *split* the ratings by season:
 ``` {r }
 ratings.split <- split(dat$Rating, dat$Season)
 head(ratings.split)
@@ -301,7 +313,8 @@ arrows(seasons, rating - rating.se, seasons, rating + rating.se,
        code=3, angle=90, length=0.02)
 ```
 
-But there's repetition there.  Let's abstract that away a bit.
+But there's still repetition there.  Let's abstract that away a bit.
+
 Suppose we want a:
   1. response variable (like Rating was)
   2. grouping variable (like Season was)
@@ -325,15 +338,15 @@ which is the same as what we got before:
 identical(rating.new, rating)
 ```
 
-Of course, we're not the first people to try this.  This is what
-the `tapply` function does (but with a few bells and whistles,
+Of course, we're not the first people to try this.  This is EXACTLY
+what the `tapply` function does (but with a few bells and whistles,
 especially around missing values, factor levels, additional
 arguments and multiple grouping factors at once).
 ``` {r }
 tapply(dat$Rating, dat$Season, mean)
 ```
-
-There are a couple of limitations of `tapply`.
+So using tapply, you can do all the above manipulation in a
+single line.
 
 The first is that getting the season out of `tapply` is quite
 hard.  We could do:
@@ -356,8 +369,8 @@ I suspect that this approach:
 first <- function(x) x[[1]]
 tapply(dat$Season, dat$Season, first)
 ```
-
 is probably the most fool-proof, but it's certainly not pretty.
+
 
 The `aggregate` function provides a simplfied interface to `tapply`
 that avoids this issue.  It has two interfaces: the first is
@@ -503,22 +516,5 @@ Which reinforces one of the advantages of thinking in terms of
 functions: you can change the implementation detail without the
 rest of the program changing.
 
-# aggregate
 
-" wrapper around tappply to make results more useful especially for multiway groupings"
-  - means by 2 -factor
-  - examples: moniques data problem
-
-# apply
-
-# for loops
-
-- "good for functions that depend on outcomes from earlier iterations"
- very flexible
-- if written well, can be similar to lapply
-
-: Random walk
-
-# while (and repeat)
-- use where
 
