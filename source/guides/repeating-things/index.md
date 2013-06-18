@@ -13,12 +13,12 @@ operation, and now you want to use it many times to do the same operation on
 lots of different data. The naive way to do that would be something like this:
 
 
-{% highlight r %}
-res1 <- f(input1)
-res2 <- f(input2)
-...
-res10 <- f(input10)
-{% endhighlight %}
+```r
+  res1 <-  f(input1)
+  res2 <-  f(input2)
+  ...
+  res10 <-  f(input10)
+```
 
 
 But this isn't very *nice*. Yes, by using a function, you have reduced
@@ -70,47 +70,35 @@ the following two reasons:
    work:
 
 
-{% highlight r %}
-for (n in 1:n.spp) {
-    Ind = unique(Raw[Raw$SPP == as.character(sp.list$SPP[n]), "INDIV"])
-    I = length(Ind)
-    par(mfrow = c(I, 1), oma = c(5, 5, 5, 2), mar = c(3, 0, 0, 0))
-    for (i in 1:I) {
-        Dat = subset(Raw, Raw$SPP == as.character(sp.list$SPP[n]) & Raw$INDIV == 
-            Ind[i])
-        Y_ax = seq(0, 35, 10)
-        Y_ax2 = seq(0, 35, 5)
-        X_ax = seq(0, max(Dat$LL), 0.2)
-        X_ax2 = seq(0, max(Dat$LL), 0.1)
-        plot(1:2, 1:2, type = "n", log = "", axes = F, ann = F, xlim = c(-0.05, 
-            max(Dat$LL) + 0.05), ylim = c(min(Y_ax), max(Y_ax)), xaxs = "i", 
-            yaxs = "i", las = 1)
-        axis(2, at = Y_ax, labels = Y_ax, las = 1, tck = 0.03, cex.axis = 0.8, 
-            adj = 0.5)
-        axis(4, at = Y_ax, labels = F, tck = 0.03)
-        
-        X <- Dat$AGE
-        Xout <- data.frame(X = c(0, Dat$LL[1]))
-        
-        Y <- Dat$S2AV_L
-        points(X, Y, type = "p", pch = Fig$Symb[2], cex = 1.3, col = Fig$Cols[2])
-        R <- lm(Y ~ X)
-        points(Xout$X, predict(R, Xout), type = "l", col = Fig$Cols[2], lty = "dotted")
-        
-        legend("topright", legend = paste("indiv = ", Ind[i]), bty = "n")
-    }
-    mtext(expression(paste("Intercepted light (mol ", m^{
-        -2
-    }, d^{
-        -1
-    }, ")")), side = 2, line = 3, outer = T, adj = 0.5, cex = 1.2)
-    mtext(expression(paste("Leaf age (yrs)")), side = 1, line = 0.2, outer = T, 
-        adj = 0.5, cex = 1.2)
-    mtext(as.character(sp.list$Species[n]), side = 3, line = 2, outer = T, adj = 0.5, 
-        cex = 1.5)
-}
+```r
+  for(n in 1:n.spp)
+    {
+    Ind = unique(Raw[Raw$SPP==as.character(sp.list$SPP[n]), "INDIV"]);
+    I =    length(Ind);
+    par(mfrow=c(I,1), oma=c(5,5,5, 2), mar=c(3, 0, 0, 0));
+    for(i in 1:I)
+        {
+        Dat = subset(Raw, Raw$SPP==as.character(sp.list$SPP[n]) & Raw$INDIV==Ind[i])
+        Y_ax =seq(0, 35, 10); Y_ax2=seq(0, 35, 5);
+        X_ax =seq(0, max(Dat$LL), 0.2); X_ax2 =seq(0, max(Dat$LL), 0.1);
+        plot(1:2, 1:2, type="n",log="", axes=F,ann=F, xlim = c(-0.05, max(Dat$LL)+0.05), ylim=c(min(Y_ax), max(Y_ax)), xaxs="i", yaxs="i", las=1)
+        axis(2, at=Y_ax, labels=Y_ax, las=1, tck=0.030, cex.axis=0.8, adj = 0.5)
+        axis(4, at=Y_ax, labels=F,  tck=0.03)
+
+        X<-Dat$AGE;  Xout<-data.frame(X = c(0,Dat$LL[1]))
+
+        Y<-Dat$S2AV_L;
+        points(X,Y,type="p", pch=Fig$Symb[2], cex=1.3, col= Fig$Cols[2]);
+        R<-lm( Y~ X); points(Xout$X, predict(R, Xout), type="l", col= Fig$Cols[2], lty = "dotted")
+
+        legend("topright", legend = paste("indiv = ",Ind[i]), bty= "n")
+       }
+   mtext(expression(paste("Intercepted light (mol ", m^{-2},d^{-1},")")), side = 2, line = 3, outer = T, adj = 0.5, cex =1.2)
+   mtext(expression(paste("Leaf age (yrs)")), side = 1, line = 0.2, outer = T, adj = 0.5, cex =1.2)
+   mtext(as.character(sp.list$Species[n]), side = 3, line = 2, outer = T, adj = 0.5, cex =1.5)
+   }
 rm(R, Ind, I, i, X, X_ax, X_ax2, Y_ax, Y_ax2, Y, Xout, Dat)
-{% endhighlight %}
+```
 
 
 The main problems with this code are that
@@ -121,24 +109,36 @@ The main problems with this code are that
 All it's doing is making a plot! Compare that to something like this
 
 
-{% highlight r %}
-lapply(unique(Raw$SPP), makePlot, data = Raw)
-{% endhighlight %}
+```r
+  lapply(unique(Raw$SPP), makePlot, data = Raw)
+```
 
 That's much nicer! It's obvious what the loop does, and no new variables are
 created. Of course, for the code to work, we need to define the function
 
 
-{% highlight r %}
-makePlot <- function(species, data) {
-    ...  #do stuff
+```r
+makePlot <- function(species, data){
+  ... #do stuff
 }
-{% endhighlight %}
+```
 
 
 which actually makes our plot, but having all that detail off in a
 function has many benefits. Most of all it makes your code more
-reliable and easier to read.
+reliable and easier to read.  Of course you *could* do this easily
+with for loops too:
+
+
+```r
+for (i in unique(Raw$SPP))
+  makePlot(i, data = Raw)
+```
+
+
+but the temptation with `for` loops is often to cram a little extra
+code in each iteration, rather than stepping back and thinking about
+what you're trying to achieve.  
 
 So our reason for avoiding `for` loops, and the similar functions
 `while` and `repeat`, is that the other looping functions, like
@@ -183,9 +183,9 @@ data-frames), before you proceed.
 ## Basic syntax
 
 
-{% highlight r %}
+```r
 result <- lapply(X, f, ...)
-{% endhighlight %}
+```
 
 
 Here `X` is a list or vector, containing the elements that form the input to the
@@ -200,10 +200,10 @@ have a series of lapply statements, with the output of one providing the input t
 another:
 
 
-{% highlight r %}
+```r
 first.step <- lapply(X, first.function)
 second.step <- lapply(first.step, next.function)
-{% endhighlight %}
+```
 
 
 The challenge is to identify the parts of your analysis that stay the same and
@@ -217,17 +217,17 @@ it against some hypothesised value H0. We can run the function on the file
 "myfile.csv" as follows.
 
 
-{% highlight r %}
-result <- test("myfile.csv", H0 = 1)
-{% endhighlight %}
+```r
+result <- test("myfile.csv", H0=1)
+```
 
 
 We could then run the test on a bunch of files using lapply:
 
-{% highlight r %}
+```r
 files <- c("myfile1.csv", "myfile2.csv", "myfile3.csv")
-result <- lapply(files, test, H0 = 1)
-{% endhighlight %}
+result <- lapply(files, test, H0=1)
+```
 
 
 But notice, that in this example, the **only this that differs** between the runs
@@ -235,12 +235,10 @@ is a single number in the file name. So we could save ourselves typing these by
 adding an extra step to generate the file names
 
 
-{% highlight r %}
-files <- lapply(1:10, function(x) {
-    paste0("myfile", x, ".csv")
-})
-result <- lapply(files, test, H0 = 1)
-{% endhighlight %}
+```r
+files <- lapply(1:10, function(x){paste0("myfile", x, ".csv")})
+result <- lapply(files, test, H0=1)
+```
 
 
 The nice things about that piece of code is that it would extend as long as we
@@ -260,9 +258,9 @@ files is [here](https://gist.github.com/richfitz/5795029).
 We want to look at the temperatures over the last few days for the cities
 
 
-{% highlight r %}
+```r
 cities <- c("Melbourne", "Sydney", "Brisbane", "Cairns")
-{% endhighlight %}
+```
 
 
 The data are stored in a url scheme where the Sydney data is at
@@ -271,55 +269,43 @@ and so on.
 
 The URLs that we need are therefore:
 
-{% highlight r %}
-urls <- sprintf("http://nicercode.github.io/guides/repeating-things/data/%s.csv", 
-    cities)
+```r
+urls <-
+  sprintf("http://nicercode.github.io/guides/repeating-things/data/%s.csv",
+          cities)
 urls
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## [1] "http://nicercode.github.io/guides/repeating-things/data/Melbourne.csv"
-## [2] "http://nicercode.github.io/guides/repeating-things/data/Sydney.csv"   
-## [3] "http://nicercode.github.io/guides/repeating-things/data/Brisbane.csv" 
-## [4] "http://nicercode.github.io/guides/repeating-things/data/Cairns.csv"
-{% endhighlight %}
+```plain
+[1] "http://nicercode.github.io/guides/repeating-things/data/Melbourne.csv"
+[2] "http://nicercode.github.io/guides/repeating-things/data/Sydney.csv"   
+[3] "http://nicercode.github.io/guides/repeating-things/data/Brisbane.csv" 
+[4] "http://nicercode.github.io/guides/repeating-things/data/Cairns.csv"   
+```
 
 
 We can write a function to download a file if it does not exist:
 
 
-{% highlight r %}
-download.maybe <- function(url, refetch = FALSE, path = ".") {
-    dest <- file.path(path, basename(url))
-    if (refetch || !file.exists(dest)) 
-        download.file(url, dest)
-    dest
+```r
+download.maybe <- function(url, refetch=FALSE, path=".") {
+  dest <- file.path(path, basename(url))
+  if (refetch || !file.exists(dest))
+    download.file(url, dest)
+  dest
 }
-{% endhighlight %}
+```
 
 
 and then run that over the urls:
 
 
-{% highlight r %}
+```r
 path <- "data"
-dir.create(path)
-{% endhighlight %}
-
-
-
-{% highlight text %}
-## Warning: 'data' already exists
-{% endhighlight %}
-
-
-
-{% highlight r %}
-files <- sapply(urls, download.maybe, path = path)
+dir.create(path, showWarnings=FALSE)
+files <- sapply(urls, download.maybe, path=path)
 names(files) <- cities
-{% endhighlight %}
+```
 
 
 Notice that we never specify the order of which file is downloaded in
@@ -328,12 +314,12 @@ this list of urls.  We also pass the `path` argument to every function
 call.  So it was as if we'd written
 
 
-{% highlight r %}
-download.maybe(url[[1]], path = path)
-download.maybe(url[[2]], path = path)
-download.maybe(url[[3]], path = path)
-download.maybe(url[[4]], path = path)
-{% endhighlight %}
+```r
+download.maybe(urls[[1]], path=path)
+download.maybe(urls[[2]], path=path)
+download.maybe(urls[[3]], path=path)
+download.maybe(urls[[4]], path=path)
+```
 
 
 but much less boring, and scalable to more files.
@@ -345,127 +331,132 @@ a real case, there might be many steps involved in processing each
 file.  We can make a function like this:
 
 
-{% highlight r %}
+```r
 load.file <- function(filename) {
-    d <- read.csv(filename, stringsAsFactors = FALSE)
-    d$time <- as.POSIXlt(d$time)
-    d
+  d <- read.csv(filename, stringsAsFactors=FALSE)
+  d$time <- as.POSIXlt(d$time)
+  d
 }
-{% endhighlight %}
+```
 
 
 that reads in a file given a filename, and then apply that function to
 each filename using `lapply`:
 
 
-{% highlight r %}
+```r
 data <- lapply(files, load.file)
 names(data) <- cities
-{% endhighlight %}
+```
 
 
 We now have a **list**, where each element is a `data.frame` of
 weather data:
 
 
-{% highlight r %}
+```r
 head(data$Sydney)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-##                  time  temp temp.min temp.max
-## 1 2013-06-13 23:00:00 12.66     8.89    16.11
-## 2 2013-06-14 00:00:00 15.90    12.22    20.00
-## 3 2013-06-14 02:00:00 18.44    16.11    20.00
-## 4 2013-06-14 03:00:00 18.68    16.67    20.56
-## 5 2013-06-14 04:00:00 19.41    17.78    22.22
-## 6 2013-06-14 05:00:00 19.10    17.78    22.22
-{% endhighlight %}
+```plain
+                 time  temp temp.min temp.max
+1 2013-06-13 23:00:00 12.66     8.89    16.11
+2 2013-06-14 00:00:00 15.90    12.22    20.00
+3 2013-06-14 02:00:00 18.44    16.11    20.00
+4 2013-06-14 03:00:00 18.68    16.67    20.56
+5 2013-06-14 04:00:00 19.41    17.78    22.22
+6 2013-06-14 05:00:00 19.10    17.78    22.22
+```
 
 
 We can use `lapply` or `sapply` to easy ask the same question to each
 element of this list.  For example, how many rows of data are there?
 
 
-{% highlight r %}
+```r
 sapply(data, nrow)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## Melbourne    Sydney  Brisbane    Cairns 
-##        97        99        99        80
-{% endhighlight %}
+```plain
+Melbourne    Sydney  Brisbane    Cairns 
+       97        99        99        80 
+```
 
 
 What is the hottest temperature recorded by city?
 
-{% highlight r %}
+```r
 sapply(data, function(x) max(x$temp))
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## Melbourne    Sydney  Brisbane    Cairns 
-##     12.85     19.41     22.00     31.67
-{% endhighlight %}
+```plain
+Melbourne    Sydney  Brisbane    Cairns 
+    12.85     19.41     22.00     31.67 
+```
 
 
 or, estimate the autocorrelation function for each set:
 
 
-{% highlight r %}
-autocor <- lapply(data, function(x) acf(x$temp, lag.max = 24))
-{% endhighlight %}
+```r
+autocor <- lapply(data, function(x) acf(x$temp, lag.max=24))
+```
 
-![center](/index/unnamed-chunk-201.png) ![center](/index/unnamed-chunk-202.png) ![center](/index/unnamed-chunk-203.png) ![center](/index/unnamed-chunk-204.png) 
+![plot of chunk unnamed-chunk-22](img/unnamed-chunk-221.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-222.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-223.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-224.png) 
 
-{% highlight r %}
-par(mfrow = c(2, 2))
-plot(autocor$Sydney)
-plot(autocor$Cairns)
-{% endhighlight %}
+```r
+plot(autocor$Sydney, main="Sydney")
+```
 
-![center](/index/unnamed-chunk-205.png) 
+![plot of chunk unnamed-chunk-22](img/unnamed-chunk-225.png) 
+
+```r
+plot(autocor$Cairns, main="Cairns")
+```
+
+![plot of chunk unnamed-chunk-22](img/unnamed-chunk-226.png) 
 
 
 I find that for loops can be easier to plot data, partly because
 there is nothing to *collect* (or combine) at each iteration.
 
 
-{% highlight r %}
+```r
 xlim <- range(sapply(data, function(x) range(x$time)))
 ylim <- range(sapply(data, function(x) range(x[-1])))
-plot(data[[1]]$time, data[[1]]$temp, ylim = ylim, type = "n", xlab = "Time", 
-    ylab = "Temperature")
+plot(data[[1]]$time, data[[1]]$temp, ylim=ylim, type="n",
+     xlab="Time", ylab="Temperature")
 cols <- 1:4
-for (i in seq_along(data)) lines(data[[i]]$time, data[[i]]$temp, col = cols[i])
-{% endhighlight %}
+for (i in seq_along(data))
+  lines(data[[i]]$time, data[[i]]$temp, col=cols[i])
+```
 
-![center](/index/unnamed-chunk-21.png) 
-
-
-
-{% highlight r %}
-plot(data[[1]]$time, data[[1]]$temp, ylim = ylim, type = "n", xlab = "Time", 
-    ylab = "Temperature")
-{% endhighlight %}
-
-![center](/index/unnamed-chunk-22.png) 
-
-{% highlight r %}
-mapply(function(x, col) lines(x$time, x$temp, col), data, cols)
-{% endhighlight %}
+![plot of chunk unnamed-chunk-23](img/unnamed-chunk-23.png) 
 
 
 
-{% highlight text %}
-## Error: invalid plot type
-{% endhighlight %}
+```r
+plot(data[[1]]$time, data[[1]]$temp, ylim=ylim, type="n",
+     xlab="Time", ylab="Temperature")
+mapply(function(x, col) lines(x$time, x$temp, col=col),
+       data, cols)
+```
+
+![plot of chunk unnamed-chunk-24](img/unnamed-chunk-24.png) 
+
+```plain
+$Melbourne
+NULL
+
+$Sydney
+NULL
+
+$Brisbane
+NULL
+
+$Cairns
+NULL
+```
 
 
 ### Parallelising your code
@@ -475,12 +466,12 @@ your code**. All computers now contain multiple CPUs, and these can all be put t
 work using the great [multicore package](http://www.rforge.net/multicore/).
 
 
-{% highlight r %}
-result <- lapply(x, f)  #apply f to x using a single core and lapply
+```r
+result <- lapply(x, f)   #apply f to x using a single core and lapply
 
 library(multicore)
-result <- mclapply(x, f)  #same thing using all the cores in your machine
-{% endhighlight %}
+result <- mclapply(x, f) #same thing using all the cores in your machine
+```
 
 
 # tapply and aggregate
@@ -496,39 +487,39 @@ However, we're actiually going to use some data on [ratings of seinfeld episodes
 (http://www.reddit.com/r/dataisbeautiful/comments/1g7jw2/seinfeld_imdb_episode_ratings_oc/).
 
 
-{% highlight r %}
+```r
 library(downloader)
-download("https://raw.github.com/audy/smalldata/master/seinfeld.csv", "seinfeld.csv")
-dat <- read.csv("seinfeld.csv", stringsAsFactors = FALSE)
-{% endhighlight %}
+if (!file.exists("seinfeld.csv"))
+  download("https://raw.github.com/audy/smalldata/master/seinfeld.csv",
+           "seinfeld.csv")
+dat <- read.csv("seinfeld.csv", stringsAsFactors=FALSE)
+```
 
 Columns are Season (number), Episode (number), Title (of the
 episode), Rating (according to IMDb) and Votes (to construct the
 rating).
 
 
-{% highlight r %}
+```r
 head(dat)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-##   Season Episode             Title Rating Votes
-## 1      1       2      The Stakeout    7.8   649
-## 2      1       3       The Robbery    7.7   565
-## 3      1       4    Male Unbonding    7.6   561
-## 4      1       5     The Stock Tip    7.8   541
-## 5      2       1 The Ex-Girlfriend    7.7   529
-## 6      2       1        The Statue    8.1   509
-{% endhighlight %}
+```plain
+  Season Episode             Title Rating Votes
+1      1       2      The Stakeout    7.8   649
+2      1       3       The Robbery    7.7   565
+3      1       4    Male Unbonding    7.6   561
+4      1       5     The Stock Tip    7.8   541
+5      2       1 The Ex-Girlfriend    7.7   529
+6      2       1        The Statue    8.1   509
+```
 
 
 Make sure it's sorted sensibly
 
-{% highlight r %}
-dat <- dat[order(dat$Season, dat$Episode), ]
-{% endhighlight %}
+```r
+dat <- dat[order(dat$Season, dat$Episode),]
+```
 
 
 Biologically, this could be Site / Individual / ID / Mean size /
@@ -540,106 +531,98 @@ per season decrease?
 
 Now, we want to calculate the average rating per season:
 
-{% highlight r %}
+```r
 mean(dat$Rating[dat$Season == 1])
-{% endhighlight %}
+```
 
+```plain
+[1] 7.725
+```
 
-
-{% highlight text %}
-## [1] 7.725
-{% endhighlight %}
-
-
-
-{% highlight r %}
+```r
 mean(dat$Rating[dat$Season == 2])
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## [1] 8.158
-{% endhighlight %}
+```plain
+[1] 8.158
+```
 
 and so on until:
 
-{% highlight r %}
+```r
 mean(dat$Rating[dat$Season == 9])
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## [1] 8.323
-{% endhighlight %}
+```plain
+[1] 8.323
+```
 
 
 As with most things, we *could* automate this with a for loop:
 
 
-{% highlight r %}
+```r
 seasons <- sort(unique(dat$Season))
-rating <- numeric(length(seasons))
-for (i in seq_along(seasons)) rating[i] <- mean(dat$Rating[dat$Season == seasons[i]])
-{% endhighlight %}
+rating  <- numeric(length(seasons))
+for (i in seq_along(seasons))
+  rating[i] <- mean(dat$Rating[dat$Season == seasons[i]])
+```
 
 
 That's actually not that horrible to do.  But we it could be
-nicer.  We first *split* the ratings by season:
+nicer.  We first **split** the ratings by season:
 
-{% highlight r %}
+```r
 ratings.split <- split(dat$Rating, dat$Season)
 head(ratings.split)
-{% endhighlight %}
+```
 
+```plain
+$`1`
+[1] 7.8 7.7 7.6 7.8
 
+$`2`
+ [1] 7.7 8.1 8.0 7.9 7.8 8.5 8.7 8.5 8.0 8.0 8.4 8.3
 
-{% highlight text %}
-## $`1`
-## [1] 7.8 7.7 7.6 7.8
-## 
-## $`2`
-##  [1] 7.7 8.1 8.0 7.9 7.8 8.5 8.7 8.5 8.0 8.0 8.4 8.3
-## 
-## $`3`
-##  [1] 8.3 7.5 7.8 8.1 8.3 7.3 8.7 8.5 8.5 8.6 8.1 8.4 8.5 8.7 8.6 7.8 8.3
-## [18] 8.6 8.7 8.6 8.0 8.5 8.6
-## 
-## $`4`
-##  [1] 8.4 8.3 8.6 8.5 8.7 8.6 8.1 8.2 8.7 8.4 8.3 8.7 8.5 8.6 8.3 8.2 8.4
-## [18] 8.5 8.4 8.7 8.7 8.4 8.5
-## 
-## $`5`
-##  [1] 8.6 8.4 8.4 8.4 8.3 8.2 8.1 8.5 8.5 8.3 8.0 8.1 8.6 8.3 8.4 8.5 7.9
-## [18] 8.0 8.5 8.7 8.5
-## 
-## $`6`
-##  [1] 8.1 8.4 8.3 8.4 8.2 8.3 8.5 8.4 8.3 8.2 8.1 8.4 8.6 8.2 7.5 8.4 8.2
-## [18] 8.5 8.3 8.4 8.1 8.5 8.2
-{% endhighlight %}
+$`3`
+ [1] 8.3 7.5 7.8 8.1 8.3 7.3 8.7 8.5 8.5 8.6 8.1 8.4 8.5 8.7 8.6 7.8 8.3
+[18] 8.6 8.7 8.6 8.0 8.5 8.6
+
+$`4`
+ [1] 8.4 8.3 8.6 8.5 8.7 8.6 8.1 8.2 8.7 8.4 8.3 8.7 8.5 8.6 8.3 8.2 8.4
+[18] 8.5 8.4 8.7 8.7 8.4 8.5
+
+$`5`
+ [1] 8.6 8.4 8.4 8.4 8.3 8.2 8.1 8.5 8.5 8.3 8.0 8.1 8.6 8.3 8.4 8.5 7.9
+[18] 8.0 8.5 8.7 8.5
+
+$`6`
+ [1] 8.1 8.4 8.3 8.4 8.2 8.3 8.5 8.4 8.3 8.2 8.1 8.4 8.6 8.2 7.5 8.4 8.2
+[18] 8.5 8.3 8.4 8.1 8.5 8.2
+```
 
 
 Then use sapply to loop over this list, computing the mean
 
-{% highlight r %}
+```r
 rating <- sapply(ratings.split, mean)
-{% endhighlight %}
+```
 
 
 Then if we wanted to apply a different function (say, compute the
 per-season standard error) we could just do:
 
-{% highlight r %}
-se <- function(x) sqrt(var(x)/length(x))
+```r
+se <- function(x)
+  sqrt(var(x) / length(x))
 rating.se <- sapply(ratings.split, se)
 
-plot(rating ~ seasons, ylim = c(7, 9), pch = 19)
-arrows(seasons, rating - rating.se, seasons, rating + rating.se, code = 3, angle = 90, 
-    length = 0.02)
-{% endhighlight %}
+plot(rating ~ seasons, ylim=c(7, 9), pch=19)
+arrows(seasons, rating - rating.se, seasons, rating + rating.se,
+       code=3, angle=90, length=0.02)
+```
 
-![center](/index/unnamed-chunk-32.png) 
+![plot of chunk unnamed-chunk-34](img/unnamed-chunk-34.png) 
 
 
 But there's still repetition there.  Let's abstract that away a bit.
@@ -651,32 +634,30 @@ Suppose we want a:
 
 This just writes out *exactly* what we had before
 
-{% highlight r %}
+```r
 summarise.by.group <- function(response, group, func) {
-    response.split <- split(response, group)
-    sapply(response.split, func)
+  response.split <- split(response, group)
+  sapply(response.split, func)
 }
-{% endhighlight %}
+```
 
 
 We can compute the mean rating by season again:
 
-{% highlight r %}
+```r
 rating.new <- summarise.by.group(dat$Rating, dat$Season, mean)
-{% endhighlight %}
+```
 
 
 which is the same as what we got before:
 
-{% highlight r %}
+```r
 identical(rating.new, rating)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## [1] TRUE
-{% endhighlight %}
+```plain
+[1] TRUE
+```
 
 
 Of course, we're not the first people to try this.  This is **exactly**
@@ -684,16 +665,15 @@ what the `tapply` function does (but with a few bells and whistles,
 especially around missing values, factor levels, additional
 arguments and multiple grouping factors at once).
 
-{% highlight r %}
+```r
 tapply(dat$Rating, dat$Season, mean)
-{% endhighlight %}
+```
 
+```plain
+    1     2     3     4     5     6     7     8     9 
+7.725 8.158 8.304 8.465 8.343 8.283 8.441 8.423 8.323 
+```
 
-
-{% highlight text %}
-##     1     2     3     4     5     6     7     8     9 
-## 7.725 8.158 8.304 8.465 8.343 8.283 8.441 8.423 8.323
-{% endhighlight %}
 
 So using `tapply`, you can do all the above manipulation in a
 single line.
@@ -703,15 +683,13 @@ There are a couple of limitations of `tapply`.
 The first is that getting the season out of `tapply` is quite
 hard.  We could do:
 
-{% highlight r %}
+```r
 as.numeric(names(rating))
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## [1] 1 2 3 4 5 6 7 8 9
-{% endhighlight %}
+```plain
+[1] 1 2 3 4 5 6 7 8 9
+```
 
 
 But that's quite ugly, not least because it involves the conversion
@@ -719,15 +697,13 @@ numeric -> string -> numeric.
 
 Better could be to use
 
-{% highlight r %}
+```r
 sort(unique(dat$Season))
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## [1] 1 2 3 4 5 6 7 8 9
-{% endhighlight %}
+```plain
+[1] 1 2 3 4 5 6 7 8 9
+```
 
 
 But that requires knowing what is going on inside of `tapply` (that
@@ -735,17 +711,15 @@ unique levels are sorted and data are returned in that order).
 
 I suspect that this approach:
 
-{% highlight r %}
+```r
 first <- function(x) x[[1]]
 tapply(dat$Season, dat$Season, first)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## 1 2 3 4 5 6 7 8 9 
-## 1 2 3 4 5 6 7 8 9
-{% endhighlight %}
+```plain
+1 2 3 4 5 6 7 8 9 
+1 2 3 4 5 6 7 8 9 
+```
 
 is probably the most fool-proof, but it's certainly not pretty.
 
@@ -758,24 +732,22 @@ that avoids this issue.  It has two interfaces: the first is
 similar to what we used before, but the grouping variable now must
 be a list or data frame:
 
-{% highlight r %}
+```r
 aggregate(dat$Rating, dat["Season"], mean)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-##   Season     x
-## 1      1 7.725
-## 2      2 8.158
-## 3      3 8.304
-## 4      4 8.465
-## 5      5 8.343
-## 6      6 8.283
-## 7      7 8.441
-## 8      8 8.423
-## 9      9 8.323
-{% endhighlight %}
+```plain
+  Season     x
+1      1 7.725
+2      2 8.158
+3      3 8.304
+4      4 8.465
+5      5 8.343
+6      6 8.283
+7      7 8.441
+8      8 8.423
+9      9 8.323
+```
 
 
 (note that `dat["Season"]` returns a one-column data frame).  The
@@ -783,77 +755,72 @@ column 'x' is our response variable, Rating, grouped by season.  We
 can get its name included in the column names here by specifying
 the first argument as a `data.frame` too:
 
-{% highlight r %}
+```r
 aggregate(dat["Rating"], dat["Season"], mean)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-##   Season Rating
-## 1      1  7.725
-## 2      2  8.158
-## 3      3  8.304
-## 4      4  8.465
-## 5      5  8.343
-## 6      6  8.283
-## 7      7  8.441
-## 8      8  8.423
-## 9      9  8.323
-{% endhighlight %}
+```plain
+  Season Rating
+1      1  7.725
+2      2  8.158
+3      3  8.304
+4      4  8.465
+5      5  8.343
+6      6  8.283
+7      7  8.441
+8      8  8.423
+9      9  8.323
+```
 
 
 The other interface is the formula interface, that will be familiar
 from fitting linear models:
 
-{% highlight r %}
+```r
 aggregate(Rating ~ Season, dat, mean)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-##   Season Rating
-## 1      1  7.725
-## 2      2  8.158
-## 3      3  8.304
-## 4      4  8.465
-## 5      5  8.343
-## 6      6  8.283
-## 7      7  8.441
-## 8      8  8.423
-## 9      9  8.323
-{% endhighlight %}
+```plain
+  Season Rating
+1      1  7.725
+2      2  8.158
+3      3  8.304
+4      4  8.465
+5      5  8.343
+6      6  8.283
+7      7  8.441
+8      8  8.423
+9      9  8.323
+```
 
 
 This interface is really nice; we can get the number of votes here
 too.
 
-{% highlight r %}
+```r
 aggregate(cbind(Rating, Votes) ~ Season, dat, mean)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-##   Season Rating Votes
-## 1      1  7.725 579.0
-## 2      2  8.158 533.0
-## 3      3  8.304 496.7
-## 4      4  8.465 497.0
-## 5      5  8.343 452.5
-## 6      6  8.283 385.7
-## 7      7  8.441 408.0
-## 8      8  8.423 391.4
-## 9      9  8.323 415.0
-{% endhighlight %}
+```plain
+  Season Rating Votes
+1      1  7.725 579.0
+2      2  8.158 533.0
+3      3  8.304 496.7
+4      4  8.465 497.0
+5      5  8.343 452.5
+6      6  8.283 385.7
+7      7  8.441 408.0
+8      8  8.423 391.4
+9      9  8.323 415.0
+```
 
 
 If you have multiple grouping variables, you can write things like:
 ```
 aggregate(response ~ factor1 + factor2, dat, function)
 ```
-to apply a function to each pair of levels of factor1 and factor2.
+
+to apply a function to each pair of levels of `factor1` and `factor2`.
 
 # replicate
 
@@ -862,71 +829,60 @@ Suppose that you flip a fair coin n times and count the number of
 heads:
 
 
-{% highlight r %}
-trial <- function(n) sum(runif(n) < 0.5)  # could have done a binomial draw...
-{% endhighlight %}
+```r
+trial <- function(n)
+  sum(runif(n) < 0.5) # could have done a binomial draw...
+```
 
 
 You can run the trial a bunch of times:
 
-{% highlight r %}
+```r
 trial(10)
-{% endhighlight %}
+```
 
+```plain
+[1] 4
+```
 
-
-{% highlight text %}
-## [1] 5
-{% endhighlight %}
-
-
-
-{% highlight r %}
+```r
 trial(10)
-{% endhighlight %}
+```
 
+```plain
+[1] 4
+```
 
-
-{% highlight text %}
-## [1] 6
-{% endhighlight %}
-
-
-
-{% highlight r %}
+```r
 trial(10)
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-## [1] 4
-{% endhighlight %}
+```plain
+[1] 6
+```
 
 
 and get a feel for the results.  If you want to replicate the trial
 100 times and look at the distribution of results, you could do:
 
-{% highlight r %}
+```r
 replicate(100, trial(10))
-{% endhighlight %}
+```
 
-
-
-{% highlight text %}
-##   [1] 7 4 4 4 5 3 4 3 3 7 7 4 8 5 5 5 6 6 5 5 2 3 6 5 4 7 7 5 5 5 5 4 5 5 5
-##  [36] 4 6 6 4 5 6 6 5 6 4 8 6 4 7 8 5 5 6 5 7 3 3 4 4 6 4 6 7 5 3 7 3 6 4 5
-##  [71] 6 2 4 3 4 3 7 7 5 4 9 3 7 5 6 6 5 4 4 6 4 9 3 6 7 3 7 3 3 4
-{% endhighlight %}
+```plain
+  [1] 4 4 5 6 8 5 5 7 3 5 6 4 4 3 5 3 6 7 2 6 6 4 5 4 4 4 4 5 6 5 4 2 6 5 6
+ [36] 5 6 8 5 6 4 5 4 5 5 5 4 7 3 5 5 6 4 6 4 6 4 4 4 6 3 5 5 7 6 7 5 3 4 4
+ [71] 5 6 8 5 6 2 5 7 6 3 5 9 3 7 6 4 5 3 7 3 3 7 6 8 5 4 6 7 4 3
+```
 
 
 and then you could plot these:
 
-{% highlight r %}
+```r
 plot(table(replicate(10000, trial(50))))
-{% endhighlight %}
+```
 
-![center](/index/unnamed-chunk-47.png) 
+![plot of chunk unnamed-chunk-49](img/unnamed-chunk-49.png) 
 
 
 # for loops
@@ -939,93 +895,97 @@ probability move left or right.
 
 Start at position 0
 
-{% highlight r %}
+```r
 x <- 0
-{% endhighlight %}
+```
 
 Move left or right with probability p (0.5 = unbiased)
 
-{% highlight r %}
+```r
 p <- 0.5
-{% endhighlight %}
+```
 
 
 Update the position
 
-{% highlight r %}
+```r
 x <- x + if (runif(1) < p) -1 else 1
-{% endhighlight %}
+```
 
 
 Let's abstract the update into a function:
 
-{% highlight r %}
-step <- function(x, p = 0.5) x + if (runif(1) < p) -1 else 1
-{% endhighlight %}
+```r
+step <- function(x, p=0.5)
+  x + if (runif(1) < p) -1 else 1
+```
 
 
 Repeat a bunch of times:
 
-{% highlight r %}
+```r
 x <- step(x)
 x <- step(x)
-{% endhighlight %}
+```
 
 
 To find out where we got to after 20 steps:
 
-{% highlight r %}
-for (i in 1:20) x <- step(x)
-{% endhighlight %}
+```r
+for (i in 1:20)
+  x <- step(x)
+```
 
 
 If we want to collect where we're up to at the same time:
 
-{% highlight r %}
+```r
 nsteps <- 200
 x <- numeric(nsteps + 1)
-x[1] <- 0  # start at 0
-for (i in seq_len(nsteps)) x[i + 1] <- step(x[i])
-plot(x, type = "l")
-{% endhighlight %}
+x[1] <- 0 # start at 0
+for (i in seq_len(nsteps))
+  x[i+1] <- step(x[i])
+plot(x, type="l")
+```
 
-![center](/index/unnamed-chunk-54.png) 
+![plot of chunk unnamed-chunk-56](img/unnamed-chunk-56.png) 
 
 
 Pulling *that* into a function:
 
-{% highlight r %}
-random.walk <- function(nsteps, x0 = 0, p = 0.5) {
-    x <- numeric(nsteps + 1)
-    x[1] <- x0
-    for (i in seq_len(nsteps)) x[i + 1] <- step(x[i])
-    x
+```r
+random.walk <- function(nsteps, x0=0, p=0.5) {
+  x <- numeric(nsteps + 1)
+  x[1] <- x0
+  for (i in seq_len(nsteps))
+    x[i+1] <- step(x[i])
+  x
 }
-{% endhighlight %}
+```
 
 
 We can then do 30 random walks:
 
-{% highlight r %}
+```r
 walks <- replicate(30, random.walk(100))
-matplot(walks, type = "l", lty = 1, col = rainbow(nrow(walks)))
-{% endhighlight %}
+matplot(walks, type="l", lty=1, col=rainbow(nrow(walks)))
+```
 
-![center](/index/unnamed-chunk-56.png) 
+![plot of chunk unnamed-chunk-58](img/unnamed-chunk-58.png) 
 
 
 Of course, in this case, if we think in terms of vectors we can
 actually implement random walk using implicit vectorisation:
 
-{% highlight r %}
-random.walk <- function(nsteps, x0 = 0, p = 0.5) cumsum(c(x0, ifelse(runif(nsteps) < 
-    p, -1, 1)))
+```r
+random.walk <- function(nsteps, x0=0, p=0.5)
+  cumsum(c(x0, ifelse(runif(nsteps) < p, -1, 1)))
 
 walks <- replicate(30, random.walk(100))
-matplot(walks, type = "l", lty = 1, col = rainbow(nrow(walks)))
-{% endhighlight %}
+matplot(walks, type="l", lty=1, col=rainbow(nrow(walks)))
+```
 
-![center](/index/unnamed-chunk-57.png) 
+![plot of chunk unnamed-chunk-59](img/unnamed-chunk-59.png) 
 
 
 Which reinforces one of the advantages of thinking in terms of

@@ -1,11 +1,14 @@
----
+```{r, echo=FALSE, results="asis"}
+header <- '---
 layout: page
 title: "Repeating things: looping and the apply family"
 date: 2013-03-18 10:25
 comments: true
 sharing: true
 footer: false
----
+---'
+writeLines(header)
+```
 
 Previously we looked at how you can [use functions to simplify your
 code](../functions/). Ideally you have a function that performs a single
@@ -118,7 +121,17 @@ makePlot <- function(species, data){
 
 which actually makes our plot, but having all that detail off in a
 function has many benefits. Most of all it makes your code more
-reliable and easier to read.
+reliable and easier to read.  Of course you *could* do this easily
+with for loops too:
+
+```{r,eval=FALSE}
+for (i in unique(Raw$SPP))
+  makePlot(i, data = Raw)
+```
+
+but the temptation with `for` loops is often to cram a little extra
+code in each iteration, rather than stepping back and thinking about
+what you're trying to achieve.  
 
 So our reason for avoiding `for` loops, and the similar functions
 `while` and `repeat`, is that the other looping functions, like
@@ -258,7 +271,7 @@ and then run that over the urls:
 
 ``` {r}
 path <- "data"
-dir.create(path)
+dir.create(path, showWarnings=FALSE)
 files <- sapply(urls, download.maybe, path=path)
 names(files) <- cities
 ```
@@ -269,10 +282,10 @@ this list of urls.  We also pass the `path` argument to every function
 call.  So it was as if we'd written
 
 ``` {r, eval=FALSE}
-download.maybe(url[[1]], path=path)
-download.maybe(url[[2]], path=path)
-download.maybe(url[[3]], path=path)
-download.maybe(url[[4]], path=path)
+download.maybe(urls[[1]], path=path)
+download.maybe(urls[[2]], path=path)
+download.maybe(urls[[3]], path=path)
+download.maybe(urls[[4]], path=path)
 ```
 
 but much less boring, and scalable to more files.
@@ -322,9 +335,8 @@ or, estimate the autocorrelation function for each set:
 
 ``` {r}
 autocor <- lapply(data, function(x) acf(x$temp, lag.max=24))
-par(mfrow=c(2,2))
-plot(autocor$Sydney)
-plot(autocor$Cairns)
+plot(autocor$Sydney, main="Sydney")
+plot(autocor$Cairns, main="Cairns")
 ```
 
 I find that for loops can be easier to plot data, partly because
@@ -343,7 +355,7 @@ for (i in seq_along(data))
 ```{r}
 plot(data[[1]]$time, data[[1]]$temp, ylim=ylim, type="n",
      xlab="Time", ylab="Temperature")
-mapply(function(x, col) lines(x$time, x$temp, col),
+mapply(function(x, col) lines(x$time, x$temp, col=col),
        data, cols)
 ```
 
@@ -374,8 +386,9 @@ However, we're actiually going to use some data on [ratings of seinfeld episodes
 
 ``` {r }
 library(downloader)
-download("https://raw.github.com/audy/smalldata/master/seinfeld.csv",
-         "seinfeld.csv")
+if (!file.exists("seinfeld.csv"))
+  download("https://raw.github.com/audy/smalldata/master/seinfeld.csv",
+           "seinfeld.csv")
 dat <- read.csv("seinfeld.csv", stringsAsFactors=FALSE)
 
 ```
@@ -419,7 +432,7 @@ for (i in seq_along(seasons))
 ```
 
 That's actually not that horrible to do.  But we it could be
-nicer.  We first *split* the ratings by season:
+nicer.  We first **split** the ratings by season:
 ``` {r }
 ratings.split <- split(dat$Rating, dat$Season)
 head(ratings.split)
@@ -474,6 +487,7 @@ arguments and multiple grouping factors at once).
 ``` {r }
 tapply(dat$Rating, dat$Season, mean)
 ```
+
 So using `tapply`, you can do all the above manipulation in a
 single line.
 
@@ -539,7 +553,8 @@ If you have multiple grouping variables, you can write things like:
 ```
 aggregate(response ~ factor1 + factor2, dat, function)
 ```
-to apply a function to each pair of levels of factor1 and factor2.
+
+to apply a function to each pair of levels of `factor1` and `factor2`.
 
 # replicate
 
