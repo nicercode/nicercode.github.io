@@ -32,6 +32,6 @@ knit_post <- function(input, publish =FALSE, base.url ="/", published.post.dir =
     files <- c(sub(paste0(published.post.dir,"/"), "", output), #post
              dir(image.dir, full.names = TRUE), #figures
               image.dir) #image  dir
-    tmp<-file.remove(files[file.exists(files)])
+#    tmp<-file.remove(files[file.exists(files)])
   }
   }
