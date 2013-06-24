@@ -1,0 +1,1333 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Markov Chain Monte Carlo - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Markov Chain Monte Carlo 10 June 2013 This topic doesn’t have much to do with nicer code, but there is
+probably some overlap in interest. However, &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/guides/mcmc/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Markov Chain Monte Carlo</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-06-10T10:25:00+10:00" pubdate data-updated="true">10 June 2013</time></p>
+  </header>
+  
+  <p>This topic doesn’t have much to do with nicer code, but there is
+probably some overlap in interest. However, some of the topics that
+we cover arise naturally here, so read on!  We’ll flesh out
+sections that use interesting programming techniques (especially
+higher order functions) over time.</p>
+
+<h1 id="what-is-mcmc-and-when-would-you-use-it">What is MCMC and when would you use it?</h1>
+
+<p>MCMC is simply an algorithm for sampling from a distribution.</p>
+
+<p>It’s only one of many algorithms for doing so.  The term stands for
+“Markov Chain Monte Carlo”, because it is a type of “Monte Carlo”
+(i.e., a random) method that uses “Markov chains” (we’ll discuss
+these later).  MCMC is just one type of Monte Carlo method,
+although it is possible to view many other commonly used methods as
+simply special cases of MCMC.</p>
+
+<h2 id="why-would-i-want-to-sample-from-a-distribution">Why would I want to sample from a distribution?</h2>
+
+<p>You may not realise you want to (and really, you may not actually
+want to).  However, sampling from a distribution turns out to be
+the easiest way of solving some problems.  In MCMC’s use in
+statistics, sampling from a distribution is simply a means to an
+end.</p>
+
+<p>Probably the most common way that MCMC is used is to draw samples
+from the <strong>posterior probability distribution</strong> of some model in
+Bayesian inference.  With these samples, you can then ask things
+like “what is the mean and credibility interval for a parameter?”.</p>
+
+<p>For example, suppose that you have fit a model where the posterior
+probability density is some function $f$ of parameters $(x, y)$.
+Then, to compute the mean value of parameter $x$, you would compute</p>
+
+<script type="math/tex; mode=display">
+\bar x = \iint\! x f(x, y)\,\mathrm{d} x\,\mathrm{d} y
+</script>
+
+<p>which you can read simply as “the value of $x$ multiplied by the
+probability of parmeters $(x, y)$, integrated over all possible
+values that $x$ and $y$ could take.</p>
+
+<p>An alternative way to compute this value is simulate $k$
+observations, $[(x,y)^{(1)}, \ldots, (x,y)^{(k)}]$, from $f(x,y)$
+and compute the sample mean as</p>
+
+<script type="math/tex; mode=display">\bar x \approx \frac{1}{k} \sum_j x^{(j)}</script>
+
+<p>where $x^{(j)}$ is the the $x$ value from the $j$th sample.</p>
+
+<p>If these samples are independent samples from the distribution, then
+as $k \to \infty$ the estimated mean of $x$ will converge on the true
+mean.</p>
+
+<p>Suppose that our target distribution is a normal distribution with
+mean <code>m</code> and standard deviation <code>s</code>.  Obviously the mean of this
+distribution is <code>m</code>, but let’s try to show that by drawing samples
+from the distribution.</p>
+
+<p>As an example, consider estimating the mean of a normal
+distribution with mean <code>m</code> and standard deviation <code>s</code> (here, I’m
+just going to use parameters corresponding to a standard normal):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">m <span class="o">&lt;-</span> <span class="m">0</span>
+</span><span class="line">s <span class="o">&lt;-</span> <span class="m">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can easily sample from this distribution using the <code>rnorm</code>
+function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">samples <span class="o">&lt;-</span> rnorm<span class="p">(</span><span class="m">10000</span><span class="p">,</span> m<span class="p">,</span> s<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The mean of the samples is very close to the true mean (zero):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mean<span class="p">(</span>samples<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -0.006537</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In fact, in this case, the expected variance of the estimate with
+$n$ samples is $1/n$, so we’d expect most values to lie within $\pm
+2\, / \sqrt{n} = 0.02$ of the true mean for 10,000 points.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">summary<span class="p">(</span>replicate<span class="p">(</span><span class="m">1000</span><span class="p">,</span> mean<span class="p">(</span>rnorm<span class="p">(</span><span class="m">10000</span><span class="p">,</span> m<span class="p">,</span> s<span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
+</span><span class="line"><span class="c1">## -0.03250 -0.00580  0.00046  0.00042  0.00673  0.03550</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This function computes the cumulative mean (that is, for element
+$k$, the sum of elements $1, 2, \ldots, k$ divided by $k$).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">cummean <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    cumsum<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> seq_along<span class="p">(</span>x<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Here is the convergence towards the true mean (red line at 0).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>cummean<span class="p">(</span>samples<span class="p">),</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Sample&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Cumulative mean&quot;</span><span class="p">,</span>
+</span><span class="line">     panel.first<span class="o">=</span>abline<span class="p">(</span>h<span class="o">=</span><span class="m">0</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">),</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-7.png" alt="Convergence of estimated mean towards true mean" /> </p>
+
+<p>Transforming the x axis onto a log scale and showing another 30
+random approaches:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span>cummean<span class="p">(</span>samples<span class="p">),</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Sample&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Cumulative mean&quot;</span><span class="p">,</span>
+</span><span class="line">     panel.first<span class="o">=</span>abline<span class="p">(</span>h<span class="o">=</span><span class="m">0</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">),</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> log<span class="o">=</span><span class="s">&quot;x&quot;</span><span class="p">)</span>
+</span><span class="line"><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> seq_len<span class="p">(</span><span class="m">30</span><span class="p">))</span>
+</span><span class="line">    lines<span class="p">(</span>cummean<span class="p">(</span>rnorm<span class="p">(</span><span class="m">10000</span><span class="p">,</span> m<span class="p">,</span> s<span class="p">)),</span>
+</span><span class="line">          col<span class="o">=</span>rgb<span class="p">(</span>runif<span class="p">(</span><span class="m">1</span><span class="p">),</span> runif<span class="p">(</span><span class="m">1</span><span class="p">),</span> runif<span class="p">(</span><span class="m">1</span><span class="p">),</span> <span class="m">.5</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-8.png" alt="Approach of 30 trajectories towards the true mean (log x scale)" /> </p>
+
+<p>How does this work?  Consider the integral</p>
+
+<script type="math/tex; mode=display">
+\int_a^b h(x) \mathrm{d} x
+</script>
+
+<p>If this can be decomposed into the product of a function $f(x)$ and a
+probability density function $p(x)$, then</p>
+
+<script type="math/tex; mode=display">
+\int_a^b h(x) \mathrm{d} x = \int_a^b f(x)p(x) \mathrm{d} x
+</script>
+
+<p>Note that the right hand side is simply the expectation $E[f(x)]$.
+By the Law of Large Numbers, the expected value is the limit of the
+sample mean as the sample size grows to infinity.  So we can
+approximate $E[f(x)]$ as</p>
+
+<script type="math/tex; mode=display">
+\frac{1}{n}\sum_{i=1}^n f(x_i).
+</script>
+
+<p>You can do lots of similar things with this approach.  For example,
+if you want to draw a 95\% credibility interval around the estimate
+$\bar x$, you could estimate the bottom component of that by
+solving</p>
+
+<script type="math/tex; mode=display">
+0.025 = \int_{-\infty}^a\int_{-\infty}^{\infty}\! x f(x, y)\,\mathrm{d} y\,\mathrm{d} x
+</script>
+
+<p>for $a$.  Or, you can just take the sample quantile from your
+series of sampled points.</p>
+
+<p>This is the analytically computed point where 2.5% of the
+probability density is below:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">p <span class="o">&lt;-</span> <span class="m">0.025</span>
+</span><span class="line">a.true <span class="o">&lt;-</span> qnorm<span class="p">(</span>p<span class="p">,</span> m<span class="p">,</span> s<span class="p">)</span>
+</span><span class="line">a.true
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.96</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can estimate this by direct integration in this case (using the
+argument above)</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">f <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> dnorm<span class="p">(</span>x<span class="p">,</span> m<span class="p">,</span> s<span class="p">)</span>
+</span><span class="line">g <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>a<span class="p">)</span>
+</span><span class="line">    integrate<span class="p">(</span>f<span class="p">,</span> <span class="o">-</span><span class="kc">Inf</span><span class="p">,</span> a<span class="p">)</span><span class="o">$</span>value
+</span><span class="line">a.int <span class="o">&lt;-</span> uniroot<span class="p">(</span><span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> g<span class="p">(</span>x<span class="p">)</span> <span class="o">-</span> p<span class="p">,</span> c<span class="p">(</span><span class="m">-10</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span><span class="o">$</span>root
+</span><span class="line">a.int
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.96</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And estimate the point by Monte Carlo integration:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">a.mc <span class="o">&lt;-</span> unname<span class="p">(</span>quantile<span class="p">(</span>samples<span class="p">,</span> p<span class="p">))</span>
+</span><span class="line">a.mc
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -2.023</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note that this has an error around it:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">a.true <span class="o">-</span> a.mc
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.06329</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But in the limit as the sample size goes to infinity, this will
+converge.  Furthermore, it is possible to make statements about the
+nature of the error; if we repeat sampling process 100 times, we
+get a series of estimate that have error on around the same order
+of magnitide as the error around the mean:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">a.mc <span class="o">&lt;-</span> replicate<span class="p">(</span><span class="m">100</span><span class="p">,</span> quantile<span class="p">(</span>rnorm<span class="p">(</span><span class="m">10000</span><span class="p">,</span> m<span class="p">,</span> s<span class="p">),</span> p<span class="p">))</span>
+</span><span class="line">summary<span class="p">(</span>a.true <span class="o">-</span> a.mc<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
+</span><span class="line"><span class="c1">## -0.05840 -0.01640 -0.00572 -0.00024  0.01400  0.07880</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="why-doesnt-normal-statistics-use-monte-carlo-methods">Why doesn’t “normal statistics” use Monte Carlo methods?</h2>
+
+<p>For many problems in traditionally taught statistics, rather than
+sampling from a distribution you <strong>maximise or maximise a
+function</strong>.  So we’d take some function that describes the
+likelihood and maximise it (maximum likelihood inference), or some
+function that computes the sum of squares and minimise it.</p>
+
+<p>The reasons for this difference are a little subtle, but boil down
+to whether or not you feel that you could possibly put a
+probability distribution over a parameter – is it something you
+could sample?  Fisher in particular had strong thoughts on this,
+thoughts which are argued more recently by AWF Edwards in the book
+“Likelihood”.  To avoid having to sample from a distribution (or
+really, to avoid the idea that one could draw samples from a
+probability distribution of parameters), error estimates in
+frequentist statistics tend to either be asymptotic large-data
+estimates or perhaps based on the bootstrap.</p>
+
+<p>However, the role played by Monte Carlo methods in Bayesian
+statistics is the same as the optimisation routine in frequentist
+statistics; it’s simply the algorithm for doing the inference.  So
+once you know basically what MCMC is doing, you can treat it like a
+black box in the same way that most people treat their optimisation
+routines as a black box.</p>
+
+<h1 id="markov-chain-monte-carlo">Markov Chain Monte Carlo</h1>
+
+<p>At this point, suppose that there is some target distribution that
+we’d like to sample from, but that we cannot just draw independent
+samples from like we did before.  There is a solution for doing this
+using the Markov Chain Monte Carlo (MCMC).  First, we have to define
+some things so that the next sentence makes sense: <em>What we’re going
+to do is try to construct a Markov chain that has our
+hard-to-sample-from target distribution as its stationary
+distribution</em>.</p>
+
+<h2 id="definitions">Definitions</h2>
+
+<p>Let $X_t$ denote the value of some random variable at time $t$.  A
+Markov chain generates a series of samples $[X0, X1, X2, \ldots, Xt]$
+by starting at some point $X_0$, and then following a series
+of stochastic steps.</p>
+
+<p>Markov chains satisfy the <em>Markov property</em>.  The Markov property
+is the stochastic process version of “what happens in Vegas stays
+in Vegas”; basically it doesn’t matter how you got to some state
+$x$, the probability of transition out of $x$ is unchanged, or:</p>
+
+<script type="math/tex; mode=display">
+\Pr(X_{t+1} = x | X_t = x_t, X_{t-1} = x_{t-1}, \ldots, X_0 = x_0) = \Pr(X_{t+1} = x | X_t = x_t)
+</script>
+
+<p>The transition from one step to the next is described by the
+<em>transition kernel</em>, which can be described by the probability (or
+for continuous variables the probability <em>density</em>) of a transition
+from state $i$ to state $j$ as</p>
+
+<script type="math/tex; mode=display">
+P(i \to j) = \Pr(X_{t+1} = j | X_t = i)
+</script>
+
+<p>Let $\pi_j(t) = \Pr(X_t = s_j)$ be the probability that the chain is in
+state $j$ at time (step) $t$, and define $\vec\pi(t)$ be the vector of
+probabilites over possible states.  Then, given $\vec\pi(t)$, we can
+compute $\vec\pi(t+1)$ using the <em>Chapman-Kolmogorov</em> equation.</p>
+
+<script type="math/tex; mode=display">
+\pi_i(t+1) = \sum_k \pi_k(t) \Pr(k \to i)
+</script>
+
+<p>that is; the probability that we were in state $k$ multiplied by the
+probability of making the transition from $k$ to $i$, summed over all
+possible source states $k$.  Using the book-keeping of linear algebra,
+let $\mathbf{P}$ be the <em>probability transition matrix</em> – the matrix
+whose $i,j$th element is $P(i \to j)$, and rewrite the above equation
+as</p>
+
+<script type="math/tex; mode=display">\vec\pi(t + 1) = \vec\pi(t)\mathbf{P}</script>
+
+<p>Note that we can iterate this equation easily:</p>
+
+<p>$$
+\vec\pi(t+2) = \vec\pi(t+1)\mathbf{P}
+$$
+$$
+\vec\pi(t+2) = \vec\pi(t)\mathbf{P}\mathbf{P}
+$$
+$$
+\vec\pi(t+2) = \vec\pi(t)\mathbf{P}^2
+$$</p>
+
+<h2 id="stationary-distributions">Stationary distributions</h2>
+
+<p>If there is some vector $\vec\pi^*$ that satisfies</p>
+
+<script type="math/tex; mode=display">\vec\pi^* = \vec\pi^*\mathbf{P}</script>
+
+<p>then $\vec\pi^<em>$ is the *stationary distribution</em> of this Markov
+chain.  Intuitively, think of this as the eventual characteristic
+set of states that the system will set in to; run for long enough
+that the system has “forgotten” its initial state, then the $i$th
+element of this vector is the probability that the system will be
+in state $i$.</p>
+
+<p>The Markov chain will have a stationary distribution if the process
+is <em>irreducible</em> (every state is visitable from every other state)
+and <em>aperiodic</em> (the number of steps between two visits of a state
+is not a fixed integer multiple number of steps).</p>
+
+<p>Mathematically, $\vec\pi^*$ is the left eigenvector assicated with
+the eigenvalue = 1.</p>
+
+<p>Here’s a quick definition to make things more concrete (but note
+that this has nothing to do with MCMC itself – this is <em>just</em> to
+think about Markov chains!).  Suppose that we have a three-state
+Markov process.  Let <code>P</code> be the transition probability matrix for
+the chain:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">P <span class="o">&lt;-</span> rbind<span class="p">(</span>c<span class="p">(</span><span class="m">.5</span><span class="p">,</span>  <span class="m">.25</span><span class="p">,</span> <span class="m">.25</span><span class="p">),</span>
+</span><span class="line">           c<span class="p">(</span><span class="m">.2</span><span class="p">,</span>  <span class="m">.1</span><span class="p">,</span>  <span class="m">.7</span><span class="p">),</span>
+</span><span class="line">           c<span class="p">(</span><span class="m">.25</span><span class="p">,</span> <span class="m">.25</span><span class="p">,</span> <span class="m">.5</span><span class="p">))</span>
+</span><span class="line">P
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##      [,1] [,2] [,3]</span>
+</span><span class="line"><span class="c1">## [1,] 0.50 0.25 0.25</span>
+</span><span class="line"><span class="c1">## [2,] 0.20 0.10 0.70</span>
+</span><span class="line"><span class="c1">## [3,] 0.25 0.25 0.50</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>note that the rows of <code>P</code> sum to one:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">rowSums<span class="p">(</span>P<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 1 1 1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This can be interpreted as saying that we must go <em>somewhere</em>, even
+if that place is the same place.  The entry <code>P[i,j]</code> gives the
+probability of moving from state <code>i</code> to state <code>j</code> (so this is the
+$P(i\to j)$ mentioned above.</p>
+
+<p>Note that unlike the rows, the columns do not necessarily sum to 1:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">colSums<span class="p">(</span>P<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.95 0.60 1.45</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This function takes a state vector <code>x</code> (where <code>x[i]</code> is the
+probability of being in state <code>i</code>) and iterates it by multiplying
+by the transition matrix <code>P</code>, advancing the system for <code>n</code> steps.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">iterate.P <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> P<span class="p">,</span> n<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    res <span class="o">&lt;-</span> matrix<span class="p">(</span><span class="kc">NA</span><span class="p">,</span> n<span class="m">+1</span><span class="p">,</span> length<span class="p">(</span>x<span class="p">))</span>
+</span><span class="line">    res<span class="p">[</span><span class="m">1</span><span class="p">,]</span> <span class="o">&lt;-</span> x
+</span><span class="line">    <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> seq_len<span class="p">(</span>n<span class="p">))</span>
+</span><span class="line">        res<span class="p">[</span>i<span class="m">+1</span><span class="p">,]</span> <span class="o">&lt;-</span> x <span class="o">&lt;-</span> x <span class="o">%*%</span> P
+</span><span class="line">    res
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Starting with the system in state 1 (so <code>x</code> is the vector $[1,0,0]$
+indicating that there is a 100\% probability of being in state 1
+and no chance of being in any other state), and iterating for 10
+steps:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">n <span class="o">&lt;-</span> <span class="m">10</span>
+</span><span class="line">y1 <span class="o">&lt;-</span> iterate.P<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span> P<span class="p">,</span> n<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Similarly, for the other two possible starting states:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">y2 <span class="o">&lt;-</span> iterate.P<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">0</span><span class="p">),</span> P<span class="p">,</span> n<span class="p">)</span>
+</span><span class="line">y3 <span class="o">&lt;-</span> iterate.P<span class="p">(</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> P<span class="p">,</span> n<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This shows the convergence on the stationary distribution.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">matplot<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y1<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> lty<span class="o">=</span><span class="m">1</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Step&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">matlines<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y2<span class="p">,</span> lty<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">matlines<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y3<span class="p">,</span> lty<span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-20.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
+
+<p>which means that regardless of the starting distribution, there is
+a 32% chance of the chain being in state 1 after about 10 or more
+iterations <em>regardless of where it started</em>.  So, knowing about the
+state of this chain at one point in time gives you information
+about where it is likely to be for only a few steps.</p>
+
+<p>We can use R’s <code>eigen</code> function to extract the leading eigenvector
+for the syste (the <code>t()</code> here transposes the matrix so that we get
+the <em>left</em> eigenvector).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">v <span class="o">&lt;-</span> eigen<span class="p">(</span>t<span class="p">(</span>P<span class="p">),</span> <span class="kc">FALSE</span><span class="p">)</span><span class="o">$</span>vectors<span class="p">[,</span><span class="m">1</span><span class="p">]</span>
+</span><span class="line">v <span class="o">&lt;-</span> v<span class="o">/</span>sum<span class="p">(</span>v<span class="p">)</span> <span class="c1"># normalise eigenvector</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then add points to the figure from before showing how close we are
+to convergence:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">matplot<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y1<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> lty<span class="o">=</span><span class="m">1</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Step&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">matlines<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y2<span class="p">,</span> lty<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">matlines<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y3<span class="p">,</span> lty<span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</span><span class="line">points<span class="p">(</span>rep<span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> v<span class="p">,</span> col<span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-22.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
+
+<p>Following the definition of eigenvectors, multiplying the
+eigenvector by the transition matrix returns the eigenvector
+itself:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">drop<span class="p">(</span>v <span class="o">%*%</span> P<span class="p">)</span> <span class="o">-</span> v
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.110e-16  1.388e-16  0.000e+00</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(strictly, this should be the eigenvalue multiplied by <code>v</code>, but the
+leading eigenvalue is always 1 for these matrices).</p>
+
+<p>The proceedure above iterated the overall probabilities of
+different states; not the actual transitions through the system.
+So, let’s iterate the system, rather than the probability vector.
+The function <code>run</code> here takes a state (this time, just an integer
+indicating which of the states $1, 2, 3$ the system is in), the
+same transition matrix as above, and a number of steps to run.
+Each step, it looks at the possible places that it could transition
+to and chooses 1 (this uses R’s <code>sample</code> function).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">run <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>i<span class="p">,</span> P<span class="p">,</span> n<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    res <span class="o">&lt;-</span> integer<span class="p">(</span>n<span class="p">)</span>
+</span><span class="line">    <span class="kr">for</span> <span class="p">(</span>t <span class="kr">in</span> seq_len<span class="p">(</span>n<span class="p">))</span>
+</span><span class="line">        res<span class="p">[[</span>t<span class="p">]]</span> <span class="o">&lt;-</span> i <span class="o">&lt;-</span> sample<span class="p">(</span>nrow<span class="p">(</span>P<span class="p">),</span> <span class="m">1</span><span class="p">,</span> pr<span class="o">=</span>P<span class="p">[</span>i<span class="p">,])</span>
+</span><span class="line">    res
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Here’s the chain running around for 100 steps:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">samples <span class="o">&lt;-</span> run<span class="p">(</span><span class="m">1</span><span class="p">,</span> P<span class="p">,</span> <span class="m">100</span><span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span>samples<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;s&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Step&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;State&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-25.png" alt="First 100 steps of the Markov chain" /> </p>
+
+<p>Rather than plotting state, plot the fraction of time that we were
+in each state over time:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">1</span><span class="p">),</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Step&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">2</span><span class="p">),</span> col<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">3</span><span class="p">),</span> col<span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-26.png" alt="Probability of being in each state over first 100 steps" /> </p>
+
+<p>Run this out a little longer (5,000 steps)</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">n <span class="o">&lt;-</span> <span class="m">5000</span>
+</span><span class="line">set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">samples <span class="o">&lt;-</span> run<span class="p">(</span><span class="m">1</span><span class="p">,</span> P<span class="p">,</span> n<span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">1</span><span class="p">),</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">1</span><span class="p">),</span> log<span class="o">=</span><span class="s">&quot;x&quot;</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Step&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">2</span><span class="p">),</span> col<span class="o">=</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">3</span><span class="p">),</span> col<span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</span><span class="line">abline<span class="p">(</span>h<span class="o">=</span>v<span class="p">,</span> lty<span class="o">=</span><span class="m">2</span><span class="p">,</span> col<span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-27.png" alt="Probability of being in each state over first 5,000 steps" /> </p>
+
+<p>A sufficient (but not necessary) condition for the existance of a
+stationary distribution is Detailed Balance, which says:</p>
+
+<script type="math/tex; mode=display">P(j \to k) \pi_j^* = P(k \to j) \pi_k^*</script>
+
+<p>This imples that the chain is <em>reversible</em>.  The reason why this
+condition implies that a stationary distribution exists is that it
+implies</p>
+
+<script type="math/tex; mode=display">\vec\pi^* = \vec\pi^*\mathbf{P}</script>
+
+<p>Summing both sides of the detailed balance equation over states $j$</p>
+
+<script type="math/tex; mode=display">\sum_j P(j \to k) \pi_j^* = \sum_j P(k \to j) \pi_k^*</script>
+
+<p>The term on the left is equal to the $k$th element of
+$\vec\pi^*\mathbf{P}$ and the term on the right can be factored:</p>
+
+<script type="math/tex; mode=display">\sum_j P(k \to j) \pi_k^* = \pi_k^* \sum_j P(k \to j)</script>
+
+<p>Then, because $\sum_j P(k \to j) = 1$ (because $P$ is a transition
+probability function, by the law of total probability things go
+<em>somewhere</em> with probability 1), so the right hand side is $\pi_k^*$,
+so we have </p>
+
+<script type="math/tex; mode=display">(\vec\pi^*\mathbf{P})_k = \pi_k^*</script>
+
+<p>which holds for all $k$ so</p>
+
+<script type="math/tex; mode=display">\vec\pi^*\mathbf{P} = \vec\pi^*</script>
+
+<h2 id="the-metropolis-algorithm">The Metropolis algorithm</h2>
+
+<p>This is the simplest MCMC algorithm.  This section is not intended
+to show how to design efficient MCMC samplers, but just to see that
+they do in fact work.  What we’re going to do is have some
+distribution that we want to sample from, and we’re going to be
+able to evaluate some function $f(x)$ that is <em>proportional</em> to the
+probability density of the target distribution (that is, if $p(x)$
+is the probability density function itself, $f(x) \propto p(x)$,
+i.e., $f(x) = p(x) / Z$, where $Z = \int f(x) \mathrm{d} x$).  Note
+that $x$ might be a vector or a scalar.</p>
+
+<p>We also need a probability density function $P$ that we <em>can</em> draw
+samples from.  For the simplest algorithm, this <strong>proposal</strong>
+distribution is symmetric, that is $P(x\to x^\prime) = P(x^\prime \to
+x)$.</p>
+
+<p>The algorithm proceeds as follows.</p>
+
+<ol>
+  <li>Start in some state $x_t$.</li>
+  <li>Propose a new state $x^\prime$</li>
+  <li>Compute the “acceptance probability”
+<script type="math/tex">\alpha = \min\left[1, \frac{f(x^\prime)}{f(x)}\right]</script></li>
+  <li>Draw some uniformly distributed random number $u$ from $[0,1]$; if
+$u &lt; \alpha$ accept the point, setting $x<em>{t+1} = x^\prime$.
+Otherwise reject it and set $x</em>{t+1} = x_t$.</li>
+</ol>
+
+<p>Note that in step 3 above, the unknown normalising constant drops out
+because</p>
+
+<script type="math/tex; mode=display">\frac{p(x^\prime)}{p(x)} = \frac{f(x^\prime)}{Z} \frac{Z}{f(x)} =
+\frac{f(x^\prime)}{f(x)}</script>
+
+<p>This will generate a series of samples ${x<em>0, x</em>1, \ldots}$.  Note
+that where the proposed sample is rejected, the same <em>value</em> will be
+present in consecutive samples.</p>
+
+<p>Note also that these are not independent samples from the target
+distribution; they are <em>dependent samples</em>; that is, sample $x_t$
+depends on $x_{t-1}$ and so on.  However, because the chain
+approaches a stationary distribution, this dependence will not
+matter so long as we sample enough points.</p>
+
+<h2 id="mcmc-sampling-in-1d-single-parameter-problems">MCMC sampling in 1d (single parameter) problems</h2>
+
+<p>Here is a target distribution to sample from.  It’s the weighted sum
+of two normal distributions.  This sort of distribution is fairly
+straightforward to sample from, but let’s draw samples with MCMC.  The
+probability density function is</p>
+
+<script type="math/tex; mode=display">
+f(x) = \frac{1}{z}
+p \frac{\exp(x - \mu_1)^2}{2 \sigma_1^2} +
+(1-p) \frac{\exp(x - \mu_2)^2}{2 \sigma_2^2}
+</script>
+
+<p>This is a contrived example, but distributions like this are not
+totally impossible, and might arise when sampling things from a
+mixture (such as human heights, which are bimodal due to sexual
+dimorphism).</p>
+
+<p>Fairly arbitrarily, here are some parameters and the definition of
+the target density.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">p <span class="o">&lt;-</span> <span class="m">0.4</span>
+</span><span class="line">mu <span class="o">&lt;-</span> c<span class="p">(</span><span class="m">-1</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">sd <span class="o">&lt;-</span> c<span class="p">(</span><span class="m">.5</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">f <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    p     <span class="o">*</span> dnorm<span class="p">(</span>x<span class="p">,</span> mu<span class="p">[</span><span class="m">1</span><span class="p">],</span> sd<span class="p">[</span><span class="m">1</span><span class="p">])</span> <span class="o">+</span>
+</span><span class="line">    <span class="p">(</span><span class="m">1</span><span class="o">-</span>p<span class="p">)</span> <span class="o">*</span> dnorm<span class="p">(</span>x<span class="p">,</span> mu<span class="p">[</span><span class="m">2</span><span class="p">],</span> sd<span class="p">[</span><span class="m">2</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Here is the probability density plotted over the “important” part
+of the domain (in general, this may not even be known!)</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">),</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="m">-4</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> n<span class="o">=</span><span class="m">301</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-29.png" alt="plot of chunk unnamed-chunk-29" /> </p>
+
+<p>Let’s define a really simple minded proposal algorithm that samples
+from a normal distribution centred on the current point with a
+standard deviation of 4</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">q <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> rnorm<span class="p">(</span><span class="m">1</span><span class="p">,</span> x<span class="p">,</span> <span class="m">4</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This implements the core algorithm, as described above:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">step <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> f<span class="p">,</span> q<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="c1">## Pick new point</span>
+</span><span class="line">    xp <span class="o">&lt;-</span> q<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    <span class="c1">## Acceptance probability:</span>
+</span><span class="line">    alpha <span class="o">&lt;-</span> min<span class="p">(</span><span class="m">1</span><span class="p">,</span> f<span class="p">(</span>xp<span class="p">)</span> <span class="o">/</span> f<span class="p">(</span>x<span class="p">))</span>
+</span><span class="line">    <span class="c1">## Accept new point with probability alpha:</span>
+</span><span class="line">    <span class="kr">if</span> <span class="p">(</span>runif<span class="p">(</span><span class="m">1</span><span class="p">)</span> <span class="o">&lt;</span> alpha<span class="p">)</span>
+</span><span class="line">        x <span class="o">&lt;-</span> xp
+</span><span class="line">    <span class="c1">## Returning the point:</span>
+</span><span class="line">    x
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>And this just takes care of running the MCMC for a number of steps.
+It will start at point <code>x</code> return a matrix with <code>nsteps</code> rows and
+the same number of columns as <code>x</code> has elements.  If run on scalar
+<code>x</code> it will return a vector.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">run <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> f<span class="p">,</span> q<span class="p">,</span> nsteps<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    res <span class="o">&lt;-</span> matrix<span class="p">(</span><span class="kc">NA</span><span class="p">,</span> nsteps<span class="p">,</span> length<span class="p">(</span>x<span class="p">))</span>
+</span><span class="line">    <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> seq_len<span class="p">(</span>nsteps<span class="p">))</span>
+</span><span class="line">        res<span class="p">[</span>i<span class="p">,]</span> <span class="o">&lt;-</span> x <span class="o">&lt;-</span> step<span class="p">(</span>x<span class="p">,</span> f<span class="p">,</span> q<span class="p">)</span>
+</span><span class="line">    drop<span class="p">(</span>res<span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We pick a place to start (how about -10, just to pick a really poor
+point)</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">res <span class="o">&lt;-</span> run<span class="p">(</span><span class="m">-10</span><span class="p">,</span> f<span class="p">,</span> q<span class="p">,</span> <span class="m">1000</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Here are the first 1000 steps of the Markov chain, with the target
+density on the right:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">layout<span class="p">(</span>matrix<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> widths<span class="o">=</span>c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
+</span><span class="line">par<span class="p">(</span>mar<span class="o">=</span>c<span class="p">(</span><span class="m">4.1</span><span class="p">,</span> <span class="m">.5</span><span class="p">,</span> <span class="m">.5</span><span class="p">,</span> <span class="m">.5</span><span class="p">),</span> oma<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">4.1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span><span class="line">plot<span class="p">(</span>res<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;s&quot;</span><span class="p">,</span> xpd<span class="o">=</span><span class="kc">NA</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Parameter&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Sample&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">usr <span class="o">&lt;-</span> par<span class="p">(</span><span class="s">&quot;usr&quot;</span><span class="p">)</span>
+</span><span class="line">xx <span class="o">&lt;-</span> seq<span class="p">(</span>usr<span class="p">[</span><span class="m">3</span><span class="p">],</span> usr<span class="p">[</span><span class="m">4</span><span class="p">],</span> length<span class="o">=</span><span class="m">301</span><span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span>f<span class="p">(</span>xx<span class="p">),</span> xx<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> yaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34" /> </p>
+
+<p>Even with only a thousand (non-independent) samples, we’re starting
+to resemble the target distribution fairly well.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">hist<span class="p">(</span>res<span class="p">,</span> <span class="m">50</span><span class="p">,</span> freq<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">.4</span><span class="p">),</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;x&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Probability density&quot;</span><span class="p">)</span>
+</span><span class="line">z <span class="o">&lt;-</span> integrate<span class="p">(</span>f<span class="p">,</span> <span class="o">-</span><span class="kc">Inf</span><span class="p">,</span> <span class="kc">Inf</span><span class="p">)</span><span class="o">$</span>value
+</span><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> n<span class="o">=</span><span class="m">200</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-35.png" alt="plot of chunk unnamed-chunk-35" /> </p>
+
+<p>Run for longer and things start looking a bunch better:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">res.long <span class="o">&lt;-</span> run<span class="p">(</span><span class="m">-10</span><span class="p">,</span> f<span class="p">,</span> q<span class="p">,</span> <span class="m">50000</span><span class="p">)</span>
+</span><span class="line">hist<span class="p">(</span>res.long<span class="p">,</span> <span class="m">100</span><span class="p">,</span> freq<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">.4</span><span class="p">),</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;x&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Probability density&quot;</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>
+</span><span class="line">z <span class="o">&lt;-</span> integrate<span class="p">(</span>f<span class="p">,</span> <span class="o">-</span><span class="kc">Inf</span><span class="p">,</span> <span class="kc">Inf</span><span class="p">)</span><span class="o">$</span>value
+</span><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> n<span class="o">=</span><span class="m">200</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-36.png" alt="plot of chunk unnamed-chunk-36" /> </p>
+
+<p>Now, run with different proposal mechanisms - one with a very wide
+standard deviation (33 units) and the other with a very small
+standard deviation (3 units).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">res.fast <span class="o">&lt;-</span> run<span class="p">(</span><span class="m">-10</span><span class="p">,</span> f<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> rnorm<span class="p">(</span><span class="m">1</span><span class="p">,</span> x<span class="p">,</span>  <span class="m">33</span><span class="p">),</span> <span class="m">1000</span><span class="p">)</span>
+</span><span class="line">res.slow <span class="o">&lt;-</span> run<span class="p">(</span><span class="m">-10</span><span class="p">,</span> f<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> rnorm<span class="p">(</span><span class="m">1</span><span class="p">,</span> x<span class="p">,</span>  <span class="m">.3</span><span class="p">),</span> <span class="m">1000</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Here is the same plot as above – note the different ways that the
+three traces are moving around.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">layout<span class="p">(</span>matrix<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> <span class="m">1</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> widths<span class="o">=</span>c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">1</span><span class="p">))</span>
+</span><span class="line">par<span class="p">(</span>mar<span class="o">=</span>c<span class="p">(</span><span class="m">4.1</span><span class="p">,</span> <span class="m">.5</span><span class="p">,</span> <span class="m">.5</span><span class="p">,</span> <span class="m">.5</span><span class="p">),</span> oma<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">4.1</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span><span class="line">plot<span class="p">(</span>res<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;s&quot;</span><span class="p">,</span> xpd<span class="o">=</span><span class="kc">NA</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Parameter&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Sample&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span>
+</span><span class="line">     col<span class="o">=</span><span class="s">&quot;grey&quot;</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>res.fast<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>res.slow<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span>f<span class="p">(</span>xx<span class="p">),</span> xx<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> yaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-38.png" alt="plot of chunk unnamed-chunk-38" /> </p>
+
+<p>The original (grey line) trace is bouncing around quite freely.</p>
+
+<p>In contrast, the red trace (large proposal moves) is suggesting
+terrible spaces in probability space and rejecting most of them.
+This means it tends to stay put for along time at once space.</p>
+
+<p>The blue trace proposes small moves that tend to be accepted, but
+it moves following a random walk for most of the trajectory.  It
+takes hundreds of iterations to even reach the bulk of the
+probability density.</p>
+
+<p>You can see the effect of different proposal steps in the
+autocorrelation among subsequent parameters – these plots show the
+decay in autocorrelation coefficient between steps of different
+lags, with the blue lines indicating statistical independence.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span>mfrow<span class="o">=</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> mar<span class="o">=</span>c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3.5</span><span class="p">,</span> <span class="m">.5</span><span class="p">))</span>
+</span><span class="line">acf<span class="p">(</span>res.slow<span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Small steps&quot;</span><span class="p">)</span>
+</span><span class="line">acf<span class="p">(</span>res<span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Intermediate&quot;</span><span class="p">)</span>
+</span><span class="line">acf<span class="p">(</span>res.fast<span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Large steps&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-39.png" alt="plot of chunk unnamed-chunk-39" /> </p>
+
+<p>From this, one can calculate the effective number of independent
+samples:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">coda<span class="o">::</span>effectiveSize<span class="p">(</span>res<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## var1 </span>
+</span><span class="line"><span class="c1">##  187</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">coda<span class="o">::</span>effectiveSize<span class="p">(</span>res.fast<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##  var1 </span>
+</span><span class="line"><span class="c1">## 33.19</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">coda<span class="o">::</span>effectiveSize<span class="p">(</span>res.slow<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##  var1 </span>
+</span><span class="line"><span class="c1">## 5.378</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The chains both “mix” worse than that first one.</p>
+
+<p>This shows more clearly what happens as the chains are run for longer:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">n <span class="o">&lt;-</span> <span class="m">10</span><span class="o">^</span><span class="p">(</span><span class="m">2</span><span class="o">:</span><span class="m">5</span><span class="p">)</span>
+</span><span class="line">samples <span class="o">&lt;-</span> lapply<span class="p">(</span>n<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>n<span class="p">)</span> run<span class="p">(</span><span class="m">-10</span><span class="p">,</span> f<span class="p">,</span> q<span class="p">,</span> n<span class="p">))</span>
+</span><span class="line">xlim <span class="o">&lt;-</span> range<span class="p">(</span>sapply<span class="p">(</span>samples<span class="p">,</span> range<span class="p">))</span>
+</span><span class="line">br <span class="o">&lt;-</span> seq<span class="p">(</span>xlim<span class="p">[</span><span class="m">1</span><span class="p">],</span> xlim<span class="p">[</span><span class="m">2</span><span class="p">],</span> length<span class="o">=</span><span class="m">100</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">hh <span class="o">&lt;-</span> lapply<span class="p">(</span>samples<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> hist<span class="p">(</span>x<span class="p">,</span> br<span class="p">,</span> plot<span class="o">=</span><span class="kc">FALSE</span><span class="p">))</span>
+</span><span class="line">ylim <span class="o">&lt;-</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span> max<span class="p">(</span>f<span class="p">(</span>xx<span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Showing 100, 1,000, 10,000 and 100,000 steps:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">par<span class="p">(</span>mfrow<span class="o">=</span>c<span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">),</span> mar<span class="o">=</span>rep<span class="p">(</span><span class="m">.5</span><span class="p">,</span> <span class="m">4</span><span class="p">),</span> oma<span class="o">=</span>c<span class="p">(</span><span class="m">4</span><span class="p">,</span> <span class="m">4</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">))</span>
+</span><span class="line"><span class="kr">for</span> <span class="p">(</span>h <span class="kr">in</span> hh<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    plot<span class="p">(</span>h<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> freq<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> yaxt<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span>
+</span><span class="line">         ylim<span class="o">=</span>range<span class="p">(</span>h<span class="o">$</span>density<span class="p">,</span> ylim<span class="p">))</span>
+</span><span class="line">    curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">),</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> n<span class="o">=</span><span class="m">300</span><span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-42.png" alt="plot of chunk unnamed-chunk-42" /> </p>
+
+<h1 id="mcmc-in-two-dimensions">MCMC In two dimensions</h1>
+
+<p>This is a function that makes a multivariate normal density given a
+vector of means (centre of the distribution) and
+variance-covariance matrix.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">make.mvn <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>mean<span class="p">,</span> vcv<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  logdet <span class="o">&lt;-</span> as.numeric<span class="p">(</span>determinant<span class="p">(</span>vcv<span class="p">,</span> <span class="kc">TRUE</span><span class="p">)</span><span class="o">$</span>modulus<span class="p">)</span>
+</span><span class="line">  tmp <span class="o">&lt;-</span> length<span class="p">(</span>mean<span class="p">)</span> <span class="o">*</span> log<span class="p">(</span><span class="m">2</span> <span class="o">*</span> pi<span class="p">)</span> <span class="o">+</span> logdet
+</span><span class="line">  vcv.i <span class="o">&lt;-</span> solve<span class="p">(</span>vcv<span class="p">)</span>
+</span><span class="line">
+</span><span class="line">  <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    dx <span class="o">&lt;-</span> x <span class="o">-</span> mean
+</span><span class="line">    exp<span class="p">(</span><span class="o">-</span><span class="p">(</span>tmp <span class="o">+</span> rowSums<span class="p">((</span>dx <span class="o">%*%</span> vcv.i<span class="p">)</span> <span class="o">*</span> dx<span class="p">))</span><span class="o">/</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>As above, define the target density to be the sum of two mvns (this
+time unweighted):</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mu1 <span class="o">&lt;-</span> c<span class="p">(</span><span class="m">-1</span><span class="p">,</span> <span class="m">1</span><span class="p">)</span>
+</span><span class="line">mu2 <span class="o">&lt;-</span> c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">-2</span><span class="p">)</span>
+</span><span class="line">vcv1 <span class="o">&lt;-</span> matrix<span class="p">(</span>c<span class="p">(</span><span class="m">1</span><span class="p">,</span> <span class="m">.25</span><span class="p">,</span> <span class="m">.25</span><span class="p">,</span> <span class="m">1.5</span><span class="p">),</span> <span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">vcv2 <span class="o">&lt;-</span> matrix<span class="p">(</span>c<span class="p">(</span><span class="m">2</span><span class="p">,</span> <span class="m">-.5</span><span class="p">,</span> <span class="m">-.5</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> <span class="m">2</span><span class="p">,</span> <span class="m">2</span><span class="p">)</span>
+</span><span class="line">f1 <span class="o">&lt;-</span> make.mvn<span class="p">(</span>mu1<span class="p">,</span> vcv1<span class="p">)</span>
+</span><span class="line">f2 <span class="o">&lt;-</span> make.mvn<span class="p">(</span>mu2<span class="p">,</span> vcv2<span class="p">)</span>
+</span><span class="line">f <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">    f1<span class="p">(</span>x<span class="p">)</span> <span class="o">+</span> f2<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">
+</span><span class="line">x <span class="o">&lt;-</span> seq<span class="p">(</span><span class="m">-5</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> length<span class="o">=</span><span class="m">71</span><span class="p">)</span>
+</span><span class="line">y <span class="o">&lt;-</span> seq<span class="p">(</span><span class="m">-7</span><span class="p">,</span> <span class="m">6</span><span class="p">,</span> length<span class="o">=</span><span class="m">61</span><span class="p">)</span>
+</span><span class="line">xy <span class="o">&lt;-</span> expand.grid<span class="p">(</span>x<span class="o">=</span>x<span class="p">,</span> y<span class="o">=</span>y<span class="p">)</span>
+</span><span class="line">z <span class="o">&lt;-</span> matrix<span class="p">(</span>apply<span class="p">(</span>as.matrix<span class="p">(</span>xy<span class="p">),</span> <span class="m">1</span><span class="p">,</span> f<span class="p">),</span> length<span class="p">(</span>x<span class="p">),</span> length<span class="p">(</span>y<span class="p">))</span>
+</span><span class="line">
+</span><span class="line">image<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-44.png" alt="plot of chunk unnamed-chunk-44" /> </p>
+
+<p>Sampling from multivariate normals is also fairly straightforward,
+but we’ll draw samples from this using MCMC.</p>
+
+<p>There are a bunch of different strategies here – we could propose
+moves in both dimensions simultaneously, or we could sample along
+each axis independently.  Both strategies will work, though they
+will again differ in how rapidly they mix.</p>
+
+<p>Assume that we don’t actually know how to sample from a mvn (it’s
+not actually hard, but this is simpler), let’s make a proposal
+distribution that is uniform in two dimensions, sampling from the
+square with width ‘d’ on each side.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">q <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> d<span class="o">=</span><span class="m">8</span><span class="p">)</span>
+</span><span class="line">    x <span class="o">+</span> runif<span class="p">(</span>length<span class="p">(</span>x<span class="p">),</span> <span class="o">-</span>d<span class="o">/</span><span class="m">2</span><span class="p">,</span> d<span class="o">/</span><span class="m">2</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">x0 <span class="o">&lt;-</span> c<span class="p">(</span><span class="m">-4</span><span class="p">,</span> <span class="m">-4</span><span class="p">)</span>
+</span><span class="line">set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">samples <span class="o">&lt;-</span> run<span class="p">(</span>x0<span class="p">,</span> f<span class="p">,</span> q<span class="p">,</span> <span class="m">1000</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">image<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> xlim<span class="o">=</span>range<span class="p">(</span>x<span class="p">,</span> samples<span class="p">[,</span><span class="m">1</span><span class="p">]),</span> ylim<span class="o">=</span>range<span class="p">(</span>x<span class="p">,</span> samples<span class="p">[,</span><span class="m">2</span><span class="p">]))</span>
+</span><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</span><span class="line">lines<span class="p">(</span>samples<span class="p">[,</span><span class="m">1</span><span class="p">],</span> samples<span class="p">[,</span><span class="m">2</span><span class="p">],</span> col<span class="o">=</span><span class="s">&quot;#00000088&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-45.png" alt="plot of chunk unnamed-chunk-45" /> </p>
+
+<p>Drawing a ton of samples”</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">set.seed<span class="p">(</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">samples <span class="o">&lt;-</span> run<span class="p">(</span>x0<span class="p">,</span> f<span class="p">,</span> q<span class="p">,</span> <span class="m">100000</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Compare the sampled distribution against the known distribution:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">smoothScatter<span class="p">(</span>samples<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## KernSmooth 2.23 loaded Copyright M. P. Wand 1997-2009</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-47.png" alt="plot of chunk unnamed-chunk-47" /> </p>
+
+<p>Then we can easily do things with the samples that are difficult to
+do directly.  For example, what is the <em>marginal distribution</em> of
+parameter 1:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">hist<span class="p">(</span>samples<span class="p">[,</span><span class="m">1</span><span class="p">],</span> freq<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;x&quot;</span><span class="p">,</span>
+</span><span class="line">     ylab<span class="o">=</span><span class="s">&quot;Probability density&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-48.png" alt="plot of chunk unnamed-chunk-48" /> </p>
+
+<p>(this is the distribution that the first paramter takes, averaged
+over all the possible values that the second parameter might take,
+weighted by their probability).</p>
+
+<p>Computing this properly is tricky - we need to integrate over all
+possible values of the second parameter for each value of the
+first.  Then, because the target function is not itself normalised,
+we have to divide that through by the value of integrating over the
+first dimension (this is the total area under the distribution).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">m <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x1<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    g <span class="o">&lt;-</span> Vectorize<span class="p">(</span><span class="kr">function</span><span class="p">(</span>x2<span class="p">)</span> f<span class="p">(</span>c<span class="p">(</span>x1<span class="p">,</span> x2<span class="p">)))</span>
+</span><span class="line">    integrate<span class="p">(</span>g<span class="p">,</span> <span class="o">-</span><span class="kc">Inf</span><span class="p">,</span> <span class="kc">Inf</span><span class="p">)</span><span class="o">$</span>value
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line">xx <span class="o">&lt;-</span> seq<span class="p">(</span>min<span class="p">(</span>samples<span class="p">[,</span><span class="m">1</span><span class="p">]),</span> max<span class="p">(</span>samples<span class="p">[,</span><span class="m">1</span><span class="p">]),</span> length<span class="o">=</span><span class="m">201</span><span class="p">)</span>
+</span><span class="line">yy <span class="o">&lt;-</span> sapply<span class="p">(</span>xx<span class="p">,</span> m<span class="p">)</span>
+</span><span class="line">z <span class="o">&lt;-</span> integrate<span class="p">(</span>splinefun<span class="p">(</span>xx<span class="p">,</span> yy<span class="p">),</span> min<span class="p">(</span>xx<span class="p">),</span> max<span class="p">(</span>xx<span class="p">))</span><span class="o">$</span>value
+</span><span class="line">
+</span><span class="line">hist<span class="p">(</span>samples<span class="p">[,</span><span class="m">1</span><span class="p">],</span> freq<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;x&quot;</span><span class="p">,</span>
+</span><span class="line">     ylab<span class="o">=</span><span class="s">&quot;Probability density&quot;</span><span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">0.25</span><span class="p">))</span>
+</span><span class="line">lines<span class="p">(</span>xx<span class="p">,</span> yy<span class="o">/</span>z<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-49.png" alt="plot of chunk unnamed-chunk-49" /> </p>
+
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-14-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/guides/mcmc/index.html';
+        var disqus_url = 'http://nicercode.github.com/guides/mcmc/index.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

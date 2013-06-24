@@ -1,0 +1,1292 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Repeating things: looping and the apply family - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Repeating things: looping and the apply family 18 March 2013 Previously we looked at how you can use functions to simplify your
+code. Ideally you &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/guides/repeating-things/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Repeating things: looping and the apply family</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-18T10:25:00+11:00" pubdate data-updated="true">18 March 2013</time></p>
+  </header>
+  
+  <p>Previously we looked at how you can <a href="../functions/">use functions to simplify your
+code</a>. Ideally you have a function that performs a single
+operation, and now you want to use it many times to do the same operation on
+lots of different data. The naive way to do that would be something like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">  res1 <span class="o">&lt;-</span>  f<span class="p">(</span>input1<span class="p">)</span>
+</span><span class="line">  res2 <span class="o">&lt;-</span>  f<span class="p">(</span>input2<span class="p">)</span>
+</span><span class="line">  <span class="kc">...</span>
+</span><span class="line">  res10 <span class="o">&lt;-</span>  f<span class="p">(</span>input10<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But this isn’t very <em>nice</em>. Yes, by using a function, you have reduced
+a substantial amount of repetition. That <strong>is</strong> nice. But there is
+still repetition.  Repeating yourself will cost you time, both now and
+later, and potentially introduce some nasty bugs. When it comes to
+repetition, well, just don’t.</p>
+
+<p>The nice way of repeating elements of code is to use a loop of some
+sort. A loop is a coding structure that reruns the same bit of code
+over and over, but with only small fragments differing between
+runs. In R there is a whole family of looping functions, each with
+their own strengths.</p>
+
+<h1 id="the-split--apply--combine-pattern">The split–apply–combine pattern</h1>
+
+<p>First, it is good to recognise that most operations that involve
+looping are instances of the <em>split-apply-combine</em> strategy (this term
+and idea comes from the prolific <a href="http://had.co.nz/">Hadley Wickham</a>,
+who coined the term in <a href="http://vita.had.co.nz/papers/plyr.html">this
+paper</a>).  You start with a
+bunch of data.  Then you then <strong>Split</strong> it up into many smaller
+datasets, <strong>Apply</strong> a function to each piece, and finally <strong>Combine</strong>
+the results back together.</p>
+
+<p>Some data arrives already in its pieces - e.g. output files from from
+a leaf scanner or temperature machine. Your job is then to analyse
+each bit, and put them together into a larger data set.</p>
+
+<p>Sometimes the combine phase means making a new data frame, other times it might
+mean something more abstract, like combining a bunch of plots in a report.</p>
+
+<p>Either way, the challenge for you is to identify the pieces that remain the same
+between different runs of your function, then structure your analysis around
+that.</p>
+
+<h1 id="why-were-not-starting-with-for-loops">Why we’re not starting with <code>for</code> loops</h1>
+
+<p>Ok, you got me, we are starting with for loops. But not in the way you think.</p>
+
+<p>When you mention looping, many people immediately reach for <code>for</code>. Perhaps
+that’s because, like me, they are already familiar with these other languages,
+like basic, python, perl, C, C++ or matlab. While <code>for</code> is definitely the most
+flexible of the looping options, we suggest you avoid it wherever you can, for
+the following two reasons:</p>
+
+<ol>
+  <li>It is not very expressive, i.e. takes a lot of code to do what you want.</li>
+  <li>It permits you to write horrible code, like this example from my earlier
+work:</li>
+</ol>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">  <span class="kr">for</span><span class="p">(</span>n <span class="kr">in</span> <span class="m">1</span><span class="o">:</span>n.spp<span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">    Ind <span class="o">=</span> unique<span class="p">(</span>Raw<span class="p">[</span>Raw<span class="o">$</span>SPP<span class="o">==</span>as.character<span class="p">(</span>sp.list<span class="o">$</span>SPP<span class="p">[</span>n<span class="p">]),</span> <span class="s">&quot;INDIV&quot;</span><span class="p">]);</span>
+</span><span class="line">    I <span class="o">=</span>    length<span class="p">(</span>Ind<span class="p">);</span>
+</span><span class="line">    par<span class="p">(</span>mfrow<span class="o">=</span>c<span class="p">(</span>I<span class="p">,</span><span class="m">1</span><span class="p">),</span> oma<span class="o">=</span>c<span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">5</span><span class="p">,</span><span class="m">5</span><span class="p">,</span> <span class="m">2</span><span class="p">),</span> mar<span class="o">=</span>c<span class="p">(</span><span class="m">3</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">,</span> <span class="m">0</span><span class="p">));</span>
+</span><span class="line">    <span class="kr">for</span><span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span>I<span class="p">)</span>
+</span><span class="line">        <span class="p">{</span>
+</span><span class="line">        Dat <span class="o">=</span> subset<span class="p">(</span>Raw<span class="p">,</span> Raw<span class="o">$</span>SPP<span class="o">==</span>as.character<span class="p">(</span>sp.list<span class="o">$</span>SPP<span class="p">[</span>n<span class="p">])</span> <span class="o">&amp;</span> Raw<span class="o">$</span>INDIV<span class="o">==</span>Ind<span class="p">[</span>i<span class="p">])</span>
+</span><span class="line">        Y_ax <span class="o">=</span>seq<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">35</span><span class="p">,</span> <span class="m">10</span><span class="p">);</span> Y_ax2<span class="o">=</span>seq<span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="m">35</span><span class="p">,</span> <span class="m">5</span><span class="p">);</span>
+</span><span class="line">        X_ax <span class="o">=</span>seq<span class="p">(</span><span class="m">0</span><span class="p">,</span> max<span class="p">(</span>Dat<span class="o">$</span>LL<span class="p">),</span> <span class="m">0.2</span><span class="p">);</span> X_ax2 <span class="o">=</span>seq<span class="p">(</span><span class="m">0</span><span class="p">,</span> max<span class="p">(</span>Dat<span class="o">$</span>LL<span class="p">),</span> <span class="m">0.1</span><span class="p">);</span>
+</span><span class="line">        plot<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">,</span> <span class="m">1</span><span class="o">:</span><span class="m">2</span><span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span>log<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="k-Variable">F</span><span class="p">,</span>ann<span class="o">=</span><span class="k-Variable">F</span><span class="p">,</span> xlim <span class="o">=</span> c<span class="p">(</span><span class="m">-0.05</span><span class="p">,</span> max<span class="p">(</span>Dat<span class="o">$</span>LL<span class="p">)</span><span class="m">+0.05</span><span class="p">),</span> ylim<span class="o">=</span>c<span class="p">(</span>min<span class="p">(</span>Y_ax<span class="p">),</span> max<span class="p">(</span>Y_ax<span class="p">)),</span> xaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> yaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span><span class="line">        axis<span class="p">(</span><span class="m">2</span><span class="p">,</span> at<span class="o">=</span>Y_ax<span class="p">,</span> labels<span class="o">=</span>Y_ax<span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> tck<span class="o">=</span><span class="m">0.030</span><span class="p">,</span> cex.axis<span class="o">=</span><span class="m">0.8</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0.5</span><span class="p">)</span>
+</span><span class="line">        axis<span class="p">(</span><span class="m">4</span><span class="p">,</span> at<span class="o">=</span>Y_ax<span class="p">,</span> labels<span class="o">=</span><span class="k-Variable">F</span><span class="p">,</span>  tck<span class="o">=</span><span class="m">0.03</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">        X<span class="o">&lt;-</span>Dat<span class="o">$</span>AGE<span class="p">;</span>  Xout<span class="o">&lt;-</span>data.frame<span class="p">(</span>X <span class="o">=</span> c<span class="p">(</span><span class="m">0</span><span class="p">,</span>Dat<span class="o">$</span>LL<span class="p">[</span><span class="m">1</span><span class="p">]))</span>
+</span><span class="line">
+</span><span class="line">        Y<span class="o">&lt;-</span>Dat<span class="o">$</span>S2AV_L<span class="p">;</span>
+</span><span class="line">        points<span class="p">(</span>X<span class="p">,</span>Y<span class="p">,</span>type<span class="o">=</span><span class="s">&quot;p&quot;</span><span class="p">,</span> pch<span class="o">=</span>Fig<span class="o">$</span>Symb<span class="p">[</span><span class="m">2</span><span class="p">],</span> cex<span class="o">=</span><span class="m">1.3</span><span class="p">,</span> col<span class="o">=</span> Fig<span class="o">$</span>Cols<span class="p">[</span><span class="m">2</span><span class="p">]);</span>
+</span><span class="line">        R<span class="o">&lt;-</span>lm<span class="p">(</span> Y<span class="o">~</span> X<span class="p">);</span> points<span class="p">(</span>Xout<span class="o">$</span>X<span class="p">,</span> predict<span class="p">(</span>R<span class="p">,</span> Xout<span class="p">),</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> col<span class="o">=</span> Fig<span class="o">$</span>Cols<span class="p">[</span><span class="m">2</span><span class="p">],</span> lty <span class="o">=</span> <span class="s">&quot;dotted&quot;</span><span class="p">)</span>
+</span><span class="line">
+</span><span class="line">        legend<span class="p">(</span><span class="s">&quot;topright&quot;</span><span class="p">,</span> legend <span class="o">=</span> paste<span class="p">(</span><span class="s">&quot;indiv = &quot;</span><span class="p">,</span>Ind<span class="p">[</span>i<span class="p">]),</span> bty<span class="o">=</span> <span class="s">&quot;n&quot;</span><span class="p">)</span>
+</span><span class="line">       <span class="p">}</span>
+</span><span class="line">   mtext<span class="p">(</span>expression<span class="p">(</span>paste<span class="p">(</span><span class="s">&quot;Intercepted light (mol &quot;</span><span class="p">,</span> m<span class="o">^</span><span class="p">{</span><span class="m">-2</span><span class="p">},</span>d<span class="o">^</span><span class="p">{</span><span class="m">-1</span><span class="p">},</span><span class="s">&quot;)&quot;</span><span class="p">)),</span> side <span class="o">=</span> <span class="m">2</span><span class="p">,</span> line <span class="o">=</span> <span class="m">3</span><span class="p">,</span> outer <span class="o">=</span> <span class="k-Variable">T</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span> cex <span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
+</span><span class="line">   mtext<span class="p">(</span>expression<span class="p">(</span>paste<span class="p">(</span><span class="s">&quot;Leaf age (yrs)&quot;</span><span class="p">)),</span> side <span class="o">=</span> <span class="m">1</span><span class="p">,</span> line <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span> outer <span class="o">=</span> <span class="k-Variable">T</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span> cex <span class="o">=</span><span class="m">1.2</span><span class="p">)</span>
+</span><span class="line">   mtext<span class="p">(</span>as.character<span class="p">(</span>sp.list<span class="o">$</span>Species<span class="p">[</span>n<span class="p">]),</span> side <span class="o">=</span> <span class="m">3</span><span class="p">,</span> line <span class="o">=</span> <span class="m">2</span><span class="p">,</span> outer <span class="o">=</span> <span class="k-Variable">T</span><span class="p">,</span> adj <span class="o">=</span> <span class="m">0.5</span><span class="p">,</span> cex <span class="o">=</span><span class="m">1.5</span><span class="p">)</span>
+</span><span class="line">   <span class="p">}</span>
+</span><span class="line">rm<span class="p">(</span>R<span class="p">,</span> Ind<span class="p">,</span> I<span class="p">,</span> i<span class="p">,</span> X<span class="p">,</span> X_ax<span class="p">,</span> X_ax2<span class="p">,</span> Y_ax<span class="p">,</span> Y_ax2<span class="p">,</span> Y<span class="p">,</span> Xout<span class="p">,</span> Dat<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The main problems with this code are that</p>
+
+<ul>
+  <li>it is hard to read</li>
+  <li>all the variables are stored in the global scope, which is dangerous.</li>
+</ul>
+
+<p>All it’s doing is making a plot! Compare that to something like this</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">  lapply<span class="p">(</span>unique<span class="p">(</span>Raw<span class="o">$</span>SPP<span class="p">),</span> makePlot<span class="p">,</span> data <span class="o">=</span> Raw<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>That’s much nicer! It’s obvious what the loop does, and no new variables are
+created. Of course, for the code to work, we need to define the function</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">makePlot <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>species<span class="p">,</span> data<span class="p">){</span>
+</span><span class="line">  <span class="kc">...</span> <span class="c1">#do stuff</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which actually makes our plot, but having all that detail off in a
+function has many benefits. Most of all it makes your code more
+reliable and easier to read.  Of course you <em>could</em> do this easily
+with for loops too:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> unique<span class="p">(</span>Raw<span class="o">$</span>SPP<span class="p">))</span>
+</span><span class="line">  makePlot<span class="p">(</span>i<span class="p">,</span> data <span class="o">=</span> Raw<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>but the temptation with <code>for</code> loops is often to cram a little extra
+code in each iteration, rather than stepping back and thinking about
+what you’re trying to achieve.  </p>
+
+<p>So our reason for avoiding <code>for</code> loops, and the similar functions
+<code>while</code> and <code>repeat</code>, is that the other looping functions, like
+<code>lapply</code>, demand that you write nicer code, so that’s we’ll focus on
+first.</p>
+
+<h1 id="the-apply-family">The apply family</h1>
+
+<p>There are several related function in R which allow you to apply some function
+to a series of objects (eg. vectors, matrices, dataframes or files). They include:</p>
+
+<ul>
+  <li><code>lapply</code></li>
+  <li><code>sapply</code></li>
+  <li><code>tapply</code></li>
+  <li><code>aggregate</code></li>
+  <li><code>mapply</code></li>
+  <li><code>apply</code>.</li>
+</ul>
+
+<p>Each repeats a function or operation on a series of elements, but they
+differ in the data types they accept and return. What they all in
+common is that <strong>order of iteration is not important</strong>.  This is
+crucial. If each each iteration is independent, then you can cycle
+through them in whatever order you like. Generally, we argue that you
+should only use the generic looping functions <code>for</code>, <code>while</code>, and
+<code>repeat</code> when the order or operations <strong>is</strong> important. Otherwise
+reach for one of the apply tools.</p>
+
+<h1 id="lapply-and-sapply">lapply and sapply</h1>
+
+<p><code>lapply</code> applies a function to each element of a list (or vector),
+collecting results in a list.  <code>sapply</code> does the same, but will try to
+<em>simplify</em> the output if possible.</p>
+
+<p>Lists are a very powerful and flexible data structure that few people seem to
+know about. Moreover, they are the building block for other data structures,
+like <code>data.frame</code> and <code>matrix</code>. To access elements of a list, you use the
+double square bracket, for example <code>X[[4]]</code> returns the fourth element of the
+list <code>X</code>. If you don’t know what a list is, we suggest you <a href="http://cran.r-project.org/doc/manuals/R-intro.html#Lists-and-
+data-frames">read more
+about them</a>, before you proceed.</p>
+
+<h2 id="basic-syntax">Basic syntax</h2>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">result <span class="o">&lt;-</span> lapply<span class="p">(</span>X<span class="p">,</span> f<span class="p">,</span> <span class="kc">...</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Here <code>X</code> is a list or vector, containing the elements that form the input to the
+function <code>f</code>. This code will also return a list, stored in <code>result</code>, with same
+number of elements as <code>X</code>.</p>
+
+<h2 id="usage">Usage</h2>
+
+<p>lapply is great for building analysis pipelines, where you want to repeat a
+series of steps on a large number of similar objects.  The way to do this is to
+have a series of lapply statements, with the output of one providing the input to
+another:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">first.step <span class="o">&lt;-</span> lapply<span class="p">(</span>X<span class="p">,</span> first.function<span class="p">)</span>
+</span><span class="line">second.step <span class="o">&lt;-</span> lapply<span class="p">(</span>first.step<span class="p">,</span> next.function<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The challenge is to identify the parts of your analysis that stay the same and
+those that differ for each call of the function. The trick to using <code>lapply</code> is
+to recognise that only one item can differ between different function calls.</p>
+
+<p>It is possible to pass in a bunch of additional arguments to your function, but
+these must be the same for each call of your function. For example, let’s say we
+have a function <code>test</code> which takes the path of a file, loads the data, and tests
+it against some hypothesised value H0. We can run the function on the file
+“myfile.csv” as follows.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">result <span class="o">&lt;-</span> test<span class="p">(</span><span class="s">&quot;myfile.csv&quot;</span><span class="p">,</span> H0<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We could then run the test on a bunch of files using lapply:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">files <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;myfile1.csv&quot;</span><span class="p">,</span> <span class="s">&quot;myfile2.csv&quot;</span><span class="p">,</span> <span class="s">&quot;myfile3.csv&quot;</span><span class="p">)</span>
+</span><span class="line">result <span class="o">&lt;-</span> lapply<span class="p">(</span>files<span class="p">,</span> test<span class="p">,</span> H0<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But notice, that in this example, the <strong>only this that differs</strong> between the runs
+is a single number in the file name. So we could save ourselves typing these by
+adding an extra step to generate the file names</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">files <span class="o">&lt;-</span> lapply<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">){</span>paste0<span class="p">(</span><span class="s">&quot;myfile&quot;</span><span class="p">,</span> x<span class="p">,</span> <span class="s">&quot;.csv&quot;</span><span class="p">)})</span>
+</span><span class="line">result <span class="o">&lt;-</span> lapply<span class="p">(</span>files<span class="p">,</span> test<span class="p">,</span> H0<span class="o">=</span><span class="m">1</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The nice things about that piece of code is that it would extend as long as we
+wanted, to 10000000 files, if needed.</p>
+
+<h2 id="example---plotting-temperature-for-many-sites-using-open-weather-data">Example - plotting temperature for many sites using open weather data</h2>
+
+<p>Let’s look at the weather in some eastern Australian cities over the
+last couple of days.  The website
+<a href="http://openweathermap.org">openweathermap.com</a> provides access to all
+sorts of neat data, lots of it essentially real time.  We’ve parcelled
+up some on the nicercode website to use.  In theory, this sort of
+analysis script could use the weather data directly, but we don’t want
+to hammer their website too badly.  The code used to generate these
+files is <a href="https://gist.github.com/richfitz/5795029">here</a>.</p>
+
+<p>We want to look at the temperatures over the last few days for the cities</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">cities <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;Melbourne&quot;</span><span class="p">,</span> <span class="s">&quot;Sydney&quot;</span><span class="p">,</span> <span class="s">&quot;Brisbane&quot;</span><span class="p">,</span> <span class="s">&quot;Cairns&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The data are stored in a url scheme where the Sydney data is at
+<a href="http://nicercode.github.io/guides/repeating-things/data/Sydney.csv">http://nicercode.github.io/guides/repeating-things/data/Sydney.csv</a>
+and so on.  </p>
+
+<p>The URLs that we need are therefore:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">urls <span class="o">&lt;-</span>
+</span><span class="line">  sprintf<span class="p">(</span><span class="s">&quot;http://nicercode.github.io/guides/repeating-things/data/%s.csv&quot;</span><span class="p">,</span>
+</span><span class="line">          cities<span class="p">)</span>
+</span><span class="line">urls
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] "http://nicercode.github.io/guides/repeating-things/data/Melbourne.csv"
+</span><span class="line">[2] "http://nicercode.github.io/guides/repeating-things/data/Sydney.csv"   
+</span><span class="line">[3] "http://nicercode.github.io/guides/repeating-things/data/Brisbane.csv" 
+</span><span class="line">[4] "http://nicercode.github.io/guides/repeating-things/data/Cairns.csv"   </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can write a function to download a file if it does not exist:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">download.maybe <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>url<span class="p">,</span> refetch<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> path<span class="o">=</span><span class="s">&quot;.&quot;</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  dest <span class="o">&lt;-</span> file.path<span class="p">(</span>path<span class="p">,</span> basename<span class="p">(</span>url<span class="p">))</span>
+</span><span class="line">  <span class="kr">if</span> <span class="p">(</span>refetch <span class="o">||</span> <span class="o">!</span>file.exists<span class="p">(</span>dest<span class="p">))</span>
+</span><span class="line">    download.file<span class="p">(</span>url<span class="p">,</span> dest<span class="p">)</span>
+</span><span class="line">  dest
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and then run that over the urls:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">path <span class="o">&lt;-</span> <span class="s">&quot;data&quot;</span>
+</span><span class="line">dir.create<span class="p">(</span>path<span class="p">,</span> showWarnings<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">files <span class="o">&lt;-</span> sapply<span class="p">(</span>urls<span class="p">,</span> download.maybe<span class="p">,</span> path<span class="o">=</span>path<span class="p">)</span>
+</span><span class="line">names<span class="p">(</span>files<span class="p">)</span> <span class="o">&lt;-</span> cities
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Notice that we never specify the order of which file is downloaded in
+which order; we just say “apply this function (<code>download.maybe</code>) to
+this list of urls.  We also pass the <code>path</code> argument to every function
+call.  So it was as if we’d written</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">download.maybe<span class="p">(</span>urls<span class="p">[[</span><span class="m">1</span><span class="p">]],</span> path<span class="o">=</span>path<span class="p">)</span>
+</span><span class="line">download.maybe<span class="p">(</span>urls<span class="p">[[</span><span class="m">2</span><span class="p">]],</span> path<span class="o">=</span>path<span class="p">)</span>
+</span><span class="line">download.maybe<span class="p">(</span>urls<span class="p">[[</span><span class="m">3</span><span class="p">]],</span> path<span class="o">=</span>path<span class="p">)</span>
+</span><span class="line">download.maybe<span class="p">(</span>urls<span class="p">[[</span><span class="m">4</span><span class="p">]],</span> path<span class="o">=</span>path<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>but much less boring, and scalable to more files.</p>
+
+<p>The first column, <code>time</code> of each file is a string representing date
+and time, which needs processing into R’s native time format (dealing
+with times in R (or frankly, in any language) is a complete pain).  In
+a real case, there might be many steps involved in processing each
+file.  We can make a function like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">load.file <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>filename<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  d <span class="o">&lt;-</span> read.csv<span class="p">(</span>filename<span class="p">,</span> stringsAsFactors<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span><span class="line">  d<span class="o">$</span>time <span class="o">&lt;-</span> as.POSIXlt<span class="p">(</span>d<span class="o">$</span>time<span class="p">)</span>
+</span><span class="line">  d
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>that reads in a file given a filename, and then apply that function to
+each filename using <code>lapply</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">data <span class="o">&lt;-</span> lapply<span class="p">(</span>files<span class="p">,</span> load.file<span class="p">)</span>
+</span><span class="line">names<span class="p">(</span>data<span class="p">)</span> <span class="o">&lt;-</span> cities
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We now have a <strong>list</strong>, where each element is a <code>data.frame</code> of
+weather data:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">head<span class="p">(</span>data<span class="o">$</span>Sydney<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">             time  temp temp.min temp.max
+</span><span class="line">1 2013-06-13 23:00:00 12.66     8.89    16.11
+</span><span class="line">2 2013-06-14 00:00:00 15.90    12.22    20.00
+</span><span class="line">3 2013-06-14 02:00:00 18.44    16.11    20.00
+</span><span class="line">4 2013-06-14 03:00:00 18.68    16.67    20.56
+</span><span class="line">5 2013-06-14 04:00:00 19.41    17.78    22.22
+</span><span class="line">6 2013-06-14 05:00:00 19.10    17.78    22.22</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can use <code>lapply</code> or <code>sapply</code> to easy ask the same question to each
+element of this list.  For example, how many rows of data are there?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sapply<span class="p">(</span>data<span class="p">,</span> nrow<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Melbourne    Sydney  Brisbane    Cairns 
+</span><span class="line">       97        99        99        80 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>What is the hottest temperature recorded by city?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sapply<span class="p">(</span>data<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> max<span class="p">(</span>x<span class="o">$</span>temp<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">Melbourne    Sydney  Brisbane    Cairns 
+</span><span class="line">    12.85     19.41     22.00     31.67 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>or, estimate the autocorrelation function for each set:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">autocor <span class="o">&lt;-</span> lapply<span class="p">(</span>data<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> acf<span class="p">(</span>x<span class="o">$</span>temp<span class="p">,</span> lag.max<span class="o">=</span><span class="m">24</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-221.png" alt="plot of chunk unnamed-chunk-22" /> <img src="img/unnamed-chunk-222.png" alt="plot of chunk unnamed-chunk-22" /> <img src="img/unnamed-chunk-223.png" alt="plot of chunk unnamed-chunk-22" /> <img src="img/unnamed-chunk-224.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>autocor<span class="o">$</span>Sydney<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Sydney&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-225.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>autocor<span class="o">$</span>Cairns<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Cairns&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-226.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+
+<p>I find that for loops can be easier to plot data, partly because
+there is nothing to <em>collect</em> (or combine) at each iteration.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">xlim <span class="o">&lt;-</span> range<span class="p">(</span>sapply<span class="p">(</span>data<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> range<span class="p">(</span>x<span class="o">$</span>time<span class="p">)))</span>
+</span><span class="line">ylim <span class="o">&lt;-</span> range<span class="p">(</span>sapply<span class="p">(</span>data<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> range<span class="p">(</span>x<span class="p">[</span><span class="m">-1</span><span class="p">])))</span>
+</span><span class="line">plot<span class="p">(</span>data<span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span>time<span class="p">,</span> data<span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span>temp<span class="p">,</span> ylim<span class="o">=</span>ylim<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Time&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Temperature&quot;</span><span class="p">)</span>
+</span><span class="line">cols <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">4</span>
+</span><span class="line"><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> seq_along<span class="p">(</span>data<span class="p">))</span>
+</span><span class="line">  lines<span class="p">(</span>data<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>time<span class="p">,</span> data<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>temp<span class="p">,</span> col<span class="o">=</span>cols<span class="p">[</span>i<span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-23.png" alt="plot of chunk unnamed-chunk-23" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>data<span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span>time<span class="p">,</span> data<span class="p">[[</span><span class="m">1</span><span class="p">]]</span><span class="o">$</span>temp<span class="p">,</span> ylim<span class="o">=</span>ylim<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;n&quot;</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Time&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;Temperature&quot;</span><span class="p">)</span>
+</span><span class="line">mapply<span class="p">(</span><span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> col<span class="p">)</span> lines<span class="p">(</span>x<span class="o">$</span>time<span class="p">,</span> x<span class="o">$</span>temp<span class="p">,</span> col<span class="o">=</span>col<span class="p">),</span>
+</span><span class="line">       data<span class="p">,</span> cols<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-24.png" alt="plot of chunk unnamed-chunk-24" /> </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">$Melbourne
+</span><span class="line">NULL
+</span><span class="line">
+</span><span class="line">$Sydney
+</span><span class="line">NULL
+</span><span class="line">
+</span><span class="line">$Brisbane
+</span><span class="line">NULL
+</span><span class="line">
+</span><span class="line">$Cairns
+</span><span class="line">NULL</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="parallelising-your-code">Parallelising your code</h3>
+
+<p>Another great feature of lapply is that is <strong>makes it really easy to parallelise
+your code</strong>. All computers now contain multiple CPUs, and these can all be put to
+work using the great <a href="http://www.rforge.net/multicore/">multicore package</a>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">result <span class="o">&lt;-</span> lapply<span class="p">(</span>x<span class="p">,</span> f<span class="p">)</span>   <span class="c1">#apply f to x using a single core and lapply</span>
+</span><span class="line">
+</span><span class="line">library<span class="p">(</span>multicore<span class="p">)</span>
+</span><span class="line">result <span class="o">&lt;-</span> mclapply<span class="p">(</span>x<span class="p">,</span> f<span class="p">)</span> <span class="c1">#same thing using all the cores in your machine</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h1 id="tapply-and-aggregate">tapply and aggregate</h1>
+
+<p>In the case above, we had naturally “split” data; we had a vector of
+city names that led to a list of different data.frames of weather
+data.  Sometimes the “split” operation depends on a factor.  For
+example, you might have an experiment where you measured the size of
+plants at different levels of added fertiliser - you then want to know
+the mean height as a function of this treatment.</p>
+
+<p>However, we’re actiually going to use some data on <a href="https://github.com/audy/smalldata">ratings of seinfeld episodes</a>, taken from the [Internet movie Database]
+(http://www.reddit.com/r/dataisbeautiful/comments/1g7jw2/seinfeld_imdb_episode_ratings_oc/).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">library<span class="p">(</span>downloader<span class="p">)</span>
+</span><span class="line"><span class="kr">if</span> <span class="p">(</span><span class="o">!</span>file.exists<span class="p">(</span><span class="s">&quot;seinfeld.csv&quot;</span><span class="p">))</span>
+</span><span class="line">  download<span class="p">(</span><span class="s">&quot;https://raw.github.com/audy/smalldata/master/seinfeld.csv&quot;</span><span class="p">,</span>
+</span><span class="line">           <span class="s">&quot;seinfeld.csv&quot;</span><span class="p">)</span>
+</span><span class="line">dat <span class="o">&lt;-</span> read.csv<span class="p">(</span><span class="s">&quot;seinfeld.csv&quot;</span><span class="p">,</span> stringsAsFactors<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Columns are Season (number), Episode (number), Title (of the
+episode), Rating (according to IMDb) and Votes (to construct the
+rating).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">head<span class="p">(</span>dat<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Season Episode             Title Rating Votes
+</span><span class="line">1      1       2      The Stakeout    7.8   649
+</span><span class="line">2      1       3       The Robbery    7.7   565
+</span><span class="line">3      1       4    Male Unbonding    7.6   561
+</span><span class="line">4      1       5     The Stock Tip    7.8   541
+</span><span class="line">5      2       1 The Ex-Girlfriend    7.7   529
+</span><span class="line">6      2       1        The Statue    8.1   509</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Make sure it’s sorted sensibly</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">dat <span class="o">&lt;-</span> dat<span class="p">[</span>order<span class="p">(</span>dat<span class="o">$</span>Season<span class="p">,</span> dat<span class="o">$</span>Episode<span class="p">),]</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Biologically, this could be Site / Individual / ID / Mean size /
+Things measured.</p>
+
+<p>Hypothesis: Seinfeld used to be funny, but got progressively less
+good as it became too mainstream.  Or, does the mean episode rating
+per season decrease?</p>
+
+<p>Now, we want to calculate the average rating per season:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mean<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">[</span>dat<span class="o">$</span>Season <span class="o">==</span> <span class="m">1</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 7.725</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mean<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">[</span>dat<span class="o">$</span>Season <span class="o">==</span> <span class="m">2</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 8.158</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and so on until:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">mean<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">[</span>dat<span class="o">$</span>Season <span class="o">==</span> <span class="m">9</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 8.323</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>As with most things, we <em>could</em> automate this with a for loop:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">seasons <span class="o">&lt;-</span> sort<span class="p">(</span>unique<span class="p">(</span>dat<span class="o">$</span>Season<span class="p">))</span>
+</span><span class="line">rating  <span class="o">&lt;-</span> numeric<span class="p">(</span>length<span class="p">(</span>seasons<span class="p">))</span>
+</span><span class="line"><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> seq_along<span class="p">(</span>seasons<span class="p">))</span>
+</span><span class="line">  rating<span class="p">[</span>i<span class="p">]</span> <span class="o">&lt;-</span> mean<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">[</span>dat<span class="o">$</span>Season <span class="o">==</span> seasons<span class="p">[</span>i<span class="p">]])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>That’s actually not that horrible to do.  But we it could be
+nicer.  We first <strong>split</strong> the ratings by season:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">ratings.split <span class="o">&lt;-</span> split<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">,</span> dat<span class="o">$</span>Season<span class="p">)</span>
+</span><span class="line">head<span class="p">(</span>ratings.split<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">$`1`
+</span><span class="line">[1] 7.8 7.7 7.6 7.8
+</span><span class="line">
+</span><span class="line">$`2`
+</span><span class="line"> [1] 7.7 8.1 8.0 7.9 7.8 8.5 8.7 8.5 8.0 8.0 8.4 8.3
+</span><span class="line">
+</span><span class="line">$`3`
+</span><span class="line"> [1] 8.3 7.5 7.8 8.1 8.3 7.3 8.7 8.5 8.5 8.6 8.1 8.4 8.5 8.7 8.6 7.8 8.3
+</span><span class="line">[18] 8.6 8.7 8.6 8.0 8.5 8.6
+</span><span class="line">
+</span><span class="line">$`4`
+</span><span class="line"> [1] 8.4 8.3 8.6 8.5 8.7 8.6 8.1 8.2 8.7 8.4 8.3 8.7 8.5 8.6 8.3 8.2 8.4
+</span><span class="line">[18] 8.5 8.4 8.7 8.7 8.4 8.5
+</span><span class="line">
+</span><span class="line">$`5`
+</span><span class="line"> [1] 8.6 8.4 8.4 8.4 8.3 8.2 8.1 8.5 8.5 8.3 8.0 8.1 8.6 8.3 8.4 8.5 7.9
+</span><span class="line">[18] 8.0 8.5 8.7 8.5
+</span><span class="line">
+</span><span class="line">$`6`
+</span><span class="line"> [1] 8.1 8.4 8.3 8.4 8.2 8.3 8.5 8.4 8.3 8.2 8.1 8.4 8.6 8.2 7.5 8.4 8.2
+</span><span class="line">[18] 8.5 8.3 8.4 8.1 8.5 8.2</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then use sapply to loop over this list, computing the mean</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">rating <span class="o">&lt;-</span> sapply<span class="p">(</span>ratings.split<span class="p">,</span> mean<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then if we wanted to apply a different function (say, compute the
+per-season standard error) we could just do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">se <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">  sqrt<span class="p">(</span>var<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> length<span class="p">(</span>x<span class="p">))</span>
+</span><span class="line">rating.se <span class="o">&lt;-</span> sapply<span class="p">(</span>ratings.split<span class="p">,</span> se<span class="p">)</span>
+</span><span class="line">
+</span><span class="line">plot<span class="p">(</span>rating <span class="o">~</span> seasons<span class="p">,</span> ylim<span class="o">=</span>c<span class="p">(</span><span class="m">7</span><span class="p">,</span> <span class="m">9</span><span class="p">),</span> pch<span class="o">=</span><span class="m">19</span><span class="p">)</span>
+</span><span class="line">arrows<span class="p">(</span>seasons<span class="p">,</span> rating <span class="o">-</span> rating.se<span class="p">,</span> seasons<span class="p">,</span> rating <span class="o">+</span> rating.se<span class="p">,</span>
+</span><span class="line">       code<span class="o">=</span><span class="m">3</span><span class="p">,</span> angle<span class="o">=</span><span class="m">90</span><span class="p">,</span> length<span class="o">=</span><span class="m">0.02</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34" /> </p>
+
+<p>But there’s still repetition there.  Let’s abstract that away a bit.</p>
+
+<p>Suppose we want a:
+  1. response variable (like Rating was)
+  2. grouping variable (like Season was)
+  3. function to apply to each level</p>
+
+<p>This just writes out <em>exactly</em> what we had before</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">summarise.by.group <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>response<span class="p">,</span> group<span class="p">,</span> func<span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  response.split <span class="o">&lt;-</span> split<span class="p">(</span>response<span class="p">,</span> group<span class="p">)</span>
+</span><span class="line">  sapply<span class="p">(</span>response.split<span class="p">,</span> func<span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can compute the mean rating by season again:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">rating.new <span class="o">&lt;-</span> summarise.by.group<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">,</span> dat<span class="o">$</span>Season<span class="p">,</span> mean<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which is the same as what we got before:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">identical<span class="p">(</span>rating.new<span class="p">,</span> rating<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] TRUE</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Of course, we’re not the first people to try this.  This is <strong>exactly</strong>
+what the <code>tapply</code> function does (but with a few bells and whistles,
+especially around missing values, factor levels, additional
+arguments and multiple grouping factors at once).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">tapply<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">,</span> dat<span class="o">$</span>Season<span class="p">,</span> mean<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">1     2     3     4     5     6     7     8     9 
+</span><span class="line">7.725 8.158 8.304 8.465 8.343 8.283 8.441 8.423 8.323 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>So using <code>tapply</code>, you can do all the above manipulation in a
+single line.</p>
+
+<p>There are a couple of limitations of <code>tapply</code>.</p>
+
+<p>The first is that getting the season out of <code>tapply</code> is quite
+hard.  We could do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">as.numeric<span class="p">(</span>names<span class="p">(</span>rating<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 1 2 3 4 5 6 7 8 9</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But that’s quite ugly, not least because it involves the conversion
+numeric -&gt; string -&gt; numeric.</p>
+
+<p>Better could be to use</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">sort<span class="p">(</span>unique<span class="p">(</span>dat<span class="o">$</span>Season<span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 1 2 3 4 5 6 7 8 9</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>But that requires knowing what is going on inside of <code>tapply</code> (that
+unique levels are sorted and data are returned in that order).</p>
+
+<p>I suspect that this approach:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">first <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> x<span class="p">[[</span><span class="m">1</span><span class="p">]]</span>
+</span><span class="line">tapply<span class="p">(</span>dat<span class="o">$</span>Season<span class="p">,</span> dat<span class="o">$</span>Season<span class="p">,</span> first<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">1 2 3 4 5 6 7 8 9 
+</span><span class="line">1 2 3 4 5 6 7 8 9 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>is probably the most fool-proof, but it’s certainly not pretty.</p>
+
+<p>However, the returned format is extremely flexible.  If you do:</p>
+
+<p>The <code>aggregate</code> function provides a simplfied interface to <code>tapply</code>
+that avoids this issue.  It has two interfaces: the first is
+similar to what we used before, but the grouping variable now must
+be a list or data frame:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">aggregate<span class="p">(</span>dat<span class="o">$</span>Rating<span class="p">,</span> dat<span class="p">[</span><span class="s">&quot;Season&quot;</span><span class="p">],</span> mean<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Season     x
+</span><span class="line">1      1 7.725
+</span><span class="line">2      2 8.158
+</span><span class="line">3      3 8.304
+</span><span class="line">4      4 8.465
+</span><span class="line">5      5 8.343
+</span><span class="line">6      6 8.283
+</span><span class="line">7      7 8.441
+</span><span class="line">8      8 8.423
+</span><span class="line">9      9 8.323</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(note that <code>dat["Season"]</code> returns a one-column data frame).  The
+column ‘x’ is our response variable, Rating, grouped by season.  We
+can get its name included in the column names here by specifying
+the first argument as a <code>data.frame</code> too:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">aggregate<span class="p">(</span>dat<span class="p">[</span><span class="s">&quot;Rating&quot;</span><span class="p">],</span> dat<span class="p">[</span><span class="s">&quot;Season&quot;</span><span class="p">],</span> mean<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Season Rating
+</span><span class="line">1      1  7.725
+</span><span class="line">2      2  8.158
+</span><span class="line">3      3  8.304
+</span><span class="line">4      4  8.465
+</span><span class="line">5      5  8.343
+</span><span class="line">6      6  8.283
+</span><span class="line">7      7  8.441
+</span><span class="line">8      8  8.423
+</span><span class="line">9      9  8.323</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The other interface is the formula interface, that will be familiar
+from fitting linear models:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">aggregate<span class="p">(</span>Rating <span class="o">~</span> Season<span class="p">,</span> dat<span class="p">,</span> mean<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Season Rating
+</span><span class="line">1      1  7.725
+</span><span class="line">2      2  8.158
+</span><span class="line">3      3  8.304
+</span><span class="line">4      4  8.465
+</span><span class="line">5      5  8.343
+</span><span class="line">6      6  8.283
+</span><span class="line">7      7  8.441
+</span><span class="line">8      8  8.423
+</span><span class="line">9      9  8.323</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This interface is really nice; we can get the number of votes here
+too.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">aggregate<span class="p">(</span>cbind<span class="p">(</span>Rating<span class="p">,</span> Votes<span class="p">)</span> <span class="o">~</span> Season<span class="p">,</span> dat<span class="p">,</span> mean<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  Season Rating Votes
+</span><span class="line">1      1  7.725 579.0
+</span><span class="line">2      2  8.158 533.0
+</span><span class="line">3      3  8.304 496.7
+</span><span class="line">4      4  8.465 497.0
+</span><span class="line">5      5  8.343 452.5
+</span><span class="line">6      6  8.283 385.7
+</span><span class="line">7      7  8.441 408.0
+</span><span class="line">8      8  8.423 391.4
+</span><span class="line">9      9  8.323 415.0</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If you have multiple grouping variables, you can write things like:
+&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span></span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class=""><span class="line">aggregate(response ~ factor1 + factor2, dat, function)</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+
+<p>to apply a function to each pair of levels of <code>factor1</code> and <code>factor2</code>.</p>
+
+<h1 id="replicate">replicate</h1>
+
+<p>This is great in Monte Carlo simulation situations.  For example.
+Suppose that you flip a fair coin n times and count the number of
+heads:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">trial <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>n<span class="p">)</span>
+</span><span class="line">  sum<span class="p">(</span>runif<span class="p">(</span>n<span class="p">)</span> <span class="o">&lt;</span> <span class="m">0.5</span><span class="p">)</span> <span class="c1"># could have done a binomial draw...</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>You can run the trial a bunch of times:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">trial<span class="p">(</span><span class="m">10</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 4</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">trial<span class="p">(</span><span class="m">10</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 4</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">trial<span class="p">(</span><span class="m">10</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">[1] 6</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and get a feel for the results.  If you want to replicate the trial
+100 times and look at the distribution of results, you could do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">replicate<span class="p">(</span><span class="m">100</span><span class="p">,</span> trial<span class="p">(</span><span class="m">10</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">  [1] 4 4 5 6 8 5 5 7 3 5 6 4 4 3 5 3 6 7 2 6 6 4 5 4 4 4 4 5 6 5 4 2 6 5 6
+</span><span class="line"> [36] 5 6 8 5 6 4 5 4 5 5 5 4 7 3 5 5 6 4 6 4 6 4 4 4 6 3 5 5 7 6 7 5 3 4 4
+</span><span class="line"> [71] 5 6 8 5 6 2 5 7 6 3 5 9 3 7 6 4 5 3 7 3 3 7 6 8 5 4 6 7 4 3</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and then you could plot these:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>table<span class="p">(</span>replicate<span class="p">(</span><span class="m">10000</span><span class="p">,</span> trial<span class="p">(</span><span class="m">50</span><span class="p">))))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-49.png" alt="plot of chunk unnamed-chunk-49" /> </p>
+
+<h1 id="for-loops">for loops</h1>
+
+<p>“<code>for</code>” loops shine where the output of one iteration depends on
+the result of the previous iteration.</p>
+
+<p>Suppose you wanted to model random walk.  Every time step, with 50%
+probability move left or right.</p>
+
+<p>Start at position 0</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x <span class="o">&lt;-</span> <span class="m">0</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Move left or right with probability p (0.5 = unbiased)</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">p <span class="o">&lt;-</span> <span class="m">0.5</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Update the position</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x <span class="o">&lt;-</span> x <span class="o">+</span> <span class="kr">if</span> <span class="p">(</span>runif<span class="p">(</span><span class="m">1</span><span class="p">)</span> <span class="o">&lt;</span> p<span class="p">)</span> <span class="m">-1</span> <span class="kr">else</span> <span class="m">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Let’s abstract the update into a function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">step <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">,</span> p<span class="o">=</span><span class="m">0.5</span><span class="p">)</span>
+</span><span class="line">  x <span class="o">+</span> <span class="kr">if</span> <span class="p">(</span>runif<span class="p">(</span><span class="m">1</span><span class="p">)</span> <span class="o">&lt;</span> p<span class="p">)</span> <span class="m">-1</span> <span class="kr">else</span> <span class="m">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Repeat a bunch of times:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">x <span class="o">&lt;-</span> step<span class="p">(</span>x<span class="p">)</span>
+</span><span class="line">x <span class="o">&lt;-</span> step<span class="p">(</span>x<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>To find out where we got to after 20 steps:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="m">20</span><span class="p">)</span>
+</span><span class="line">  x <span class="o">&lt;-</span> step<span class="p">(</span>x<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If we want to collect where we’re up to at the same time:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">nsteps <span class="o">&lt;-</span> <span class="m">200</span>
+</span><span class="line">x <span class="o">&lt;-</span> numeric<span class="p">(</span>nsteps <span class="o">+</span> <span class="m">1</span><span class="p">)</span>
+</span><span class="line">x<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">0</span> <span class="c1"># start at 0</span>
+</span><span class="line"><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> seq_len<span class="p">(</span>nsteps<span class="p">))</span>
+</span><span class="line">  x<span class="p">[</span>i<span class="m">+1</span><span class="p">]</span> <span class="o">&lt;-</span> step<span class="p">(</span>x<span class="p">[</span>i<span class="p">])</span>
+</span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-56.png" alt="plot of chunk unnamed-chunk-56" /> </p>
+
+<p>Pulling <em>that</em> into a function:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">random.walk <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>nsteps<span class="p">,</span> x0<span class="o">=</span><span class="m">0</span><span class="p">,</span> p<span class="o">=</span><span class="m">0.5</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  x <span class="o">&lt;-</span> numeric<span class="p">(</span>nsteps <span class="o">+</span> <span class="m">1</span><span class="p">)</span>
+</span><span class="line">  x<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="o">&lt;-</span> x0
+</span><span class="line">  <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> seq_len<span class="p">(</span>nsteps<span class="p">))</span>
+</span><span class="line">    x<span class="p">[</span>i<span class="m">+1</span><span class="p">]</span> <span class="o">&lt;-</span> step<span class="p">(</span>x<span class="p">[</span>i<span class="p">])</span>
+</span><span class="line">  x
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>We can then do 30 random walks:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">walks <span class="o">&lt;-</span> replicate<span class="p">(</span><span class="m">30</span><span class="p">,</span> random.walk<span class="p">(</span><span class="m">100</span><span class="p">))</span>
+</span><span class="line">matplot<span class="p">(</span>walks<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> lty<span class="o">=</span><span class="m">1</span><span class="p">,</span> col<span class="o">=</span>rainbow<span class="p">(</span>nrow<span class="p">(</span>walks<span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-58.png" alt="plot of chunk unnamed-chunk-58" /> </p>
+
+<p>Of course, in this case, if we think in terms of vectors we can
+actually implement random walk using implicit vectorisation:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">random.walk <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>nsteps<span class="p">,</span> x0<span class="o">=</span><span class="m">0</span><span class="p">,</span> p<span class="o">=</span><span class="m">0.5</span><span class="p">)</span>
+</span><span class="line">  cumsum<span class="p">(</span>c<span class="p">(</span>x0<span class="p">,</span> ifelse<span class="p">(</span>runif<span class="p">(</span>nsteps<span class="p">)</span> <span class="o">&lt;</span> p<span class="p">,</span> <span class="m">-1</span><span class="p">,</span> <span class="m">1</span><span class="p">)))</span>
+</span><span class="line">
+</span><span class="line">walks <span class="o">&lt;-</span> replicate<span class="p">(</span><span class="m">30</span><span class="p">,</span> random.walk<span class="p">(</span><span class="m">100</span><span class="p">))</span>
+</span><span class="line">matplot<span class="p">(</span>walks<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> lty<span class="o">=</span><span class="m">1</span><span class="p">,</span> col<span class="o">=</span>rainbow<span class="p">(</span>nrow<span class="p">(</span>walks<span class="p">)))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="img/unnamed-chunk-59.png" alt="plot of chunk unnamed-chunk-59" /> </p>
+
+<p>Which reinforces one of the advantages of thinking in terms of
+functions: you can change the implementation detail without the
+rest of the program changing.</p>
+
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-14-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-23-git/">git</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/guides/repeating-things/index.html';
+        var disqus_url = 'http://nicercode.github.com/guides/repeating-things/index.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[Nice R Code]]></title>
   <link href="http://nicercode.github.com/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-05-21T09:32:51+10:00</updated>
+  <updated>2013-06-24T12:26:23+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -527,128 +527,128 @@ email either or both of us, or leave a comment on a relevant page.</p>
     <link href="http://nicercode.github.com/blog/2013-04-05-why-nice-code/"/>
     <updated>2013-04-05T14:46:00+11:00</updated>
     <id>http://nicercode.github.com/blog/why-nice-code</id>
-    <content type="html"><![CDATA[<!-- 
+    <content type="html"><![CDATA[<!--
 Why are students here
 Goals: performance, learning, affective, social
-Value: attainment, intrinsic, instrumental 
+Value: attainment, intrinsic, instrumental
 
-Instrumental - allows you to accomplish other important goals (extrinsic 
+Instrumental - allows you to accomplish other important goals (extrinsic
 rewards), i.e. learn about world, write papers, impress others
 Intrinsic - value nice code for itself (craftsmanship)
 Attainment -  satisfaction in getting something to work
 -->
 
-<p>Writing code is fast becoming a key - if not the most important - skill for 
-doing research in the 21st century. As scientists, we live in extraordinary 
-times. The amount of data (information) available to us is increasingly 
-exponentially, allowing for rapid advances in our understanding of the world 
-around us. The amount of information contained in a standard scientific paper 
-also seems to be on the rise. Researchers therefore need to be able to handle 
+<p>Writing code is fast becoming a key - if not the most important - skill for
+doing research in the 21st century. As scientists, we live in extraordinary
+times. The amount of data (information) available to us is increasingly
+exponentially, allowing for rapid advances in our understanding of the world
+around us. The amount of information contained in a standard scientific paper
+also seems to be on the rise. Researchers therefore need to be able to handle
 ever larger amounts of data to ask novel questions and get papers published.
-Yet, the standard tools used by many biologists -  point and click programs for 
-manipulating data, doing stats and making plots - do not allow us to scale-up 
-our analyses to match data availability, at least not without many, many more 
-‘clicks’. </p>
+Yet, the standard tools used by many biologists -  point and click programs for
+manipulating data, doing stats and making plots - do not allow us to scale-up
+our analyses to match data availability, at least not without many, many more
+‘clicks’.</p>
 
 <!-- more -->
 
 <p><span class="caption-wrapper right"><img class="caption" src="http://nicercode.github.com/images/2013-04-05-why-nice-code/geeks-vs-nongeeks-repetitive-tasks.png" width="" height="" alt="Why writing code saves you time with repetitive tasks, by [Bruno Oliveira](https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y)" title="Why writing code saves you time with repetitive tasks, by [Bruno Oliveira](https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y)" /><span class="caption-text">Why writing code saves you time with repetitive tasks, by <a href="https://plus.google.com/+BrunoOliveira/posts/MGxauXypb1Y">Bruno Oliveira</a></span></span></p>
 
-<p>The solution is to write scripts in programs like 
-<a href="http://www.r-project.org/">R</a>, <a href="http://www.python.org/">python</a> or 
-<a href="http://www.mathworks.com.au/products/matlab/">matlab</a>. Scripting allows you to 
-automate analyses, and therefore scale-up without a big increase in 
-effort.  </p>
+<p>The solution is to write scripts in programs like
+<a href="http://www.r-project.org/">R</a>, <a href="http://www.python.org/">python</a> or
+<a href="http://www.mathworks.com.au/products/matlab/">matlab</a>. Scripting allows you to
+automate analyses, and therefore scale-up without a big increase in
+effort.</p>
 
-<p>Writing code also offers other benefits to research. When your 
-analyses are documented in a script, it is easier to pick up a project and 
-start working on it again. You have a record of what you did and why. Chunks 
-of code can also be reused in new projects, saving vast amount of time. Writing 
-code also allows for effective collaboration with people from all over the 
-world. For all these reasons, many researchers are now learning how to write 
+<p>Writing code also offers other benefits to research. When your
+analyses are documented in a script, it is easier to pick up a project and
+start working on it again. You have a record of what you did and why. Chunks
+of code can also be reused in new projects, saving vast amount of time. Writing
+code also allows for effective collaboration with people from all over the
+world. For all these reasons, many researchers are now learning how to write
 code.</p>
 
-<p>Yet, most researchers have no or limited formal training in computer science, 
-and thus struggle to write nice code. Most of us are self-taught, having used a 
-mix of books, advice from other amateur coders, internet posts, and lots of 
-trial and error. Soon after have we written our first R script, our hard drives 
-explode with large bodies of barely readable code that we only half understand, 
-that also happens to be full of bugs and is generally difficult to use. Not 
-surprisingly, many researchers find writing code to be a relatively painful 
-process, involving lots of trial and error and, inevitably, frustration. </p>
+<p>Yet, most researchers have no or limited formal training in computer science,
+and thus struggle to write nice code (<a href="http://dx.doi.org/10.1038/467775a">Merali 2010</a>). Most of us are self-taught, having used a
+mix of books, advice from other amateur coders, internet posts, and lots of
+trial and error. Soon after have we written our first R script, our hard drives
+explode with large bodies of barely readable code that we only half understand,
+that also happens to be full of bugs and is generally difficult to use. Not
+surprisingly, many researchers find writing code to be a relatively painful
+process, involving lots of trial and error and, inevitably, frustration.</p>
 
-<p>If this sounds familiar to you, don’t worry, you are not alone. There are many 
-<a href="http://nicercode.github.com/intro/resources.html">great R resources</a> available, but most show you how 
-to do some fancy trick, e.g. run some complicated statistical test or make a 
-fancy plot. Few people - outside of computer science departments - spend time 
-discussing the qualities of nice code and teaching you good coding habits. 
-Certainly no one is teaching you these skills in your standard biology research 
+<p>If this sounds familiar to you, don’t worry, you are not alone. There are many
+<a href="http://nicercode.github.com/intro/resources.html">great R resources</a> available, but most show you how
+to do some fancy trick, e.g. run some complicated statistical test or make a
+fancy plot. Few people - outside of computer science departments - spend time
+discussing the qualities of nice code and teaching you good coding habits.
+Certainly no one is teaching you these skills in your standard biology research
 department.</p>
 
 <blockquote class="twitter-tweet"><p>Learn to code! I worry that most biologists leave uni lacking #1 skill for 21st cent biology. For inspiration <a href="http://t.co/7lzRutYuIw" title="http://code.org">code.org</a> <a href="https://twitter.com/search/%23CODE">#CODE</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/306854385076543488">February 27, 2013</a></blockquote>
 <script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<p>Observing how colleagues were struggling with their code, we 
-(<a href="http://www.zoology.ubc.ca/~fitzjohn/">Rich FitzJohn</a> and 
-<a href="http://www.falsters.net/daniel">Daniel Falster</a>) have teamed up to bring you 
-the <a href="http://nicercode.github.io/">nice R code</a> course and blog. We are 
-targeting researchers who are already using R and want to take their coding to 
-the next level. Our goal is to help you write nicer code. </p>
+<p>Observing how colleagues were struggling with their code, we
+(<a href="http://nicercode.github.com/about#Team">Rich FitzJohn and
+Daniel Falster</a>) have teamed up to bring you
+the <a href="http://nicercode.github.io/">nice R code</a> course and blog. We are
+targeting researchers who are already using R and want to take their coding to
+the next level. Our goal is to help you write nicer code.</p>
 
 <blockquote>
-  <p>By ‘nicer’ we mean 
-code that is easy to read, easy to write, runs fast, gives reliable results, is 
+  <p>By ‘nicer’ we mean
+code that is easy to read, easy to write, runs fast, gives reliable results, is
 easy to reuse in new projects, and is easy to share with collaborators.</p>
 </blockquote>
 
-<p>We 
+<p>We
 will be focussing on elements of workflow, good coding habits and some tricks,
 that will help transform your code from messy to nice.</p>
 
-<p>The inspiration for nice R code came in part from attending a boot camp run by 
-Greg Wilson from the <a href="http://software-carpentry.org/">software carpentry team</a>. 
-These boot camps aim to help researchers be more productive by teaching them 
-basic computing skills. Unlike other software courses we had attended, the 
-focus in the boot camps was on good programming habits and design. As 
-biologists, we saw a need for more material focussed on R, the language that 
-has come to dominate biological research. We are not experts, but have more 
+<p>The inspiration for nice R code came in part from attending a boot camp run by
+Greg Wilson from the <a href="http://software-carpentry.org/">software carpentry team</a>.
+These boot camps aim to help researchers be more productive by teaching them
+basic computing skills. Unlike other software courses we had attended, the
+focus in the boot camps was on good programming habits and design. As
+biologists, we saw a need for more material focussed on R, the language that
+has come to dominate biological research. We are not experts, but have more
 experience than many biologists. Hence the nice R code blog.</p>
 
 <blockquote class="twitter-tweet"><p>@<a href="https://twitter.com/phylorich">phylorich</a> Being able to code (in any language) is most important skill for current biology. R is good choice: widely used, high level, free</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/312438921059520512">March 15, 2013</a></blockquote>
 <script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h2 id="key-elements-of-nice-r-code">Key elements of nice R code</h2>
-<p>We will now briefly consider some of the key principles of writing nice code. </p>
+<p>We will now briefly consider some of the key principles of writing nice code.</p>
 
 <h3 id="nice-code-is-easy-to-read">Nice code is easy to read</h3>
 
-<blockquote><p>Programs should be written for people to read, and only incidentally for <br />machines to execute.</p><footer><strong>Abelson and Sussman</strong> <cite>Structure and Interpretation of Computer Programs</cite></footer></blockquote>
+<blockquote><p>Programs should be written for people to read, and only incidentally for<br />machines to execute.</p><footer><strong>Abelson and Sussman</strong> <cite>Structure and Interpretation of Computer Programs</cite></footer></blockquote>
 
-<p>Readability is by far the most important guiding principle for writing nicer 
-code. <strong>Anyone (especially you) should be able to pick up any of your 
-projects, understand what the code does and how to run it</strong>. Most code 
+<p>Readability is by far the most important guiding principle for writing nicer
+code. <strong>Anyone (especially you) should be able to pick up any of your
+projects, understand what the code does and how to run it</strong>. Most code
 written for research purposes is not easy to read.</p>
 
-<p>In our opinion, there are no fixed rules for what nice code should look like. 
-There 
+<p>In our opinion, there are no fixed rules for what nice code should look like.
+There
 is just a single test: is it easy to read? To check how nice your code
-is, pass it to a collaborator, or pick up some code you haven’t used for 
+is, pass it to a collaborator, or pick up some code you haven’t used for
 over a year. Do they (you) understand it?</p>
 
-<p>Below are some general guidelines for making your code more readable. We 
+<p>Below are some general guidelines for making your code more readable. We
 will explore each of these in more detail here on the blog:</p>
 
 <ul>
-  <li>Use a sensible directory structure for organising project related 
-materials. </li>
-  <li>Abstract your code into many small functions with helpful descriptive 
-names </li>
-  <li>Use comments, design features, and meaningful variable or function names 
+  <li>Use a sensible directory structure for organising project related
+materials.</li>
+  <li>Abstract your code into many small functions with helpful descriptive
+names</li>
+  <li>Use comments, design features, and meaningful variable or function names
 to capture the intent of your code, i.e. describe what it is <em>meant</em> to do</li>
-  <li>Use version control. Of the many reasons for using version control, one is 
-that it archives older versions of your code, permitting you to ruthlessly 
-yet safely delete old files. This helps reduce clutter and improves readability. </li>
-  <li>Apply a consistent style, such as that described in  the <a href="http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html">google R style 
+  <li>Use version control. Of the many reasons for using version control, one is
+that it archives older versions of your code, permitting you to ruthlessly
+yet safely delete old files. This helps reduce clutter and improves readability.</li>
+  <li>Apply a consistent style, such as that described in  the <a href="http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html">google R style
 guide</a>.</li>
 </ul>
 
@@ -657,25 +657,25 @@ guide</a>.</li>
 <blockquote class="twitter-tweet"><p>Occma&#8217;s raz0r: if your program isn&#8217;t working, it&#8217;s probably just a typo in the code, not an undiscovered bug or thing you&#8217;re doing wrong</p>&mdash; Alison Abreu-Garcia (@alisonag) <a href="https://twitter.com/alisonag/status/322374461212995584">April 11, 2013</a></blockquote>
 <script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<p>The computer does exactly what you tell it to. If there is a problem in your code, it’s most likely you put it there. How certain 
-are you that your code is error free? More than once I have reached a state 
-of near panic, looking over my code to ensure it is bug free before 
+<p>The computer does exactly what you tell it to. If there is a problem in your code, it’s most likely you put it there. How certain
+are you that your code is error free? More than once I have reached a state
+of near panic, looking over my code to ensure it is bug free before
 submitting a final version of a paper for publication. What if I got it wrong?</p>
 
 <p><a href="http://dx.doi.org/10.1109/MCSE.2005.54">It is almost impossible to ensure code is bug free</a>, but one can adopt healthy
 habits that minimise the chance of this occurring:</p>
 
 <ul>
-  <li>Don’t repeat yourself. The less you type, the fewer chances there are for 
+  <li>Don’t repeat yourself. The less you type, the fewer chances there are for
 mistakes</li>
   <li>Use test scripts, to compare your code against known cases</li>
   <li>Avoid using global variables, the attach function and <a href="../intro/bad-habits.html">other nasties</a>
 where ownership of data cannot be ensured</li>
-  <li>Use version control so that you see what has changed, and easily trace 
+  <li>Use version control so that you see what has changed, and easily trace
 mistakes</li>
-  <li>Wherever possible, open your code and project up for review, either by 
+  <li>Wherever possible, open your code and project up for review, either by
 colleagues, during review process, or in repositories such as github.</li>
-  <li>The more <em>readable</em> your code is, the less likely it is to contain 
+  <li>The more <em>readable</em> your code is, the less likely it is to contain
 errors.</li>
 </ul>
 
@@ -689,20 +689,20 @@ errors.</li>
 </blockquote>
 
 <p>Code that is slow to run is less fun to use. By <em>slow</em> I mean anything
-that takes more than a few seconds to run, so impedes analysis. 
-Speed is particularly an issue for people analysing large datasets, or 
-running complex simulations, where code may run for many hours, days, 
-or weeks. </p>
+that takes more than a few seconds to run, so impedes analysis.
+Speed is particularly an issue for people analysing large datasets, or
+running complex simulations, where code may run for many hours, days,
+or weeks.</p>
 
 <p>Some effective strategies for making code run faster:</p>
 
 <ul>
-  <li>Abstract your code into functions, so that you can compare different 
+  <li>Abstract your code into functions, so that you can compare different
 versions</li>
   <li>Use code profiling to identify the main computational bottlenecks
 and improve them</li>
   <li>Think carefully about algorithm design</li>
-  <li>Understand why some operations are intrinsically slower 
+  <li>Understand why some operations are intrinsically slower
 than others, e.g. why a <code>for</code> loop is slower than using <code>lapply</code></li>
   <li>Use multiple processors to increase computing power, either in your
 own machine or by running your code on a cluster.</li>
@@ -714,7 +714,7 @@ own machine or by running your code on a cluster.</li>
 <ul>
   <li><strong>Better science</strong>: nice code allows you to handle bigger data sets and has less bugs.</li>
   <li><strong>More fun</strong>: spend less time wrestling with R, and more time working with data.</li>
-  <li><strong>Become more efficient</strong>: Nice code is reusable, sharable, and quicker to run. </li>
+  <li><strong>Become more efficient</strong>: Nice code is reusable, sharable, and quicker to run.</li>
   <li><strong>Future employment</strong>: You should consider anything you write (open or closed) to be a potential advert to a future employer. Code has impact. Code sharing <a href="http://resume.github.io/?cboettig">sites like github now make resumes for you</a>, to capture your impact.  Scientists with an analytical bent are often <a href="http://www.nature.com/naturejobs/science/articles/10.1038/nj7440-271">sought-after in the natural sciences</a>.</li>
 </ul>
 
@@ -722,30 +722,30 @@ own machine or by running your code on a cluster.</li>
 
 <p><span class="caption-wrapper centre"><img class="caption" src="http://nicercode.github.com/images/2013-04-05-why-nice-code/Maniac.jpg" width="" height="" alt="An [advisory pop-up for MS Visual C++](http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer)" title="An [advisory pop-up for MS Visual C++](http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer)" /><span class="caption-text">An <a href="http://www.winsoft.se/2009/08/the-maintainer-might-be-a-maniac-serial-killer">advisory pop-up for MS Visual C++</a></span></span></p>
 
-<p>This might seem extreme, until you realise that the maniac serial killer is 
-<strong>you</strong>, and you definitely know where you live. </p>
+<p>This might seem extreme, until you realise that the maniac serial killer is
+<strong>you</strong>, and you definitely know where you live.</p>
 
-<p>At some point, you will 
-return to nearly every piece of code you wrote and need to understand it 
-afresh. If it is messy code, you will spend a lot of time going over it to 
-understand what you did, possibly a week, month, year or decade ago. Although 
-you are unlikely get so frustrated as to seek bloody revenge on your former 
-self, you might come close. </p>
+<p>At some point, you will
+return to nearly every piece of code you wrote and need to understand it
+afresh. If it is messy code, you will spend a lot of time going over it to
+understand what you did, possibly a week, month, year or decade ago. Although
+you are unlikely get so frustrated as to seek bloody revenge on your former
+self, you might come close.</p>
 <blockquote><p>The single biggest reason you should write nice code is so that your future<br /> self can understand it.</p><footer><strong>Greg Wilson</strong> <cite>Software Carpentry Course</cite></footer></blockquote>
 
-<p>As a by product, code that is easy to read is also easy to 
-reuse in new projects and share with colleagues, including as online 
-supplementary material. Increasingly, journals are requiring code be submitted 
-as part of the review process and these are often published online. Alas, much of the 
-current crop of code is difficult to read. At best, having messy code may reduce 
-the impact of your paper. But you might also get rejected because the 
+<p>As a by product, code that is easy to read is also easy to
+reuse in new projects and share with colleagues, including as online
+supplementary material. Increasingly, journals are requiring code be submitted
+as part of the review process and these are often published online. Alas, much of the
+current crop of code is difficult to read. At best, having messy code may reduce
+the impact of your paper. But you might also get rejected because the
 reviewer couldn’t understand your code. At worst, some people have had to <a href="http://www.sciencemag.org/content/314/5807/1856.summary">retract high profile work because of bugs in their code</a>.</p>
 
 <p>It’s time to write some nice R code.</p>
 
-<p>For further inspiration, you may like to check out Greg Wilson’s great article “<a href="http://arxiv.org/abs/1210.0530">Best Practices for Scientific Computing</a>.” </p>
+<p>For further inspiration, you may like to check out Greg Wilson’s great article “<a href="http://arxiv.org/abs/1210.0530">Best Practices for Scientific Computing</a>.”</p>
 
-<p><strong>Acknowledgments:</strong> Many thanks to <a href="https://twitter.com/gvwilson">Greg Wilson</a>, <a href="http://inundata.org/">Karthik Ram</a>, <a href="http://schamberlain.github.io/scott/">Scott Chameberlain</a> and <a href="http://www.carlboettiger.info/">Carl Boettiger</a> and <a href="http://www.zoology.ubc.ca/~fitzjohn/">Rich FitzJohn</a> for inspirational chats, code and work. </p>
+<p><strong>Acknowledgments:</strong> Many thanks to <a href="https://twitter.com/gvwilson">Greg Wilson</a>, <a href="http://inundata.org/">Karthik Ram</a>, <a href="http://schamberlain.github.io/scott/">Scott Chameberlain</a> and <a href="http://www.carlboettiger.info/">Carl Boettiger</a> and <a href="http://www.zoology.ubc.ca/~fitzjohn/">Rich FitzJohn</a> for inspirational chats, code and work.</p>
 ]]></content>
   </entry>
   
