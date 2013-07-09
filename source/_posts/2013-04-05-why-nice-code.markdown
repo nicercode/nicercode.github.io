@@ -21,7 +21,7 @@ Attainment -  satisfaction in getting something to work
 
 Writing code is fast becoming a key - if not the most important - skill for
 doing research in the 21st century. As scientists, we live in extraordinary
-times. The amount of data (information) available to us is increasingly
+times. The amount of data (information) available to us is increasing
 exponentially, allowing for rapid advances in our understanding of the world
 around us. The amount of information contained in a standard scientific paper
 also seems to be on the rise. Researchers therefore need to be able to handle
@@ -72,8 +72,7 @@ department.
 
 
 Observing how colleagues were struggling with their code, we
-([Rich FitzJohn and
-Daniel Falster](/about#Team)) have teamed up to bring you
+([Rich FitzJohn and Daniel Falster](/about#Team)) have teamed up to bring you
 the [nice R code](http://nicercode.github.io/) course and blog. We are
 targeting researchers who are already using R and want to take their coding to
 the next level. Our goal is to help you write nicer code.
@@ -131,8 +130,8 @@ to capture the intent of your code, i.e. describe what it is *meant* to do
 - Use version control. Of the many reasons for using version control, one is
 that it archives older versions of your code, permitting you to ruthlessly
 yet safely delete old files. This helps reduce clutter and improves readability.
-- Apply a consistent style, such as that described in  the [google R style
-guide](http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html).
+- Apply a consistent style, such as that described in  the
+- [google R style guide](http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html).
 
 
 ### Nice code is reliable, i.e. bug free
