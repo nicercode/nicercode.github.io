@@ -2,10 +2,10 @@
 layout: post
 title: "Modifying data with lookup tables"
 author: Daniel Falster
-date: 2013-05-14 08:20
+date: 2013-07-09 08:20
 comments: true
 publish: true
-categories: draft data project
+categories: data project
 ---
 
 <!-- The problem:
@@ -22,21 +22,20 @@ Solution
  -->
 
 
-In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a "find" and "replace" on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame -- although you should *never* do this, I suspect this method is quite common. A second -- and widely used -- approach for adding information is to modify the values using code in your script. The third -- and nicest -- way of adding information is to use a lookup table. 
+In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a "find" and "replace" on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame -- although you should *never* do this, I suspect this method is quite common. A second -- and widely used -- approach for adding information is to modify the values using code in your script. The third -- and nicest -- way of adding information is to use a lookup table.
 
 <!-- more -->
 
-One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:
+One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests.Such code might correct, for example, a species name:
 
-
-```
-raw$species[raw$id=="1"] <- "Banksia oblongifolia"  
+```r
+raw$species[raw$id=="1"] <- "Banksia oblongifolia"
 raw$species[raw$id=="2"] <- "Banksia ericifolia"
 ```
 
-or add some details, for example in this case location, latitude, longitude and mean annual precipitation:
+or add some details to the data set, such as location, latitude, longitude and mean annual precipitation:
 
-```
+```r
 raw$location[raw$id=="1"] <-"NSW"
 raw$latitude[raw$id=="1"] <- -37
 raw$longitude[raw$id=="1"] <- 40
@@ -44,29 +43,31 @@ raw$map[raw$id=="1"] <- 1208
 raw$map[raw$id=="1"] <- 1226
 ```
 
-In large analyses, this type of code may go for hundreds of lines. 
+In large analyses, this type of code may go for hundreds of lines.
+
+{% img ../../images/2013-07-09-modifying-data-with-lookup-tables/messy_script.png %}
 
 Now before we go on, let me say that this approach to adding data is *much* better than editing your datafile directly, for the following two reasons:
 
 1. It maintains the integrity of your raw data file
 2. You can see where the new value came from (it was added in a script), and modify it later if needed.
 
-There is also nothing *wrong* with adding data this way. However, it is what we would consider *messy* code, for these reaosns: 
+There is also nothing *wrong* with adding data this way. However, it is what we would consider *messy* code, for these reasons:
 
 - Long chunks of code modifying data is inherently difficult to read.
 - There's a lot of typing involved, so lot's of work, and thus opportunities for error.
 - It's harder to change variable names when they are embedded in code all over the place.
 
-A far *nicer* way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:
+A far *nicer* way to add data to an existing data frame is to use a lookup table. Here is an example of such a table, achieving similar (but not identical) modifications to the code above:
 
 
 
 
 
 
-{% highlight r %}
+```r
 read.csv("dataNew.csv")
-{% endhighlight %}
+```
 
 
 
@@ -99,8 +100,7 @@ The columns of this table are
 - **newValue** is the value of `newVariable` for matched rows
 - **source** includes any notes about where the data came from (e.g., who made the change)
 
-So the table documents the changes we want to make to our dataframe. The function [addNewData.R](https://gist.github.com/dfalster/5589956) then takes this filename for this table and applies it to thedata frame. For example let's assume we have a data frame called `data`
-
+So the table documents the changes we want to make to our dataframe. The function [addNewData.R](https://gist.github.com/dfalster/5589956) takes the file name for this table as an argument and applies it to the data frame. For example let's assume we have a data frame called `data`
 
 
 {% highlight r %}
@@ -137,11 +137,11 @@ myData
 and want to apply the table given above, we simply write
 
 
-{% highlight r %}
+```r
 source("addNewData.r")
 allowedVars <- c("species", "family", "location")
 addNewData("dataNew.csv", myData, allowedVars)
-{% endhighlight %}
+```
 
 
 
@@ -170,11 +170,10 @@ addNewData("dataNew.csv", myData, allowedVars)
 {% endhighlight %}
 
 
-The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of *data* in a file, which is preferable to having data mixed in with our code. 
+The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of *data* in a file, which is preferable to having data mixed in with our code.
 
-You can use this approach 
-You can find the example files used here, as a [github gist](https://gist.github.com/dfalster/5589956)
+You can use this approach
+You can find the example files used here, as a [github gist](https://gist.github.com/dfalster/5589956).
 
-
-
+**Acknowledgements:** Many thanks to Rich FitzJohn and Diego Barneche for valuable discussions.
 

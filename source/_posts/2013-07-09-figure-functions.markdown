@@ -1,11 +1,11 @@
 ---
 layout: post
 title: "Figure functions"
-date: 2013-04-05 16:41
+date: 2013-07-09 16:41
 comments: true
 categories: R plotting
 author: Rich FitzJohn
-published: false
+published: true
 ---
 
 Transitioning from an interactive plot in R to a publication-ready
@@ -13,13 +13,15 @@ plot can create a messy script file with lots of statements and use of
 global variables.  This post outlines an approach that I have used to
 simplify the process and keeps code readable.
 
+<!-- more -->
+
 The usual way of plotting to a file is to open a plotting device (such
 as `pdf` or `png`) run a series of commands that generate plotting
 output, and then close the device with `dev.off()`.  However, the way
 that most plots are developed is purely interactively.  So you start
 with:
 
-```r
+```
 set.seed(10)
 x <- runif(100)
 y <- rnorm(100, x)
@@ -40,7 +42,6 @@ pdf("my-plot.pdf", width=6, height=4)
 dev.off()
 ```
 
-<!-- more -->
 
 This leads to bits of code that often look like this:
 
@@ -112,7 +113,7 @@ figures).
 pdf("figs/trend.pdf", width=6, height=4)
 fig.trend()
 dev.off()
- 
+
 pdf("figs/other.pdf", width=6, height=4)
 fig.other()
 dev.off()
@@ -145,6 +146,7 @@ A couple of nice things about this approach:
   plotting device (width, height, etc).
 * We're reduced things from 6 repetitive lines to 2 that capture our
   intent better.
+* The to.pdf function demands that you put the code for your figure in a function.
 * Using functions, rather than statements in the global environment,
   discourages dependency on global variables.  This in turn helps
   identify reusable chunks of code.
@@ -178,7 +180,7 @@ Now -- if run with as
 fig.progressive(FALSE)
 ```
 
-just the data are plotted, and if run as 
+just the data are plotted, and if run as
 
 ```
 fig.progressive(TRUE)

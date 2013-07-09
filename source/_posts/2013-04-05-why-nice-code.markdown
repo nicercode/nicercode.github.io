@@ -225,4 +225,4 @@ It's time to write some nice R code.
 
 For further inspiration, you may like to check out Greg Wilson's great article "[Best Practices for Scientific Computing](http://arxiv.org/abs/1210.0530)."
 
-**Acknowledgments:** Many thanks to [Greg Wilson](https://twitter.com/gvwilson), [Karthik Ram](http://inundata.org/), [Scott Chameberlain](http://schamberlain.github.io/scott/) and [Carl Boettiger](http://www.carlboettiger.info/) and [Rich FitzJohn](http://www.zoology.ubc.ca/~fitzjohn/) for inspirational chats, code and work.
+**Acknowledgements:** Many thanks to [Greg Wilson](https://twitter.com/gvwilson), [Karthik Ram](http://inundata.org/), [Scott Chameberlain](http://schamberlain.github.io/scott/) and [Carl Boettiger](http://www.carlboettiger.info/) and [Rich FitzJohn](http://www.zoology.ubc.ca/~fitzjohn/) for inspirational chats, code and work.
