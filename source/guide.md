@@ -12,6 +12,7 @@ We have put together the following guides on
 2. Version control in R with [git](/git/)
 3. Using [functions](guides/functions) to simplify your scripts
 4. Different ways of [repeating things](guides/repeating-things).
+5. [Plotting](guides/plotting).
 
 We have also put together a list of
 
