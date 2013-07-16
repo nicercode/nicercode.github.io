@@ -9,7 +9,9 @@
   <meta name="author" content="Rich FitzJohn & Daniel Falster">
 
   
-  <meta name="description" content="This is a guest post by Marcela Diaz, a PhD student at Macquarie University. Until recently, I hadn’t given much attention to organising files in my &hellip;">
+  <meta name="description" content="Transitioning from an interactive plot in R to a publication-ready
+plot can create a messy script file with lots of statements and use of
+global &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -95,6 +97,130 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-07-09-figure-functions/">Figure functions</a></h1>
+    
+    
+      <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <a href="/about#Team" span class="fn">Rich FitzJohn</span></span> </a>
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T16:41:00+10:00" pubdate data-updated="true">09 July 2013</time> - 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/r/'>R</a>, <a class='category' href='/blog/categories/plotting/'>plotting</a>
+  
+</span>
+
+
+
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Transitioning from an interactive plot in R to a publication-ready
+plot can create a messy script file with lots of statements and use of
+global variables.  This post outlines an approach that I have used to
+simplify the process and keeps code readable.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013-07-09-figure-functions/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013-07-09-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a></h1>
+    
+    
+      <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <a href="/about#Team" span class="fn">Daniel Falster</span></span> </a>
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T08:20:00+10:00" pubdate data-updated="true">09 July 2013</time> - 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/project/'>project</a>
+  
+</span>
+
+
+
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><!-- The problem:
+- importing new data
+- amount of code to be written (opportunities for mistake)
+- separating data from scripts
+- maintaining record of where data came from
+
+Common approach
+- long sequence of data modifying code
+
+Solution
+- use lookup table, find and replace
+ -->
+
+<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2013-07-09-modifying-data-with-lookup-tables/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -395,7 +521,7 @@ Attainment -  satisfaction in getting something to work
 
 <p>Writing code is fast becoming a key - if not the most important - skill for
 doing research in the 21st century. As scientists, we live in extraordinary
-times. The amount of data (information) available to us is increasingly
+times. The amount of data (information) available to us is increasing
 exponentially, allowing for rapid advances in our understanding of the world
 around us. The amount of information contained in a standard scientific paper
 also seems to be on the rise. Researchers therefore need to be able to handle
@@ -591,11 +717,15 @@ us interested in broadcasting ideas more widely.</p>
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
+        <a href="/blog/2013-07-09-figure-functions/">Figure functions</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-05-14-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+        <a href="/blog/2013-07-09-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
       </li>
     
       <li class="post">
@@ -604,10 +734,6 @@ us interested in broadcasting ideas more widely.</p>
     
       <li class="post">
         <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-04-23-git/">git</a>
       </li>
     
   </ul>

@@ -1,0 +1,560 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Figure functions - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Transitioning from an interactive plot in R to a publication-ready
+plot can create a messy script file with lots of statements and use of
+global &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/blog/2013-07-09-figure-functions/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Figure functions </h1>
+    
+    
+      <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <a href="/about#Team" span class="fn">Rich FitzJohn</span></span> </a>
+ - 
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T16:41:00+10:00" pubdate data-updated="true">09 July 2013</time> - 
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/r/'>R</a>, <a class='category' href='/blog/categories/plotting/'>plotting</a>
+  
+</span>
+
+
+
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Transitioning from an interactive plot in R to a publication-ready
+plot can create a messy script file with lots of statements and use of
+global variables.  This post outlines an approach that I have used to
+simplify the process and keeps code readable.</p>
+
+<!-- more -->
+
+<p>The usual way of plotting to a file is to open a plotting device (such
+as <code>pdf</code> or <code>png</code>) run a series of commands that generate plotting
+output, and then close the device with <code>dev.off()</code>.  However, the way
+that most plots are developed is purely interactively.  So you start
+with:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">set.seed(10)
+</span><span class="line">x &lt;- runif(100)
+</span><span class="line">y &lt;- rnorm(100, x)
+</span><span class="line">par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">plot(y ~ x, las=1)
+</span><span class="line">fit &lt;- lm(y ~ x)
+</span><span class="line">abline(fit, col="red")
+</span><span class="line">legend("topleft", c("Data", "Trend"),
+</span><span class="line">       pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then to convert this into a figure for publication we copy and paste
+this between the device commands:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pdf("my-plot.pdf", width=6, height=4)
+</span><span class="line">  # ...pasted commands from before
+</span><span class="line">dev.off()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This leads to bits of code that often look like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"># pdf("my-plot.pdf", width=6, height=4) # uncomment to make plot
+</span><span class="line">set.seed(10)
+</span><span class="line">x &lt;- runif(100)
+</span><span class="line">y &lt;- rnorm(100, x)
+</span><span class="line">par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">plot(y ~ x, las=1)
+</span><span class="line">fit &lt;- lm(y ~ x)
+</span><span class="line">abline(fit, col="red")
+</span><span class="line">legend("topleft", c("Data", "Trend"),
+</span><span class="line">       pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+</span><span class="line"># dev.off() # uncomment to make plot</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which is all pretty ugly.  On top of that, we’re often making a bunch
+of variables that are global but are really only useful in the context
+of the figure (in this case the <code>fit</code> object that contains the trend
+line).  An arguably worse solution would be simply to duplicate the
+plotting bits of code.</p>
+
+<h2 id="a-partial-solution">A partial solution:</h2>
+
+<p>The solution that I usually use is to make a function that generates
+the figure.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.trend &lt;- function() {
+</span><span class="line">  set.seed(10)
+</span><span class="line">  x &lt;- runif(100)
+</span><span class="line">  y &lt;- rnorm(100, x)
+</span><span class="line">  par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">  plot(y ~ x, las=1)
+</span><span class="line">  fit &lt;- lm(y ~ x)
+</span><span class="line">  abline(fit, col="red")
+</span><span class="line">  legend("topleft", c("Data", "Trend"),
+</span><span class="line">         pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then you can easily see the figure</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.trend() # generates figure</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>or</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">source("R/figures.R") # refresh file that defines fig.trend
+</span><span class="line">fig.trend()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and you can easily generate plots:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pdf("figs/trend.pdf", width=6, height=8)
+</span><span class="line">fig.trend()
+</span><span class="line">dev.off()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>However, this still gets a bit unweildly when you have a large number
+of figures to make (especially for talks where you might make 20 or 30
+figures).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pdf("figs/trend.pdf", width=6, height=4)
+</span><span class="line">fig.trend()
+</span><span class="line">dev.off()
+</span><span class="line">
+</span><span class="line">pdf("figs/other.pdf", width=6, height=4)
+</span><span class="line">fig.other()
+</span><span class="line">dev.off()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="a-full-solution">A full solution</h2>
+
+<p>The solution I use here is a little function called <code>to.pdf</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf &lt;- function(expr, filename, ..., verbose=TRUE) {
+</span><span class="line">  if ( verbose )
+</span><span class="line">    cat(sprintf("Creating %s\n", filename))
+</span><span class="line">  pdf(filename, ...)
+</span><span class="line">  on.exit(dev.off())
+</span><span class="line">  eval.parent(substitute(expr))
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Which can be used like so:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf(fig.trend(), "figs/trend.pdf", width=6, height=4)
+</span><span class="line">to.pdf(fig.other(), "figs/other.pdf", width=6, height=4)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>A couple of nice things about this approach:</p>
+
+<ul>
+  <li>It becomes much easier to read and compare the parameters to the
+plotting device (width, height, etc).</li>
+  <li>We’re reduced things from 6 repetitive lines to 2 that capture our
+intent better.</li>
+  <li>The to.pdf function demands that you put the code for your figure in a function.</li>
+  <li>Using functions, rather than statements in the global environment,
+discourages dependency on global variables.  This in turn helps
+identify reusable chunks of code.</li>
+  <li>Arguments are all passed to <code>pdf</code> via <code>...</code>, so we don’t need to
+duplicate <code>pdf</code>’s argument list in our function.</li>
+  <li>The <code>on.exit</code> call ensures that the device is always closed, even if
+the figure function fails.</li>
+</ul>
+
+<p>For talks, I often build up figures piece-by-piece.  This can be done
+like so (for a two-part figure)</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.progressive &lt;- function(with.trend=FALSE) {
+</span><span class="line">  set.seed(10)
+</span><span class="line">  x &lt;- runif(100)
+</span><span class="line">  y &lt;- rnorm(100, x)
+</span><span class="line">  par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">  plot(y ~ x, las=1)
+</span><span class="line">  if ( with.trend ) {
+</span><span class="line">    fit &lt;- lm(y ~ x)
+</span><span class="line">    abline(fit, col="red")
+</span><span class="line">    legend("topleft", c("Data", "Trend"),
+</span><span class="line">           pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+</span><span class="line">  }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Now – if run with as</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.progressive(FALSE)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>just the data are plotted, and if run as</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.progressive(TRUE)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>the trend line and legend are included.  Then with the <code>to.pdf</code>
+function, we can do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf(fig.progressive(TRUE),  "figs/progressive-1.pdf", width=6, height=4)
+</span><span class="line">to.pdf(fig.progressive(FALSE), "figs/progressive-2.pdf", width=6, height=4)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will generate the two figures.</p>
+
+<p>The general idea can be expanded to more devices:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.dev &lt;- function(expr, dev, filename, ..., verbose=TRUE) {
+</span><span class="line">  if ( verbose )
+</span><span class="line">    cat(sprintf("Creating %s\n", filename))
+</span><span class="line">  dev(filename, ...)
+</span><span class="line">  on.exit(dev.off())
+</span><span class="line">  eval.parent(substitute(expr))
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>where we would do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.dev(fig.progressive(TRUE),  pdf, "figs/progressive-1.pdf", width=6, height=4)
+</span><span class="line">to.dev(fig.progressive(FALSE), pdf, "figs/progressive-2.pdf", width=6, height=4)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note that with this <code>to.dev</code> function we can rewrite the <code>to.pdf</code>
+function more compactly:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf &lt;- function(expr, filename, ...)
+</span><span class="line">  to.dev(expr, pdf, filename, ...)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Or write a similar function for the <code>png</code> device:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.png_function(expr, filename, ...)
+</span><span class="line">  to.dev(expr, png, filename)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(As an alternative, the <code>dev.copy2pdf</code> function can be useful for
+copying the current contents of an interactive plotting window to a
+pdf).</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <a href="/about#Team" span class="fn">Rich FitzJohn</span></span> </a>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-09T16:41:00+10:00" pubdate data-updated="true">09 July 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/r/'>R</a>, <a class='category' href='/blog/categories/plotting/'>plotting</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-07-09-figure-functions/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-07-09-figure-functions/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013-07-09-modifying-data-with-lookup-tables/" title="Previous Post: Modifying data with lookup tables">&laquo; Modifying data with lookup tables</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-07-09-figure-functions/">Figure functions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-07-09-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/blog/2013-07-09-figure-functions/';
+        var disqus_url = 'http://nicercode.github.com/blog/2013-07-09-figure-functions/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

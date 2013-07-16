@@ -1,0 +1,463 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Plotting - Nice R Code</title>
+  <meta name="author" content="Rich FitzJohn & Daniel Falster">
+
+  
+  <meta name="description" content="Plotting 10 July 2013 Plotting is different to the other types of things you do with R –
+even when done as “nicely” as possible it might require &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://nicercode.github.com/guides/plotting/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Nice R Code" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href='http://fonts.googleapis.com/css?family=Bitter:400,700,400italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39493992-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body    class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Nice R Code</a></h1>
+  
+    <h2>Punning code better since 2013</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:nicercode.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/guide.html">Guides</a></li>
+  <li><a href="/modules">Modules</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article role="article">
+  
+  <header>
+    <h1 class="entry-title">Plotting</h1>
+    <p class="meta">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-07-10T10:25:00+10:00" pubdate data-updated="true">10 July 2013</time></p>
+  </header>
+  
+  <p>Plotting is different to the other types of things you do with R –
+even when done as “nicely” as possible it might require many lines of
+code.  This is because making really nice figures is something that
+requires some finesse as you move between science and art.  Good
+figures carry a lot of impact, and to deliver this, you often have to
+think carefully about each line, about relative sizes of everything,
+about the spacing of the figures, amongst other things.</p>
+
+<p>Before going into <em>how</em> to do everything in R, it is worth considering
+<em>if</em> you should use R for everything.  Sometimes a graphics editing
+program (like Illustrator or <a href="http://inkscape.org">Inkscape</a>) will be
+faster, especially for adding pictures, making maps, or doing
+complicated graphics composed of many pieces.  Fundamentally, R just
+gives you a blank device as a canvas, so anything is possible, but it
+may just be very awkward or time consuming.  If you do persevere, the
+benefits include:</p>
+
+<ul>
+  <li>Reproducibility – can go from raw data to final figure.</li>
+  <li>Helps you rework figure after review.</li>
+  <li>Helps you rework figure for different talk (colour scheme, etc).</li>
+  <li>Eventually faster, and time spent learning pays back later.</li>
+  <li>Build up a library of tricks.</li>
+</ul>
+
+<h1 id="plotting-workflow">Plotting workflow</h1>
+
+<p>A common workflow for making figures is to</p>
+
+<ol>
+  <li>Plot a bunch of stuff to screen</li>
+  <li>Resize the device until it looks about right</li>
+  <li>Save the output (File: Save, or similar)</li>
+</ol>
+
+<p>There are several problems with this approach:</p>
+
+<ul>
+  <li>The figure dimensions are only appoximate</li>
+  <li>The figure is not very reproducible, because slight changes in size
+change the appearance</li>
+  <li>Resizing the plot to get the right dimensions can be awkward</li>
+  <li>It’s hard to generate many similar figures for a talk, or to
+generate different format output from the same piece of code.</li>
+</ul>
+
+<p>We don’t encourage this approach.</p>
+
+<p>Instead, we suggest this workflow:</p>
+
+<ol>
+  <li>Open an appropriate plotting device (e.g., with <code>pdf</code> – see
+below)</li>
+  <li>Plot a bunch of stuff, <em>which goes to the device</em></li>
+  <li>Close the device</li>
+</ol>
+
+<p>In practice, you’ll tweak the figure (step 2) on the screen until
+you’re happy with it first.</p>
+
+<h2 id="what-type-of-device">What type of device?</h2>
+
+<p>There are two basic types of graphic – “<strong>vector</strong> graphics”, where
+the logical units are lines and shapes, and “<strong>bitmap</strong> graphics”
+(also called <strong>raster</strong> graphics, not to be confused with
+<a href="https://twitter.com/phylorich/status/354761374687186944/photo/1">rasta graphics</a>.</p>
+
+<p>To see the difference: here are screenshots of part of a figure zoomed
+in about 4 times.  The first image is taken from a pdf, with crisp
+lines, and the second is a png showing the underlying matrix of pixels
+that make up the image:</p>
+
+<p><img src="pics/pdf_zoom_1.png" />
+<img src="pics/png_zoom_1.png" /></p>
+
+<p>If you’re making plots for a paper, or for a talk, you almost
+certainly want vector graphics.  These render nicely at all scales -
+you can zoom in and lines and text stay crisp (some journals still ask
+for high resolution bitmaps at the final stage of processing –
+sometimes a “tiff” file).  For vector graphics, the PDF device is
+great for most things, and pdf files incorporate nicely into most
+document formats now.</p>
+
+<p>If you’re making plots for the web, you probably want raster graphics,
+as there are few widely supported formats for vector graphics (svg is
+getting better support).  For raster graphics, </p>
+
+<p>In general, you want to make figures in png
+(Portable Network Graphics) format.  Don’t make figures in jpeg
+format.  </p>
+
+<p>Here is a zoom of the same region of a plot as the figures above,
+showing “jpeg artefacts”:</p>
+
+<p><img src="pics/jpeg_zoom_1.png" /></p>
+
+<p>This is because jpeg is a <strong>lossy</strong> compression algorithm; it’s
+designed to work well with images that are like photos, and does
+spectacularly badly with line art.  Jpegs are great for
+<a href="http://emergency-kittens.tumblr.com/">cat pictures</a> but not good at
+all for plots.  Unfortunately, many journals will still butcher your
+beautiful vector figures by making them into jpegs at some point in
+their production workflow, so be vigilant.</p>
+
+<h2 id="using-the-workflow">Using the workflow</h2>
+
+<p>To make a PDF figure, you open the pdf device, add some plotting
+commands, and close the device:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">pdf<span class="p">(</span><span class="s">&quot;my_plot.pdf&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">6</span><span class="p">,</span> height<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">plot<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">)</span>
+</span><span class="line">dev.off<span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>The width/height arguments are in inches (you can use the function
+<code>cm</code> to get dimensions in centimeters, e.g., <code>cm(10)</code> returns the
+number of inches required for a 10 cm plot), and <em>at that size</em> the
+text will be in 12 point type.  You can tweak that with the
+<code>pointsize</code> arguments.  This makes it really simple to work out what
+the plot will look like on a page (e.g., in a journal).  When you run
+these commands, you will end up with a file called <code>my_plot.pdf</code> in
+the current directory.  If you’re using a project layout like
+<a href="/blog/2013-04-05-projects/">we suggested in this post</a>,
+then the filename might be <code>figs/my_plot.pdf</code> to put the figures into
+the <code>figs</code> directory.</p>
+
+<p>As the number of lines of code between <code>pdf</code> and <code>dev.off</code> grows, this
+gets tedious.  We find that it works well to make a function per
+figure:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">fig.myplot <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">  plot<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">)</span>
+</span><span class="line">  points<span class="p">(</span>runif<span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> runif<span class="p">(</span><span class="m">100</span><span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">10</span><span class="p">),</span> col<span class="o">=</span>rainbow<span class="p">(</span><span class="m">100</span><span class="p">))</span>
+</span><span class="line">  abline<span class="p">(</span>h<span class="o">=</span><span class="m">5</span><span class="p">)</span>
+</span><span class="line">  title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;My lovely plot&quot;</span><span class="p">)</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and then use it like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">pdf<span class="p">(</span><span class="s">&quot;my_plot.pdf&quot;</span><span class="p">,</span> width<span class="o">=</span><span class="m">6</span><span class="p">,</span> height<span class="o">=</span><span class="m">4</span><span class="p">)</span>
+</span><span class="line">fig.myplot<span class="p">()</span>
+</span><span class="line">dev.off<span class="p">()</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>There are a number of advantages and extensions to this approach that
+we discuss in <a href="/blog/2013-XX-XX-figure-functions/">this post</a>.</p>
+
+<h1 id="figure-layout">Figure layout</h1>
+
+<p>There are a lot of things that can be tweaked about figures using the
+<code>par</code> command.  The help page is very terse, but worth looking through
+to get an idea of what can be tweaked.  Obviously, we can’t deal with
+all possible parameters, as it’s a huge set.</p>
+
+<h2 id="margins">Margins</h2>
+
+<p>There are two ways of specifying margins; by physical size (in inches
+again) and in lines of text.  Because you’re mostly going to be
+putting text into the margins, it is much easier to scale margins by
+the text size.  The commands <code>par("mai")</code> and <code>par("mar")</code>
+return the size of the margins in inches and lines of text
+respectively.  By default, </p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="o">&gt;</span> par<span class="p">(</span><span class="s">&quot;mar&quot;</span><span class="p">)</span>
+</span><span class="line"><span class="c1"># [1] 5.1 4.1 4.1 2.1</span>
+</span><span class="line"><span class="o">&gt;</span> par<span class="p">(</span><span class="s">&quot;mai&quot;</span><span class="p">)</span>
+</span><span class="line"><span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">1.02</span> <span class="m">0.82</span> <span class="m">0.82</span> <span class="m">0.42</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This vector is refers to the edges of the plot from the bottom (first
+element) clockwise (i.e., bottom, left, top, right).  You can
+visualise the lines of text this way:</p>
+
+<p><img src="pics/margins_single.png" /></p>
+
+<p>There are other relevant dimension attributes for multipanel plots:</p>
+
+<p><img src="pics/margins.png" /></p>
+
+<h1 id="making-a-nice-figure">Making a nice figure</h1>
+
+<p>In class, we’ll work through a number of tricks to convert this
+figure:</p>
+
+<p><img src="pics/before.png" /></p>
+
+<p>into something nicer:</p>
+
+<p><img src="pics/after.png" /></p>
+
+<p>(both of these actually look substantially nicer in something
+scalable, so here is a svg output for people with browsers who can
+render them)</p>
+
+<p><img src="pics/after.svg" /></p>
+
+<p>Code that steps the development process is available as
+<a href="https://gist.github.com/richfitz/5963583">a gist</a>.</p>
+
+<h1 id="other-tricks-that-people-asked-about">Other tricks that people asked about:</h1>
+
+<h2 id="text-layout">Text layout</h2>
+
+<p>You can easily tweak the alignment of text, using the <code>adj</code> parameter
+(many graphical functions involving text accept this)</p>
+
+<p><img src="pics/adj.png" /></p>
+
+<h2 id="scientific-notation-in-axes">Scientific notation in axes</h2>
+
+<p>This is tricky, but with trial and error usually gives reasonable
+results.  See <code>demo(plotmath)</code> for a reasonably comprehensive tour of
+the feature.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
+</span><span class="line">xlab <span class="o">&lt;-</span> expression<span class="p">(</span>paste<span class="p">(</span><span class="s">&quot;Photosynthetic rate (&quot;</span><span class="p">,</span> mu<span class="p">,</span> <span class="s">&quot; mol &quot;</span><span class="p">,</span> m<span class="o">^</span><span class="m">-2</span><span class="p">,</span>
+</span><span class="line">    s<span class="o">^</span><span class="m">-1</span><span class="p">,</span> <span class="s">&quot;)&quot;</span><span class="p">))</span>
+</span><span class="line">ylab <span class="o">&lt;-</span> <span class="s">&quot;Photosynthetic rate (u mol m^-2 s^-1)&quot;</span>
+</span><span class="line">mtext<span class="p">(</span>xlab<span class="p">,</span> <span class="m">1</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">mtext<span class="p">(</span>ylab<span class="p">,</span> <span class="m">2</span><span class="p">,</span> <span class="m">3</span><span class="p">)</span>
+</span><span class="line">title<span class="p">(</span>main<span class="o">=</span><span class="s">&quot;Doesn&#39;t the x axis label look nice?&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="pics/sci.png" /></p>
+
+
+  
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013-07-09-figure-functions/">Figure functions</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-07-09-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-07-how-long-is-a-function/">How long is a function?</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'nicercode';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://nicercode.github.com/guides/plotting/index.html';
+        var disqus_url = 'http://nicercode.github.com/guides/plotting/index.html';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

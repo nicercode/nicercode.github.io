@@ -22,7 +22,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/">
+  <link rel="canonical" href="http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <script src="/javascripts/modernizr-2.0.js"></script>
@@ -122,11 +122,11 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2013-05-14T08:20:00+10:00" pubdate data-updated="true">14 May 2013</time> - 
+<time datetime="2013-07-09T08:20:00+10:00" pubdate data-updated="true">09 July 2013</time> - 
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/draft/'>draft</a>, <a class='category' href='/blog/categories/project/'>project</a>
+    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/project/'>project</a>
   
 </span>
 
@@ -151,31 +151,35 @@ Solution
 - use lookup table, find and replace
  -->
 
-<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table. </p>
+<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table.</p>
 
 <!-- more -->
 
-<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:</p>
+<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests.Such code might correct, for example, a species name:</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">raw$species[raw$id=="1"] &lt;- "Banksia oblongifolia"  
-</span><span class="line">raw$species[raw$id=="2"] &lt;- "Banksia ericifolia"</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class="code"><pre><code class="r"><span class="line">raw<span class="o">$</span>species<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Banksia oblongifolia&quot;</span>
+</span><span class="line">raw<span class="o">$</span>species<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;2&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Banksia ericifolia&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>or add some details, for example in this case location, latitude, longitude and mean annual precipitation:</p>
+<p>or add some details to the data set, such as location, latitude, longitude and mean annual precipitation:</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
 <span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">raw$location[raw$id=="1"] &lt;-"NSW"
-</span><span class="line">raw$latitude[raw$id=="1"] &lt;- -37
-</span><span class="line">raw$longitude[raw$id=="1"] &lt;- 40
-</span><span class="line">raw$map[raw$id=="1"] &lt;- 1208
-</span><span class="line">raw$map[raw$id=="1"] &lt;- 1226</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class="code"><pre><code class="r"><span class="line">raw<span class="o">$</span>location<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span><span class="s">&quot;NSW&quot;</span>
+</span><span class="line">raw<span class="o">$</span>latitude<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">-37</span>
+</span><span class="line">raw<span class="o">$</span>longitude<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">40</span>
+</span><span class="line">raw<span class="o">$</span>map<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">1208</span>
+</span><span class="line">raw<span class="o">$</span>map<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">1226</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>In large analyses, this type of code may go for hundreds of lines. </p>
+<p>In large analyses, this type of code may go for hundreds of lines.</p>
+
+<p><img src="../../images/2013-07-09-modifying-data-with-lookup-tables/messy_script.png" /></p>
 
 <p>Now before we go on, let me say that this approach to adding data is <em>much</em> better than editing your datafile directly, for the following two reasons:</p>
 
@@ -184,7 +188,7 @@ Solution
   <li>You can see where the new value came from (it was added in a script), and modify it later if needed.</li>
 </ol>
 
-<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reaosns: </p>
+<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reasons:</p>
 
 <ul>
   <li>Long chunks of code modifying data is inherently difficult to read.</li>
@@ -192,11 +196,11 @@ Solution
   <li>It’s harder to change variable names when they are embedded in code all over the place.</li>
 </ul>
 
-<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:</p>
+<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an example of such a table, achieving similar (but not identical) modifications to the code above:</p>
 
-<div>
-  <pre><code class="r">read.csv(&quot;dataNew.csv&quot;)</code></pre>
-</div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">read.csv<span class="p">(</span><span class="s">&quot;dataNew.csv&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div>
   <pre><code class="text">##   lookupVariable lookupValue newVariable              newValue
@@ -227,7 +231,7 @@ Solution
   <li><strong>source</strong> includes any notes about where the data came from (e.g., who made the change)</li>
 </ul>
 
-<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> then takes this filename for this table and applies it to thedata frame. For example let’s assume we have a data frame called <code>data</code></p>
+<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> takes the file name for this table as an argument and applies it to the data frame. For example let’s assume we have a data frame called <code>data</code></p>
 
 <div>
   <pre><code class="r">myData</code></pre>
@@ -259,11 +263,13 @@ Solution
 
 <p>and want to apply the table given above, we simply write</p>
 
-<div>
-  <pre><code class="r">source(&quot;addNewData.r&quot;)
-allowedVars &lt;- c(&quot;species&quot;, &quot;family&quot;, &quot;location&quot;)
-addNewData(&quot;dataNew.csv&quot;, myData, allowedVars)</code></pre>
-</div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">source<span class="p">(</span><span class="s">&quot;addNewData.r&quot;</span><span class="p">)</span>
+</span><span class="line">allowedVars <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;species&quot;</span><span class="p">,</span> <span class="s">&quot;family&quot;</span><span class="p">,</span> <span class="s">&quot;location&quot;</span><span class="p">)</span>
+</span><span class="line">addNewData<span class="p">(</span><span class="s">&quot;dataNew.csv&quot;</span><span class="p">,</span> myData<span class="p">,</span> allowedVars<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div>
   <pre><code class="text">##          x     y id              species     family location
@@ -289,10 +295,12 @@ addNewData(&quot;dataNew.csv&quot;, myData, allowedVars)</code></pre>
 ## 20 0.75664 5.838  4      Banksia grandis Proteaceae       WA</code></pre>
 </div>
 
-<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code. </p>
+<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code.</p>
 
-<p>You can use this approach 
-You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a></p>
+<p>You can use this approach
+You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a>.</p>
+
+<p><strong>Acknowledgements:</strong> Many thanks to Rich FitzJohn and Diego Barneche for valuable discussions.</p>
 
 </div>
 
@@ -316,12 +324,12 @@ You can find the example files used here, as a <a href="https://gist.github.com/
   
 
 
-<time datetime="2013-05-14T08:20:00+10:00" pubdate data-updated="true">14 May 2013</time>
+<time datetime="2013-07-09T08:20:00+10:00" pubdate data-updated="true">09 July 2013</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/draft/'>draft</a>, <a class='category' href='/blog/categories/project/'>project</a>
+    <a class='category' href='/blog/categories/data/'>data</a>, <a class='category' href='/blog/categories/project/'>project</a>
   
 </span>
 
@@ -330,7 +338,7 @@ You can find the example files used here, as a <a href="https://gist.github.com/
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/" data-via="" data-counturl="http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/" >Tweet</a>
   
   
   
@@ -339,10 +347,10 @@ You can find the example files used here, as a <a href="https://gist.github.com/
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013-05-07-how-long-is-a-function/" title="Previous Post: How long is a function?">&laquo; How long is a function?</a>
+        <a class="basic-alignment left" href="/blog/2013-05-17-organising-my-project/" title="Previous Post: Organizing the project directory">&laquo; Organizing the project directory</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013-05-17-organising-my-project/" title="Next Post: Organizing the project directory">Organizing the project directory &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2013-07-09-figure-functions/" title="Next Post: Figure functions">Figure functions &raquo;</a>
       
     </p>
   </footer>
@@ -363,11 +371,15 @@ You can find the example files used here, as a <a href="https://gist.github.com/
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
+        <a href="/blog/2013-07-09-figure-functions/">Figure functions</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013-05-14-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+        <a href="/blog/2013-07-09-modifying-data-with-lookup-tables/">Modifying data with lookup tables</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013-05-17-organising-my-project/">Organizing the project directory</a>
       </li>
     
       <li class="post">
@@ -376,10 +388,6 @@ You can find the example files used here, as a <a href="https://gist.github.com/
     
       <li class="post">
         <a href="/blog/2013-04-30-excel-and-line-endings/">Excel and line endings</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013-04-23-git/">git</a>
       </li>
     
   </ul>
@@ -409,8 +417,8 @@ You can find the example files used here, as a <a href="https://gist.github.com/
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/';
-        var disqus_url = 'http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/';
+        var disqus_identifier = 'http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/';
+        var disqus_url = 'http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/';
         var disqus_script = 'embed.js';
       
     (function () {

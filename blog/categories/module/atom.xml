@@ -4,7 +4,7 @@
   <title><![CDATA[Category: module | Nice R Code]]></title>
   <link href="http://nicercode.github.com/blog/categories/module/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-06-24T12:26:23+10:00</updated>
+  <updated>2013-07-16T13:48:38+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -94,7 +94,7 @@ Attainment -  satisfaction in getting something to work
 
 <p>Writing code is fast becoming a key - if not the most important - skill for
 doing research in the 21st century. As scientists, we live in extraordinary
-times. The amount of data (information) available to us is increasingly
+times. The amount of data (information) available to us is increasing
 exponentially, allowing for rapid advances in our understanding of the world
 around us. The amount of information contained in a standard scientific paper
 also seems to be on the rise. Researchers therefore need to be able to handle
@@ -143,8 +143,7 @@ department.</p>
 <script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>Observing how colleagues were struggling with their code, we
-(<a href="/about#Team">Rich FitzJohn and
-Daniel Falster</a>) have teamed up to bring you
+(<a href="/about#Team">Rich FitzJohn and Daniel Falster</a>) have teamed up to bring you
 the <a href="http://nicercode.github.io/">nice R code</a> course and blog. We are
 targeting researchers who are already using R and want to take their coding to
 the next level. Our goal is to help you write nicer code.</p>
@@ -202,8 +201,8 @@ to capture the intent of your code, i.e. describe what it is <em>meant</em> to d
   <li>Use version control. Of the many reasons for using version control, one is
 that it archives older versions of your code, permitting you to ruthlessly
 yet safely delete old files. This helps reduce clutter and improves readability.</li>
-  <li>Apply a consistent style, such as that described in  the <a href="http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html">google R style
-guide</a>.</li>
+  <li>Apply a consistent style, such as that described in  the</li>
+  <li><a href="http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html">google R style guide</a>.</li>
 </ul>
 
 <h3 id="nice-code-is-reliable-ie-bug-free">Nice code is reliable, i.e. bug free</h3>

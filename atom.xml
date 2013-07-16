@@ -4,7 +4,7 @@
   <title><![CDATA[Nice R Code]]></title>
   <link href="http://nicercode.github.com/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-06-24T12:26:23+10:00</updated>
+  <updated>2013-07-16T13:48:38+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -14,40 +14,293 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Organizing the project directory]]></title>
-    <link href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/"/>
-    <updated>2013-05-17T08:20:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/organising-my-project</id>
-    <content type="html"><![CDATA[<p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
+    <title type="html"><![CDATA[Figure functions]]></title>
+    <link href="http://nicercode.github.com/blog/2013-07-09-figure-functions/"/>
+    <updated>2013-07-09T16:41:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/figure-functions</id>
+    <content type="html"><![CDATA[<p>Transitioning from an interactive plot in R to a publication-ready
+plot can create a messy script file with lots of statements and use of
+global variables.  This post outlines an approach that I have used to
+simplify the process and keeps code readable.</p>
 
-<p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
+<!-- more -->
 
-<!--more -->
-<p><img src="../../images/2013-05-17-organising-my-project/directory1_before.png" /></p>
+<p>The usual way of plotting to a file is to open a plotting device (such
+as <code>pdf</code> or <code>png</code>) run a series of commands that generate plotting
+output, and then close the device with <code>dev.off()</code>.  However, the way
+that most plots are developed is purely interactively.  So you start
+with:</p>
 
-<p><img src="../../images/2013-05-17-organising-my-project/directory2_before.png" /></p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">set.seed(10)
+</span><span class="line">x &lt;- runif(100)
+</span><span class="line">y &lt;- rnorm(100, x)
+</span><span class="line">par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">plot(y ~ x, las=1)
+</span><span class="line">fit &lt;- lm(y ~ x)
+</span><span class="line">abline(fit, col="red")
+</span><span class="line">legend("topleft", c("Data", "Trend"),
+</span><span class="line">       pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
+<p>Then to convert this into a figure for publication we copy and paste
+this between the device commands:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pdf("my-plot.pdf", width=6, height=4)
+</span><span class="line">  # ...pasted commands from before
+</span><span class="line">dev.off()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>This leads to bits of code that often look like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line"># pdf("my-plot.pdf", width=6, height=4) # uncomment to make plot
+</span><span class="line">set.seed(10)
+</span><span class="line">x &lt;- runif(100)
+</span><span class="line">y &lt;- rnorm(100, x)
+</span><span class="line">par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">plot(y ~ x, las=1)
+</span><span class="line">fit &lt;- lm(y ~ x)
+</span><span class="line">abline(fit, col="red")
+</span><span class="line">legend("topleft", c("Data", "Trend"),
+</span><span class="line">       pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+</span><span class="line"># dev.off() # uncomment to make plot</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which is all pretty ugly.  On top of that, we’re often making a bunch
+of variables that are global but are really only useful in the context
+of the figure (in this case the <code>fit</code> object that contains the trend
+line).  An arguably worse solution would be simply to duplicate the
+plotting bits of code.</p>
+
+<h2 id="a-partial-solution">A partial solution:</h2>
+
+<p>The solution that I usually use is to make a function that generates
+the figure.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.trend &lt;- function() {
+</span><span class="line">  set.seed(10)
+</span><span class="line">  x &lt;- runif(100)
+</span><span class="line">  y &lt;- rnorm(100, x)
+</span><span class="line">  par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">  plot(y ~ x, las=1)
+</span><span class="line">  fit &lt;- lm(y ~ x)
+</span><span class="line">  abline(fit, col="red")
+</span><span class="line">  legend("topleft", c("Data", "Trend"),
+</span><span class="line">         pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Then you can easily see the figure</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.trend() # generates figure</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>or</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">source("R/figures.R") # refresh file that defines fig.trend
+</span><span class="line">fig.trend()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>and you can easily generate plots:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pdf("figs/trend.pdf", width=6, height=8)
+</span><span class="line">fig.trend()
+</span><span class="line">dev.off()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>However, this still gets a bit unweildly when you have a large number
+of figures to make (especially for talks where you might make 20 or 30
+figures).</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">pdf("figs/trend.pdf", width=6, height=4)
+</span><span class="line">fig.trend()
+</span><span class="line">dev.off()
+</span><span class="line">
+</span><span class="line">pdf("figs/other.pdf", width=6, height=4)
+</span><span class="line">fig.other()
+</span><span class="line">dev.off()</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="a-full-solution">A full solution</h2>
+
+<p>The solution I use here is a little function called <code>to.pdf</code>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf &lt;- function(expr, filename, ..., verbose=TRUE) {
+</span><span class="line">  if ( verbose )
+</span><span class="line">    cat(sprintf("Creating %s\n", filename))
+</span><span class="line">  pdf(filename, ...)
+</span><span class="line">  on.exit(dev.off())
+</span><span class="line">  eval.parent(substitute(expr))
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Which can be used like so:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf(fig.trend(), "figs/trend.pdf", width=6, height=4)
+</span><span class="line">to.pdf(fig.other(), "figs/other.pdf", width=6, height=4)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>A couple of nice things about this approach:</p>
 
 <ul>
-  <li>Data: which contains both my base (raw) data and the processed data </li>
-  <li>Output: data and figures generated in R</li>
-  <li>R: R scripts with all new functions I created as part of the cleaning directory process and in an attempt to write nicer code. </li>
-  <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
+  <li>It becomes much easier to read and compare the parameters to the
+plotting device (width, height, etc).</li>
+  <li>We’re reduced things from 6 repetitive lines to 2 that capture our
+intent better.</li>
+  <li>The to.pdf function demands that you put the code for your figure in a function.</li>
+  <li>Using functions, rather than statements in the global environment,
+discourages dependency on global variables.  This in turn helps
+identify reusable chunks of code.</li>
+  <li>Arguments are all passed to <code>pdf</code> via <code>...</code>, so we don’t need to
+duplicate <code>pdf</code>’s argument list in our function.</li>
+  <li>The <code>on.exit</code> call ensures that the device is always closed, even if
+the figure function fails.</li>
 </ul>
 
-<p><img src="../../images/2013-05-17-organising-my-project/directory_after.png" /></p>
+<p>For talks, I often build up figures piece-by-piece.  This can be done
+like so (for a two-part figure)</p>
 
-<p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.progressive &lt;- function(with.trend=FALSE) {
+</span><span class="line">  set.seed(10)
+</span><span class="line">  x &lt;- runif(100)
+</span><span class="line">  y &lt;- rnorm(100, x)
+</span><span class="line">  par(mar=c(4.1, 4.1, .5, .5))
+</span><span class="line">  plot(y ~ x, las=1)
+</span><span class="line">  if ( with.trend ) {
+</span><span class="line">    fit &lt;- lm(y ~ x)
+</span><span class="line">    abline(fit, col="red")
+</span><span class="line">    legend("topleft", c("Data", "Trend"),
+</span><span class="line">           pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+</span><span class="line">  }
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>Setting up the new directory and sorting the existing files in the new folders didn’t take long and was relatively easy. Now it is really simple to find files and keep track of current and old figures. I no longer need to use spotlight to find the latest version of each script. From my experience this improved the organization and efficiency of my project; I  highly recommend keeping a good project layout. </p>
+<p>Now – if run with as</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.progressive(FALSE)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>just the data are plotted, and if run as</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">fig.progressive(TRUE)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>the trend line and legend are included.  Then with the <code>to.pdf</code>
+function, we can do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf(fig.progressive(TRUE),  "figs/progressive-1.pdf", width=6, height=4)
+</span><span class="line">to.pdf(fig.progressive(FALSE), "figs/progressive-2.pdf", width=6, height=4)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which will generate the two figures.</p>
+
+<p>The general idea can be expanded to more devices:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.dev &lt;- function(expr, dev, filename, ..., verbose=TRUE) {
+</span><span class="line">  if ( verbose )
+</span><span class="line">    cat(sprintf("Creating %s\n", filename))
+</span><span class="line">  dev(filename, ...)
+</span><span class="line">  on.exit(dev.off())
+</span><span class="line">  eval.parent(substitute(expr))
+</span><span class="line">}</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>where we would do:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.dev(fig.progressive(TRUE),  pdf, "figs/progressive-1.pdf", width=6, height=4)
+</span><span class="line">to.dev(fig.progressive(FALSE), pdf, "figs/progressive-2.pdf", width=6, height=4)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Note that with this <code>to.dev</code> function we can rewrite the <code>to.pdf</code>
+function more compactly:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.pdf &lt;- function(expr, filename, ...)
+</span><span class="line">  to.dev(expr, pdf, filename, ...)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Or write a similar function for the <code>png</code> device:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">to.png_function(expr, filename, ...)
+</span><span class="line">  to.dev(expr, png, filename)</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>(As an alternative, the <code>dev.copy2pdf</code> function can be useful for
+copying the current contents of an interactive plotting window to a
+pdf).</p>
 ]]></content>
   </entry>
   
   <entry>
     <title type="html"><![CDATA[Modifying data with lookup tables]]></title>
-    <link href="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/"/>
-    <updated>2013-05-14T08:20:00+10:00</updated>
+    <link href="http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/"/>
+    <updated>2013-07-09T08:20:00+10:00</updated>
     <id>http://nicercode.github.com/blog/modifying-data-with-lookup-tables</id>
     <content type="html"><![CDATA[<!-- The problem:
 - importing new data
@@ -62,31 +315,35 @@ Solution
 - use lookup table, find and replace
  -->
 
-<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table. </p>
+<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table.</p>
 
 <!-- more -->
 
-<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:</p>
+<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests.Such code might correct, for example, a species name:</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">raw$species[raw$id=="1"] &lt;- "Banksia oblongifolia"  
-</span><span class="line">raw$species[raw$id=="2"] &lt;- "Banksia ericifolia"</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class="code"><pre><code class="r"><span class="line">raw<span class="o">$</span>species<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Banksia oblongifolia&quot;</span>
+</span><span class="line">raw<span class="o">$</span>species<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;2&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="s">&quot;Banksia ericifolia&quot;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>or add some details, for example in this case location, latitude, longitude and mean annual precipitation:</p>
+<p>or add some details to the data set, such as location, latitude, longitude and mean annual precipitation:</p>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
 <span class="line-number">5</span>
-</pre></td><td class="code"><pre><code class=""><span class="line">raw$location[raw$id=="1"] &lt;-"NSW"
-</span><span class="line">raw$latitude[raw$id=="1"] &lt;- -37
-</span><span class="line">raw$longitude[raw$id=="1"] &lt;- 40
-</span><span class="line">raw$map[raw$id=="1"] &lt;- 1208
-</span><span class="line">raw$map[raw$id=="1"] &lt;- 1226</span></code></pre></td></tr></table></div></figure></notextile></div>
+</pre></td><td class="code"><pre><code class="r"><span class="line">raw<span class="o">$</span>location<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span><span class="s">&quot;NSW&quot;</span>
+</span><span class="line">raw<span class="o">$</span>latitude<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">-37</span>
+</span><span class="line">raw<span class="o">$</span>longitude<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">40</span>
+</span><span class="line">raw<span class="o">$</span>map<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">1208</span>
+</span><span class="line">raw<span class="o">$</span>map<span class="p">[</span>raw<span class="o">$</span>id<span class="o">==</span><span class="s">&quot;1&quot;</span><span class="p">]</span> <span class="o">&lt;-</span> <span class="m">1226</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>In large analyses, this type of code may go for hundreds of lines. </p>
+<p>In large analyses, this type of code may go for hundreds of lines.</p>
+
+<p><img src="../../images/2013-07-09-modifying-data-with-lookup-tables/messy_script.png" /></p>
 
 <p>Now before we go on, let me say that this approach to adding data is <em>much</em> better than editing your datafile directly, for the following two reasons:</p>
 
@@ -95,7 +352,7 @@ Solution
   <li>You can see where the new value came from (it was added in a script), and modify it later if needed.</li>
 </ol>
 
-<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reaosns: </p>
+<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reasons:</p>
 
 <ul>
   <li>Long chunks of code modifying data is inherently difficult to read.</li>
@@ -103,11 +360,11 @@ Solution
   <li>It’s harder to change variable names when they are embedded in code all over the place.</li>
 </ul>
 
-<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:</p>
+<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an example of such a table, achieving similar (but not identical) modifications to the code above:</p>
 
-<div>
-  <pre><code class="r">read.csv(&quot;dataNew.csv&quot;)</code></pre>
-</div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">read.csv<span class="p">(</span><span class="s">&quot;dataNew.csv&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div>
   <pre><code class="text">##   lookupVariable lookupValue newVariable              newValue
@@ -138,7 +395,7 @@ Solution
   <li><strong>source</strong> includes any notes about where the data came from (e.g., who made the change)</li>
 </ul>
 
-<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> then takes this filename for this table and applies it to thedata frame. For example let’s assume we have a data frame called <code>data</code></p>
+<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> takes the file name for this table as an argument and applies it to the data frame. For example let’s assume we have a data frame called <code>data</code></p>
 
 <div>
   <pre><code class="r">myData</code></pre>
@@ -170,11 +427,13 @@ Solution
 
 <p>and want to apply the table given above, we simply write</p>
 
-<div>
-  <pre><code class="r">source(&quot;addNewData.r&quot;)
-allowedVars &lt;- c(&quot;species&quot;, &quot;family&quot;, &quot;location&quot;)
-addNewData(&quot;dataNew.csv&quot;, myData, allowedVars)</code></pre>
-</div>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">source<span class="p">(</span><span class="s">&quot;addNewData.r&quot;</span><span class="p">)</span>
+</span><span class="line">allowedVars <span class="o">&lt;-</span> c<span class="p">(</span><span class="s">&quot;species&quot;</span><span class="p">,</span> <span class="s">&quot;family&quot;</span><span class="p">,</span> <span class="s">&quot;location&quot;</span><span class="p">)</span>
+</span><span class="line">addNewData<span class="p">(</span><span class="s">&quot;dataNew.csv&quot;</span><span class="p">,</span> myData<span class="p">,</span> allowedVars<span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div>
   <pre><code class="text">##          x     y id              species     family location
@@ -200,11 +459,44 @@ addNewData(&quot;dataNew.csv&quot;, myData, allowedVars)</code></pre>
 ## 20 0.75664 5.838  4      Banksia grandis Proteaceae       WA</code></pre>
 </div>
 
-<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code. </p>
+<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code.</p>
 
-<p>You can use this approach 
-You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a></p>
+<p>You can use this approach
+You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a>.</p>
 
+<p><strong>Acknowledgements:</strong> Many thanks to Rich FitzJohn and Diego Barneche for valuable discussions.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Organizing the project directory]]></title>
+    <link href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/"/>
+    <updated>2013-05-17T08:20:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/organising-my-project</id>
+    <content type="html"><![CDATA[<p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
+
+<p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
+
+<!--more -->
+<p><img src="../../images/2013-05-17-organising-my-project/directory1_before.png" /></p>
+
+<p><img src="../../images/2013-05-17-organising-my-project/directory2_before.png" /></p>
+
+<p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
+
+<ul>
+  <li>Data: which contains both my base (raw) data and the processed data </li>
+  <li>Output: data and figures generated in R</li>
+  <li>R: R scripts with all new functions I created as part of the cleaning directory process and in an attempt to write nicer code. </li>
+  <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
+</ul>
+
+<p><img src="../../images/2013-05-17-organising-my-project/directory_after.png" /></p>
+
+<p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
+
+<p>Setting up the new directory and sorting the existing files in the new folders didn’t take long and was relatively easy. Now it is really simple to find files and keep track of current and old figures. I no longer need to use spotlight to find the latest version of each script. From my experience this improved the organization and efficiency of my project; I  highly recommend keeping a good project layout. </p>
 ]]></content>
   </entry>
   
@@ -540,7 +832,7 @@ Attainment -  satisfaction in getting something to work
 
 <p>Writing code is fast becoming a key - if not the most important - skill for
 doing research in the 21st century. As scientists, we live in extraordinary
-times. The amount of data (information) available to us is increasingly
+times. The amount of data (information) available to us is increasing
 exponentially, allowing for rapid advances in our understanding of the world
 around us. The amount of information contained in a standard scientific paper
 also seems to be on the rise. Researchers therefore need to be able to handle
@@ -589,8 +881,7 @@ department.</p>
 <script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>Observing how colleagues were struggling with their code, we
-(<a href="http://nicercode.github.com/about#Team">Rich FitzJohn and
-Daniel Falster</a>) have teamed up to bring you
+(<a href="http://nicercode.github.com/about#Team">Rich FitzJohn and Daniel Falster</a>) have teamed up to bring you
 the <a href="http://nicercode.github.io/">nice R code</a> course and blog. We are
 targeting researchers who are already using R and want to take their coding to
 the next level. Our goal is to help you write nicer code.</p>
@@ -648,8 +939,8 @@ to capture the intent of your code, i.e. describe what it is <em>meant</em> to d
   <li>Use version control. Of the many reasons for using version control, one is
 that it archives older versions of your code, permitting you to ruthlessly
 yet safely delete old files. This helps reduce clutter and improves readability.</li>
-  <li>Apply a consistent style, such as that described in  the <a href="http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html">google R style
-guide</a>.</li>
+  <li>Apply a consistent style, such as that described in  the</li>
+  <li><a href="http://google-styleguide.googlecode.com/svn/trunk/google-r-style.html">google R style guide</a>.</li>
 </ul>
 
 <h3 id="nice-code-is-reliable-ie-bug-free">Nice code is reliable, i.e. bug free</h3>

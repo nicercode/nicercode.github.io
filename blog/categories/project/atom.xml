@@ -4,7 +4,7 @@
   <title><![CDATA[Category: project | Nice R Code]]></title>
   <link href="http://nicercode.github.com/blog/categories/project/atom.xml" rel="self"/>
   <link href="http://nicercode.github.com/"/>
-  <updated>2013-06-24T12:26:23+10:00</updated>
+  <updated>2013-07-16T13:48:38+10:00</updated>
   <id>http://nicercode.github.com/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
@@ -14,40 +14,9 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Organizing the project directory]]></title>
-    <link href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/"/>
-    <updated>2013-05-17T08:20:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/organising-my-project</id>
-    <content type="html"><![CDATA[<p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
-
-<p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
-
-<!--more -->
-<p><img src="../../images/2013-05-17-organising-my-project/directory1_before.png"></p>
-
-<p><img src="../../images/2013-05-17-organising-my-project/directory2_before.png"></p>
-
-<p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
-
-<ul>
-  <li>Data: which contains both my base (raw) data and the processed data </li>
-  <li>Output: data and figures generated in R</li>
-  <li>R: R scripts with all new functions I created as part of the cleaning directory process and in an attempt to write nicer code. </li>
-  <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
-</ul>
-
-<p><img src="../../images/2013-05-17-organising-my-project/directory_after.png"></p>
-
-<p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
-
-<p>Setting up the new directory and sorting the existing files in the new folders didn’t take long and was relatively easy. Now it is really simple to find files and keep track of current and old figures. I no longer need to use spotlight to find the latest version of each script. From my experience this improved the organization and efficiency of my project; I  highly recommend keeping a good project layout. </p>
-]]></content>
-  </entry>
-  
-  <entry>
     <title type="html"><![CDATA[Modifying data with lookup tables]]></title>
-    <link href="http://nicercode.github.com/blog/2013-05-14-modifying-data-with-lookup-tables/"/>
-    <updated>2013-05-14T08:20:00+10:00</updated>
+    <link href="http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/"/>
+    <updated>2013-07-09T08:20:00+10:00</updated>
     <id>http://nicercode.github.com/blog/modifying-data-with-lookup-tables</id>
     <content type="html"><![CDATA[<!-- The problem:
 - importing new data
@@ -62,20 +31,20 @@ Solution
 - use lookup table, find and replace
  -->
 
-<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table. </p>
+<p>In many analyses, data is read from a file, but must be modified before it can be used. For example you may want to add a new column of data, or do a “find” and “replace” on a site, treatment or species name. There are 3 ways one might add such information. The first involves editing the original data frame – although you should <em>never</em> do this, I suspect this method is quite common. A second – and widely used – approach for adding information is to modify the values using code in your script. The third – and nicest – way of adding information is to use a lookup table.</p>
 
 <!-- more -->
 
-<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests. Such code might correct a species name:</p>
+<p>One of the most common things we see in the code of researchers working with data are long slabs of code modifying a data frame based on some logical tests.Such code might correct, for example, a species name:</p>
 
-<p><code>
-raw$species[raw$id=="1"] &lt;- "Banksia oblongifolia"  
+<p><code>r
+raw$species[raw$id=="1"] &lt;- "Banksia oblongifolia"
 raw$species[raw$id=="2"] &lt;- "Banksia ericifolia"
 </code></p>
 
-<p>or add some details, for example in this case location, latitude, longitude and mean annual precipitation:</p>
+<p>or add some details to the data set, such as location, latitude, longitude and mean annual precipitation:</p>
 
-<p><code>
+<p><code>r
 raw$location[raw$id=="1"] &lt;-"NSW"
 raw$latitude[raw$id=="1"] &lt;- -37
 raw$longitude[raw$id=="1"] &lt;- 40
@@ -83,7 +52,9 @@ raw$map[raw$id=="1"] &lt;- 1208
 raw$map[raw$id=="1"] &lt;- 1226
 </code></p>
 
-<p>In large analyses, this type of code may go for hundreds of lines. </p>
+<p>In large analyses, this type of code may go for hundreds of lines.</p>
+
+<p><img src="../../images/2013-07-09-modifying-data-with-lookup-tables/messy_script.png"></p>
 
 <p>Now before we go on, let me say that this approach to adding data is <em>much</em> better than editing your datafile directly, for the following two reasons:</p>
 
@@ -92,7 +63,7 @@ raw$map[raw$id=="1"] &lt;- 1226
   <li>You can see where the new value came from (it was added in a script), and modify it later if needed.</li>
 </ol>
 
-<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reaosns: </p>
+<p>There is also nothing <em>wrong</em> with adding data this way. However, it is what we would consider <em>messy</em> code, for these reasons:</p>
 
 <ul>
   <li>Long chunks of code modifying data is inherently difficult to read.</li>
@@ -100,12 +71,11 @@ raw$map[raw$id=="1"] &lt;- 1226
   <li>It’s harder to change variable names when they are embedded in code all over the place.</li>
 </ul>
 
-<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an exapmple of such a table, achieving similar (but not identical) modifications to the code above:</p>
+<p>A far <em>nicer</em> way to add data to an existing data frame is to use a lookup table. Here is an example of such a table, achieving similar (but not identical) modifications to the code above:</p>
 
-<p><div>
-  <pre><code class='r'>read.csv(“dataNew.csv”)</code></pre>
-</div>
-</p>
+<p><code>r
+read.csv("dataNew.csv")
+</code></p>
 
 <p><div>
   <pre><code class='text'>##   lookupVariable lookupValue newVariable              newValue
@@ -137,7 +107,7 @@ raw$map[raw$id=="1"] &lt;- 1226
   <li><strong>source</strong> includes any notes about where the data came from (e.g., who made the change)</li>
 </ul>
 
-<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> then takes this filename for this table and applies it to thedata frame. For example let’s assume we have a data frame called <code>data</code></p>
+<p>So the table documents the changes we want to make to our dataframe. The function <a href="https://gist.github.com/dfalster/5589956">addNewData.R</a> takes the file name for this table as an argument and applies it to the data frame. For example let’s assume we have a data frame called <code>data</code></p>
 
 <p><div>
   <pre><code class='r'>myData</code></pre>
@@ -171,12 +141,11 @@ raw$map[raw$id=="1"] &lt;- 1226
 
 <p>and want to apply the table given above, we simply write</p>
 
-<p><div>
-  <pre><code class='r'>source(“addNewData.r”)
-allowedVars &amp;lt;- c(“species”, “family”, “location”)
-addNewData(“dataNew.csv”, myData, allowedVars)</code></pre>
-</div>
-</p>
+<p><code>r
+source("addNewData.r")
+allowedVars &lt;- c("species", "family", "location")
+addNewData("dataNew.csv", myData, allowedVars)
+</code></p>
 
 <p><div>
   <pre><code class='text'>##          x     y id              species     family location
@@ -203,11 +172,44 @@ addNewData(“dataNew.csv”, myData, allowedVars)</code></pre>
 </div>
 </p>
 
-<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code. </p>
+<p>The large block of code is now reduced to a single line that clearly expresses what we want to achieve. Moreover, the new values (data) are stored as a table of <em>data</em> in a file, which is preferable to having data mixed in with our code.</p>
 
-<p>You can use this approach 
-You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a></p>
+<p>You can use this approach
+You can find the example files used here, as a <a href="https://gist.github.com/dfalster/5589956">github gist</a>.</p>
 
+<p><strong>Acknowledgements:</strong> Many thanks to Rich FitzJohn and Diego Barneche for valuable discussions.</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Organizing the project directory]]></title>
+    <link href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/"/>
+    <updated>2013-05-17T08:20:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/organising-my-project</id>
+    <content type="html"><![CDATA[<p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
+
+<p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
+
+<!--more -->
+<p><img src="../../images/2013-05-17-organising-my-project/directory1_before.png"></p>
+
+<p><img src="../../images/2013-05-17-organising-my-project/directory2_before.png"></p>
+
+<p>Following <a href="../2013-04-05-projects/">advice from by Rich and Daniel</a>, I decided to spend a little time getting organised, adopting a directory layout with the following folders:</p>
+
+<ul>
+  <li>Data: which contains both my base (raw) data and the processed data </li>
+  <li>Output: data and figures generated in R</li>
+  <li>R: R scripts with all new functions I created as part of the cleaning directory process and in an attempt to write nicer code. </li>
+  <li>Analysis (R file): R script sourcing all the functions necessary for the analysis </li>
+</ul>
+
+<p><img src="../../images/2013-05-17-organising-my-project/directory_after.png"></p>
+
+<p>At the same time I <a href="../../git">started using version control with git</a>. As a result, I no longer need to create a new file every time I make a change, and each of the files in the analysis directory is unique.</p>
+
+<p>Setting up the new directory and sorting the existing files in the new folders didn’t take long and was relatively easy. Now it is really simple to find files and keep track of current and old figures. I no longer need to use spotlight to find the latest version of each script. From my experience this improved the organization and efficiency of my project; I  highly recommend keeping a good project layout. </p>
 ]]></content>
   </entry>
   

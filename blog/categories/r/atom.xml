@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: R | Nice R Code]]></title>
+  <link href="http://nicercode.github.com/blog/categories/r/atom.xml" rel="self"/>
+  <link href="http://nicercode.github.com/"/>
+  <updated>2013-07-16T13:48:38+10:00</updated>
+  <id>http://nicercode.github.com/</id>
+  <author>
+    <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Figure functions]]></title>
+    <link href="http://nicercode.github.com/blog/2013-07-09-figure-functions/"/>
+    <updated>2013-07-09T16:41:00+10:00</updated>
+    <id>http://nicercode.github.com/blog/figure-functions</id>
+    <content type="html"><![CDATA[<p>Transitioning from an interactive plot in R to a publication-ready
+plot can create a messy script file with lots of statements and use of
+global variables.  This post outlines an approach that I have used to
+simplify the process and keeps code readable.</p>
+
+<!-- more -->
+
+<p>The usual way of plotting to a file is to open a plotting device (such
+as <code>pdf</code> or <code>png</code>) run a series of commands that generate plotting
+output, and then close the device with <code>dev.off()</code>.  However, the way
+that most plots are developed is purely interactively.  So you start
+with:</p>
+
+<p><code>
+set.seed(10)
+x &lt;- runif(100)
+y &lt;- rnorm(100, x)
+par(mar=c(4.1, 4.1, .5, .5))
+plot(y ~ x, las=1)
+fit &lt;- lm(y ~ x)
+abline(fit, col="red")
+legend("topleft", c("Data", "Trend"),
+       pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+</code></p>
+
+<p>Then to convert this into a figure for publication we copy and paste
+this between the device commands:</p>
+
+<p><code>
+pdf("my-plot.pdf", width=6, height=4)
+  # ...pasted commands from before
+dev.off()
+</code></p>
+
+<p>This leads to bits of code that often look like this:</p>
+
+<p><code>
+# pdf("my-plot.pdf", width=6, height=4) # uncomment to make plot
+set.seed(10)
+x &lt;- runif(100)
+y &lt;- rnorm(100, x)
+par(mar=c(4.1, 4.1, .5, .5))
+plot(y ~ x, las=1)
+fit &lt;- lm(y ~ x)
+abline(fit, col="red")
+legend("topleft", c("Data", "Trend"),
+       pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+# dev.off() # uncomment to make plot
+</code></p>
+
+<p>which is all pretty ugly.  On top of that, we’re often making a bunch
+of variables that are global but are really only useful in the context
+of the figure (in this case the <code>fit</code> object that contains the trend
+line).  An arguably worse solution would be simply to duplicate the
+plotting bits of code.</p>
+
+<h2 id="a-partial-solution">A partial solution:</h2>
+
+<p>The solution that I usually use is to make a function that generates
+the figure.</p>
+
+<p><code>
+fig.trend &lt;- function() {
+  set.seed(10)
+  x &lt;- runif(100)
+  y &lt;- rnorm(100, x)
+  par(mar=c(4.1, 4.1, .5, .5))
+  plot(y ~ x, las=1)
+  fit &lt;- lm(y ~ x)
+  abline(fit, col="red")
+  legend("topleft", c("Data", "Trend"),
+         pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+}
+</code></p>
+
+<p>Then you can easily see the figure</p>
+
+<p><code>
+fig.trend() # generates figure
+</code></p>
+
+<p>or</p>
+
+<p><code>
+source("R/figures.R") # refresh file that defines fig.trend
+fig.trend()
+</code></p>
+
+<p>and you can easily generate plots:</p>
+
+<p><code>
+pdf("figs/trend.pdf", width=6, height=8)
+fig.trend()
+dev.off()
+</code></p>
+
+<p>However, this still gets a bit unweildly when you have a large number
+of figures to make (especially for talks where you might make 20 or 30
+figures).</p>
+
+<p>```
+pdf(“figs/trend.pdf”, width=6, height=4)
+fig.trend()
+dev.off()</p>
+
+<p>pdf(“figs/other.pdf”, width=6, height=4)
+fig.other()
+dev.off()
+```</p>
+
+<h2 id="a-full-solution">A full solution</h2>
+
+<p>The solution I use here is a little function called <code>to.pdf</code>:</p>
+
+<p><code>
+to.pdf &lt;- function(expr, filename, ..., verbose=TRUE) {
+  if ( verbose )
+    cat(sprintf("Creating %s\n", filename))
+  pdf(filename, ...)
+  on.exit(dev.off())
+  eval.parent(substitute(expr))
+}
+</code></p>
+
+<p>Which can be used like so:</p>
+
+<p><code>
+to.pdf(fig.trend(), "figs/trend.pdf", width=6, height=4)
+to.pdf(fig.other(), "figs/other.pdf", width=6, height=4)
+</code></p>
+
+<p>A couple of nice things about this approach:</p>
+
+<ul>
+  <li>It becomes much easier to read and compare the parameters to the
+plotting device (width, height, etc).</li>
+  <li>We’re reduced things from 6 repetitive lines to 2 that capture our
+intent better.</li>
+  <li>The to.pdf function demands that you put the code for your figure in a function.</li>
+  <li>Using functions, rather than statements in the global environment,
+discourages dependency on global variables.  This in turn helps
+identify reusable chunks of code.</li>
+  <li>Arguments are all passed to <code>pdf</code> via <code>...</code>, so we don’t need to
+duplicate <code>pdf</code>’s argument list in our function.</li>
+  <li>The <code>on.exit</code> call ensures that the device is always closed, even if
+the figure function fails.</li>
+</ul>
+
+<p>For talks, I often build up figures piece-by-piece.  This can be done
+like so (for a two-part figure)</p>
+
+<p><code>
+fig.progressive &lt;- function(with.trend=FALSE) {
+  set.seed(10)
+  x &lt;- runif(100)
+  y &lt;- rnorm(100, x)
+  par(mar=c(4.1, 4.1, .5, .5))
+  plot(y ~ x, las=1)
+  if ( with.trend ) {
+    fit &lt;- lm(y ~ x)
+    abline(fit, col="red")
+    legend("topleft", c("Data", "Trend"),
+           pch=c(1, NA), lty=c(NA, 1), col=c("black", "red"), bty="n")
+  }
+}
+</code></p>
+
+<p>Now – if run with as</p>
+
+<p><code>
+fig.progressive(FALSE)
+</code></p>
+
+<p>just the data are plotted, and if run as</p>
+
+<p><code>
+fig.progressive(TRUE)
+</code></p>
+
+<p>the trend line and legend are included.  Then with the <code>to.pdf</code>
+function, we can do:</p>
+
+<p><code>
+to.pdf(fig.progressive(TRUE),  "figs/progressive-1.pdf", width=6, height=4)
+to.pdf(fig.progressive(FALSE), "figs/progressive-2.pdf", width=6, height=4)
+</code></p>
+
+<p>which will generate the two figures.</p>
+
+<p>The general idea can be expanded to more devices:</p>
+
+<p><code>
+to.dev &lt;- function(expr, dev, filename, ..., verbose=TRUE) {
+  if ( verbose )
+    cat(sprintf("Creating %s\n", filename))
+  dev(filename, ...)
+  on.exit(dev.off())
+  eval.parent(substitute(expr))
+}
+</code></p>
+
+<p>where we would do:</p>
+
+<p><code>
+to.dev(fig.progressive(TRUE),  pdf, "figs/progressive-1.pdf", width=6, height=4)
+to.dev(fig.progressive(FALSE), pdf, "figs/progressive-2.pdf", width=6, height=4)
+</code></p>
+
+<p>Note that with this <code>to.dev</code> function we can rewrite the <code>to.pdf</code>
+function more compactly:</p>
+
+<p><code>
+to.pdf &lt;- function(expr, filename, ...)
+  to.dev(expr, pdf, filename, ...)
+</code></p>
+
+<p>Or write a similar function for the <code>png</code> device:</p>
+
+<p><code>
+to.png_function(expr, filename, ...)
+  to.dev(expr, png, filename)
+</code></p>
+
+<p>(As an alternative, the <code>dev.copy2pdf</code> function can be useful for
+copying the current contents of an interactive plotting window to a
+pdf).</p>
+]]></content>
+  </entry>
+  
+</feed>
