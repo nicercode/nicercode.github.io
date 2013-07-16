@@ -21,6 +21,7 @@ output, and then close the device with `dev.off()`.  However, the way
 that most plots are developed is purely interactively.  So you start
 with:
 
+
 ```
 set.seed(10)
 x <- runif(100)
@@ -36,6 +37,7 @@ legend("topleft", c("Data", "Trend"),
 Then to convert this into a figure for publication we copy and paste
 this between the device commands:
 
+
 ```
 pdf("my-plot.pdf", width=6, height=4)
   # ...pasted commands from before
@@ -44,6 +46,7 @@ dev.off()
 
 
 This leads to bits of code that often look like this:
+
 
 ```
 # pdf("my-plot.pdf", width=6, height=4) # uncomment to make plot
@@ -70,6 +73,7 @@ plotting bits of code.
 The solution that I usually use is to make a function that generates
 the figure.
 
+
 ```
 fig.trend <- function() {
   set.seed(10)
@@ -86,11 +90,13 @@ fig.trend <- function() {
 
 Then you can easily see the figure
 
+
 ```
 fig.trend() # generates figure
 ```
 
 or
+
 
 ```
 source("R/figures.R") # refresh file that defines fig.trend
@@ -98,6 +104,7 @@ fig.trend()
 ```
 
 and you can easily generate plots:
+
 
 ```
 pdf("figs/trend.pdf", width=6, height=8)
@@ -108,6 +115,7 @@ dev.off()
 However, this still gets a bit unweildly when you have a large number
 of figures to make (especially for talks where you might make 20 or 30
 figures).
+
 
 ```
 pdf("figs/trend.pdf", width=6, height=4)
@@ -123,6 +131,7 @@ dev.off()
 
 The solution I use here is a little function called `to.pdf`:
 
+
 ```
 to.pdf <- function(expr, filename, ..., verbose=TRUE) {
   if ( verbose )
@@ -134,6 +143,7 @@ to.pdf <- function(expr, filename, ..., verbose=TRUE) {
 ```
 
 Which can be used like so:
+
 
 ```
 to.pdf(fig.trend(), "figs/trend.pdf", width=6, height=4)
@@ -158,6 +168,7 @@ A couple of nice things about this approach:
 For talks, I often build up figures piece-by-piece.  This can be done
 like so (for a two-part figure)
 
+
 ```
 fig.progressive <- function(with.trend=FALSE) {
   set.seed(10)
@@ -176,11 +187,13 @@ fig.progressive <- function(with.trend=FALSE) {
 
 Now -- if run with as
 
+
 ```
 fig.progressive(FALSE)
 ```
 
 just the data are plotted, and if run as
+
 
 ```
 fig.progressive(TRUE)
@@ -188,6 +201,7 @@ fig.progressive(TRUE)
 
 the trend line and legend are included.  Then with the `to.pdf`
 function, we can do:
+
 
 ```
 to.pdf(fig.progressive(TRUE),  "figs/progressive-1.pdf", width=6, height=4)
@@ -197,6 +211,7 @@ to.pdf(fig.progressive(FALSE), "figs/progressive-2.pdf", width=6, height=4)
 which will generate the two figures.
 
 The general idea can be expanded to more devices:
+
 
 ```
 to.dev <- function(expr, dev, filename, ..., verbose=TRUE) {
@@ -210,6 +225,7 @@ to.dev <- function(expr, dev, filename, ..., verbose=TRUE) {
 
 where we would do:
 
+
 ```
 to.dev(fig.progressive(TRUE),  pdf, "figs/progressive-1.pdf", width=6, height=4)
 to.dev(fig.progressive(FALSE), pdf, "figs/progressive-2.pdf", width=6, height=4)
@@ -218,12 +234,14 @@ to.dev(fig.progressive(FALSE), pdf, "figs/progressive-2.pdf", width=6, height=4)
 Note that with this `to.dev` function we can rewrite the `to.pdf`
 function more compactly:
 
+
 ```
 to.pdf <- function(expr, filename, ...)
   to.dev(expr, pdf, filename, ...)
 ```
 
 Or write a similar function for the `png` device:
+
 
 ```
 to.png_function(expr, filename, ...)
