@@ -85,11 +85,11 @@ document formats now.
 
 If you're making plots for the web, you probably want raster graphics,
 as there are few widely supported formats for vector graphics (svg is
-getting better support).  For raster graphics, 
+getting better support).  For raster graphics,
 
 In general, you want to make figures in png
 (Portable Network Graphics) format.  Don't make figures in jpeg
-format.  
+format.
 
 Here is a zoom of the same region of a plot as the figures above,
 showing "jpeg artefacts":
@@ -165,7 +165,7 @@ again) and in lines of text.  Because you're mostly going to be
 putting text into the margins, it is much easier to scale margins by
 the text size.  The commands `par("mai")` and `par("mar")`
 return the size of the margins in inches and lines of text
-respectively.  By default, 
+respectively.  By default,
 
 ```r
 > par("mar")
@@ -230,4 +230,11 @@ title(main="Doesn't the x axis label look nice?")
 ```
 
 {% img pics/sci.png %}
+
+# Other resources
+
+* Paul Murrell has written a great book on [R Graphics](http://www.amazon.com/Graphics-Second-Edition-Chapman-Series/dp/1439831769), and also provides code from the book [online here](https://www.stat.auckland.ac.nz/~paul/RG2e/).
+* You may also like to check out some of [Paul's talks](https://www.stat.auckland.ac.nz/~paul/Talks/), such as [this one](https://www.stat.auckland.ac.nz/~paul/Talks/Rgraphics.pdf).
+* Here is another [intro to graphing in R, by Christoph Scherber](http://wwwuser.gwdg.de/~cscherb1/content/Statistics%20Course%20files/R%20Graphics.pdf).
+
 
