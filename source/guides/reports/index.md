@@ -1,14 +1,12 @@
-```{r, echo=FALSE, results="asis"}
-header <- '---
+---
 layout: page
 title: "Writing reproducible reports in R with markdown, knitr and pandoc"
 date: 2013-07-29
 comments: true
 sharing: true
 footer: false
----'
-writeLines(header)
-```
+---
+
 
 So you have  some code, data and a cool result, now it's time to communicate this with your collaborators (or supervisor). What do you do? In this guide, we want to show you how to write nice, reproducible reports using some of the fantastic, free tools and packages that are now on offer. These tools will help you communicate your science, and hopefully mean that you never copy and paste your R output again.
 
@@ -83,17 +81,21 @@ Clicking on  `knit HTML` does several things
 
 You can also make the document from the console, with the following set of commands:
 
-```{r, eval=FALSE}
+
+```r
 library(knitr)
 library(markdown)
 knit("example.Rmd")  # produces the md file
-markdownToHTML("example.md", "example.html") # converts an md file to html
+markdownToHTML("example.md", "example.html")  # converts an md file to html
 ```
+
 Note, for this code to work, the example file needs to be in your working directory, or you need to provide the path to the RMD file:
 
-```{r, eval=FALSE}
+
+```r
 knit("myPath/example.Rmd")  # produces the md file
 ```
+
 
 OK, so you have a document (html file), where you can document your analyses. Now just replace the example code with some real material and away you go.
 
@@ -150,12 +152,14 @@ According to it's [creator](http://johnmacfarlane.net/pandoc/README.html), "If y
 
 First, you'll need to download and [install pandoc](http://johnmacfarlane.net/pandoc/installing.html). Once installed you can then use the `pnadoc` function, included with the knitr package to convert the generated md file into whatever format you like. E.g. to convert our example above into a word doc, we write:
 
-```{r, eval=FALSE}
+
+```r
 library(knitr)
 library(markdown)
 knit("example.Rmd")  # produces the md file
-pandoc("example.md", format= "docx") # converts md file into docx
+pandoc("example.md", format = "docx")  # converts md file into docx
 ```
+
 
 ## Here comes the future: presentations and everything
 
