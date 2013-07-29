@@ -28,6 +28,9 @@ these later).  MCMC is just one type of Monte Carlo method,
 although it is possible to view many other commonly used methods as
 simply special cases of MCMC.
 
+As the above paragraph shows, there is a bootstrapping problem with
+this topic, that we will slowly resolve.
+
 ## Why would I want to sample from a distribution?
 
 You may not realise you want to (and really, you may not actually
@@ -183,7 +186,7 @@ $$
 for $a$.  Or, you can just take the sample quantile from your
 series of sampled points.
 
-This is the analytically computed point where 2.5% of the
+This is the analytically computed point where 2.5\% of the
 probability density is below:
 
 ```r
@@ -252,6 +255,100 @@ summary(a.true - a.mc)
 ## -0.05840 -0.01640 -0.00572 -0.00024  0.01400  0.07880
 ```
 
+
+## Still not convinced?
+
+This sort of thing is really common.  In most Bayesian inference
+you have a posterior distribution that is a function of some
+(potentially large) vector of parameters and you want to make
+inferences about a subset of these parameters.  In a heirarchical
+model, you might have a large number of random effect terms being
+fitted, but you mostly want to make inferences about one parameter.
+In a Bayesian framework you would compute the *marginal
+distribution* of your parameter of interest over all the other
+parameters (this is what we were trying to do above).  If you have
+50 other parameters, this is a really hard integral!
+
+To see why this is hard, consider the region of parameter space
+that contains "interesting" parameter values: that is, parameter
+values that have probabilities that are appreciably greater than
+zero (these are the only regions that contribute meaningfully to
+the integrals that we're interested in, so if we spend our time
+doing a grid search and mostly hitting zeros then we'll be wasting
+time).
+
+For an illustration of the problem,
+
+  * consider a circle of radius $r$ within a square with sides of
+    length $2r$; the "interesting" region of space is $\pi r^2 / 4
+    r^2 = \pi / 4$, so we'd have a good chance that a randomly
+    selected point lies within the circle.
+  * For a sphere with radius $r$ in a *cube* with sides of length
+    $2r$, the volume of the sphere is $4/(3 \pi r^3)$ and the volume
+    of the cube is $(2d)^3$, so $4/3 \pi / 8 \approx 52\%$ of the
+    volume is "interesting"
+  * As the dimensionality of the problem, $d$, increases (using a
+    hypersphere in a hypercube) this ratio is
+    $$\frac{\pi^{d/2}}{d2^{d-1}\Gamma(d/2)}$$
+
+```r
+d <- 2:10
+plot(d, pi^(d/2) / (d * 2^(d-1) * gamma(d/2)), log="y", las=1,
+     xlab="Dimension",
+     ylab="Proportion of hypercube filled with hypersphere")
+```
+
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
+
+
+So we don't need to add many dimensions to be primarily interested
+in a very small fraction of the potential space.  (It's also worth
+remembering that most integrals that converge must be zero almost
+everywhere or have a naturally very constrained domain.)
+
+As a less abstract idea, consider a multivariate normal
+distribution with zero covariance terms, a mean at the origin, and
+unit variances.  These have a distinct mode (maximum) at the
+origin, and the *ratio* of probabilities at a point and at the mode
+is
+
+$$\exp(-\sum_{i=1, d} x_i^2)$$
+
+The thing about this function is that *any* large value of $x_i$
+will cause the probability to be low.  So as the dimension of the
+problem increases, the interesting space gets very small.  Consider
+sampling within the region $-5 < x_i < 5$, and count how many of
+10,000  sampled points have a relative probability greater than
+1/1000
+
+```r
+test <- function(d, x=5)
+  exp(-sum(runif(d, -x, x)^2)) > 1/1000
+f <- function(d, n)
+  mean(replicate(n, test(d)))
+
+d <- 1:10
+data.frame(dimension=d, p.interesting=sapply(d, f, 10000))
+```
+
+```
+##    dimension p.interesting
+## 1          1        0.5219
+## 2          2        0.2173
+## 3          3        0.0739
+## 4          4        0.0218
+## 5          5        0.0070
+## 6          6        0.0025
+## 7          7        0.0006
+## 8          8        0.0000
+## 9          9        0.0000
+## 10        10        0.0000
+```
+
+
+which drops off much like the hypersphere case.  Even by looking at
+only 4-5 dimensions we're likely to waste a lot of time if we tried
+to exhaustively integrate over parameter space.
 
 ## Why doesn't "normal statistics" use Monte Carlo methods?
 
@@ -456,11 +553,11 @@ matlines(0:n, y2, lty=2)
 matlines(0:n, y3, lty=3)
 ```
 
-![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-20.png) 
+![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-22.png) 
 
 
 which means that regardless of the starting distribution, there is
-a 32% chance of the chain being in state 1 after about 10 or more
+a 32\% chance of the chain being in state 1 after about 10 or more
 iterations *regardless of where it started*.  So, knowing about the
 state of this chain at one point in time gives you information
 about where it is likely to be for only a few steps.
@@ -485,7 +582,7 @@ matlines(0:n, y3, lty=3)
 points(rep(10, 3), v, col=1:3)
 ```
 
-![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-22.png) 
+![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-24.png) 
 
 
 Following the definition of eigenvectors, multiplying the
@@ -529,7 +626,7 @@ samples <- run(1, P, 100)
 plot(samples, type="s", xlab="Step", ylab="State", las=1)
 ```
 
-![First 100 steps of the Markov chain](figure/unnamed-chunk-25.png) 
+![First 100 steps of the Markov chain](figure/unnamed-chunk-27.png) 
 
 
 Rather than plotting state, plot the fraction of time that we were
@@ -542,7 +639,7 @@ lines(cummean(samples == 2), col=2)
 lines(cummean(samples == 3), col=3)
 ```
 
-![Probability of being in each state over first 100 steps](figure/unnamed-chunk-26.png) 
+![Probability of being in each state over first 100 steps](figure/unnamed-chunk-28.png) 
 
 
 Run this out a little longer (5,000 steps)
@@ -558,7 +655,7 @@ lines(cummean(samples == 3), col=3)
 abline(h=v, lty=2, col=1:3)
 ```
 
-![Probability of being in each state over first 5,000 steps](figure/unnamed-chunk-27.png) 
+![Probability of being in each state over first 5,000 steps](figure/unnamed-chunk-29.png) 
 
 
 A sufficient (but not necessary) condition for the existance of a
@@ -591,6 +688,12 @@ $$(\vec\pi^*\mathbf{P})_k = \pi_k^*$$
 which holds for all $k$ so
 
 $$\vec\pi^*\mathbf{P} = \vec\pi^*$$
+
+So the key point here is: Markov chains are neat and well
+understood things, with some nice properties.  Markov chains have
+stationary distributions, and if we run them for long enough we can
+just look at the where the chain is spending its time and get a
+reasonable estimate of that stationary distribution.
 
 ## The Metropolis algorithm
 
@@ -673,7 +776,7 @@ of the domain (in general, this may not even be known!)
 curve(f(x), col="red", -4, 8, n=301, las=1)
 ```
 
-![plot of chunk unnamed-chunk-29](figure/unnamed-chunk-29.png) 
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31.png) 
 
 
 Let's define a really simple minded proposal algorithm that samples
@@ -737,7 +840,7 @@ xx <- seq(usr[3], usr[4], length=301)
 plot(f(xx), xx, type="l", yaxs="i", axes=FALSE, xlab="")
 ```
 
-![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34.png) 
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36.png) 
 
 
 Even with only a thousand (non-independent) samples, we're starting
@@ -750,7 +853,7 @@ z <- integrate(f, -Inf, Inf)$value
 curve(f(x) / z, add=TRUE, col="red", n=200)
 ```
 
-![plot of chunk unnamed-chunk-35](figure/unnamed-chunk-35.png) 
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37.png) 
 
 
 Run for longer and things start looking a bunch better:
@@ -764,7 +867,7 @@ z <- integrate(f, -Inf, Inf)$value
 curve(f(x) / z, add=TRUE, col="red", n=200)
 ```
 
-![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36.png) 
+![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38.png) 
 
 
 Now, run with different proposal mechanisms - one with a very wide
@@ -790,7 +893,7 @@ lines(res.slow, col="blue")
 plot(f(xx), xx, type="l", yaxs="i", axes=FALSE)
 ```
 
-![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38.png) 
+![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40.png) 
 
 
 The original (grey line) trace is bouncing around quite freely.
@@ -816,7 +919,7 @@ acf(res, las=1, main="Intermediate")
 acf(res.fast, las=1, main="Large steps")
 ```
 
-![plot of chunk unnamed-chunk-39](figure/unnamed-chunk-39.png) 
+![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41.png) 
 
 
 From this, one can calculate the effective number of independent
@@ -876,7 +979,7 @@ for (h in hh) {
 }
 ```
 
-![plot of chunk unnamed-chunk-42](figure/unnamed-chunk-42.png) 
+![plot of chunk unnamed-chunk-44](figure/unnamed-chunk-44.png) 
 
 
 # MCMC In two dimensions
@@ -921,7 +1024,7 @@ image(x, y, z, las=1)
 contour(x, y, z, add=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-44](figure/unnamed-chunk-44.png) 
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46.png) 
 
 
 Sampling from multivariate normals is also fairly straightforward,
@@ -950,7 +1053,7 @@ contour(x, y, z, add=TRUE)
 lines(samples[,1], samples[,2], col="#00000088")
 ```
 
-![plot of chunk unnamed-chunk-45](figure/unnamed-chunk-45.png) 
+![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47.png) 
 
 
 Drawing a ton of samples"
@@ -975,7 +1078,7 @@ smoothScatter(samples)
 contour(x, y, z, add=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47.png) 
+![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49.png) 
 
 
 
@@ -988,7 +1091,7 @@ hist(samples[,1], freq=FALSE, main="", xlab="x",
      ylab="Probability density")
 ```
 
-![plot of chunk unnamed-chunk-48](figure/unnamed-chunk-48.png) 
+![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50.png) 
 
 
 (this is the distribution that the first paramter takes, averaged
@@ -1016,5 +1119,5 @@ hist(samples[,1], freq=FALSE, main="", las=1, xlab="x",
 lines(xx, yy/z, col="red")
 ```
 
-![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49.png) 
+![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51.png) 
 
