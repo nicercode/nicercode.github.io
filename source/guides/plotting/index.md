@@ -149,7 +149,7 @@ dev.off()
 ```
 
 There are a number of advantages and extensions to this approach that
-we discuss in [this post](/blog/2013-XX-XX-figure-functions/).
+we discuss in [this post](/blog/2013-07-09-figure-functions/).
 
 # Figure layout
 
