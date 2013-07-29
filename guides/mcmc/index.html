@@ -131,6 +131,9 @@ these later).  MCMC is just one type of Monte Carlo method,
 although it is possible to view many other commonly used methods as
 simply special cases of MCMC.</p>
 
+<p>As the above paragraph shows, there is a bootstrapping problem with
+this topic, that we will slowly resolve.</p>
+
 <h2 id="why-would-i-want-to-sample-from-a-distribution">Why would I want to sample from a distribution?</h2>
 
 <p>You may not realise you want to (and really, you may not actually
@@ -288,7 +291,7 @@ solving</p>
 <p>for $a$.  Or, you can just take the sample quantile from your
 series of sampled points.</p>
 
-<p>This is the analytically computed point where 2.5% of the
+<p>This is the analytically computed point where 2.5\% of the
 probability density is below:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -361,6 +364,119 @@ of magnitide as the error around the mean:</p>
 </pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
 </span><span class="line"><span class="c1">## -0.05840 -0.01640 -0.00572 -0.00024  0.01400  0.07880</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="still-not-convinced">Still not convinced?</h2>
+
+<p>This sort of thing is really common.  In most Bayesian inference
+you have a posterior distribution that is a function of some
+(potentially large) vector of parameters and you want to make
+inferences about a subset of these parameters.  In a heirarchical
+model, you might have a large number of random effect terms being
+fitted, but you mostly want to make inferences about one parameter.
+In a Bayesian framework you would compute the <em>marginal
+distribution</em> of your parameter of interest over all the other
+parameters (this is what we were trying to do above).  If you have
+50 other parameters, this is a really hard integral!</p>
+
+<p>To see why this is hard, consider the region of parameter space
+that contains “interesting” parameter values: that is, parameter
+values that have probabilities that are appreciably greater than
+zero (these are the only regions that contribute meaningfully to
+the integrals that we’re interested in, so if we spend our time
+doing a grid search and mostly hitting zeros then we’ll be wasting
+time).</p>
+
+<p>For an illustration of the problem,</p>
+
+<ul>
+  <li>consider a circle of radius $r$ within a square with sides of
+length $2r$; the “interesting” region of space is $\pi r^2 / 4
+r^2 = \pi / 4$, so we’d have a good chance that a randomly
+selected point lies within the circle.</li>
+  <li>For a sphere with radius $r$ in a <em>cube</em> with sides of length
+$2r$, the volume of the sphere is $4/(3 \pi r^3)$ and the volume
+of the cube is $(2d)^3$, so $4/3 \pi / 8 \approx 52\%$ of the
+volume is “interesting”</li>
+  <li>As the dimensionality of the problem, $d$, increases (using a
+hypersphere in a hypercube) this ratio is
+<script type="math/tex">\frac{\pi^{d/2}}{d2^{d-1}\Gamma(d/2)}</script></li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">d <span class="o">&lt;-</span> <span class="m">2</span><span class="o">:</span><span class="m">10</span>
+</span><span class="line">plot<span class="p">(</span>d<span class="p">,</span> pi<span class="o">^</span><span class="p">(</span>d<span class="o">/</span><span class="m">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>d <span class="o">*</span> <span class="m">2</span><span class="o">^</span><span class="p">(</span>d<span class="m">-1</span><span class="p">)</span> <span class="o">*</span> gamma<span class="p">(</span>d<span class="o">/</span><span class="m">2</span><span class="p">)),</span> log<span class="o">=</span><span class="s">&quot;y&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span>
+</span><span class="line">     xlab<span class="o">=</span><span class="s">&quot;Dimension&quot;</span><span class="p">,</span>
+</span><span class="line">     ylab<span class="o">=</span><span class="s">&quot;Proportion of hypercube filled with hypersphere&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="figure/unnamed-chunk-14.png" alt="plot of chunk unnamed-chunk-14" /> </p>
+
+<p>So we don’t need to add many dimensions to be primarily interested
+in a very small fraction of the potential space.  (It’s also worth
+remembering that most integrals that converge must be zero almost
+everywhere or have a naturally very constrained domain.)</p>
+
+<p>As a less abstract idea, consider a multivariate normal
+distribution with zero covariance terms, a mean at the origin, and
+unit variances.  These have a distinct mode (maximum) at the
+origin, and the <em>ratio</em> of probabilities at a point and at the mode
+is</p>
+
+<script type="math/tex; mode=display">\exp(-\sum_{i=1, d} x_i^2)</script>
+
+<p>The thing about this function is that <em>any</em> large value of $x_i$
+will cause the probability to be low.  So as the dimension of the
+problem increases, the interesting space gets very small.  Consider
+sampling within the region $-5 &lt; x_i &lt; 5$, and count how many of
+10,000  sampled points have a relative probability greater than
+1/1000</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line">test <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>d<span class="p">,</span> x<span class="o">=</span><span class="m">5</span><span class="p">)</span>
+</span><span class="line">  exp<span class="p">(</span><span class="o">-</span>sum<span class="p">(</span>runif<span class="p">(</span>d<span class="p">,</span> <span class="o">-</span>x<span class="p">,</span> x<span class="p">)</span><span class="o">^</span><span class="m">2</span><span class="p">))</span> <span class="o">&gt;</span> <span class="m">1</span><span class="o">/</span><span class="m">1000</span>
+</span><span class="line">f <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>d<span class="p">,</span> n<span class="p">)</span>
+</span><span class="line">  mean<span class="p">(</span>replicate<span class="p">(</span>n<span class="p">,</span> test<span class="p">(</span>d<span class="p">)))</span>
+</span><span class="line">
+</span><span class="line">d <span class="o">&lt;-</span> <span class="m">1</span><span class="o">:</span><span class="m">10</span>
+</span><span class="line">data.frame<span class="p">(</span>dimension<span class="o">=</span>d<span class="p">,</span> p.interesting<span class="o">=</span>sapply<span class="p">(</span>d<span class="p">,</span> f<span class="p">,</span> <span class="m">10000</span><span class="p">))</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##    dimension p.interesting</span>
+</span><span class="line"><span class="c1">## 1          1        0.5219</span>
+</span><span class="line"><span class="c1">## 2          2        0.2173</span>
+</span><span class="line"><span class="c1">## 3          3        0.0739</span>
+</span><span class="line"><span class="c1">## 4          4        0.0218</span>
+</span><span class="line"><span class="c1">## 5          5        0.0070</span>
+</span><span class="line"><span class="c1">## 6          6        0.0025</span>
+</span><span class="line"><span class="c1">## 7          7        0.0006</span>
+</span><span class="line"><span class="c1">## 8          8        0.0000</span>
+</span><span class="line"><span class="c1">## 9          9        0.0000</span>
+</span><span class="line"><span class="c1">## 10        10        0.0000</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>which drops off much like the hypersphere case.  Even by looking at
+only 4-5 dimensions we’re likely to waste a lot of time if we tried
+to exhaustively integrate over parameter space.</p>
 
 <h2 id="why-doesnt-normal-statistics-use-monte-carlo-methods">Why doesn’t “normal statistics” use Monte Carlo methods?</h2>
 
@@ -575,10 +691,10 @@ steps:</p>
 </span><span class="line">matlines<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y3<span class="p">,</span> lty<span class="o">=</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-20.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
+<p><img src="figure/unnamed-chunk-22.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
 
 <p>which means that regardless of the starting distribution, there is
-a 32% chance of the chain being in state 1 after about 10 or more
+a 32\% chance of the chain being in state 1 after about 10 or more
 iterations <em>regardless of where it started</em>.  So, knowing about the
 state of this chain at one point in time gives you information
 about where it is likely to be for only a few steps.</p>
@@ -606,7 +722,7 @@ to convergence:</p>
 </span><span class="line">points<span class="p">(</span>rep<span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> v<span class="p">,</span> col<span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-22.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
+<p><img src="figure/unnamed-chunk-24.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
 
 <p>Following the definition of eigenvectors, multiplying the
 eigenvector by the transition matrix returns the eigenvector
@@ -654,7 +770,7 @@ to and chooses 1 (this uses R’s <code>sample</code> function).</p>
 </span><span class="line">plot<span class="p">(</span>samples<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;s&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Step&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;State&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-25.png" alt="First 100 steps of the Markov chain" /> </p>
+<p><img src="figure/unnamed-chunk-27.png" alt="First 100 steps of the Markov chain" /> </p>
 
 <p>Rather than plotting state, plot the fraction of time that we were
 in each state over time:</p>
@@ -669,7 +785,7 @@ in each state over time:</p>
 </span><span class="line">lines<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">3</span><span class="p">),</span> col<span class="o">=</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-26.png" alt="Probability of being in each state over first 100 steps" /> </p>
+<p><img src="figure/unnamed-chunk-28.png" alt="Probability of being in each state over first 100 steps" /> </p>
 
 <p>Run this out a little longer (5,000 steps)</p>
 
@@ -691,7 +807,7 @@ in each state over time:</p>
 </span><span class="line">abline<span class="p">(</span>h<span class="o">=</span>v<span class="p">,</span> lty<span class="o">=</span><span class="m">2</span><span class="p">,</span> col<span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-27.png" alt="Probability of being in each state over first 5,000 steps" /> </p>
+<p><img src="figure/unnamed-chunk-29.png" alt="Probability of being in each state over first 5,000 steps" /> </p>
 
 <p>A sufficient (but not necessary) condition for the existance of a
 stationary distribution is Detailed Balance, which says:</p>
@@ -723,6 +839,12 @@ so we have </p>
 <p>which holds for all $k$ so</p>
 
 <script type="math/tex; mode=display">\vec\pi^*\mathbf{P} = \vec\pi^*</script>
+
+<p>So the key point here is: Markov chains are neat and well
+understood things, with some nice properties.  Markov chains have
+stationary distributions, and if we run them for long enough we can
+just look at the where the chain is spending its time and get a
+reasonable estimate of that stationary distribution.</p>
 
 <h2 id="the-metropolis-algorithm">The Metropolis algorithm</h2>
 
@@ -811,7 +933,7 @@ of the domain (in general, this may not even be known!)</p>
 </pre></td><td class="code"><pre><code class="r"><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">),</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="m">-4</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> n<span class="o">=</span><span class="m">301</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-29.png" alt="plot of chunk unnamed-chunk-29" /> </p>
+<p><img src="figure/unnamed-chunk-31.png" alt="plot of chunk unnamed-chunk-31" /> </p>
 
 <p>Let’s define a really simple minded proposal algorithm that samples
 from a normal distribution centred on the current point with a
@@ -890,7 +1012,7 @@ density on the right:</p>
 </span><span class="line">plot<span class="p">(</span>f<span class="p">(</span>xx<span class="p">),</span> xx<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> yaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34" /> </p>
+<p><img src="figure/unnamed-chunk-36.png" alt="plot of chunk unnamed-chunk-36" /> </p>
 
 <p>Even with only a thousand (non-independent) samples, we’re starting
 to resemble the target distribution fairly well.</p>
@@ -905,7 +1027,7 @@ to resemble the target distribution fairly well.</p>
 </span><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> n<span class="o">=</span><span class="m">200</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-35.png" alt="plot of chunk unnamed-chunk-35" /> </p>
+<p><img src="figure/unnamed-chunk-37.png" alt="plot of chunk unnamed-chunk-37" /> </p>
 
 <p>Run for longer and things start looking a bunch better:</p>
 
@@ -923,7 +1045,7 @@ to resemble the target distribution fairly well.</p>
 </span><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> n<span class="o">=</span><span class="m">200</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-36.png" alt="plot of chunk unnamed-chunk-36" /> </p>
+<p><img src="figure/unnamed-chunk-38.png" alt="plot of chunk unnamed-chunk-38" /> </p>
 
 <p>Now, run with different proposal mechanisms - one with a very wide
 standard deviation (33 units) and the other with a very small
@@ -954,7 +1076,7 @@ three traces are moving around.</p>
 </span><span class="line">plot<span class="p">(</span>f<span class="p">(</span>xx<span class="p">),</span> xx<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> yaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-38.png" alt="plot of chunk unnamed-chunk-38" /> </p>
+<p><img src="figure/unnamed-chunk-40.png" alt="plot of chunk unnamed-chunk-40" /> </p>
 
 <p>The original (grey line) trace is bouncing around quite freely.</p>
 
@@ -982,7 +1104,7 @@ lags, with the blue lines indicating statistical independence.</p>
 </span><span class="line">acf<span class="p">(</span>res.fast<span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Large steps&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-39.png" alt="plot of chunk unnamed-chunk-39" /> </p>
+<p><img src="figure/unnamed-chunk-41.png" alt="plot of chunk unnamed-chunk-41" /> </p>
 
 <p>From this, one can calculate the effective number of independent
 samples:</p>
@@ -1053,7 +1175,7 @@ samples:</p>
 </span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-42.png" alt="plot of chunk unnamed-chunk-42" /> </p>
+<p><img src="figure/unnamed-chunk-44.png" alt="plot of chunk unnamed-chunk-44" /> </p>
 
 <h1 id="mcmc-in-two-dimensions">MCMC In two dimensions</h1>
 
@@ -1120,7 +1242,7 @@ time unweighted):</p>
 </span><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-44.png" alt="plot of chunk unnamed-chunk-44" /> </p>
+<p><img src="figure/unnamed-chunk-46.png" alt="plot of chunk unnamed-chunk-46" /> </p>
 
 <p>Sampling from multivariate normals is also fairly straightforward,
 but we’ll draw samples from this using MCMC.</p>
@@ -1157,7 +1279,7 @@ square with width ‘d’ on each side.</p>
 </span><span class="line">lines<span class="p">(</span>samples<span class="p">[,</span><span class="m">1</span><span class="p">],</span> samples<span class="p">[,</span><span class="m">2</span><span class="p">],</span> col<span class="o">=</span><span class="s">&quot;#00000088&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-45.png" alt="plot of chunk unnamed-chunk-45" /> </p>
+<p><img src="figure/unnamed-chunk-47.png" alt="plot of chunk unnamed-chunk-47" /> </p>
 
 <p>Drawing a ton of samples”</p>
 
@@ -1181,7 +1303,7 @@ square with width ‘d’ on each side.</p>
 </pre></td><td class="code"><pre><code class="r"><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-47.png" alt="plot of chunk unnamed-chunk-47" /> </p>
+<p><img src="figure/unnamed-chunk-49.png" alt="plot of chunk unnamed-chunk-49" /> </p>
 
 <p>Then we can easily do things with the samples that are difficult to
 do directly.  For example, what is the <em>marginal distribution</em> of
@@ -1193,7 +1315,7 @@ parameter 1:</p>
 </span><span class="line">     ylab<span class="o">=</span><span class="s">&quot;Probability density&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-48.png" alt="plot of chunk unnamed-chunk-48" /> </p>
+<p><img src="figure/unnamed-chunk-50.png" alt="plot of chunk unnamed-chunk-50" /> </p>
 
 <p>(this is the distribution that the first paramter takes, averaged
 over all the possible values that the second parameter might take,
@@ -1231,7 +1353,7 @@ first dimension (this is the total area under the distribution).</p>
 </span><span class="line">lines<span class="p">(</span>xx<span class="p">,</span> yy<span class="o">/</span>z<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-49.png" alt="plot of chunk unnamed-chunk-49" /> </p>
+<p><img src="figure/unnamed-chunk-51.png" alt="plot of chunk unnamed-chunk-51" /> </p>
 
 
   
