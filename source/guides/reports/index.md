@@ -47,14 +47,45 @@ Oh yeah, mark down docs usually end with extension `.md`, or `.markdown`.
 Markdown proved so useful that many different coding groups adopted it, but also adding there own 'flavours'. So far we know of the following:
 
 * the original markdown
-* R-flavoured markdown,
 * github flavoured markdown,
 * pandoc markdown, and
 * multimarkdown.
 
 Each of these offers a slightly different set of features.
 
-R markdown is used within Rstudio and allows R code to be weaved in with bits of text. Files written in R markdown have the extension `.Rmd`.
+RStudio implements something called "R-flavoured markdown" (or
+RMarkdown) which can be based on any of these flavours.  In addition,
+it includes "code blocks" -- pieces of code that will be run by R.
+These look like this:
+
+    ```{r}
+    mean(1:10) # or some other code
+    ```
+
+which produces something like this:
+
+    ```
+	mean(1:10) # or some other code
+	```
+	```
+	## [1] 5.5
+	```
+	
+which would be rendered by Markdown like this:
+
+```
+mean(1:10) # or some other code
+```
+```
+## [1] 5.5
+```
+	
+R markdown is used within Rstudio and allows R code to be weaved in
+with bits of text. Files written in R markdown have the extension
+`.Rmd`.
+
+Think of R markdown as something that *compiles* into one of the above
+markdown variants.  But first, you need to run all the bits of R code
 
 # Reports with knitr
 
@@ -125,7 +156,12 @@ For beginners, the following resources may prove useful
 
 ## Avoiding trouble
 
-We have advised you [previously](http://nicercode.github.io/blog/2013-04-05-projects/) against using `setwd()` in your scripts. That is even more important here. Changing the working directory within an Rmd file will lead to trouble. Therefore we advise you to write all Rmd files to run, assuming they are in the root directory of your project.
+We have advised you
+[previously](http://nicercode.github.io/blog/2013-04-05-projects/)
+against using `setwd()` in your scripts. That is even more important
+here. Changing the working directory within an Rmd file will lead to
+trouble. Therefore we advise you to write all Rmd files to run
+assuming they are in the root directory of your project.
 
 ## Revealing and hiding code and output
 
@@ -138,7 +174,7 @@ You can choose what gets included in the evnetual report, by setting options for
 For more detail about these options, checkout
 
 - RStduio's guide on [Customizing Chunk Options](http://rpubs.com/gallery/options)
-- the worked example in [our example script]()
+- the worked example in [our example script](example.Rmd)
 - full documentation on the [knitr site](http://yihui.name/knitr/options).
 
 ## Converting to different document formats
