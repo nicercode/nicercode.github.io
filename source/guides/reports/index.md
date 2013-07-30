@@ -142,7 +142,7 @@ People now use knitr for all sorts of things, e.g.
 
  - writing reports of their data (here's one by Rich as [Rmd](http://www.zoology.ubc.ca/prog/diversitree/examples/unreplicated/unreplicated.Rmd) and [html](http://www.zoology.ubc.ca/prog/diversitree/examples/unreplicated/) )
  - preparing tutorials
- - writing blog posts. For example, [this post was written as an Rmd file](index.Rmd), before being processed into an md file, and finally html.
+ - writing blog posts.
 
 <blockquote class="twitter-tweet"><p>I love <a href="https://twitter.com/search?q=%23knitr&amp;src=hash">#knitr</a> for <a href="https://twitter.com/search?q=%23rstats&amp;src=hash">#rstats</a> with <a href="https://twitter.com/rstudioapp">@rstudioapp</a>! Made my first report yesterday, now generating customised reports for &gt;50 data contributors.</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/statuses/324773337224077313">April 18, 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
