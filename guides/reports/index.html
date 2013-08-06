@@ -157,7 +157,6 @@ MathJax.Hub.Config({
 
 <ul>
   <li>the original markdown</li>
-  <li>R-flavoured markdown,</li>
   <li>github flavoured markdown,</li>
   <li>pandoc markdown, and</li>
   <li>multimarkdown.</li>
@@ -165,7 +164,39 @@ MathJax.Hub.Config({
 
 <p>Each of these offers a slightly different set of features.</p>
 
-<p>R markdown is used within Rstudio and allows R code to be weaved in with bits of text. Files written in R markdown have the extension <code>.Rmd</code>.</p>
+<p>RStudio implements something called “R-flavoured markdown” (or
+RMarkdown) which can be based on any of these flavours.  In addition,
+it includes “code blocks” – pieces of code that will be run by R.
+These look like this:</p>
+
+<pre><code>```{r}
+mean(1:10) # or some other code
+```
+</code></pre>
+
+<p>which produces something like this:</p>
+
+<pre><code>```
+mean(1:10) # or some other code
+```
+```
+## [1] 5.5
+```
+</code></pre>
+
+<p>which would be rendered by Markdown like this:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">mean(1:10) # or some other code</span></code></pre></td></tr></table></div></figure></notextile></div>
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">## [1] 5.5</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>R markdown is used within Rstudio and allows R code to be weaved in
+with bits of text. Files written in R markdown have the extension
+<code>.Rmd</code>.</p>
+
+<p>Think of R markdown as something that <em>compiles</em> into one of the above
+markdown variants.  But first, you need to run all the bits of R code</p>
 
 <h1 id="reports-with-knitr">Reports with knitr</h1>
 
@@ -226,7 +257,7 @@ MathJax.Hub.Config({
 <ul>
   <li>writing reports of their data (here’s one by Rich as <a href="http://www.zoology.ubc.ca/prog/diversitree/examples/unreplicated/unreplicated.Rmd">Rmd</a> and <a href="http://www.zoology.ubc.ca/prog/diversitree/examples/unreplicated/">html</a> )</li>
   <li>preparing tutorials</li>
-  <li>writing blog posts. For example, <a href="index.Rmd">this post was written as an Rmd file</a>, before being processed into an md file, and finally html.</li>
+  <li>writing blog posts.</li>
 </ul>
 
 <blockquote class="twitter-tweet"><p>I love <a href="https://twitter.com/search?q=%23knitr&amp;src=hash">#knitr</a> for <a href="https://twitter.com/search?q=%23rstats&amp;src=hash">#rstats</a> with <a href="https://twitter.com/rstudioapp">@rstudioapp</a>! Made my first report yesterday, now generating customised reports for &gt;50 data contributors.</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/statuses/324773337224077313">April 18, 2013</a></blockquote>
@@ -243,7 +274,12 @@ MathJax.Hub.Config({
 
 <h2 id="avoiding-trouble">Avoiding trouble</h2>
 
-<p>We have advised you <a href="http://nicercode.github.io/blog/2013-04-05-projects/">previously</a> against using <code>setwd()</code> in your scripts. That is even more important here. Changing the working directory within an Rmd file will lead to trouble. Therefore we advise you to write all Rmd files to run, assuming they are in the root directory of your project.</p>
+<p>We have advised you
+<a href="http://nicercode.github.io/blog/2013-04-05-projects/">previously</a>
+against using <code>setwd()</code> in your scripts. That is even more important
+here. Changing the working directory within an Rmd file will lead to
+trouble. Therefore we advise you to write all Rmd files to run
+assuming they are in the root directory of your project.</p>
 
 <h2 id="revealing-and-hiding-code-and-output">Revealing and hiding code and output</h2>
 
@@ -259,7 +295,7 @@ MathJax.Hub.Config({
 
 <ul>
   <li>RStduio’s guide on <a href="http://rpubs.com/gallery/options">Customizing Chunk Options</a></li>
-  <li>the worked example in <a href="">our example script</a></li>
+  <li>the worked example in <a href="example.Rmd">our example script</a></li>
   <li>full documentation on the <a href="http://yihui.name/knitr/options">knitr site</a>.</li>
 </ul>
 
