@@ -38,7 +38,7 @@ The topics covered fall into two broad categories: *workflow* and
 [function length](/blog/2013-05-07-how-long-is-a-function"), 1hr.
 4. Function development and debugging (21 May), 1hr.
 6. [Repeating things](/guides/repeating-things) (18 June), 2hr.
-7. Plotting workflow and tricks (guides/plotting), with a blog post on  [outputting to pdf](/blog/2013-07-09-figure-functions) (16 July), 1.5hr.
+7. [Plotting work flow and tricks](guides/plotting), with a blog post on  [outputting to pdf](/blog/2013-07-09-figure-functions) (16 July), 1.5hr.
 8. [Reproducible reports with knitr](/guides/reports) (30 July), 1.5hr.
 
 ## Introduction to R, Macquarie University 2013
