@@ -3,7 +3,7 @@ TARGETS=index.md index.pdf
 all: $(TARGETS)
 
 %.md : %.R
-	Rscript -e "library(sowsear);sowsear(\"$<\", \"Rmd\");knit(\"$<md\")"
+	Rscript -e "library(sowsear); library(knitr); sowsear(\"$<\", \"Rmd\");knit(\"$<md\")"
 # ideally this would happen always, actually.
 	rm -f $<md
 

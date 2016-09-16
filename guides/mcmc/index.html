@@ -156,7 +156,7 @@ Then, to compute the mean value of parameter $x$, you would compute</p>
 </script>
 
 <p>which you can read simply as “the value of $x$ multiplied by the
-probability of parmeters $(x, y)$, integrated over all possible
+probability of parameters $(x, y)$, integrated over all possible
 values that $x$ and $y$ could take.</p>
 
 <p>An alternative way to compute this value is simulate $k$
@@ -202,7 +202,7 @@ function:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -0.006537</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -0.006537039</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>In fact, in this case, the expected variance of the estimate with
@@ -215,8 +215,8 @@ $n$ samples is $1/n$, so we’d expect most values to lie within $\pm
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
-</span><span class="line"><span class="c1">## -0.03250 -0.00580  0.00046  0.00042  0.00673  0.03550</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span>
+</span><span class="line"><span class="c1">## -0.0325000 -0.0057960  0.0004621  0.0004164  0.0067330  0.0355200</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>This function computes the cumulative mean (that is, for element
@@ -236,7 +236,7 @@ $k$, the sum of elements $1, 2, \ldots, k$ divided by $k$).</p>
 </span><span class="line">     panel.first<span class="o">=</span>abline<span class="p">(</span>h<span class="o">=</span><span class="m">0</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">),</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-7.png" alt="Convergence of estimated mean towards true mean" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-7-1.png" alt="Convergence of estimated mean towards true mean" /></p>
 
 <p>Transforming the x axis onto a log scale and showing another 30
 random approaches:</p>
@@ -255,7 +255,7 @@ random approaches:</p>
 </span><span class="line">          col<span class="o">=</span>rgb<span class="p">(</span>runif<span class="p">(</span><span class="m">1</span><span class="p">),</span> runif<span class="p">(</span><span class="m">1</span><span class="p">),</span> runif<span class="p">(</span><span class="m">1</span><span class="p">),</span> <span class="m">.5</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-8.png" alt="Approach of 30 trajectories towards the true mean (log x scale)" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-8-1.png" alt="Approach of 30 trajectories towards the true mean (log x scale)" /></p>
 
 <p>How does this work?  Consider the integral</p>
 
@@ -303,7 +303,7 @@ probability density is below:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.96</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.959964</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>We can estimate this by direct integration in this case (using the
@@ -322,7 +322,7 @@ argument above)</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.96</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.959966</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>And estimate the point by Monte Carlo integration:</p>
@@ -334,7 +334,7 @@ argument above)</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -2.023</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -2.023258</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Note that this has an error around it:</p>
@@ -344,7 +344,7 @@ argument above)</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.06329</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.06329402</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>But in the limit as the sample size goes to infinity, this will
@@ -361,8 +361,8 @@ of magnitide as the error around the mean:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
-</span><span class="line"><span class="c1">## -0.05840 -0.01640 -0.00572 -0.00024  0.01400  0.07880</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span>
+</span><span class="line"><span class="c1">## -0.0584200 -0.0163900 -0.0057180 -0.0002443  0.0139900  0.0788200</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="still-not-convinced">Still not convinced?</h2>
@@ -412,7 +412,7 @@ hypersphere in a hypercube) this ratio is
 </span><span class="line">     ylab<span class="o">=</span><span class="s">&quot;Proportion of hypercube filled with hypersphere&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-14.png" alt="plot of chunk unnamed-chunk-14" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-14-1.png" alt="plot of chunk unnamed-chunk-14" /></p>
 
 <p>So we don’t need to add many dimensions to be primarily interested
 in a very small fraction of the potential space.  (It’s also worth
@@ -691,7 +691,7 @@ steps:</p>
 </span><span class="line">matlines<span class="p">(</span><span class="m">0</span><span class="o">:</span>n<span class="p">,</span> y3<span class="p">,</span> lty<span class="o">=</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-22.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-22-1.png" alt="Convergence of simple Markov chain to stationary distribution" /></p>
 
 <p>which means that regardless of the starting distribution, there is
 a 32\% chance of the chain being in state 1 after about 10 or more
@@ -722,7 +722,7 @@ to convergence:</p>
 </span><span class="line">points<span class="p">(</span>rep<span class="p">(</span><span class="m">10</span><span class="p">,</span> <span class="m">3</span><span class="p">),</span> v<span class="p">,</span> col<span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-24.png" alt="Convergence of simple Markov chain to stationary distribution" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-24-1.png" alt="Convergence of simple Markov chain to stationary distribution" /></p>
 
 <p>Following the definition of eigenvectors, multiplying the
 eigenvector by the transition matrix returns the eigenvector
@@ -733,9 +733,8 @@ itself:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.110e-16  1.388e-16  0.000e+00</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.110223e-16  1.387779e-16  0.000000e+00</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-
 <p>(strictly, this should be the eigenvalue multiplied by <code>v</code>, but the
 leading eigenvalue is always 1 for these matrices).</p>
 
@@ -770,7 +769,7 @@ to and chooses 1 (this uses R’s <code>sample</code> function).</p>
 </span><span class="line">plot<span class="p">(</span>samples<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;s&quot;</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;Step&quot;</span><span class="p">,</span> ylab<span class="o">=</span><span class="s">&quot;State&quot;</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-27.png" alt="First 100 steps of the Markov chain" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-27-1.png" alt="First 100 steps of the Markov chain" /></p>
 
 <p>Rather than plotting state, plot the fraction of time that we were
 in each state over time:</p>
@@ -785,7 +784,7 @@ in each state over time:</p>
 </span><span class="line">lines<span class="p">(</span>cummean<span class="p">(</span>samples <span class="o">==</span> <span class="m">3</span><span class="p">),</span> col<span class="o">=</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-28.png" alt="Probability of being in each state over first 100 steps" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-28-1.png" alt="Probability of being in each state over first 100 steps" /></p>
 
 <p>Run this out a little longer (5,000 steps)</p>
 
@@ -807,7 +806,7 @@ in each state over time:</p>
 </span><span class="line">abline<span class="p">(</span>h<span class="o">=</span>v<span class="p">,</span> lty<span class="o">=</span><span class="m">2</span><span class="p">,</span> col<span class="o">=</span><span class="m">1</span><span class="o">:</span><span class="m">3</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-29.png" alt="Probability of being in each state over first 5,000 steps" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-29-1.png" alt="Probability of being in each state over first 5,000 steps" /></p>
 
 <p>A sufficient (but not necessary) condition for the existance of a
 stationary distribution is Detailed Balance, which says:</p>
@@ -933,7 +932,7 @@ of the domain (in general, this may not even be known!)</p>
 </pre></td><td class="code"><pre><code class="r"><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">),</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> <span class="m">-4</span><span class="p">,</span> <span class="m">8</span><span class="p">,</span> n<span class="o">=</span><span class="m">301</span><span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-31.png" alt="plot of chunk unnamed-chunk-31" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-31-1.png" alt="plot of chunk unnamed-chunk-31" /></p>
 
 <p>Let’s define a really simple minded proposal algorithm that samples
 from a normal distribution centred on the current point with a
@@ -1012,7 +1011,7 @@ density on the right:</p>
 </span><span class="line">plot<span class="p">(</span>f<span class="p">(</span>xx<span class="p">),</span> xx<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> yaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> xlab<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-36.png" alt="plot of chunk unnamed-chunk-36" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-36-1.png" alt="plot of chunk unnamed-chunk-36" /></p>
 
 <p>Even with only a thousand (non-independent) samples, we’re starting
 to resemble the target distribution fairly well.</p>
@@ -1027,7 +1026,7 @@ to resemble the target distribution fairly well.</p>
 </span><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> n<span class="o">=</span><span class="m">200</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-37.png" alt="plot of chunk unnamed-chunk-37" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-37-1.png" alt="plot of chunk unnamed-chunk-37" /></p>
 
 <p>Run for longer and things start looking a bunch better:</p>
 
@@ -1045,7 +1044,7 @@ to resemble the target distribution fairly well.</p>
 </span><span class="line">curve<span class="p">(</span>f<span class="p">(</span>x<span class="p">)</span> <span class="o">/</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">,</span> n<span class="o">=</span><span class="m">200</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-38.png" alt="plot of chunk unnamed-chunk-38" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-38-1.png" alt="plot of chunk unnamed-chunk-38" /></p>
 
 <p>Now, run with different proposal mechanisms - one with a very wide
 standard deviation (33 units) and the other with a very small
@@ -1076,7 +1075,7 @@ three traces are moving around.</p>
 </span><span class="line">plot<span class="p">(</span>f<span class="p">(</span>xx<span class="p">),</span> xx<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> yaxs<span class="o">=</span><span class="s">&quot;i&quot;</span><span class="p">,</span> axes<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-40.png" alt="plot of chunk unnamed-chunk-40" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-40-1.png" alt="plot of chunk unnamed-chunk-40" /></p>
 
 <p>The original (grey line) trace is bouncing around quite freely.</p>
 
@@ -1104,7 +1103,7 @@ lags, with the blue lines indicating statistical independence.</p>
 </span><span class="line">acf<span class="p">(</span>res.fast<span class="p">,</span> las<span class="o">=</span><span class="m">1</span><span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Large steps&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-41.png" alt="plot of chunk unnamed-chunk-41" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-41-1.png" alt="plot of chunk unnamed-chunk-41" /></p>
 
 <p>From this, one can calculate the effective number of independent
 samples:</p>
@@ -1114,9 +1113,7 @@ samples:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## var1 </span>
-</span><span class="line"><span class="c1">##  187</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error in loadNamespace(name): there is no package called &#39;coda&#39;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -1124,9 +1121,7 @@ samples:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##  var1 </span>
-</span><span class="line"><span class="c1">## 33.19</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error in loadNamespace(name): there is no package called &#39;coda&#39;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -1134,9 +1129,7 @@ samples:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##  var1 </span>
-</span><span class="line"><span class="c1">## 5.378</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error in loadNamespace(name): there is no package called &#39;coda&#39;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The chains both “mix” worse than that first one.</p>
@@ -1175,7 +1168,7 @@ samples:</p>
 </span><span class="line"><span class="p">}</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-44.png" alt="plot of chunk unnamed-chunk-44" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-44-1.png" alt="plot of chunk unnamed-chunk-44" /></p>
 
 <h1 id="mcmc-in-two-dimensions">MCMC In two dimensions</h1>
 
@@ -1242,7 +1235,7 @@ time unweighted):</p>
 </span><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-46.png" alt="plot of chunk unnamed-chunk-46" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-46-1.png" alt="plot of chunk unnamed-chunk-46" /></p>
 
 <p>Sampling from multivariate normals is also fairly straightforward,
 but we’ll draw samples from this using MCMC.</p>
@@ -1279,7 +1272,7 @@ square with width ‘d’ on each side.</p>
 </span><span class="line">lines<span class="p">(</span>samples<span class="p">[,</span><span class="m">1</span><span class="p">],</span> samples<span class="p">[,</span><span class="m">2</span><span class="p">],</span> col<span class="o">=</span><span class="s">&quot;#00000088&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-47.png" alt="plot of chunk unnamed-chunk-47" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-47-1.png" alt="plot of chunk unnamed-chunk-47" /></p>
 
 <p>Drawing a ton of samples”</p>
 
@@ -1292,18 +1285,12 @@ square with width ‘d’ on each side.</p>
 <p>Compare the sampled distribution against the known distribution:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
 </pre></td><td class="code"><pre><code class="r"><span class="line">smoothScatter<span class="p">(</span>samples<span class="p">)</span>
+</span><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## KernSmooth 2.23 loaded Copyright M. P. Wand 1997-2009</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line">contour<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> z<span class="p">,</span> add<span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p><img src="figure/unnamed-chunk-49.png" alt="plot of chunk unnamed-chunk-49" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-49-1.png" alt="plot of chunk unnamed-chunk-49" /></p>
 
 <p>Then we can easily do things with the samples that are difficult to
 do directly.  For example, what is the <em>marginal distribution</em> of
@@ -1315,7 +1302,7 @@ parameter 1:</p>
 </span><span class="line">     ylab<span class="o">=</span><span class="s">&quot;Probability density&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-50.png" alt="plot of chunk unnamed-chunk-50" /> </p>
+<p><img src="mcmc/figure/unnamed-chunk-50-1.png" alt="plot of chunk unnamed-chunk-50" /></p>
 
 <p>(this is the distribution that the first paramter takes, averaged
 over all the possible values that the second parameter might take,
@@ -1353,8 +1340,7 @@ first dimension (this is the total area under the distribution).</p>
 </span><span class="line">lines<span class="p">(</span>xx<span class="p">,</span> yy<span class="o">/</span>z<span class="p">,</span> col<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="figure/unnamed-chunk-51.png" alt="plot of chunk unnamed-chunk-51" /> </p>
-
+<p><img src="mcmc/figure/unnamed-chunk-51-1.png" alt="plot of chunk unnamed-chunk-51" /></p>
 
   
 </article>
@@ -1408,7 +1394,7 @@ first dimension (this is the total area under the distribution).</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  Copyright &copy; 2016 - Rich FitzJohn & Daniel Falster -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 

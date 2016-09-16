@@ -9,7 +9,7 @@
 ## ---
 
 ##+ echo=FALSE, results="hide"
-opts_chunk$set(tidy=FALSE)
+knitr::opts_chunk$set(tidy=FALSE)
 options(show.signif.stars=FALSE)
 options(max.print=170)
 
@@ -55,7 +55,7 @@ options(max.print=170)
 ## $$
 
 ## which you can read simply as "the value of $x$ multiplied by the
-## probability of parmeters $(x, y)$, integrated over all possible
+## probability of parameters $(x, y)$, integrated over all possible
 ## values that $x$ and $y$ could take.
 
 ### I'd like to use \{...\} here, but for HTML generation that is lost

@@ -539,19 +539,19 @@ element of this list.  For example, how many rows of data are there?</p>
 </pre></td><td class="code"><pre><code class="r"><span class="line">autocor <span class="o">&lt;-</span> lapply<span class="p">(</span>data<span class="p">,</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> acf<span class="p">(</span>x<span class="o">$</span>temp<span class="p">,</span> lag.max<span class="o">=</span><span class="m">24</span><span class="p">))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-221.png" alt="plot of chunk unnamed-chunk-22" /> <img src="img/unnamed-chunk-222.png" alt="plot of chunk unnamed-chunk-22" /> <img src="img/unnamed-chunk-223.png" alt="plot of chunk unnamed-chunk-22" /> <img src="img/unnamed-chunk-224.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-221.png" alt="plot of chunk unnamed-chunk-22" /> <img src="repeating-things/img/unnamed-chunk-222.png" alt="plot of chunk unnamed-chunk-22" /> <img src="repeating-things/img/unnamed-chunk-223.png" alt="plot of chunk unnamed-chunk-22" /> <img src="repeating-things/img/unnamed-chunk-224.png" alt="plot of chunk unnamed-chunk-22" /></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>autocor<span class="o">$</span>Sydney<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Sydney&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-225.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-225.png" alt="plot of chunk unnamed-chunk-22" /></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>autocor<span class="o">$</span>Cairns<span class="p">,</span> main<span class="o">=</span><span class="s">&quot;Cairns&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-226.png" alt="plot of chunk unnamed-chunk-22" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-226.png" alt="plot of chunk unnamed-chunk-22" /></p>
 
 <p>I find that for loops can be easier to plot data, partly because
 there is nothing to <em>collect</em> (or combine) at each iteration.</p>
@@ -572,7 +572,7 @@ there is nothing to <em>collect</em> (or combine) at each iteration.</p>
 </span><span class="line">  lines<span class="p">(</span>data<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>time<span class="p">,</span> data<span class="p">[[</span>i<span class="p">]]</span><span class="o">$</span>temp<span class="p">,</span> col<span class="o">=</span>cols<span class="p">[</span>i<span class="p">])</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-23.png" alt="plot of chunk unnamed-chunk-23" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-23.png" alt="plot of chunk unnamed-chunk-23" /></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -584,7 +584,7 @@ there is nothing to <em>collect</em> (or combine) at each iteration.</p>
 </span><span class="line">       data<span class="p">,</span> cols<span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-24.png" alt="plot of chunk unnamed-chunk-24" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-24.png" alt="plot of chunk unnamed-chunk-24" /></p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -799,7 +799,7 @@ per-season standard error) we could just do:</p>
 </span><span class="line">       code<span class="o">=</span><span class="m">3</span><span class="p">,</span> angle<span class="o">=</span><span class="m">90</span><span class="p">,</span> length<span class="o">=</span><span class="m">0.02</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-34.png" alt="plot of chunk unnamed-chunk-34" /></p>
 
 <p>But there’s still repetition there.  Let’s abstract that away a bit.</p>
 
@@ -1073,7 +1073,7 @@ heads:</p>
 </pre></td><td class="code"><pre><code class="r"><span class="line">plot<span class="p">(</span>table<span class="p">(</span>replicate<span class="p">(</span><span class="m">10000</span><span class="p">,</span> trial<span class="p">(</span><span class="m">50</span><span class="p">))))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-49.png" alt="plot of chunk unnamed-chunk-49" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-49.png" alt="plot of chunk unnamed-chunk-49" /></p>
 
 <h1 id="for-loops">for loops</h1>
 
@@ -1141,7 +1141,7 @@ probability move left or right.</p>
 </span><span class="line">plot<span class="p">(</span>x<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-56.png" alt="plot of chunk unnamed-chunk-56" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-56.png" alt="plot of chunk unnamed-chunk-56" /></p>
 
 <p>Pulling <em>that</em> into a function:</p>
 
@@ -1169,7 +1169,7 @@ probability move left or right.</p>
 </span><span class="line">matplot<span class="p">(</span>walks<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> lty<span class="o">=</span><span class="m">1</span><span class="p">,</span> col<span class="o">=</span>rainbow<span class="p">(</span>nrow<span class="p">(</span>walks<span class="p">)))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-58.png" alt="plot of chunk unnamed-chunk-58" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-58.png" alt="plot of chunk unnamed-chunk-58" /></p>
 
 <p>Of course, in this case, if we think in terms of vectors we can
 actually implement random walk using implicit vectorisation:</p>
@@ -1186,7 +1186,7 @@ actually implement random walk using implicit vectorisation:</p>
 </span><span class="line">matplot<span class="p">(</span>walks<span class="p">,</span> type<span class="o">=</span><span class="s">&quot;l&quot;</span><span class="p">,</span> lty<span class="o">=</span><span class="m">1</span><span class="p">,</span> col<span class="o">=</span>rainbow<span class="p">(</span>nrow<span class="p">(</span>walks<span class="p">)))</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p><img src="img/unnamed-chunk-59.png" alt="plot of chunk unnamed-chunk-59" /> </p>
+<p><img src="repeating-things/img/unnamed-chunk-59.png" alt="plot of chunk unnamed-chunk-59" /></p>
 
 <p>Which reinforces one of the advantages of thinking in terms of
 functions: you can change the implementation detail without the
@@ -1245,7 +1245,7 @@ rest of the program changing.</p>
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - Rich FitzJohn & Daniel Falster -
+  Copyright &copy; 2016 - Rich FitzJohn & Daniel Falster -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
