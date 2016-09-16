@@ -6,7 +6,7 @@ sharing: true
 footer: false
 ---
 
-We have put together the following guides on
+We have put together the following guides on writing niceR code
 
 1. A general [introduction to R](/intro/)
 2. Version control in R with [git](/git/)
@@ -25,3 +25,7 @@ that you should avoid and tips you should follow.
 Other topics, covered by other people
 
 1. Overview of [R Data structures](https://github.com/hadley/devtools/wiki/Data-structures)
+
+We have also written guides on
+
+1. [Markov Chain Monte Carlo](guides/mcmc)

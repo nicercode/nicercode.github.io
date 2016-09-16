@@ -10,7 +10,6 @@ author: Rich FitzJohn
 
 
 
-
 This topic doesn't have much to do with nicer code, but there is
 probably some overlap in interest. However, some of the topics that
 we cover arise naturally here, so read on!  We'll flesh out
@@ -53,7 +52,7 @@ $$
 $$
 
 which you can read simply as "the value of $x$ multiplied by the
-probability of parmeters $(x, y)$, integrated over all possible
+probability of parameters $(x, y)$, integrated over all possible
 values that $x$ and $y$ could take.
 
 
@@ -83,7 +82,6 @@ m <- 0
 s <- 1
 ```
 
-
 We can easily sample from this distribution using the `rnorm`
 function:
 
@@ -91,7 +89,6 @@ function:
 set.seed(1)
 samples <- rnorm(10000, m, s)
 ```
-
 
 The mean of the samples is very close to the true mean (zero):
 
@@ -102,7 +99,6 @@ mean(samples)
 ```
 ## [1] -0.006537
 ```
-
 
 In fact, in this case, the expected variance of the estimate with
 $n$ samples is $1/n$, so we'd expect most values to lie within $\pm
@@ -117,7 +113,6 @@ summary(replicate(1000, mean(rnorm(10000, m, s))))
 ## -0.03250 -0.00580  0.00046  0.00042  0.00673  0.03550
 ```
 
-
 This function computes the cumulative mean (that is, for element
 $k$, the sum of elements $1, 2, \ldots, k$ divided by $k$).
 
@@ -126,7 +121,6 @@ cummean <- function(x)
     cumsum(x) / seq_along(x)
 ```
 
-
 Here is the convergence towards the true mean (red line at 0).
 
 ```r
@@ -134,8 +128,7 @@ plot(cummean(samples), type="l", xlab="Sample", ylab="Cumulative mean",
      panel.first=abline(h=0, col="red"), las=1)
 ```
 
-![Convergence of estimated mean towards true mean](figure/unnamed-chunk-7.png) 
-
+![Convergence of estimated mean towards true mean](figure/unnamed-chunk-7-1.png)
 
 Transforming the x axis onto a log scale and showing another 30
 random approaches:
@@ -149,8 +142,7 @@ for (i in seq_len(30))
           col=rgb(runif(1), runif(1), runif(1), .5))
 ```
 
-![Approach of 30 trajectories towards the true mean (log x scale)](figure/unnamed-chunk-8.png) 
-
+![Approach of 30 trajectories towards the true mean (log x scale)](figure/unnamed-chunk-8-1.png)
 
 How does this work?  Consider the integral
 
@@ -199,7 +191,6 @@ a.true
 ## [1] -1.96
 ```
 
-
 We can estimate this by direct integration in this case (using the
 argument above)
 
@@ -215,7 +206,6 @@ a.int
 ## [1] -1.96
 ```
 
-
 And estimate the point by Monte Carlo integration:
 
 ```r
@@ -227,7 +217,6 @@ a.mc
 ## [1] -2.023
 ```
 
-
 Note that this has an error around it:
 
 ```r
@@ -237,7 +226,6 @@ a.true - a.mc
 ```
 ## [1] 0.06329
 ```
-
 
 But in the limit as the sample size goes to infinity, this will
 converge.  Furthermore, it is possible to make statements about the
@@ -254,7 +242,6 @@ summary(a.true - a.mc)
 ##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
 ## -0.05840 -0.01640 -0.00572 -0.00024  0.01400  0.07880
 ```
-
 
 ## Still not convinced?
 
@@ -298,8 +285,7 @@ plot(d, pi^(d/2) / (d * 2^(d-1) * gamma(d/2)), log="y", las=1,
      ylab="Proportion of hypercube filled with hypersphere")
 ```
 
-![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14.png) 
-
+![plot of chunk unnamed-chunk-14](figure/unnamed-chunk-14-1.png)
 
 So we don't need to add many dimensions to be primarily interested
 in a very small fraction of the potential space.  (It's also worth
@@ -344,7 +330,6 @@ data.frame(dimension=d, p.interesting=sapply(d, f, 10000))
 ## 9          9        0.0000
 ## 10        10        0.0000
 ```
-
 
 which drops off much like the hypersphere case.  Even by looking at
 only 4-5 dimensions we're likely to waste a lot of time if we tried
@@ -483,7 +468,6 @@ P
 ## [3,] 0.25 0.25 0.50
 ```
 
-
 note that the rows of `P` sum to one:
 
 ```r
@@ -493,7 +477,6 @@ rowSums(P)
 ```
 ## [1] 1 1 1
 ```
-
 
 This can be interpreted as saying that we must go *somewhere*, even
 if that place is the same place.  The entry `P[i,j]` gives the
@@ -510,7 +493,6 @@ colSums(P)
 ## [1] 0.95 0.60 1.45
 ```
 
-
 This function takes a state vector `x` (where `x[i]` is the
 probability of being in state `i`) and iterates it by multiplying
 by the transition matrix `P`, advancing the system for `n` steps.
@@ -525,7 +507,6 @@ iterate.P <- function(x, P, n) {
 }
 ```
 
-
 Starting with the system in state 1 (so `x` is the vector $[1,0,0]$
 indicating that there is a 100\% probability of being in state 1
 and no chance of being in any other state), and iterating for 10
@@ -536,14 +517,12 @@ n <- 10
 y1 <- iterate.P(c(1, 0, 0), P, n)
 ```
 
-
 Similarly, for the other two possible starting states:
 
 ```r
 y2 <- iterate.P(c(0, 1, 0), P, n)
 y3 <- iterate.P(c(0, 0, 1), P, n)
 ```
-
 
 This shows the convergence on the stationary distribution.
 
@@ -553,8 +532,7 @@ matlines(0:n, y2, lty=2)
 matlines(0:n, y3, lty=3)
 ```
 
-![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-22.png) 
-
+![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-22-1.png)
 
 which means that regardless of the starting distribution, there is
 a 32\% chance of the chain being in state 1 after about 10 or more
@@ -571,7 +549,6 @@ v <- eigen(t(P), FALSE)$vectors[,1]
 v <- v/sum(v) # normalise eigenvector
 ```
 
-
 Then add points to the figure from before showing how close we are
 to convergence:
 
@@ -582,8 +559,7 @@ matlines(0:n, y3, lty=3)
 points(rep(10, 3), v, col=1:3)
 ```
 
-![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-24.png) 
-
+![Convergence of simple Markov chain to stationary distribution](figure/unnamed-chunk-24-1.png)
 
 Following the definition of eigenvectors, multiplying the
 eigenvector by the transition matrix returns the eigenvector
@@ -596,7 +572,6 @@ drop(v %*% P) - v
 ```
 ## [1] -1.110e-16  1.388e-16  0.000e+00
 ```
-
 (strictly, this should be the eigenvalue multiplied by `v`, but the
 leading eigenvalue is always 1 for these matrices).
 
@@ -618,7 +593,6 @@ run <- function(i, P, n) {
 }
 ```
 
-
 Here's the chain running around for 100 steps:
 
 ```r
@@ -626,8 +600,7 @@ samples <- run(1, P, 100)
 plot(samples, type="s", xlab="Step", ylab="State", las=1)
 ```
 
-![First 100 steps of the Markov chain](figure/unnamed-chunk-27.png) 
-
+![First 100 steps of the Markov chain](figure/unnamed-chunk-27-1.png)
 
 Rather than plotting state, plot the fraction of time that we were
 in each state over time:
@@ -639,8 +612,7 @@ lines(cummean(samples == 2), col=2)
 lines(cummean(samples == 3), col=3)
 ```
 
-![Probability of being in each state over first 100 steps](figure/unnamed-chunk-28.png) 
-
+![Probability of being in each state over first 100 steps](figure/unnamed-chunk-28-1.png)
 
 Run this out a little longer (5,000 steps)
 
@@ -655,8 +627,7 @@ lines(cummean(samples == 3), col=3)
 abline(h=v, lty=2, col=1:3)
 ```
 
-![Probability of being in each state over first 5,000 steps](figure/unnamed-chunk-29.png) 
-
+![Probability of being in each state over first 5,000 steps](figure/unnamed-chunk-29-1.png)
 
 A sufficient (but not necessary) condition for the existance of a
 stationary distribution is Detailed Balance, which says:
@@ -768,7 +739,6 @@ f <- function(x)
     (1-p) * dnorm(x, mu[2], sd[2])
 ```
 
-
 Here is the probability density plotted over the "important" part
 of the domain (in general, this may not even be known!)
 
@@ -776,8 +746,7 @@ of the domain (in general, this may not even be known!)
 curve(f(x), col="red", -4, 8, n=301, las=1)
 ```
 
-![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31.png) 
-
+![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
 
 Let's define a really simple minded proposal algorithm that samples
 from a normal distribution centred on the current point with a
@@ -786,7 +755,6 @@ standard deviation of 4
 ```r
 q <- function(x) rnorm(1, x, 4)
 ```
-
 
 This implements the core algorithm, as described above:
 
@@ -804,7 +772,6 @@ step <- function(x, f, q) {
 }
 ```
 
-
 And this just takes care of running the MCMC for a number of steps.
 It will start at point `x` return a matrix with `nsteps` rows and
 the same number of columns as `x` has elements.  If run on scalar
@@ -819,14 +786,12 @@ run <- function(x, f, q, nsteps) {
 }
 ```
 
-
 We pick a place to start (how about -10, just to pick a really poor
 point)
 
 ```r
 res <- run(-10, f, q, 1000)
 ```
-
                 
 Here are the first 1000 steps of the Markov chain, with the target
 density on the right:
@@ -840,8 +805,7 @@ xx <- seq(usr[3], usr[4], length=301)
 plot(f(xx), xx, type="l", yaxs="i", axes=FALSE, xlab="")
 ```
 
-![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36.png) 
-
+![plot of chunk unnamed-chunk-36](figure/unnamed-chunk-36-1.png)
 
 Even with only a thousand (non-independent) samples, we're starting
 to resemble the target distribution fairly well.
@@ -853,8 +817,7 @@ z <- integrate(f, -Inf, Inf)$value
 curve(f(x) / z, add=TRUE, col="red", n=200)
 ```
 
-![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37.png) 
-
+![plot of chunk unnamed-chunk-37](figure/unnamed-chunk-37-1.png)
 
 Run for longer and things start looking a bunch better:
 
@@ -867,8 +830,7 @@ z <- integrate(f, -Inf, Inf)$value
 curve(f(x) / z, add=TRUE, col="red", n=200)
 ```
 
-![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38.png) 
-
+![plot of chunk unnamed-chunk-38](figure/unnamed-chunk-38-1.png)
 
 Now, run with different proposal mechanisms - one with a very wide
 standard deviation (33 units) and the other with a very small
@@ -878,7 +840,6 @@ standard deviation (3 units).
 res.fast <- run(-10, f, function(x) rnorm(1, x,  33), 1000)
 res.slow <- run(-10, f, function(x) rnorm(1, x,  .3), 1000)
 ```
-
 
 Here is the same plot as above -- note the different ways that the
 three traces are moving around.
@@ -893,8 +854,7 @@ lines(res.slow, col="blue")
 plot(f(xx), xx, type="l", yaxs="i", axes=FALSE)
 ```
 
-![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40.png) 
-
+![plot of chunk unnamed-chunk-40](figure/unnamed-chunk-40-1.png)
 
 The original (grey line) trace is bouncing around quite freely.
 
@@ -919,8 +879,7 @@ acf(res, las=1, main="Intermediate")
 acf(res.fast, las=1, main="Large steps")
 ```
 
-![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41.png) 
-
+![plot of chunk unnamed-chunk-41](figure/unnamed-chunk-41-1.png)
 
 From this, one can calculate the effective number of independent
 samples:
@@ -952,7 +911,6 @@ coda::effectiveSize(res.slow)
 ## 5.378
 ```
 
-
 The chains both "mix" worse than that first one.
 
 This shows more clearly what happens as the chains are run for longer:
@@ -967,7 +925,6 @@ hh <- lapply(samples, function(x) hist(x, br, plot=FALSE))
 ylim <- c(0, max(f(xx)))
 ```
 
-
 Showing 100, 1,000, 10,000 and 100,000 steps:
 
 ```r
@@ -979,8 +936,7 @@ for (h in hh) {
 }
 ```
 
-![plot of chunk unnamed-chunk-44](figure/unnamed-chunk-44.png) 
-
+![plot of chunk unnamed-chunk-44](figure/unnamed-chunk-44-1.png)
 
 # MCMC In two dimensions
 
@@ -1000,7 +956,6 @@ make.mvn <- function(mean, vcv) {
   }
 }
 ```
-
 
 As above, define the target density to be the sum of two mvns (this
 time unweighted):
@@ -1024,8 +979,7 @@ image(x, y, z, las=1)
 contour(x, y, z, add=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46.png) 
-
+![plot of chunk unnamed-chunk-46](figure/unnamed-chunk-46-1.png)
 
 Sampling from multivariate normals is also fairly straightforward,
 but we'll draw samples from this using MCMC.
@@ -1053,8 +1007,7 @@ contour(x, y, z, add=TRUE)
 lines(samples[,1], samples[,2], col="#00000088")
 ```
 
-![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47.png) 
-
+![plot of chunk unnamed-chunk-47](figure/unnamed-chunk-47-1.png)
 
 Drawing a ton of samples"
 
@@ -1063,23 +1016,14 @@ set.seed(1)
 samples <- run(x0, f, q, 100000)
 ```
 
-
 Compare the sampled distribution against the known distribution:
 
 ```r
 smoothScatter(samples)
-```
-
-```
-## KernSmooth 2.23 loaded Copyright M. P. Wand 1997-2009
-```
-
-```r
 contour(x, y, z, add=TRUE)
 ```
 
-![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49.png) 
-
+![plot of chunk unnamed-chunk-49](figure/unnamed-chunk-49-1.png)
 
 
 Then we can easily do things with the samples that are difficult to
@@ -1091,8 +1035,7 @@ hist(samples[,1], freq=FALSE, main="", xlab="x",
      ylab="Probability density")
 ```
 
-![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50.png) 
-
+![plot of chunk unnamed-chunk-50](figure/unnamed-chunk-50-1.png)
 
 (this is the distribution that the first paramter takes, averaged
 over all the possible values that the second parameter might take,
@@ -1119,5 +1062,4 @@ hist(samples[,1], freq=FALSE, main="", las=1, xlab="x",
 lines(xx, yy/z, col="red")
 ```
 
-![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51.png) 
-
+![plot of chunk unnamed-chunk-51](figure/unnamed-chunk-51-1.png)

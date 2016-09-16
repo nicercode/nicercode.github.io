@@ -402,19 +402,19 @@ or, estimate the autocorrelation function for each set:
 autocor <- lapply(data, function(x) acf(x$temp, lag.max=24))
 ```
 
-![plot of chunk unnamed-chunk-22](img/unnamed-chunk-221.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-222.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-223.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-224.png) 
+![plot of chunk unnamed-chunk-22](img/unnamed-chunk-221.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-222.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-223.png) ![plot of chunk unnamed-chunk-22](img/unnamed-chunk-224.png)
 
 ```r
 plot(autocor$Sydney, main="Sydney")
 ```
 
-![plot of chunk unnamed-chunk-22](img/unnamed-chunk-225.png) 
+![plot of chunk unnamed-chunk-22](img/unnamed-chunk-225.png)
 
 ```r
 plot(autocor$Cairns, main="Cairns")
 ```
 
-![plot of chunk unnamed-chunk-22](img/unnamed-chunk-226.png) 
+![plot of chunk unnamed-chunk-22](img/unnamed-chunk-226.png)
 
 
 I find that for loops can be easier to plot data, partly because
@@ -431,7 +431,7 @@ for (i in seq_along(data))
   lines(data[[i]]$time, data[[i]]$temp, col=cols[i])
 ```
 
-![plot of chunk unnamed-chunk-23](img/unnamed-chunk-23.png) 
+![plot of chunk unnamed-chunk-23](img/unnamed-chunk-23.png)
 
 
 
@@ -442,7 +442,7 @@ mapply(function(x, col) lines(x$time, x$temp, col=col),
        data, cols)
 ```
 
-![plot of chunk unnamed-chunk-24](img/unnamed-chunk-24.png) 
+![plot of chunk unnamed-chunk-24](img/unnamed-chunk-24.png)
 
 ```plain
 $Melbourne
@@ -622,7 +622,7 @@ arrows(seasons, rating - rating.se, seasons, rating + rating.se,
        code=3, angle=90, length=0.02)
 ```
 
-![plot of chunk unnamed-chunk-34](img/unnamed-chunk-34.png) 
+![plot of chunk unnamed-chunk-34](img/unnamed-chunk-34.png)
 
 
 But there's still repetition there.  Let's abstract that away a bit.
@@ -882,7 +882,7 @@ and then you could plot these:
 plot(table(replicate(10000, trial(50))))
 ```
 
-![plot of chunk unnamed-chunk-49](img/unnamed-chunk-49.png) 
+![plot of chunk unnamed-chunk-49](img/unnamed-chunk-49.png)
 
 
 # for loops
@@ -948,7 +948,7 @@ for (i in seq_len(nsteps))
 plot(x, type="l")
 ```
 
-![plot of chunk unnamed-chunk-56](img/unnamed-chunk-56.png) 
+![plot of chunk unnamed-chunk-56](img/unnamed-chunk-56.png)
 
 
 Pulling *that* into a function:
@@ -971,7 +971,7 @@ walks <- replicate(30, random.walk(100))
 matplot(walks, type="l", lty=1, col=rainbow(nrow(walks)))
 ```
 
-![plot of chunk unnamed-chunk-58](img/unnamed-chunk-58.png) 
+![plot of chunk unnamed-chunk-58](img/unnamed-chunk-58.png)
 
 
 Of course, in this case, if we think in terms of vectors we can
@@ -985,7 +985,7 @@ walks <- replicate(30, random.walk(100))
 matplot(walks, type="l", lty=1, col=rainbow(nrow(walks)))
 ```
 
-![plot of chunk unnamed-chunk-59](img/unnamed-chunk-59.png) 
+![plot of chunk unnamed-chunk-59](img/unnamed-chunk-59.png)
 
 
 Which reinforces one of the advantages of thinking in terms of
