@@ -22,4 +22,4 @@ more if needed.
 
 There are many many tutorials on the internet for using the shell.
 [Software carpentry](http://software-carpentry.org) have a great and
-very thorough (introduction)[http://software-carpentry.org/4_0/shell].
+very thorough [introduction](http://software-carpentry.org/4_0/shell).
