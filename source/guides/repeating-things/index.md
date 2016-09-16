@@ -176,9 +176,9 @@ Lists are a very powerful and flexible data structure that few people seem to
 know about. Moreover, they are the building block for other data structures,
 like `data.frame` and `matrix`. To access elements of a list, you use the
 double square bracket, for example `X[[4]]` returns the fourth element of the
-list `X`. If you don't know what a list is, we suggest you [read more
-about them](http://cran.r-project.org/doc/manuals/R-intro.html#Lists-and-
-data-frames), before you proceed.
+list `X`. If you don't know what a list is, we suggest you
+[read more about them](http://cran.r-project.org/doc/manuals/R-intro.html#Lists-and-data-frames),
+before you proceed.
 
 ## Basic syntax
 
