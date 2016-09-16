@@ -202,7 +202,7 @@ function:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -0.006537039</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -0.006537</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>In fact, in this case, the expected variance of the estimate with
@@ -215,8 +215,8 @@ $n$ samples is $1/n$, so we’d expect most values to lie within $\pm
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span>
-</span><span class="line"><span class="c1">## -0.0325000 -0.0057960  0.0004621  0.0004164  0.0067330  0.0355200</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
+</span><span class="line"><span class="c1">## -0.03250 -0.00580  0.00046  0.00042  0.00673  0.03550</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>This function computes the cumulative mean (that is, for element
@@ -303,7 +303,7 @@ probability density is below:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.959964</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.96</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>We can estimate this by direct integration in this case (using the
@@ -322,7 +322,7 @@ argument above)</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.959966</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.96</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>And estimate the point by Monte Carlo integration:</p>
@@ -334,7 +334,7 @@ argument above)</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -2.023258</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -2.023</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>Note that this has an error around it:</p>
@@ -344,7 +344,7 @@ argument above)</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.06329402</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] 0.06329</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>But in the limit as the sample size goes to infinity, this will
@@ -361,8 +361,8 @@ of magnitide as the error around the mean:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##       Min.    1st Qu.     Median       Mean    3rd Qu.       Max. </span>
-</span><span class="line"><span class="c1">## -0.0584200 -0.0163900 -0.0057180 -0.0002443  0.0139900  0.0788200</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. </span>
+</span><span class="line"><span class="c1">## -0.05840 -0.01640 -0.00572 -0.00024  0.01400  0.07880</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="still-not-convinced">Still not convinced?</h2>
@@ -733,7 +733,7 @@ itself:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.110223e-16  1.387779e-16  0.000000e+00</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## [1] -1.110e-16  1.388e-16  0.000e+00</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 <p>(strictly, this should be the eigenvalue multiplied by <code>v</code>, but the
 leading eigenvalue is always 1 for these matrices).</p>
@@ -1113,7 +1113,9 @@ samples:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error in loadNamespace(name): there is no package called &#39;coda&#39;</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## var1 </span>
+</span><span class="line"><span class="c1">##  187</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -1121,7 +1123,9 @@ samples:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error in loadNamespace(name): there is no package called &#39;coda&#39;</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##  var1 </span>
+</span><span class="line"><span class="c1">## 33.19</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -1129,7 +1133,9 @@ samples:</p>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">## Error in loadNamespace(name): there is no package called &#39;coda&#39;</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="r"><span class="line"><span class="c1">##  var1 </span>
+</span><span class="line"><span class="c1">## 5.378</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>The chains both “mix” worse than that first one.</p>

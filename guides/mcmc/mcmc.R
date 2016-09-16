@@ -9,8 +9,9 @@
 ## ---
 
 ##+ echo=FALSE, results="hide"
-knitr::opts_chunk$set(tidy=FALSE)
-options(show.signif.stars=FALSE)
+library(knitr)
+opts_chunk$set(tidy=FALSE)
+options(show.signif.stars=FALSE, digits=4)
 options(max.print=170)
 
 ## This topic doesn't have much to do with nicer code, but there is
