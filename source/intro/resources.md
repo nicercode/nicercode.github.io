@@ -31,14 +31,17 @@ footer: false
      or have solved the same problem, or are interested in knowing how
      to solve the same problem.  Talk to each other.
  * Various tutorial documents exist across the internet, of varying
-   quality.  This recent one is nice, but very rapid and covers about
+   quality.
+    - This recent one is nice, but very rapid and covers about
    95% of everything you need to know (do note the filename, though)
    https://dl.dropbox.com/u/4149392/R_for_the_brave.pdf
+   - [Google R course](http://www.youtube.com/playlist?list=PLOU2XLYxmsIK9qQfztXeybpHvru-TrqAP)
+   - Nikhil Gopal's [guerilla guide to r](http://www.nikhilgopal.com/2013/05/the-guerilla-guide-to-r.html)
  * Hadley Wickham's
    ["devtools" wiki](https://github.com/hadley/devtools/wiki).  More
    advanced, but nice when you're looking to extend yourself.
  * The [#rstats](https://twitter.com/search?q=%23rstats) hashtag on
-   twitter. 
+   twitter.
  * The online help built into R
    - There are extensive help pages for all functions: to access them,
 	 type `?` before a command name (e.g. ```?log```), or use the
