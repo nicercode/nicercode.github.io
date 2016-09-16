@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: module | Nice R Code]]></title>
-  <link href="http://nicercode.github.com/blog/categories/module/atom.xml" rel="self"/>
-  <link href="http://nicercode.github.com/"/>
-  <updated>2016-09-16T11:08:35+10:00</updated>
-  <id>http://nicercode.github.com/</id>
+  <link href="http://nicercode.github.io/blog/categories/module/atom.xml" rel="self"/>
+  <link href="http://nicercode.github.io/"/>
+  <updated>2016-09-16T12:05:39+10:00</updated>
+  <id>http://nicercode.github.io/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Organizing the project directory]]></title>
-    <link href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/"/>
+    <link href="http://nicercode.github.io/blog/2013-05-17-organising-my-project/"/>
     <updated>2013-05-17T08:20:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/organising-my-project</id>
+    <id>http://nicercode.github.io/blog/organising-my-project</id>
     <content type="html"><![CDATA[<p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
 
 <p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>
@@ -46,9 +46,9 @@
   
   <entry>
     <title type="html"><![CDATA[git]]></title>
-    <link href="http://nicercode.github.com/blog/2013-04-23-git/"/>
+    <link href="http://nicercode.github.io/blog/2013-04-23-git/"/>
     <updated>2013-04-23T17:51:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/git</id>
+    <id>http://nicercode.github.io/blog/git</id>
     <content type="html"><![CDATA[<p>Thanks to everyone who came along and was such good sports with
 learning git today. Hopefully you now have enough tools to help you use git in your own
 projects. The notes are available (in fairly raw form)
@@ -78,9 +78,9 @@ email either or both of us, or leave a comment on a relevant page.</p>
   
   <entry>
     <title type="html"><![CDATA[Why I want to write nice R code]]></title>
-    <link href="http://nicercode.github.com/blog/2013-04-05-why-nice-code/"/>
+    <link href="http://nicercode.github.io/blog/2013-04-05-why-nice-code/"/>
     <updated>2013-04-05T14:46:00+11:00</updated>
-    <id>http://nicercode.github.com/blog/why-nice-code</id>
+    <id>http://nicercode.github.io/blog/why-nice-code</id>
     <content type="html"><![CDATA[<!--
 Why are students here
 Goals: performance, learning, affective, social
@@ -140,7 +140,7 @@ Certainly no one is teaching you these skills in your standard biology research
 department.</p>
 
 <blockquote class="twitter-tweet"><p>Learn to code! I worry that most biologists leave uni lacking #1 skill for 21st cent biology. For inspiration <a href="http://t.co/7lzRutYuIw" title="http://code.org">code.org</a> <a href="https://twitter.com/search/%23CODE">#CODE</a></p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/306854385076543488">February 27, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://nicercode.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>Observing how colleagues were struggling with their code, we
 (<a href="/about#Team">Rich FitzJohn and Daniel Falster</a>) have teamed up to bring you
@@ -168,7 +168,7 @@ has come to dominate biological research. We are not experts, but have more
 experience than many biologists. Hence the nice R code blog.</p>
 
 <blockquote class="twitter-tweet"><p>@<a href="https://twitter.com/phylorich">phylorich</a> Being able to code (in any language) is most important skill for current biology. R is good choice: widely used, high level, free</p>&mdash; Daniel Falster (@adaptive_plant) <a href="https://twitter.com/adaptive_plant/status/312438921059520512">March 15, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://nicercode.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h2 id="key-elements-of-nice-r-code">Key elements of nice R code</h2>
 <p>We will now briefly consider some of the key principles of writing nice code.</p>
@@ -208,7 +208,7 @@ yet safely delete old files. This helps reduce clutter and improves readability.
 <h3 id="nice-code-is-reliable-ie-bug-free">Nice code is reliable, i.e. bug free</h3>
 
 <blockquote class="twitter-tweet"><p>Occma's raz0r: if your program isn't working, it's probably just a typo in the code, not an undiscovered bug or thing you're doing wrong</p>&mdash; Alison Abreu-Garcia (@alisonag) <a href="https://twitter.com/alisonag/status/322374461212995584">April 11, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://nicercode.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <p>The computer does exactly what you tell it to. If there is a problem in your code, it’s most likely you put it there. How certain
 are you that your code is error free? More than once I have reached a state
@@ -233,7 +233,7 @@ errors.</li>
 </ul>
 
 <blockquote class="twitter-tweet"><p>"Every bug is two bugs: the bug in your code, and the test you didn't write"@<a href="https://twitter.com/estherbester">estherbester</a> <a href="https://twitter.com/search/%23pycon">#pycon</a></p>&mdash; Ned Batchelder (@nedbat) <a href="https://twitter.com/nedbat/status/312628852558032896">March 15, 2013</a></blockquote>
-<script async="" src="http://nicercode.github.com//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async="" src="http://nicercode.github.io//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 <h3 id="nice-code-runs-quickly-and-is-therefore-a-pleasure-to-use">Nice code runs quickly and is therefore a pleasure to use</h3>
 
@@ -304,9 +304,9 @@ reviewer couldn’t understand your code. At worst, some people have had to <a h
   
   <entry>
     <title type="html"><![CDATA[Plans for 'Nice R code module', Macquarie University 2013]]></title>
-    <link href="http://nicercode.github.com/blog/2013-03-08-nice-r-code-2013-plans/"/>
+    <link href="http://nicercode.github.io/blog/2013-03-08-nice-r-code-2013-plans/"/>
     <updated>2013-03-08T09:58:00+11:00</updated>
-    <id>http://nicercode.github.com/blog/nice-r-code-2013-plans</id>
+    <id>http://nicercode.github.io/blog/nice-r-code-2013-plans</id>
     <content type="html"><![CDATA[<p>Welcome to the Nice R code module. This module is targeted at researchers who 
 are already using R and want to write nicer code. By ‘nicer’ we mean code that 
 is easy to write, is easy to read, runs fast, gives reliable results, is easy 

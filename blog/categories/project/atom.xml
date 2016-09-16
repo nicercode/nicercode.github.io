@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: project | Nice R Code]]></title>
-  <link href="http://nicercode.github.com/blog/categories/project/atom.xml" rel="self"/>
-  <link href="http://nicercode.github.com/"/>
-  <updated>2016-09-16T11:08:35+10:00</updated>
-  <id>http://nicercode.github.com/</id>
+  <link href="http://nicercode.github.io/blog/categories/project/atom.xml" rel="self"/>
+  <link href="http://nicercode.github.io/"/>
+  <updated>2016-09-16T12:05:39+10:00</updated>
+  <id>http://nicercode.github.io/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Modifying data with lookup tables]]></title>
-    <link href="http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/"/>
+    <link href="http://nicercode.github.io/blog/2013-07-09-modifying-data-with-lookup-tables/"/>
     <updated>2013-07-09T08:20:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/modifying-data-with-lookup-tables</id>
+    <id>http://nicercode.github.io/blog/modifying-data-with-lookup-tables</id>
     <content type="html"><![CDATA[<!-- The problem:
 - importing new data
 - amount of code to be written (opportunities for mistake)
@@ -184,9 +184,9 @@ You can find the example files used here, as a <a href="https://gist.github.com/
   
   <entry>
     <title type="html"><![CDATA[Organizing the project directory]]></title>
-    <link href="http://nicercode.github.com/blog/2013-05-17-organising-my-project/"/>
+    <link href="http://nicercode.github.io/blog/2013-05-17-organising-my-project/"/>
     <updated>2013-05-17T08:20:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/organising-my-project</id>
+    <id>http://nicercode.github.io/blog/organising-my-project</id>
     <content type="html"><![CDATA[<p>This is a guest post by Marcela Diaz, a PhD student at Macquarie University. </p>
 
 <p>Until recently, I hadn’t given much attention to organising files in my project. All the documents and files from my current project were spread out in two different folders, with very little sub folder division. All the files where together in the same place and I had multiple versions of the same file, with different dates. As you can see, things were getting a bit out of control.</p>

@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: R | Nice R Code]]></title>
-  <link href="http://nicercode.github.com/blog/categories/r/atom.xml" rel="self"/>
-  <link href="http://nicercode.github.com/"/>
-  <updated>2016-09-16T11:08:35+10:00</updated>
-  <id>http://nicercode.github.com/</id>
+  <link href="http://nicercode.github.io/blog/categories/r/atom.xml" rel="self"/>
+  <link href="http://nicercode.github.io/"/>
+  <updated>2016-09-16T12:05:39+10:00</updated>
+  <id>http://nicercode.github.io/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Figure functions]]></title>
-    <link href="http://nicercode.github.com/blog/2013-07-09-figure-functions/"/>
+    <link href="http://nicercode.github.io/blog/2013-07-09-figure-functions/"/>
     <updated>2013-07-09T16:41:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/figure-functions</id>
+    <id>http://nicercode.github.io/blog/figure-functions</id>
     <content type="html"><![CDATA[<p>Transitioning from an interactive plot in R to a publication-ready
 plot can create a messy script file with lots of statements and use of
 global variables.  This post outlines an approach that I have used to

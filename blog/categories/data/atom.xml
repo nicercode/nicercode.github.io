@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: data | Nice R Code]]></title>
-  <link href="http://nicercode.github.com/blog/categories/data/atom.xml" rel="self"/>
-  <link href="http://nicercode.github.com/"/>
-  <updated>2016-09-16T11:08:35+10:00</updated>
-  <id>http://nicercode.github.com/</id>
+  <link href="http://nicercode.github.io/blog/categories/data/atom.xml" rel="self"/>
+  <link href="http://nicercode.github.io/"/>
+  <updated>2016-09-16T12:05:39+10:00</updated>
+  <id>http://nicercode.github.io/</id>
   <author>
     <name><![CDATA[Rich FitzJohn & Daniel Falster]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Modifying data with lookup tables]]></title>
-    <link href="http://nicercode.github.com/blog/2013-07-09-modifying-data-with-lookup-tables/"/>
+    <link href="http://nicercode.github.io/blog/2013-07-09-modifying-data-with-lookup-tables/"/>
     <updated>2013-07-09T08:20:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/modifying-data-with-lookup-tables</id>
+    <id>http://nicercode.github.io/blog/modifying-data-with-lookup-tables</id>
     <content type="html"><![CDATA[<!-- The problem:
 - importing new data
 - amount of code to be written (opportunities for mistake)
@@ -184,9 +184,9 @@ You can find the example files used here, as a <a href="https://gist.github.com/
   
   <entry>
     <title type="html"><![CDATA[Excel and line endings]]></title>
-    <link href="http://nicercode.github.com/blog/2013-04-30-excel-and-line-endings/"/>
+    <link href="http://nicercode.github.io/blog/2013-04-30-excel-and-line-endings/"/>
     <updated>2013-04-30T09:39:00+10:00</updated>
-    <id>http://nicercode.github.com/blog/excel-and-line-endings</id>
+    <id>http://nicercode.github.io/blog/excel-and-line-endings</id>
     <content type="html"><![CDATA[<p>On a Mac, Excel produces csv files with the wrong line endings, which
 causes problems for git (amongst other things).</p>
 

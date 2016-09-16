@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://nicercode.github.com/sitemap.xml 
+Sitemap: http://nicercode.github.io/sitemap.xml 
