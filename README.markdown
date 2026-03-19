@@ -1,3 +1,7 @@
+## Note - Decommissioned in 2026 after a long period of stillness.... 
+
+This site was live from 2013-2026.
+
 ## Intro
 
 This package contains materials for the [Nice R Code 
